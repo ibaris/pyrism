@@ -23,83 +23,82 @@ try:
 except NameError:
     xrange = range
 
+
 # ---- Scattering Coefficients ----
 class VolScatt(Kernel):
+    """
+    Compute volume scattering functions and interception coefficients
+    for given solar zenith, viewing zenith, azimuth and leaf inclination angle.
+
+    Parameters
+    ----------
+    iza, vza, raa : int, float or ndarray
+        Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+    angle_unit : {'DEG', 'RAD'}, optional
+        * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+        * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+
+    Returns
+    -------
+    All returns are attributes!
+    iza: ndarray
+        Sun or incidence zenith angle in [RAD].
+    vza : ndarray
+        View or scattering zenith angle in [RAD].
+    raa : ndarray
+        Relative azimuth angle in [RAD].
+    izaDeg : ndarray
+        Sun or incidence zenith angle in [DEG].
+    vzaDeg : ndarray
+        View or scattering zenith angle in [DEG].
+    raaDeg : ndarray
+        Relative azimuth angle in [DEG].
+    phi : ndarray
+        Relative azimuth angle in a range between 0 and 2pi.
+    chi_s : int, float or array_like
+        Interception function  in the solar path.
+    chi_o : int, float or array_like
+        Interception function  in the view path.
+
+    Note
+    ----
+    Hot spot direction is vza == iza and raa = 0.0
+
+    See Also
+    --------
+    VolScatt.coef
+    LIDF.campbell
+    LIDF.verhoef
+    LIDF.nilson
+
+    References
+    ----------
+    .. [UlBE14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
+        RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
+        Microwave radar and radiometric remote sensing. Ann Arbor,
+        University of Michigan Press.
+
+    .. [Eecs17] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
+
+    .. [Camp86] G.S. Campbell, Extinction coefficients for radiation in
+        plant canopies calculated using an ellipsoidal inclination angle distribution,
+        Agricultural and Forest Meteorology, Volume 36, Issue 4, 1986, Pages 317-321,
+        ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(86)90010-9.
+
+    .. [Camp90] G.S Campbell, Derivation of an angle density function for
+        canopies with ellipsoidal leaf angle distributions,
+        Agricultural and Forest Meteorology, Volume 49, Issue 3, 1990, Pages 173-176,
+        ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(90)90030-A.
+
+    .. [Verh98] Verhoef, Wout. Theory of radiative transfer models applied
+        in optical remote sensing of vegetation canopies.
+        Nationaal Lucht en Ruimtevaartlaboratorium, 1998.
+        http://library.wur.nl/WebQuery/clc/945481.
+
+    """
 
     def __init__(self, iza, vza, raa, angle_unit='DEG'):
-        """
-        Compute volume scattering functions and interception coefficients
-        for given solar zenith, viewing zenith, azimuth and leaf inclination angle.
 
-        Parameters
-        ----------
-        iza, vza, raa : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-
-        Attributes
-        ----------
-        iza: ndarray
-            Sun or incidence zenith angle in [RAD].
-        vza : ndarray
-            View or scattering zenith angle in [RAD].
-        raa : ndarray
-            Relative azimuth angle in [RAD].
-        izaDeg : ndarray
-            Sun or incidence zenith angle in [DEG].
-        vzaDeg : ndarray
-            View or scattering zenith angle in [DEG].
-        raaDeg : ndarray
-            Relative azimuth angle in [DEG].
-        phi : ndarray
-            Relative azimuth angle in a range between 0 and 2pi.
-        chi_s : int, float or array_like
-            Interception function  in the solar path.
-        chi_o : int, float or array_like
-            Interception function  in the view path.
-
-        Notes
-        -----
-        Hot spot direction is vza == iza and raa = 0.0
-
-        See Also
-        --------
-        VolScatt.coef
-        LIDF.campell
-        LIDF.verhoef
-        LIDF.nilson
-
-        Note
-        ----
-        Hot spot direction is vza == iza and raa = 0.0.
-
-        References
-        ----------
-        .. [UlBE14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-            RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-            Microwave radar and radiometric remote sensing. Ann Arbor,
-            University of Michigan Press.
-
-        .. [Eecs17] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
-        .. [Camp86] G.S. Campbell, Extinction coefficients for radiation in
-            plant canopies calculated using an ellipsoidal inclination angle distribution,
-            Agricultural and Forest Meteorology, Volume 36, Issue 4, 1986, Pages 317-321,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(86)90010-9.
-
-        .. [Camp90] G.S Campbell, Derivation of an angle density function for
-            canopies with ellipsoidal leaf angle distributions,
-            Agricultural and Forest Meteorology, Volume 49, Issue 3, 1990, Pages 173-176,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(90)90030-A.
-
-        .. [Verh98] Verhoef, Wout. Theory of radiative transfer models applied
-            in optical remote sensing of vegetation canopies.
-            Nationaal Lucht en Ruimtevaartlaboratorium, 1998.
-            http://library.wur.nl/WebQuery/clc/945481.
-
-        """
         super(VolScatt, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit, align=True)
 
     def coef(self, lidf_type='verhoef', n_elements=18, **kwargs):
@@ -112,7 +111,7 @@ class VolScatt(Kernel):
             Define with which method the LIDF is calculated
         n_elements : int, optional
             Total number of equally spaced inclination angles. Default is 18.
-        **kwargs : dict
+        kwargs : dict
             Possible **kwargs from campbell method:
                 * a : Mean leaf angle (degrees) use 57 for a spherical LIDF.
 
@@ -120,8 +119,9 @@ class VolScatt(Kernel):
                 * a : Parameter a controls the average leaf inclination.
                 * b : Parameter b influences the shape of the distribution (bimodality), but has no effect on the average leaf inclination.
 
-        Attributes
-        ----------
+        Returns
+        -------
+        All returns are attributes!
         self.ks : int, float or array_like
             Volume scattering coeffient in incidence path.
         self.ko : int, float or array_like
@@ -133,40 +133,11 @@ class VolScatt(Kernel):
         self.Fst : int, float or array_like
             Sum of Fs and Ft.
 
-        Returns
-        -------
-        object
-
         See Also
         --------
         LIDF.campbell
         LIDF.verhoef
         LIDF.nilson
-
-        References
-        ----------
-        .. [UlBE14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-            RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-            Microwave radar and radiometric remote sensing. Ann Arbor,
-            University of Michigan Press.
-
-        .. [Eecs17] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
-        .. [Camp86] G.S. Campbell, Extinction coefficients for radiation in
-            plant canopies calculated using an ellipsoidal inclination angle distribution,
-            Agricultural and Forest Meteorology, Volume 36, Issue 4, 1986, Pages 317-321,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(86)90010-9.
-
-        .. [Camp90] G.S Campbell, Derivation of an angle density function for
-            canopies with ellipsoidal leaf angle distributions,
-            Agricultural and Forest Meteorology, Volume 49, Issue 3, 1990, Pages 173-176,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(90)90030-A.
-
-        .. [Verh98] Verhoef, Wout. Theory of radiative transfer models applied
-            in optical remote sensing of vegetation canopies.
-            Nationaal Lucht en Ruimtevaartlaboratorium, 1998.
-            http://library.wur.nl/WebQuery/clc/945481.
-
         """
         a = kwargs.pop('a', None)
         b = kwargs.pop('b', None)
@@ -227,8 +198,9 @@ class VolScatt(Kernel):
         Compute volume scattering functions and interception coefficients
         for given solar zenith, viewing zenith, azimuth and leaf inclination angle.
 
-        Attributs
-        ---------
+        Returns
+        -------
+        All returns are attributes!
         chi_s : float
             Interception function  in the solar path.
         chi_o : float
@@ -237,10 +209,6 @@ class VolScatt(Kernel):
             Function to be multiplied by leaf reflectance to obtain the volume scattering.
         ftau : float
             Function to be multiplied by leaf transmittance to obtain the volume scattering.
-
-        References
-        ----------
-        Wout Verhoef, april 2001, for CROMA.
         """
         cts = np.cos(self.iza)
         cto = np.cos(self.vza)
@@ -325,13 +293,6 @@ class LIDF:
 
     References
     ----------
-    .. [UlBE14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-        RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-        Microwave radar and radiometric remote sensing. Ann Arbor,
-        University of Michigan Press.
-
-    .. [Eecs17] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
     .. [Camp86] G.S. Campbell, Extinction coefficients for radiation in
         plant canopies calculated using an ellipsoidal inclination angle distribution,
         Agricultural and Forest Meteorology, Volume 36, Issue 4, 1986, Pages 317-321,
@@ -341,11 +302,6 @@ class LIDF:
         canopies with ellipsoidal leaf angle distributions,
         Agricultural and Forest Meteorology, Volume 49, Issue 3, 1990, Pages 173-176,
         ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(90)90030-A.
-
-    .. [Verh98] Verhoef, Wout. Theory of radiative transfer models applied
-        in optical remote sensing of vegetation canopies.
-        Nationaal Lucht en Ruimtevaartlaboratorium, 1998.
-        http://library.wur.nl/WebQuery/clc/945481.
     """
 
     def __init__(self):
@@ -367,18 +323,6 @@ class LIDF:
         -------
         lidf : list
             Leaf Inclination Distribution Function for 18 equally spaced angles.
-
-        References
-        ----------
-        .. [Campbell1986] G.S. Campbell, Extinction coefficients for radiation in
-            plant canopies calculated using an ellipsoidal inclination angle distribution,
-            Agricultural and Forest Meteorology, Volume 36, Issue 4, 1986, Pages 317-321,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(86)90010-9.
-
-        .. [Campbell1990] G.S Campbell, Derivation of an angle density function for
-            canopies with ellipsoidal leaf angle distributions,
-            Agricultural and Forest Meteorology, Volume 49, Issue 3, 1990, Pages 173-176,
-            ISSN 0168-1923, http://dx.doi.org/10.1016/0168-1923(90)90030-A.
 
         """
         alpha = float(a)
@@ -445,13 +389,6 @@ class LIDF:
             * Spherical: [-0.35,-0.15].
             * Uniform: [0,0].
 
-        References
-        ----------
-        .. [Verh98] Verhoef, Wout. Theory of radiative transfer models applied
-            in optical remote sensing of vegetation canopies.
-            Nationaal Lucht en Ruimtevaartlaboratorium, 1998.
-            http://library.wur.nl/WebQuery/clc/945481.
-
         """
 
         freq = 1.0
@@ -487,8 +424,8 @@ class LIDF:
         """
         Leaf Angle Distributions (LAD) from Nilson and Kuusk, 1989.
 
-        Notes
-        -----
+        Note
+        ----
         If mla is None, the default values are alculated by following distributions:
                 * 'erectophile': 0
                 * 'planophile': pi/2
@@ -502,7 +439,7 @@ class LIDF:
         lza : int, float or ndarray
             Leaf zenith angle (lza).
         mla : int or float, optional
-            Modal leaf angle in [Deg], Default is None (See Notes).
+            Modal leaf angle in [Deg], Default is None (See Note).
         eccentricity : int or float (default = 0.5), optional
             Zero eccentricity is a spherical leaf angle distribution. An eccentricity
             of 1 is a 'needle'.
@@ -563,67 +500,60 @@ class LIDF:
 
 
 class SAIL(Kernel):
+    """
+    Run the SAIL radiative transfer model (See Note).
+
+    Parameters
+    ----------
+    iza, vza, raa : int, float or ndarray
+        Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+    ks, kt : array_like
+        Continuous leaf reflection (ks) and leaf transmission (kt) values from from 400 until 2500 nm.
+    lai : float
+        Leaf area index.
+    hotspot : float
+        The hotspot parameter.
+    soil_reflectance : int or float
+        Surface (Lambertian) reflectance in optical wavelength.
+    soil_moisture : int or float
+        Surface moisture content between 0 and 1.
+    lidf_type : {'verhoef', 'campbell'}, optional
+        Define with which method the LIDF is calculated. Default is 'campbell'
+    a, b : float, optional
+        Parameter a and b depends on which lidf_type is applied:
+            * If lidf_type is 'verhoef': Parameter a controls the average leaf inclination. Parameter b influences
+              the shape of the distribution (bimodality), but has no effect on the average leaf inclination.
+              The default values are for a uniform leaf distribution a = 0, b = 0.
+            * If lidf_type is 'campbell': Parameter a is the mean leaf angle (degrees) use 57 for a spherical LIDF.
+              The default value represents a spherical leaf distribution a = 57.
+
+    normalize : boolean, optional
+        Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+        the default value is False.
+    nbar : float, optional
+        The sun or incidence zenith angle at which the isotropic term is set
+        to if normalize is True. The default value is 0.0.
+    angle_unit : {'DEG', 'RAD'}, optional
+        * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+        * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+
+    Returns
+    -------
+    For more attributes see also prism.core.Kernel and prism.core.SailResult.
+
+    See Also
+    --------
+    prism.core.Kernel
+    prism.core.SailResult
+
+    Note
+    ----
+    If the input parameter for ks and kt are the output from the class PROSPECT, SAIL will calculate the
+    PROSAIL model. This is a reimplementation of José Gómez-Dans 'prosail': https://github.com/jgomezdans/prosail
+    """
+
     def __init__(self, iza, vza, raa, ks, kt, lai, hotspot, soil_reflectance, soil_moisture,
                  lidf_type='campbell', a=57, b=0, normalize=False, nbar=0.0, angle_unit='DEG'):
-        """
-        Run the SAIL radiative transfer model (See Notes).
-
-        Parameters
-        ----------
-        iza, vza, raa : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        ks, kt : array_like
-            Continuous leaf reflection (ks) and leaf transmission (kt) values from from 400 until 2500 nm.
-        lai : float
-            Leaf area index.
-        hotspot : float
-            The hotspot parameter.
-        soil_reflectance : int or float
-            Surface (Lambertian) reflectance in optical wavelength.
-        soil_moisture : int or float
-            Surface moisture content between 0 and 1.
-        lidf_type : {'verhoef', 'campbell'}, optional
-            Define with which method the LIDF is calculated. Default is 'campbell'
-        a, b : float, optional
-            Parameter a and b depends on which lidf_type is applied:
-                * If lidf_type is 'verhoef': Parameter a controls the average leaf inclination. Parameter b influences
-                  the shape of the distribution (bimodality), but has no effect on the average leaf inclination.
-                  The default values are for a uniform leaf distribution a = 0, b = 0.
-                * If lidf_type is 'campbell': Parameter a is the mean leaf angle (degrees) use 57 for a spherical LIDF.
-                  The default value represents a spherical leaf distribution a = 57.
-
-        normalize : boolean, optional
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-
-        Attributes
-        ----------
-        For more attributes see also core.Kernel and core.SailResult.
-
-        Notes
-        -----
-        This is a reimplementation of José Gómez-Dans 'prosail': https://github.com/jgomezdans/prosail
-
-        Notes
-        -----
-        This is a reimplementation of José Gómez-Dans 'prosail': https://github.com/jgomezdans/prosail
-
-        See Also
-        --------
-        core.Kernel
-        core.SailResult
-
-        Notes
-        -----
-        If the input parameter for ks and kt are the output from the class PROSPECT, SAIL will calculate the
-        PROSAIL model.
-        """
         super(SAIL, self).__init__(iza=iza, vza=vza, raa=raa, normalize=normalize, nbar=nbar, angle_unit=angle_unit,
                                    align=True)
 
@@ -642,7 +572,7 @@ class SAIL(Kernel):
         else:
             raise ValueError("The lidf_type must be 'verhoef' or 'campbell'")
 
-        tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso = self.calc()
+        tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso = self.__calc()
 
         self.kt = tsstoo
         self.kt_iza = tss
@@ -655,7 +585,7 @@ class SAIL(Kernel):
         self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt))
         self.HDR = SailResult(ref=rdot, refdB=dB(rdot))
 
-    def calc(self):
+    def __calc(self):
         sdb = 0.5 * (self.VollScat.ks + self.VollScat.bf)
         sdf = 0.5 * (self.VollScat.ks - self.VollScat.bf)
         dob = 0.5 * (self.VollScat.ko + self.VollScat.bf)
@@ -865,60 +795,62 @@ class SAIL(Kernel):
 
 
 class PROSPECT:
+    """
+    PROSPECT_ 5B (including carotenoids and brown pigments) version 5b (october, 20th 2009)
+
+    Parameters
+    ----------
+    N : int or float
+        Leaf structure parameter.
+    Cab : int or float
+        Chlorophyll a+b content.
+    Cxc : int or float
+        Carotenoids content.
+    Cbr : int or float
+        Brown pigments content in arbitrary units.
+    Cw : int or float
+        Equivalent water thickness.
+    Cm : int or float
+        Dry matter content
+    alpha : int
+        Mean leaf angle (degrees) use 57 for a spherical LIDF. Default is 40.
+    version : {'5', 'D'}
+        PROSPECT version. Default is '5'.
+
+    Returns
+    -------
+    All returns are attributes!
+    L8.Bx.kx : namedtuple (with dot access)
+        Landsat 8 average kx (ks, kt, ke) values for Bx band (B2 until B7):
+    ASTER.Bx.kx : namedtuple (with dot access)
+        ASTER average kx (ks, kt, ke) values for Bx band (B1 until B9):
+    l : array_like
+        Continuous Wavelength from 400 until 2500 nm.
+    kt : array_like
+        Continuous Transmission from 400 until 2500 nm.
+    ks : array_like
+        Continuous Scattering from 400 until 2500 nm.
+    ke : array_like
+        Continuous Extinction from 400 until 2500 nm.
+    ka : array_like
+        Continuous Absorption from 400 until 2500 nm.
+    om : array_like
+        Continuous Omega value in terms of Radar from 400 until 2500 nm.
+
+    References
+    ----------
+    .. [JaBa90] Jacquemoud S., Baret F. (1990), PROSPECT: a model of leaf optical
+        properties spectra, Remote Sens. Environ., 34:75-91.
+        Féret et al. (2008), PROSPECT-4 and 5: Advances in the Leaf Optical
+        Properties Model Separating Photosynthetic Pigments, Remote Sensing of
+        Environment, 112:3030-3043
+        The specific absorption coefficient corresponding to brown pigment is
+        provided by Frederic Baret (EMMAH, INRA Avignon, baret@avignon.inra.fr)
+        and used with his autorization.
+
+    """
+
     def __init__(self, N, Cab, Cxc, Cbr, Cw, Cm, Can=0, alpha=40, version='5'):
-        """
-        PROSPECT_ 5B (including carotenoids and brown pigments) version 5b (october, 20th 2009)
-
-        Parameters
-        ----------
-        N : int or float
-            Leaf structure parameter.
-        Cab : int or float
-            Chlorophyll a+b content.
-        Cxc : int or float
-            Carotenoids content.
-        Cbr : int or float
-            Brown pigments content in arbitrary units.
-        Cw : int or float
-            Equivalent water thickness.
-        Cm : int or float
-            Dry matter content
-        alpha : int
-            Mean leaf angle (degrees) use 57 for a spherical LIDF. Default is 40.
-        version : {'5', 'D'}
-            PROSPECT version. Default is '5'.
-
-        Attributes
-        ----------
-        L8.Bx.kx : namedtuple (with dot access)
-            Landsat 8 average kx (ks, kt, ke) values for Bx band (B2 until B7):
-        ASTER.Bx.kx : namedtuple (with dot access)
-            ASTER average kx (ks, kt, ke) values for Bx band (B1 until B9):
-        l : array_like
-            Continuous Wavelength from 400 until 2500 nm.
-        kt : array_like
-            Continuous Transmission from 400 until 2500 nm.
-        ks : array_like
-            Continuous Scattering from 400 until 2500 nm.
-        ke : array_like
-            Continuous Extinction from 400 until 2500 nm.
-        ka : array_like
-            Continuous Absorption from 400 until 2500 nm.
-        om : array_like
-            Continuous Omega value in terms of Radar from 400 until 2500 nm.
-
-        References
-        ----------
-        .. [JaBa90] Jacquemoud S., Baret F. (1990), PROSPECT: a model of leaf optical
-            properties spectra, Remote Sens. Environ., 34:75-91.
-            Féret et al. (2008), PROSPECT-4 and 5: Advances in the Leaf Optical
-            Properties Model Separating Photosynthetic Pigments, Remote Sensing of
-            Environment, 112:3030-3043
-            The specific absorption coefficient corresponding to brown pigment is
-            provided by Frederic Baret (EMMAH, INRA Avignon, baret@avignon.inra.fr)
-            and used with his autorization.
-
-        """
 
         self.N = N
         self.Cab = Cab
@@ -982,7 +914,7 @@ class PROSPECT:
     def __calctav(self, alpha, KN):
         """
         Note
-        ----------
+        ----
         Stern F. (1964), Transmission of isotropic radiation across an
         interface between two dielectrics, Appl. Opt., 3(1):111-113.
         Allen W.A. (1973), Transmission of isotropic light across a
@@ -1022,7 +954,7 @@ class PROSPECT:
         # <Help and Info Section> -----------------------------------------
         """
         Note
-        ----------
+        ----
         Reflectance and transmittance of one layer.
 
         Allen W.A., Gausman H.W., Richardson A.J., Thomas J.R. (1969),
@@ -1051,7 +983,7 @@ class PROSPECT:
         # <Help and Info Section> -----------------------------------------
         """
         Note
-        ----------
+        ----
         Reflectance and transmittance of N layers
         Stokes equations to compute properties of next N-1 layers (N real)
         Normal case
@@ -1235,7 +1167,6 @@ class PROSPECT:
         ----------
         min : int
             Lower bound of the wavelength (400 - 2500)
-
         max : int
             Upper bound of the wavelength (400 - 2500)
         """
@@ -1266,45 +1197,46 @@ class PROSPECT:
 
 
 class Rayleigh(Scattering):
+    """
+    Calculate the extinction coefficients in terms of Rayleigh
+    scattering.
+
+    Parameters
+    ----------
+    frequency : int or float
+        Frequency (GHz)
+    particle_size : int, float or array
+        Particle size a [m].
+    diel_constant_p : complex
+        Dielectric constant of the medium.
+    diel_constant_b : complex
+        Dielectric constant of the background.
+
+    Returns
+    -------
+    All returns are attributes!
+    self.ke : int, float or array_like
+        Extinction coefficient.
+    self.ks : int, float or array_like
+        Scattering coefficient.
+    self.ka : int, float or array_like
+        Absorption coefficient.
+    self.om : int, float or array_like
+        Omega.
+    self.s0 : int, float or array_like
+        Backscatter coefficient sigma 0.
+
+    References
+    ----------
+    .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
+            RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
+            Microwave radar and radiometric remote sensing. Ann Arbor,
+            University of Michigan Press.
+
+    .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
+    """
 
     def __init__(self, frequency, particle_size, diel_constant_p, diel_constant_b=(1 + 1j)):
-        """
-        Calculate the extinction coefficients in terms of Rayleigh
-        scattering.
-
-        Parameters
-        ----------
-        frequency : int or float
-            Frequency (GHz)
-        particle_size : int, float or array
-            Particle size a [m].
-        diel_constant_p : complex
-            Dielectric constant of the medium.
-        diel_constant_b : complex
-            Dielectric constant of the background.
-
-        Attributes
-        ----------
-        self.ke : int, float or array_like
-            Extinction coefficient.
-        self.ks : int, float or array_like
-            Scattering coefficient.
-        self.ka : int, float or array_like
-            Absorption coefficient.
-        self.om : int, float or array_like
-            Omega.
-        self.s0 : int, float or array_like
-            Backscatter coefficient sigma 0.
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-        """
 
         super(Rayleigh, self).__init__(frequency, particle_size, diel_constant_p, diel_constant_b)
 
@@ -1330,45 +1262,46 @@ class Rayleigh(Scattering):
 
 
 class Mie(Scattering):
+    """
+    Calculate the extinction coefficients in terms of Mie
+    scattering.
+
+    Parameters
+    ----------
+    frequency : int or float
+        Frequency (GHz)
+    particle_size : int, float or array
+        Particle size a [m].
+    diel_constant_p : complex
+        Dielectric constant of the medium.
+    diel_constant_b : complex
+        Dielectric constant of the background.
+
+    Returns
+    -------
+    All returns are attributes!
+    self.ke : int, float or array_like
+        Extinction coefficient.
+    self.ks : int, float or array_like
+        Scattering coefficient.
+    self.ka : int, float or array_like
+        Absorption coefficient.
+    self.om : int, float or array_like
+        Omega.
+    self.s0 : int, float or array_like
+        Backscatter coefficient sigma 0.
+
+    References
+    ----------
+    .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
+            RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
+            Microwave radar and radiometric remote sensing. Ann Arbor,
+            University of Michigan Press.
+
+    .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
+    """
 
     def __init__(self, frequency, particle_size, diel_constant_p, diel_constant_b=(1 + 1j)):
-        """
-        Calculate the extinction coefficients in terms of Mie
-        scattering.
-
-        Parameters
-        ----------
-        frequency : int or float
-            Frequency (GHz)
-        particle_size : int, float or array
-            Particle size a [m].
-        diel_constant_p : complex
-            Dielectric constant of the medium.
-        diel_constant_b : complex
-            Dielectric constant of the background.
-
-        Attributes
-        ----------
-        self.ke : int, float or array_like
-            Extinction coefficient.
-        self.ks : int, float or array_like
-            Scattering coefficient.
-        self.ka : int, float or array_like
-            Absorption coefficient.
-        self.om : int, float or array_like
-            Omega.
-        self.s0 : int, float or array_like
-            Backscatter coefficient sigma 0.
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-        """
 
         super(Mie, self).__init__(frequency, particle_size, diel_constant_p, diel_constant_b)
 
@@ -1552,15 +1485,6 @@ class DielConstant:
         -------
         Dielectric Constant:    complex
 
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
         """
         a = [0.63000075e1, 0.26242021e-2, 0.17667420e-3, 0.58366888e3, 0.12634992e3, 0.69227972e-4, 0.30742330e3,
              0.12634992e3, 0.37245044e1, 0.92609781e-2]
@@ -1597,15 +1521,6 @@ class DielConstant:
         Returns
         -------
         Dielectric Constant:    complex
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
 
         """
         # Conductvity
@@ -1670,15 +1585,6 @@ class DielConstant:
         -------
         Dielectric Constant:    complex
 
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
         """
         frequency = np.asarray(frequency).flatten()
         epsl = []
@@ -1734,15 +1640,6 @@ class DielConstant:
         Returns
         -------
         Dielectric Constant:    complex
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
 
         """
         frequency = np.asarray(frequency).flatten()
@@ -1806,15 +1703,6 @@ class DielConstant:
             Volumetric Water Content (0<mv<1)
         rho_b : int or float (default = 1.7)
             Bulk density in g/cm3 (typical value is 1.7 g/cm3).
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
 
         """
         surf = DielConstant.soil(frequency, temp, S, C, mv, rho_b)
@@ -1956,41 +1844,43 @@ class xpower(CorrFunc):
 
 # ---- Surface Models ----
 class LSM:
+    """
+    In optical wavelengths the Lambertian Linear Model (LSM) is used. If you
+    want to calculate the RO Model in optical terms you will calculate the
+    surface reflexion previous.
+
+    Equation:
+    Total Soil Reflectance = Reflectance*(Moisture*soil_spectrum1+(1-Moisture)*soil_spectrum2)
+
+    By default, soil_spectrum1 is a dry soil, and soil_spectrum2 is a
+    wet soil, so in that case, 'moisture' is a surface soil moisture parameter.
+    ``reflectance`` is a  soil brightness term. You can provide one or the two
+    soil spectra if you want.  The calculation is between 400 and 2500 nm with
+    1nm spacing.
+
+    Parameters
+    ----------
+    reflectance : int or float
+        Surface (Lambertian) reflectance in optical wavelength.
+    moisture : int or float
+        Surface moisture content between 0 and 1.
+
+    Returns
+    -------
+    All returns are attributes!
+    self.L8 : namedtuple (with dot access)
+        Landsat 8 average kx (ks, kt, ke) values for Bx band (B2 until B7)
+    self.ASTER : namedtuple (with dot access)
+        ASTER average kx (ks, kt, ke) values for Bx band (B1 until B9)
+    self.ref : dict (with dot access)
+        Continuous surface reflectance values from 400 until 2500 nm
+    self.l : dict (with dot access)
+        Continuous Wavelength values from 400 until 2500 nm
+
+
+    """
+
     def __init__(self, reflectance, moisture):
-        """
-        In optical wavelengths the Lambertian Linear Model (LSM) is used. If you
-        want to calculate the RO Model in optical terms you will calculate the
-        surface reflexion previous.
-
-        Equation:
-        Total Soil Reflectance = Reflectance*(Moisture*soil_spectrum1+(1-Moisture)*soil_spectrum2)
-
-        By default, soil_spectrum1 is a dry soil, and soil_spectrum2 is a
-        wet soil, so in that case, 'moisture' is a surface soil moisture parameter.
-        ``reflectance`` is a  soil brightness term. You can provide one or the two
-        soil spectra if you want.  The calculation is between 400 and 2500 nm with
-        1nm spacing.
-
-        Parameters
-        ----------
-        reflectance : int or float
-            Surface (Lambertian) reflectance in optical wavelength.
-        moisture : int or float
-            Surface moisture content between 0 and 1.
-
-        Attributes
-        ----------
-        self.L8 : namedtuple (with dot access)
-            Landsat 8 average kx (ks, kt, ke) values for Bx band (B2 until B7)
-        self.ASTER : namedtuple (with dot access)
-            ASTER average kx (ks, kt, ke) values for Bx band (B1 until B9)
-        self.ref : dict (with dot access)
-            Continuous surface reflectance values from 400 until 2500 nm
-        self.l : dict (with dot access)
-            Continuous Wavelength values from 400 until 2500 nm
-
-
-        """
 
         self.l = np.arange(400, 2501)
         self.sRef = reflectance
@@ -2124,69 +2014,72 @@ class LSM:
 
 
 class I2EM(Kernel):
+    """
+     RADAR Surface Scatter Based Kernel (I2EM). Compute BSC VV and
+     BSC HH and the emissivity for single-scale random surface for
+     Bi and Mono-static acquisitions.
+
+     Parameters
+     ----------
+     iza, vza, raa : int, float or ndarray
+         Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+     stand : StandResult, optional
+         Values assigned by Stand class.
+     normalize : boolean, optional
+         Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+         the default value is False.
+     nbar : float, optional
+         The sun or incidence zenith angle at which the isotropic term is set
+         to if normalize is True. The default value is 0.0.
+     angle_unit : {'DEG', 'RAD'}, optional
+         * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+         * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+     diel_constant : int or float
+         Complex dielectric constant of soil.
+     corrlength : int or float
+         Correlation length (cm).
+     sigma : int or float
+         RMS Height (cm)
+     frequency : int or float
+         RADAR Frequency (GHz)
+     n : int (default = 10), optinal
+         Coefficient needed for x-power and x-exponential
+         correlation function
+     corrfunc : {'exponential', 'gaussian', 'xpower'}, optional
+         Correlation distribution functions. Default is 'exponential'.
+
+     Returns
+     -------
+     For more attributes see also prism.core.Kernel and prism.core.ReflectanceResult.
+
+     See Also
+     --------
+     I2EM.Emissivity
+     prism.core.Kernel
+     prism.core.ReflectanceResult
+
+
+     Note
+     ----
+     The model is constrained to realistic surfaces with
+     (rms height / correlation length) ≤ 0.25.
+     Hot spot direction is vza == iza and raa = 0.0
+
+     References
+     ----------
+     .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
+             RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
+             Microwave radar and radiometric remote sensing. Ann Arbor,
+             University of Michigan Press.
+
+     .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
+
+     """
 
     # TODO: Delete unnecessary self. calls.
 
     def __init__(self, iza, vza, raa, normalize=True, nbar=0.0, angle_unit='DEG', frequency=None, diel_constant=None,
                  corrlength=None, sigma=None, n=10, corrfunc='exponential'):
-        """
-        RADAR Surface Scatter Based Kernel (I2EM). Compute BSC VV and
-        BSC HH and the emissivity for single-scale random surface for
-        Bi and Mono-static acquisitions.
-
-        Parameters
-        ----------
-        iza, vza, raa : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        stand : StandResult, optional
-            Values assigned by Stand class.
-        normalize : boolean, optional
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-        diel_constant : int or float
-            Complex dielectric constant of soil.
-        corrlength : int or float
-            Correlation length (cm).
-        sigma : int or float
-            RMS Height (cm)
-        frequency : int or float
-            RADAR Frequency (GHz)
-        n : int (default = 10), optinal
-            Coefficient needed for x-power and x-exponential
-            correlation function
-        corrfunc : {'exponential', 'gaussian', 'xpower'}, optional
-            Correlation distribution functions. Default is 'exponential'.
-
-        Attributes
-        ----------
-        For more attributes see also core.Kernel and core.ReflectanceResult.
-
-        See Also
-        --------
-        Surface.Emissivity
-
-        Note
-        ----
-        The model is constrained to realistic surfaces with
-        (rms height / correlation length) ≤ 0.25.
-        Hot spot direction is vza == iza and raa = 0.0
-
-        References
-        ----------
-        .. [UlLB14] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                Microwave radar and radiometric remote sensing. Ann Arbor,
-                University of Michigan Press.
-
-        .. [Eecs00] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
-        """
 
         super(I2EM, self).__init__(iza, vza, raa, normalize, nbar, angle_unit)
 
@@ -2571,60 +2464,52 @@ class I2EM(Kernel):
                                      HHdB=dB(BRF(self.BRDF.HH)))
 
     class Emissivity(Kernel):
+        """
+        This Class calculates the emission from rough surfaces using the
+        I2EM Model.
 
+        Parameters
+        ----------
+        iza, vza, raa : int, float or ndarray
+            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+        stand : StandResult, optional
+            Values assigned by Stand class.
+        normalize : boolean, optional
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        nbar : float, optional
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. The default value is 0.0.
+        angle_unit : {'DEG', 'RAD'}, optional
+            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        phase_function : {'uniform', 'vertical', 'horizontal'}, optional
+            Phase function for different plant stands: 'uniform' (default), 'horizontal', 'vertical'
+        phase_angle_method : {'Ross', 'Omari'}, optional
+            * 'Ross': Phase angle calculation based on [Ross81] (default).
+            * 'Omari': Phase angle calculation based on [OmWS09].
+        lower_bound, upper_bound : tuple, optional
+            Lower and upper bounds of zenith and azimuth angle. Default for lower bound and upper bound is (0,0),
+            (1, pi/2).
+        frequency : int or float
+            RADAR Frequency (GHz)
+        diel_constant : complex
+            Complex dielectric constant of soil.
+        corrlength : int or float
+            Correlation length (cm).
+        sigma : int or float
+            RMS Height (cm)
+
+        Returns
+        -------
+        For attributes see also core.Kernel and core.EmissivityResult.
+
+        See Also
+        --------
+        prism.core.EmissivityResult
+        """
         def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG', align=True,
                      corrfunc='exponential', frequency=1.26, diel_constant=10 + 1j, corrlength=10, sigma=0.3):
-
-            """
-            This Class calculates the emission from rough surfaces using the
-            I2EM Model.
-
-            Parameters
-            ----------
-            iza, vza, raa : int, float or ndarray
-                Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-            stand : StandResult, optional
-                Values assigned by Stand class.
-            normalize : boolean, optional
-                Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-                the default value is False.
-            nbar : float, optional
-                The sun or incidence zenith angle at which the isotropic term is set
-                to if normalize is True. The default value is 0.0.
-            angle_unit : {'DEG', 'RAD'}, optional
-                * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-                * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-            phase_function : {'uniform', 'vertical', 'horizontal'}, optional
-                Phase function for different plant stands: 'uniform' (default), 'horizontal', 'vertical'
-            phase_angle_method : {'Ross', 'Omari'}, optional
-                * 'Ross': Phase angle calculation based on [Ross81] (default).
-                * 'Omari': Phase angle calculation based on [OmWS09].
-            lower_bound, upper_bound : tuple, optional
-                Lower and upper bounds of zenith and azimuth angle. Default for lower bound and upper bound is (0,0),
-                (1, pi/2).
-            frequency : int or float
-                RADAR Frequency (GHz)
-            diel_constant : complex
-                Complex dielectric constant of soil.
-            corrlength : int or float
-                Correlation length (cm).
-            sigma : int or float
-                RMS Height (cm)
-
-            Attributes
-            ----------
-            For attributes see also core.Kernel and core.EmissivityResult.
-
-            References
-            ----------
-            .. [1] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-                    RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-                    Microwave radar and radiometric remote sensing. Ann Arbor,
-                    University of Michigan Press.
-
-            .. [2] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
-
-            """
 
             super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize, nbar, angle_unit, align)
 

@@ -5,9 +5,6 @@ import numpy as np
 
 
 class Memorize(dict):
-    """ Memorize results.
-    """
-
     def __getattr__(self, name):
         try:
             return self[name]
@@ -32,10 +29,9 @@ class Memorize(dict):
 class ReflectanceResult(dict):
     """ Represents the reflectance result.
 
-    Attributes
-    ----------
-    coef.alpha, coef.beta : array_like
-        Alpha and Beta coefficients.
+    Returns
+    -------
+    All returns are attributes!
     BSC.ref, BSC.refdB, BSC.ms.ref, BSC.ms.refdB : array_like
         Radar Backscatter values (polarization-independent).
     BSC.VV, BSC.HH, BSC.VVdB, BSC.HHdB, BSC.ms.VV, BSC.ms.HH, BSC.ms.VVdB, BSC.ms.HHdB : array_like
@@ -85,8 +81,9 @@ class ReflectanceResult(dict):
 class SailResult(dict):
     """ Represents the sail result.
 
-    Attributes
-    ----------
+    Returns
+    -------
+    All returns are attributes!
     SDR.ref, SDR.refdB : array_like
         Directional reflectance factor.
     BHR.ref, BHR.refdB : array_like
@@ -132,10 +129,9 @@ class SailResult(dict):
 class EmissivityResult(dict):
     """ Represents the reflectance result.
 
-    Attributes
-    ----------
-    coef.alpha, coef.beta : array_like
-        Alpha and Beta coefficients in BSC.
+    Returns
+    -------
+    All returns are attributes!
     EMS.ref, EMS.refdB : array_like
         Emission values (polarization-independent).
     EMS.VV, EMS.HH, EMS.VVdB, EMS.HHdB : array_like

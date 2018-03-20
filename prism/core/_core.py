@@ -13,49 +13,49 @@ except NameError:
 
 
 class Kernel(object):
+    """
+    The kernel object defines the different models.
 
+    Parameters
+    ----------
+    iza, vza, raa : int, float or ndarray
+        Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+    normalize : boolean, optional
+        Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+        the default value is False.
+    nbar : float, optional
+        The sun or incidence zenith angle at which the isotropic term is set
+        to if normalize is True. The default value is 0.0.
+    angle_unit : {'DEG', 'RAD'}, optional
+        * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+        * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+    align : boolean, optional
+         Expand all input values to the same length (default).
+
+    Returns
+    -------
+    All returns are attributes!
+    iza: ndarray
+        Sun or incidence zenith angle in [RAD].
+    vza : ndarray
+        View or scattering zenith angle in [RAD].
+    raa : ndarray
+        Relative azimuth angle in [RAD].
+    izaDeg : ndarray
+        Sun or incidence zenith angle in [DEG].
+    vzaDeg : ndarray
+        View or scattering zenith angle in [DEG].
+    raaDeg : ndarray
+        Relative azimuth angle in [DEG].
+    phi : ndarray
+        Relative azimuth angle in a range between 0 and 2pi.
+
+    Notes
+    -----
+    Hot spot direction is vza == iza and raa = 0.0
+
+    """
     def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG', align=True):
-        """
-        The kernel object defines the different models.
-
-        Parameters
-        ----------
-        iza, vza, raa : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        normalize : boolean, optional
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-        align : boolean, optional
-             Expand all input values to the same length (default).
-
-        Attributes
-        ----------
-        iza: ndarray
-            Sun or incidence zenith angle in [RAD].
-        vza : ndarray
-            View or scattering zenith angle in [RAD].
-        raa : ndarray
-            Relative azimuth angle in [RAD].
-        izaDeg : ndarray
-            Sun or incidence zenith angle in [DEG].
-        vzaDeg : ndarray
-            View or scattering zenith angle in [DEG].
-        raaDeg : ndarray
-            Relative azimuth angle in [DEG].
-        phi : ndarray
-            Relative azimuth angle in a range between 0 and 2pi.
-
-        Notes
-        -----
-        Hot spot direction is vza == iza and raa = 0.0
-
-        """
 
         # Initialize values
         self.vza = vza
@@ -209,7 +209,7 @@ class Kernel(object):
         """
         A method to set the distance component of geometric kernels.
 
-        Parameters:
+        Parameters
         ----------
         iza : int, float or ndarray
             Sun or incidence zenith angle.
@@ -220,8 +220,8 @@ class Kernel(object):
         phi : int, float or ndarray
             Relative azimuth angle in a range between 0 and 2pi.
 
-        Returns:
-        --------
+        Returns
+        -------
         inner_distance: int, float or ndarray
             Distance component before taking the square root.
 
@@ -249,16 +249,16 @@ class Kernel(object):
         """
         Method to do B/R transformation for ellipse shape.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         br_ratio : int, float or ndarray
             Relations between the height of the spheroid and their radius (b/r).
 
         xza : int, float or ndarray
             Any zenith angle in [RAD].
 
-        Returns:
-        --------
+        Returns
+        -------
         angp : int, float or ndarray
             Projected and transformed angle
         """
@@ -283,8 +283,8 @@ class Kernel(object):
         """
         Method to do HB ratio transformation
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         hb_ratio : int, float or ndarray
             Relations between the height of the stick under the spheroid (h/b)
 
@@ -297,8 +297,8 @@ class Kernel(object):
         phi : int, float or ndarray
             Relative azimuth angle in a range between 0 and 2pi.
 
-        Returns:
-        --------
+        Returns
+        -------
         overlap : int, float or ndarray
         """
         B = sec(iza) + sec(vza)
@@ -369,10 +369,10 @@ class Scattering(object):
     .. [2] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
 
     """
-
     def __init__(self, frequency, particle_size, diel_constant_p, diel_constant_b):
         frequency, particle_size, diel_constant_p, diel_constant_b = asarrays(
             (frequency, particle_size, diel_constant_p, diel_constant_b))
+
 
         self.freq = frequency
         self.a = particle_size
