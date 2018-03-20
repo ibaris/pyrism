@@ -208,7 +208,7 @@ def sec(angle):
     """
     Secant of an angle.
     """
-    return (1 / np.cos(angle))
+    return 1 / np.cos(angle)
 
 
 def cot(x):
@@ -328,23 +328,6 @@ def BSC(BRDF, iza, vza, angle_unit='RAD'):
         raise ValueError("angle_unit must be 'RAD' or 'DEG'")
 
 
-def astype(args, dtype=np.float32):
-    return ([arg.astype(dtype) for arg in args if isinstance(arg, np.ndarray)])
-
-
-def same_len(args):
-    return all(len(item) == len(args[0]) for item in args)
-
-
-def find_kernel(args, kernel):
-    kernel_list = [item == kernel for item in args]
-    return any(item == True for item in kernel_list)
-
-
-def find_position(args, expression):
-    return [i for i, x in enumerate(args) if x == expression][0]
-
-
 def align_all(data, constant_values='default'):
     max_len = max_length(data)
 
@@ -356,49 +339,12 @@ def align_all(data, constant_values='default'):
             [np.pad(item, (0, max_len - len(item)), 'constant', constant_values=constant_values) for item in data])
 
 
-def align_item(item, length, constant_values='default'):
-    if constant_values == 'default':
-        return np.asarray(np.pad(item, (0, length - len(item)), 'constant', constant_values=item[-1]))
-    else:
-        return np.asarray(np.pad(item, (0, length - len(item)), 'constant', constant_values=constant_values))
-
-
-def align_list(data, constant_values='default'):
-    max_len = max_length(data)
-
-    if constant_values == 'default':
-        return [np.pad(item, (0, max_len - len(item)), 'constant', constant_values=item[-1]) for item in data]
-    else:
-        return [np.pad(item, (0, max_len - len(item)), 'constant', constant_values=constant_values) for item in data]
-
-
 def max_length(data):
     return np.max([len(item) for item in data])
 
 
 def asarrays(data):
     return [np.asarray(item).flatten() for item in data]
-
-
-def nan_to_num(arrays, no_data=-99999):
-    """
-    Convert Nan values to a value
-    """
-    arrays[np.isnan(arrays)] = no_data
-    return arrays
-
-
-def minus_to_zero(value):
-    try:
-        value[np.where(value < 0)] = 0
-        return value
-
-    except TypeError:
-        if value < 0:
-            return 0
-
-        else:
-            return value
 
 
 def load_param():
