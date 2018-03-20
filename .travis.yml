@@ -1,0 +1,19 @@
+language: python
+sudo: false
+cache: pip
+
+python:
+  - "2.7"
+  - "3.4"
+
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+  - pip install coverage
+  - python setup.py install
+
+script:
+  - coverage run -m pytest
+
+after_success:
+  - coveralls
