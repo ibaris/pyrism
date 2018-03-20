@@ -26,8 +26,6 @@
 
 <p align="center">
   <a href="https://travis-ci.com/ibaris/ROM"><img src="https://travis-ci.org/ibaris/prism.svg?branch=master"></a>
-  <a href='https://coveralls.io/github/ibaris/prism?branch=master'><img src='https://coveralls.io/repos/github/ibaris/prism/badge.svg?branch=master' alt='Coverage Status' /></a>
-
 </p>
 
 # Description
@@ -104,7 +102,7 @@ The accessibility of the attributes are the same as the PROSPECT model.
 * **Ismail Baris** - *Initial work* - (i.baris@outlook.de)
 
 ## Acknowledgments
-* Thomas Jagdhuber
+*  <a href="https://www.researchgate.net/profile/Thomas_Jagdhuber">Thomas Jagdhuber </a>
 
 ---
 
