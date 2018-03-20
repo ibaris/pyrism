@@ -26,7 +26,7 @@
 
 <p align="center">
   <a href="https://travis-ci.com/ibaris/ROM"><img src="https://travis-ci.org/ibaris/prism.svg?branch=master"></a>
-  <a href='https://coveralls.io/github/ibaris/prism?branch=master'><img src='https://coveralls.io/repos/github/ibaris/prism/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href='https://coveralls.io/github/ibaris/prism?branch=master&service=github'><img src='https://coveralls.io/repos/github/ibaris/prism/badge.svg?branch=master' alt='Coverage Status' /></a>
 
 </p>
 
