@@ -104,7 +104,7 @@ The accessibility of the attributes are the same as the PROSPECT model.
 * **Ismail Baris** - *Initial work* - (i.baris@outlook.de)
 
 ## Acknowledgments
-* Thomas Jagdhuber
+*  <a href="https://www.researchgate.net/profile/Thomas_Jagdhuber">Thomas Jagdhuber </a>
 
 ---
 
