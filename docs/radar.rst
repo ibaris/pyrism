@@ -6,5 +6,5 @@ RADAR Models
    :show-inheritance:
 
 References
-----------
+^^^^^^^^^^
 .. bibliography:: references.bib
