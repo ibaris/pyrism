@@ -15,7 +15,7 @@ def get_packages():
     return find_packages()
 
 
-setup(name='prism',
+setup(name='pyrism',
 
       version='v0.0.1',
 
