@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://elib.dlr.de/115785/"><img src="https://i.imgur.com/3nSMbDM.png" alt="PRISM" width="400"></a>
+  <a href="http://elib.dlr.de/115785/"><img src="https://i.imgur.com/neC2rZh.png" alt="PRISM" width="400"></a>
 </h1>
 <h4 align="center">Python bindings for Remote Sensing Models </h4>
 
