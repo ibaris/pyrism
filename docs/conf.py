@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath('..') + os.sep)
 
 # -- Project information -----------------------------------------------------
 
-project = u'PRISM'
+project = u'PyRISM'
 copyright = u'2018, Ismail Baris'
 author = u'Ismail Baris'
 
@@ -131,7 +131,7 @@ html_logo = 'pyrism_logo.png'
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PRISMdoc'
+htmlhelp_basename = 'PyRISMdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -158,7 +158,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'PRISM.tex', u'PRISM Documentation',
+    (master_doc, 'PyRISM.tex', u'PyRISM Documentation',
      u'Ismail Baris', 'manual'),
 ]
 
@@ -168,7 +168,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pyrism', u'PRISM Documentation',
+    (master_doc, 'pyrism', u'PyRISM Documentation',
      [author], 1)
 ]
 
@@ -179,8 +179,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'PRISM', u'PRISM Documentation',
-     author, 'PRISM', 'One line description of project.',
+    (master_doc, 'PyRISM', u'PyRISM Documentation',
+     author, 'PyRISM', 'Python bindings for Remote Sensing Models',
      'Miscellaneous'),
 ]
 
