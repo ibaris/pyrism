@@ -1,6 +1,6 @@
 Core Functions
 --------------
-.. automodule:: prism.core
+.. automodule:: pyrism.core
    :members: Kernel, Scattering
    :undoc-members:
    :show-inheritance:

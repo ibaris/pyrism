@@ -1,6 +1,6 @@
 Manage Results
 --------------
-.. automodule:: prism.core
+.. automodule:: pyrism.core
    :members: ReflectanceResult, EmissivityResult, SailResult
    :undoc-members:
    :show-inheritance:
