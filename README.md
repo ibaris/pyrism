@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/ibaris/ROM"><img src="https://travis-ci.org/ibaris/prism.svg?branch=master"></a>
+  <a href="https://travis-ci.com/ibaris/ROM"><img src="https://www.travis-ci.org/ibaris/pyrism.svg?branch=master"></a>
   <a href='http://p-rsim.readthedocs.io/en/latest/?badge=latest'>
     <img src='https://readthedocs.org/projects/p-rsim/badge/?version=latest' alt='Documentation Status' /></a>
 </p>
