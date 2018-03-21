@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://elib.dlr.de/115785/"><img src="https://i.imgur.com/3nSMbDM.png" alt="PRISM" width="400"></a>
+  <a href="http://elib.dlr.de/115785/"><img src="https://i.imgur.com/neC2rZh.png" alt="PYRISM" width="400"></a>
 </h1>
 <h4 align="center">Python bindings for Remote Sensing Models </h4>
 
@@ -26,9 +26,10 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/ibaris/ROM"><img src="https://travis-ci.org/ibaris/prism.svg?branch=master"></a>
-  <a href='http://p-rsim.readthedocs.io/en/latest/?badge=latest'>
-    <img src='https://readthedocs.org/projects/p-rsim/badge/?version=latest' alt='Documentation Status' /></a>
+  <a href="https://travis-ci.com/ibaris/ROM"><img src="https://www.travis-ci.org/ibaris/pyrism.svg?branch=master"></a>
+  <a href='https://coveralls.io/github/ibaris/pyrism?branch=master'><img src='https://coveralls.io/repos/github/ibaris/pyrism/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href='http://pyrism.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/pyrism/badge/?version=latest' alt='Documentation Status' /></a>
 </p>
 
 # Description
@@ -49,27 +50,27 @@ This repository contains the Python bindings to different radar and optical back
 For the optical models the code from <a href="https://github.com/jgomezdans/prosail"> José Gómez-Dans</a> was used as a benchmark. The theory of the radar models is from <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7067059"> F.T. Ulaby</a>.
 
 # Installation
-There are currently different methods to install `prism`.
+There are currently different methods to install `pyrism`.
 ### Using pip
-The ` prism ` package is provided on pip. You can install it with::
+The ` pyrism ` package is provided on pip. You can install it with::
 
-    pip install prism
+    pip install pyrism
 ### Standard Python
 You can also download the source code package from this repository or from pip. Unpack the file you obtained into some directory (it can be a temporary directory) and then run::
 
     python setup.py install
   
 ### Test installation success
-Independent how you installed ` prism `, you should test that it was sucessfull by the following tests::
+Independent how you installed ` pyrism `, you should test that it was sucessfull by the following tests::
 
-    python -c "from prism import I2EM"
+    python -c "from pyrism import I2EM"
 
 If you don't get an error message, the module import was sucessfull.
 
 # Example
-At first we will run the PROSPECT model. To do this we import the prism package.
+At first we will run the PROSPECT model. To do this we import the pyrism package.
 ```python
-import prism
+import pyrism
 ```
 After that we specify the sensing geometry we want to simulate:
 ```python
@@ -79,7 +80,7 @@ raa = 50  # Relative azimuth angle
 ```
 Than we call the PROSPECT model:
 ```python
-prospect = prism.PROSPECT(N=1.5,
+prospect = pyrism.PROSPECT(N=1.5,
                           Cab=35,
                           Cxc=5,
                           Cbr=0.15,
@@ -91,7 +92,7 @@ To access the attributes there are to ways. Firstly, we can access the whole spe
 
 To calculate the PROSAIL model we must call SAIL and specify the scattering and transmittance coefficients with these from PROSPECT like:
 ```python
-prosail = prism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt, lidf_type='campbell',
+prosail = pyrism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt, lidf_type='campbell',
                      lai=3, hotspot=0.25, soil_reflectance=3.14/4, soil_moisture=0.15)
 ```
 The accessibility of the attributes are the same as the PROSPECT model.
