@@ -23,7 +23,7 @@ Independent how you installed ` prism `, you should test that it was sucessfull 
 If you don't get an error message, the module import was sucessfull.
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
