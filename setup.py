@@ -11,7 +11,7 @@ from setuptools import setup
 
 
 def get_packages():
-    find_packages(exclude=['docs', 'tests', 'invert']),
+    find_packages(exclude=['docs', 'tests']),
     return find_packages()
 
 
@@ -49,7 +49,7 @@ setup(name='pyrism',
           'Operating System :: Microsoft',
 
       ],
-      package_data={"pyrism": ["models/data*.txt"]},
+      package_data={"": ["*.txt"]},
       include_package_data=True,
       install_requires=['numpy', 'scipy'],
       setup_requires=[
