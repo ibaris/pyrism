@@ -12,10 +12,6 @@ Contents:
    optical
    radar
 
-References
-----------
-.. bibliography:: references.bib
-
 Indices and tables
 ------------------
 
