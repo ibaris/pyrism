@@ -50,8 +50,8 @@ class Kernel(object):
     phi : ndarray
         Relative azimuth angle in a range between 0 and 2pi.
 
-    Notes
-    -----
+    Note
+    ----
     Hot spot direction is vza == iza and raa = 0.0
 
     """
@@ -343,7 +343,7 @@ class Scattering(object):
     """
 
     Calculate the extinction coefficients in terms of Rayleigh or Mie
-    scattering.
+    scattering from :cite:`Ulaby.2015` and :cite:`Ulaby.2015b`.
 
     Parameters
     ----------
@@ -358,15 +358,6 @@ class Scattering(object):
 
     diel_constant_b : complex
         Dielectric constant of the background.
-
-    References
-    ----------
-    .. [1] ULABY, F. T., LONG, D. G., BLACKWELL, W. J., ELACHI, C., FUNG, A. K.,
-            RUF, C., SARABANDI, K., ZEBKER, H. A., & VAN ZYL, J. (2014).
-            Microwave radar and radiometric remote sensing. Ann Arbor,
-            University of Michigan Press.
-
-    .. [2] http://mrs.eecs.umich.edu/microwave_remote_sensing_computer_codes.html
 
     """
     def __init__(self, frequency, particle_size, diel_constant_p, diel_constant_b):

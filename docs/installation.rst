@@ -21,3 +21,10 @@ Independent how you installed ` prism `, you should test that it was sucessfull 
     python -c "from prism import I2EM"
 
 If you don't get an error message, the module import was sucessfull.
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

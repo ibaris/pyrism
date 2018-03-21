@@ -20,7 +20,7 @@ LightS = namedtuple("LightS", "es ed")
 def get_data_one():
     """
     Load spectral information for PROSPECT 5B, PROSPECT D and SAIL Model in to
-    a namedtuple. The data is stored in the directory "data".
+    a namedtuple (:cite:`Feret.2017`, :cite:`Baret.`). The data is stored in the directory "data".
 
     Returns
     -------
@@ -36,15 +36,6 @@ def get_data_one():
             * rsoil1 : Spectral measurements of a dry soil.
             * rsoil2 : Spectral measurements of a wet soil.
 
-    References
-    ----------
-    .. [FeGN17]  Féret, Gitelson, Noble & Jacqumoud (2017). PROSPECT-D: Towards modeling
-        leaf optical properties through a complete lifecycle
-        Remote Sensing of Environment.
-
-    .. [Bare]  The specific absorption coefficient corresponding to brown pigment is
-        provided by Frederic Baret (EMMAH, INRA Avignon, baret@avignon.inra.fr)
-        and used with his autorization.
     """
     # PROSPECT-D
     path = 'data/prospect_d_spectra.txt'  # always use slash
@@ -82,7 +73,7 @@ def get_data_one():
 def get_data_two():
     """
     Load spectral information for PROSPECT 5B, PROSPECT D and SAIL Model in to
-    a namedtuple. The data is stored in the directory "data".
+    a namedtuple (:cite:`Feret.2017`, :cite:`Baret.`). The data is stored in the directory "data".
     Returns
     -------
     spectral : namedtuple
@@ -96,14 +87,6 @@ def get_data_two():
             * Kan : Specific absorption coefficient of anthocyanins.
             * rsoil1 : Spectral measurements of a dry soil.
             * rsoil2 : Spectral measurements of a wet soil.
-    References
-    ----------
-    .. [FeGN17]  Féret, Gitelson, Noble & Jacqumoud (2017). PROSPECT-D: Towards modeling
-        leaf optical properties through a complete lifecycle
-        Remote Sensing of Environment.
-    .. [Bare]  The specific absorption coefficient corresponding to brown pigment is
-        provided by Frederic Baret (EMMAH, INRA Avignon, baret@avignon.inra.fr)
-        and used with his autorization.
     """
 
     # PROSPECT-D
