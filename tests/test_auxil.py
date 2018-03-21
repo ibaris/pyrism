@@ -1,7 +1,9 @@
-import pytest
 import numpy as np
-from prism.core import (ReflectanceResult, EmissivityResult, SailResult, BRF, BSC, BRDF, dB, sec,
-                        cot, linear)
+import pytest
+
+from pyrism.core import (ReflectanceResult, EmissivityResult, SailResult, BRF, BSC, BRDF, dB, sec,
+                         cot, linear)
+
 
 class TestResultClass:
     def reflectance(self):

@@ -6,7 +6,7 @@ from numpy import allclose, loadtxt
 from pytest import fixture
 from scipy.io import loadmat
 
-from prism import PROSPECT, SAIL
+from pyrism import PROSPECT, SAIL
 
 
 @fixture

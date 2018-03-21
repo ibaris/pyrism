@@ -1,7 +1,7 @@
 import pytest
 from numpy import allclose
 
-from prism import I2EM
+from pyrism import I2EM
 
 
 @pytest.mark.webtest

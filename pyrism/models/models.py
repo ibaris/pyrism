@@ -510,12 +510,12 @@ class SAIL(Kernel):
 
     Returns
     -------
-    For more attributes see also prism.core.Kernel and prism.core.SailResult.
+    For more attributes see also pyrism.core.Kernel and pyrism.core.SailResult.
 
     See Also
     --------
-    prism.core.Kernel
-    prism.core.SailResult
+    pyrism.core.Kernel
+    pyrism.core.SailResult
 
     Note
     ----
@@ -1973,13 +1973,13 @@ class I2EM(Kernel):
 
      Returns
      -------
-     For more attributes see also prism.core.Kernel and prism.core.ReflectanceResult.
+     For more attributes see also pyrism.core.Kernel and pyrism.core.ReflectanceResult.
 
      See Also
      --------
      I2EM.Emissivity
-     prism.core.Kernel
-     prism.core.ReflectanceResult
+     pyrism.core.Kernel
+     pyrism.core.ReflectanceResult
 
 
      Note
@@ -2420,7 +2420,7 @@ class I2EM(Kernel):
 
         See Also
         --------
-        prism.core.EmissivityResult
+        pyrism.core.EmissivityResult
         """
 
         def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG', align=True,

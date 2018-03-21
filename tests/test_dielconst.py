@@ -1,7 +1,7 @@
 import pytest
 from numpy import allclose
 
-from prism import DielConstant
+from pyrism import DielConstant
 
 
 @pytest.mark.webtest

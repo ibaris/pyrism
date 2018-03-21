@@ -1,7 +1,7 @@
 import pytest
 from numpy import radians, allclose, array
 
-from prism.core import Kernel
+from pyrism.core import Kernel
 
 
 @pytest.mark.webtest

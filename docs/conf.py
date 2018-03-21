@@ -18,9 +18,9 @@
 
 import os
 import sys
+
 import mock
 import sphinx_rtd_theme
-
 
 sys.path.insert(0, os.path.abspath('..') + os.sep)
 
@@ -168,7 +168,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'prism', u'PRISM Documentation',
+    (master_doc, 'pyrism', u'PRISM Documentation',
      [author], 1)
 ]
 

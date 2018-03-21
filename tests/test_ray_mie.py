@@ -1,7 +1,7 @@
 import pytest
 from numpy import allclose, array
 
-from prism import Rayleigh, Mie
+from pyrism import Rayleigh, Mie
 
 
 @pytest.mark.webtest

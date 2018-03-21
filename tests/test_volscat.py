@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from prism import LIDF, VolScatt
+from pyrism import LIDF, VolScatt
 
 result_campbell = np.array([8.31370856e-01, 1.18374448e-01, 2.60866256e-02,
                             9.68442862e-03, 4.68681271e-03, 2.66412346e-03,

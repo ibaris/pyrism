@@ -13,7 +13,7 @@ install:
   - python setup.py install
 
 script:
-  - coverage run --source prism/ -m pytest
+  - coverage run --source pyrism/ -m pytest
 
 after_success:
   - coveralls

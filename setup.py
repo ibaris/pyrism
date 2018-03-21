@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-This file is part of prism.
+This file is part of pyrism.
 (c) 2017- Ismail Baris
 For COPYING and LICENSE details, please refer to the LICENSE file
 """
@@ -29,7 +29,7 @@ setup(name='pyrism',
 
       # ~ license='APACHE 2',
 
-      url='https://github.com/ibaris/prism',
+      url='https://github.com/ibaris/pyrism',
 
       long_description='A collection of optical and radar models to simulate surfaces and volumes.',
       # install_requires=install_requires,
@@ -49,7 +49,7 @@ setup(name='pyrism',
           'Operating System :: Microsoft',
 
       ],
-      package_data={"prism": ["models/data*.txt"]},
+      package_data={"pyrism": ["models/data*.txt"]},
       include_package_data=True,
       install_requires=['numpy', 'scipy'],
       setup_requires=[
