@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/ibaris/ROM"><img src="https://www.travis-ci.org/ibaris/pyrism.svg?branch=master"></a>
+  <a href="https://www.travis-ci.org/ibaris/pyrism"><img src="https://www.travis-ci.org/ibaris/pyrism.svg?branch=master"></a>
   <a href='https://coveralls.io/github/ibaris/pyrism?branch=master'><img src='https://coveralls.io/repos/github/ibaris/pyrism/badge.svg?branch=master' alt='Coverage Status' /></a>
   <a href='http://pyrism.readthedocs.io/en/latest/?badge=latest'>
     <img src='https://readthedocs.org/projects/pyrism/badge/?version=latest' alt='Documentation Status' /></a>
@@ -98,7 +98,7 @@ prosail = pyrism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt,
 The accessibility of the attributes are the same as the PROSPECT model.
 
 # Documentation
-You can find the full documentation <a href="http://p-rsim.readthedocs.io/en/latest/">here</a>.
+You can find the full documentation <a href="http://pyrism.readthedocs.io/en/latest/index.html">here</a>.
 
 # Built With
 * Python 2.7 (But it works with Python 3.5 as well)
