@@ -27,7 +27,7 @@ setup(name='prism',
       author="Ismail Baris",
       author_email='i.baris@outlook.de',
       maintainer='Ismail Baris',
-      maintainer_email='i.baris@outlook',
+      maintainer_email='I. Baris <i.baris@outlook>',
 
       # ~ license='APACHE 2',
 
