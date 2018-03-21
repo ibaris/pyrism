@@ -20,12 +20,15 @@
   <a href="#description">Description</a> •
   <a href="#installation">Installation</a> •
   <a href="#example">Example</a> •
+    <a href="#documentation">Doumentation</a> •
   <a href="#authors">Author</a> •
-  <a href="#acknowledgments">Acknowledgments</a> •
+  <a href="#acknowledgments">Acknowledgments</a>
 </p>
 
 <p align="center">
   <a href="https://travis-ci.com/ibaris/ROM"><img src="https://travis-ci.org/ibaris/prism.svg?branch=master"></a>
+  <a href='http://p-rsim.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/p-rsim/badge/?version=latest' alt='Documentation Status' /></a>
 </p>
 
 # Description
@@ -43,7 +46,7 @@ This repository contains the Python bindings to different radar and optical back
 * **I2EM**: RADAR soil scattering model to compute the backscattering coefficient VV and HH polarized.
 * **Emissivity**: Calculate the emissivity for single-scale random surface for Bi and Mono-static acquisitions.
 
-For the optical models the code from <a href="https://github.com/jgomezdans/prosail"> José Gómez-Dans</a> was used as a benchmark. The theory of the radar models is from <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7067059"> F.T. Ulaby</a>
+For the optical models the code from <a href="https://github.com/jgomezdans/prosail"> José Gómez-Dans</a> was used as a benchmark. The theory of the radar models is from <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7067059"> F.T. Ulaby</a>.
 
 # Installation
 There are currently different methods to install `prism`.
@@ -93,6 +96,8 @@ prosail = prism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt, 
 ```
 The accessibility of the attributes are the same as the PROSPECT model.
 
+# Documentation
+You can find the full documentation <a href="http://p-rsim.readthedocs.io/en/latest/">here</a>.
 
 # Built With
 * Python 2.7 (But it works with Python 3.5 as well)
