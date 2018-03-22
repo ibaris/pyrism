@@ -34,8 +34,8 @@ class TestRF:
         test = BSC(ref, iza, vza)
         np.allclose(test, ref * np.cos(iza) * np.cos(vza) * 4 * np.pi)
 
-    def test_BSC_rad(self, iza, vza, raa, ref):
-        test = BSC(ref, iza, vza, angle_unit='RAD')
+    def test_BSC_DEG(self, iza, vza, raa, ref):
+        test = BSC(ref, iza, vza, angle_unit='DEG')
         np.allclose(test, ref * np.cos(np.radians(iza)) * np.cos(np.radians(vza)) * (4 * np.pi))
 
     def test_BSC_error(self, iza, vza, raa, ref):
@@ -46,8 +46,8 @@ class TestRF:
         test = BRDF(ref, iza, vza)
         np.allclose(test, ref / (np.cos(iza) * np.cos(vza) * (4 * np.pi)))
 
-    def test_BRDF_rad(self, iza, vza, raa, ref):
-        test = BRDF(ref, iza, vza, angle_unit='RAD')
+    def test_BRDF_DEG(self, iza, vza, raa, ref):
+        test = BRDF(ref, iza, vza, angle_unit='DEG')
         np.allclose(test, ref / (np.cos(np.radians(iza)) * np.cos(np.radians(vza)) * (4 * np.pi)))
 
     def test_BRDF_error(self, iza, vza, raa, ref):
