@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
+import sys
+
 import numpy as np
 
 from .auxiliary import (rad, deg, sec, align_all, asarrays)
 
 # python 3.6 comparability
-try:
-    xrange
-except NameError:
-    xrange = range
+if sys.version_info < (3, 0):
+    srange = xrange
+else:
+    srange = range
 
 
 class Kernel(object):

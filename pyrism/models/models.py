@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
+import sys
 import warnings
 from collections import namedtuple
 
@@ -18,10 +19,10 @@ except IOError:
     lib = get_data_one()
 
 # python 3.6 comparability
-try:
-    xrange
-except NameError:
-    xrange = range
+if sys.version_info < (3, 0):
+    srange = xrange
+else:
+    srange = range
 
 
 # ---- Scattering Coefficients ----
@@ -254,7 +255,7 @@ class VolScatt(Kernel):
         if ftau < 0.:
             ftau = 0.
 
-        return (chi_s, chi_o, frho, ftau)
+        return chi_s, chi_o, frho, ftau
 
 
 # ---- LAD and LIDF Models ----
@@ -301,7 +302,7 @@ class LIDF:
         sum0 = 0.
         freq = np.zeros(n_elements)
         step = 90.0 / n_elements
-        for i in range(n_elements):
+        for i in srange(n_elements):
             tl1 = rad(i * step)
             tl2 = rad((i + 1.) * step)
             x1 = excent / (np.sqrt(1. + excent ** 2. * np.tan(tl1) ** 2.))
@@ -325,7 +326,7 @@ class LIDF:
                     freq[i] = abs(dum - (x2 * almx2 + alph2 * np.arcsin(x2 / alph)))
         sum0 = np.sum(freq)
         lidf = np.zeros(n_elements)
-        for i in range(n_elements):
+        for i in srange(n_elements):
             lidf[i] = freq[i] / sum0
 
         return lidf
@@ -431,18 +432,18 @@ class LIDF:
         if mla is None:
             if distribution == 'erectophile':
                 if np.any(lza != np.pi / 2):
-                    warnings.warn("Leaf normals schoud be mainly horizontal = 90°")
+                    warnings.warn("Leaf normals should be mainly horizontal = 90°")
                 mla = 0
 
             elif distribution == 'planophile':
                 if lza != 0:
-                    warnings.warn("Leaf normals schoud be mainly vertical = 0°")
+                    warnings.warn("Leaf normals should be mainly vertical = 0°")
 
                 mla = np.pi / 2
 
             elif distribution == 'plagiophile':
                 if lza != np.pi / 4:
-                    warnings.warn("Leaf normals schoud be mainly at = 45°")
+                    warnings.warn("Leaf normals should be mainly at = 45°")
 
                 mla = np.pi / 4
 
@@ -723,7 +724,7 @@ class SAIL(Kernel):
         f1 = 1.
         fint = (1. - np.exp(-alf)) * .05
         sumint = 0.
-        for istep in range(1, 21):
+        for istep in srange(1, 21):
             if istep < 20:
                 x2 = -np.log(1. - istep * fint) / alf
             else:
@@ -1267,7 +1268,7 @@ class Mie(Scattering):
         pDiff = np.abs((A1 - A0) / A0) * 100
 
         try:
-            for t in range(num):
+            for t in srange(num):
                 if pDiff[t] >= 0.001 or A0[t] == 0:
                     stop = False
                 else:
@@ -1520,7 +1521,7 @@ class DielConstant:
         """
         frequency = np.asarray(frequency).flatten()
         epsl = []
-        for i in range(len(frequency)):
+        for i in srange(len(frequency)):
             f_hz = frequency[i] * 1.0e9
 
             beta1 = 1.27 - 0.519 * S - 0.152 * C
@@ -1579,7 +1580,7 @@ class DielConstant:
         S = 15
 
         epsl = []
-        for i in range(len(frequency)):
+        for i in srange(len(frequency)):
             # free water in leaves
             sigma_i = 0.17 * S - 0.0013 * S ** 2
 
@@ -1699,7 +1700,7 @@ class exponential(CorrFunc):
 
     def calc(self):
         Wn = []
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.wn = self.corrlen ** 2 / i ** 2 * (1 + (self.wvnb * self.corrlen / i) ** 2) ** (-1.5)
             Wn.append(self.wn)
@@ -1725,7 +1726,7 @@ class gaussian(CorrFunc):
 
     def calc(self):
         Wn = []
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.wn = self.corrlen ** 2 / (2 * i) * np.exp(-(self.wvnb * self.corrlen) ** 2 / (4 * i))
             Wn.append(self.wn)
@@ -1752,7 +1753,7 @@ class xpower(CorrFunc):
     def calc(self):
         import scipy as sp
         Wn = []
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.wn = self.corrlen ** 2 * (self.wvnb * self.corrlen) ** (-1 + self.n * i) * sp.special.kv(
                 1 - self.n * i, self.wvnb * self.corrlen) / (2 ** (self.n * i - 1) * sp.special.gamma(self.n * i))
@@ -2082,7 +2083,7 @@ class I2EM(Kernel):
         self.a1 = 0
         self.b1 = 0
 
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.a0 = ((self.k * self.sigma) * np.cos(self.iza + 0.01)) ** (2 * i) / factorial(i)
             self.a1 = self.a1 + self.a0 * self.CorrFunc.Wn[i - 1]
@@ -2109,7 +2110,7 @@ class I2EM(Kernel):
         def RaV_integration():
             warnings.filterwarnings("ignore")
             rav = []
-            for i in xrange(len(self.iza)):
+            for i in srange(len(self.iza)):
                 def integration(Zy, Zx):
                     self.A = np.cos(self.iza + 0.01)[i] + Zx * np.sin(self.iza + 0.01)[i]
                     self.B = self.er * (1 + Zx ** 2 + Zy ** 2)
@@ -2131,7 +2132,7 @@ class I2EM(Kernel):
             warnings.filterwarnings("ignore")
 
             rah = []
-            for i in xrange(len(self.iza)):
+            for i in srange(len(self.iza)):
                 def integration(Zy, Zx):
                     self.A = np.cos(self.iza + 0.01)[i] + Zx * np.sin(self.iza + 0.01)[i]
                     self.B = self.er * (1 + Zx ** 2 + Zy ** 2)
@@ -2295,7 +2296,7 @@ class I2EM(Kernel):
 
         ivv = []
         ihh = []
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.Ivv = (self.kz_iza + self.kz_vza) ** i * self.fvv * np.exp(
                 -self.sigma ** 2 * self.kz_iza * self.kz_vza) + \
@@ -2345,7 +2346,7 @@ class I2EM(Kernel):
 
         self.sigmavv = 0
         self.sigmahh = 0
-        for i in xrange(self.Ts):
+        for i in srange(self.Ts):
             i += 1
             self.a0 = self.CorrFunc.Wn[i - 1] / factorial(i) * self.sigma ** (2 * i)
 
@@ -2497,11 +2498,11 @@ class I2EM(Kernel):
             wn = np.zeros([n_spec, nr])
 
             if self.corrfunc == 'exponential':  # exponential
-                for n in range(n_spec):
+                for n in srange(n_spec):
                     wn[n, :] = (n + 1) * self.kl ** 2 / ((n + 1) ** 2 + (wvnb * self.corrlen) ** 2) ** 1.5
 
             elif self.corrfunc == 'gaussian':  # gaussian
-                for n in range(n_spec):
+                for n in srange(n_spec):
                     wn[n, :] = 0.5 * self.kl ** 2 / (n + 1) * np.exp(-(wvnb * self.corrlen) ** 2 / (4 * (n + 1)))
 
             else:
@@ -2584,7 +2585,7 @@ class I2EM(Kernel):
                 # -- calculate the bistatic field coefficients ---
 
                 svv = np.zeros([n_spec, nr])
-                for n in range(n_spec):
+                for n in srange(n_spec):
                     Ivv = fvv * ex * (self.ks * (np.cos(self.iza) + np.cos(x))) ** (n + 1) + (
                             Fvv * (self.ks * np.cos(x)) ** (n + 1) + Fvvs * (self.ks * np.cos(self.iza)) ** (n + 1)) / 2
                     Ihv = fhv * ex * (self.ks * (np.cos(self.iza) + np.cos(x))) ** (n + 1) + (
@@ -2614,7 +2615,7 @@ class I2EM(Kernel):
                                  T * self.diel_constant * sqs * np.cos(self.iza))) * (1 - rc * rc) * np.sin(y)
 
                 shh = np.zeros([n_spec, nr])
-                for n in range(n_spec):
+                for n in srange(n_spec):
                     Ihh = fhh * ex * (self.ks * (np.cos(self.iza) + np.cos(x))) ** (n + 1) + (
                             Fhh * (self.ks * np.cos(x)) ** (n + 1) + Fhhs * (self.ks * np.cos(self.iza)) ** (n + 1)) / 2
                     Ivh = fvh * ex * (self.ks * (np.cos(self.iza) + np.cos(x))) ** (n + 1) + (
