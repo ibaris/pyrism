@@ -17,7 +17,7 @@ def get_packages():
 
 setup(name='pyrism',
 
-      version='0.0.1.1',
+      version='0.0.2.0',
 
       description='Python bindings for Remote Sensing Models',
 
@@ -49,7 +49,7 @@ setup(name='pyrism',
           'Operating System :: Microsoft',
 
       ],
-      package_data={"": ["*.txt"]},
+      # package_data={"": ["*.txt"]},
       include_package_data=True,
       install_requires=['numpy', 'scipy'],
       setup_requires=[
