@@ -31,7 +31,7 @@ copyright = u'2018, Ismail Baris'
 author = u'Ismail Baris'
 
 # The short X.Y version
-version = u'0.0.1.1'
+version = u'0.0.2.1'
 # The full version, including alpha/beta/rc tags
 release = u'20.03.2018'
 
