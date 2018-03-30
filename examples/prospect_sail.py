@@ -19,9 +19,12 @@ prospect = pyrism.PROSPECT(N=1.5,
 # select the coefficient values for the specific bands of ASTER (B1 - B9) or LANDSAT8 (B2 - B7). To access these bands
 # type prospect.L8.Bx (x = 2, 3, ..., 7) for Landsat 8 or prospect.ASTER.Bx (x = 1, 2, ..., 9) for ASTER.
 
+# To calculate the PROSAIL model we need some soil reflectance values. To obtain these we can use the LSM model:
+lsm = pyrism.LSM(reflectance=3.14 / 4, moisture=0.15)
 
-# To calculate the PROSAIL model we must call SAIL and specify the scattering and transmittance coefficients with these from PROSPECT like:
-prosail = pyrism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt, lidf_type='campbell',
-                      lai=3, hotspot=0.25, soil_reflectance=3.14 / 4, soil_moisture=0.15)
+# Now we must call SAIL and specify the scattering and transmittance coefficients with these from PROSPECT like:
+prosail = pyrism.SAIL(iza=iza, vza=vza, raa=raa, ks=prospect.ks, kt=prospect.kt, rho_surface=lsm.ref,
+                      lidf_type='campbell',
+                      lai=3, hotspot=0.25)
 
 # The accessibility of the attributes are the same as the PROSPECT model.

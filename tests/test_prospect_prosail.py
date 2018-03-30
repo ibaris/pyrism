@@ -2,11 +2,11 @@ import os
 from distutils import dir_util
 
 import pytest
-from numpy import allclose, loadtxt
+from numpy import allclose, loadtxt, atleast_1d
 from pytest import fixture
 from scipy.io import loadmat
 
-from pyrism import PROSPECT, SAIL
+from pyrism import PROSPECT, SAIL, LSM
 
 
 @fixture
@@ -79,9 +79,9 @@ class TestPROSAIL:
         fname = datadir("REFL_CAN.txt")
         w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
 
+        lsm = LSM(reflectance=1, moisture=1)
         prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
-        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, soil_reflectance=1,
-                    soil_moisture=1,
+        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
                     a=-0.35, b=-0.15, lidf_type='verhoef')
 
         assert allclose(sdr, sail.BRF.ref, atol=0.01)
@@ -90,9 +90,9 @@ class TestPROSAIL:
         fname = datadir("REFL_CAN.txt")
         w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
 
+        lsm = LSM(reflectance=1, moisture=1)
         prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
-        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, soil_reflectance=1,
-                    soil_moisture=1,
+        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
                     a=-0.35, b=-0.15, lidf_type='verhoef')
 
         assert allclose(hdr, sail.HDR.ref, atol=0.01)
@@ -101,9 +101,9 @@ class TestPROSAIL:
         fname = datadir("REFL_CAN.txt")
         w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
 
+        lsm = LSM(reflectance=1, moisture=1)
         prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
-        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, soil_reflectance=1,
-                    soil_moisture=1,
+        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
                     a=-0.35, b=-0.15, lidf_type='verhoef')
 
         assert allclose(bhr, sail.BHR.ref, atol=0.01)
@@ -112,9 +112,44 @@ class TestPROSAIL:
         fname = datadir("REFL_CAN.txt")
         w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
 
+        lsm = LSM(reflectance=1, moisture=1)
         prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
-        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, soil_reflectance=1,
-                    soil_moisture=1,
+        sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
                     a=-0.35, b=-0.15, lidf_type='verhoef')
 
         assert allclose(dhr, sail.DHR.ref, atol=0.01)
+
+
+class TestPROSAILError:
+    def test_ks(self, datadir):
+        fname = datadir("REFL_CAN.txt")
+        w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
+        ks = atleast_1d(0)
+
+        lsm = LSM(reflectance=1, moisture=1)
+        prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
+        with pytest.raises(AssertionError):
+            sail = SAIL(iza=30, vza=10, raa=0, ks=ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
+                        a=-0.35, b=-0.15, lidf_type='verhoef')
+
+    def test_kt(self, datadir):
+        fname = datadir("REFL_CAN.txt")
+        w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
+        kt = atleast_1d(0)
+
+        lsm = LSM(reflectance=1, moisture=1)
+        prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
+        with pytest.raises(AssertionError):
+            sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=kt, lai=3, hotspot=0.01, rho_surface=lsm.ref,
+                        a=-0.35, b=-0.15, lidf_type='verhoef')
+
+    def test_surf(self, datadir):
+        fname = datadir("REFL_CAN.txt")
+        w, resv, hdr, sdr, bhr, dhr = loadtxt(fname, unpack=True)
+        kt = atleast_1d(0)
+
+        lsm = LSM(reflectance=1, moisture=1)
+        prospect = PROSPECT(N=1.5, Cab=40, Cxc=8., Cbr=0.0, Cw=0.01, Cm=0.009, version="5")
+        with pytest.raises(AssertionError):
+            sail = SAIL(iza=30, vza=10, raa=0, ks=prospect.ks, kt=prospect.kt, lai=3, hotspot=0.01, rho_surface=kt,
+                        a=-0.35, b=-0.15, lidf_type='verhoef')

@@ -480,15 +480,15 @@ class SAIL(Kernel):
     iza, vza, raa : int, float or ndarray
         Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
     ks, kt : array_like
-        Continuous leaf reflection (ks) and leaf transmission (kt) values from from 400 until 2500 nm.
+        Continuous leaf reflection (ks) and leaf transmission (kt) values from from 400 until 2500 nm. One can use the
+        output from PROSPECT class instance.
     lai : float
         Leaf area index.
     hotspot : float
         The hotspot parameter.
-    soil_reflectance : int or float
-        Surface (Lambertian) reflectance in optical wavelength.
-    soil_moisture : int or float
-        Surface moisture content between 0 and 1.
+    rho_surface : array_like
+        Continuous surface reflectance values from from 400 until 2500 nm. One can use the
+        output from LSM class instance.
     lidf_type : {'verhoef', 'campbell'}, optional
         Define with which method the LIDF is calculated. Default is 'campbell'
     a, b : float, optional
@@ -525,17 +525,36 @@ class SAIL(Kernel):
 
     """
 
-    def __init__(self, iza, vza, raa, ks, kt, lai, hotspot, soil_reflectance, soil_moisture,
+    def __init__(self, iza, vza, raa, ks, kt, lai, hotspot, rho_surface,
                  lidf_type='campbell', a=57, b=0, normalize=False, nbar=0.0, angle_unit='DEG'):
+
         super(SAIL, self).__init__(iza=iza, vza=vza, raa=raa, normalize=normalize, nbar=nbar, angle_unit=angle_unit,
                                    align=True)
 
+        if len(ks) != 2101:
+            raise AssertionError(
+                "ks must contain continuous leaf reflectance values from from 400 until 2500 nm with a length of 2101. The actual length of ks is {0}".format(
+                    str(len(ks))))
+
+        elif len(kt) != 2101:
+            raise AssertionError(
+                "kt must contain continuous leaf transmitance values from from 400 until 2500 nm with a length of 2101. The actual length of kt is {0}".format(
+                    str(len(kt))))
+
+        elif len(rho_surface) != 2101:
+            raise AssertionError(
+                "rho_surface must contain continuous surface reflectance values from from 400 until 2500 nm with a length of 2101. The actual length of rho_surface is {0}".format(
+                    str(len(rho_surface))))
+
+        else:
+            pass
+        
         self.ks = ks
         self.kt = kt
         self.lai = lai
         self.hotspot = hotspot
 
-        self.Soil = LSM(reflectance=soil_reflectance, moisture=soil_moisture)
+        self.rho_surface = rho_surface
         self.VollScat = VolScatt(iza, vza, raa, angle_unit)
 
         if lidf_type is 'verhoef':
@@ -543,7 +562,7 @@ class SAIL(Kernel):
         elif lidf_type is 'campbell':
             self.VollScat.coef(a=a, lidf_type='campbell')
         else:
-            raise ValueError("The lidf_type must be 'verhoef' or 'campbell'")
+            raise AssertionError("The lidf_type must be 'verhoef' or 'campbell'")
 
         tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso = self.__calc()
 
@@ -598,12 +617,12 @@ class SAIL(Kernel):
             rso = 0
             rsos = 0
             rsod = 0
-            rddt = self.Soil.ref
-            rsdt = self.Soil.ref
-            rdot = self.Soil.ref
+            rddt = self.rho_surface
+            rsdt = self.rho_surface
+            rdot = self.rho_surface
             rsodt = 0
-            rsost = self.Soil.ref
-            rsot = self.Soil.ref
+            rsost = self.rho_surface
+            rsot = self.rho_surface
             gammasdf = 0
             gammaso = 0
             gammasdb = 0
@@ -689,18 +708,18 @@ class SAIL(Kernel):
             gammaso = gammasos + gammasod
 
             # Interaction with the soil
-            dn = 1. - self.Soil.ref * rdd
+            dn = 1. - self.rho_surface * rdd
 
             try:
                 dn[dn < 1e-36] = 1e-36
             except TypeError:
                 dn = max(1e-36, dn)
 
-            rddt = rdd + tdd * self.Soil.ref * tdd / dn
-            rsdt = rsd + (tsd + tss) * self.Soil.ref * tdd / dn
-            rdot = rdo + tdd * self.Soil.ref * (tdo + too) / dn
-            rsodt = ((tss + tsd) * tdo + (tsd + tss * self.Soil.ref * rdd) * too) * self.Soil.ref / dn
-            rsost = rso + tsstoo * self.Soil.ref
+            rddt = rdd + tdd * self.rho_surface * tdd / dn
+            rsdt = rsd + (tsd + tss) * self.rho_surface * tdd / dn
+            rdot = rdo + tdd * self.rho_surface * (tdo + too) / dn
+            rsodt = ((tss + tsd) * tdo + (tsd + tss * self.rho_surface * rdd) * too) * self.rho_surface / dn
+            rsost = rso + tsstoo * self.rho_surface
             rsot = rsost + rsodt
 
             return [tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo,
