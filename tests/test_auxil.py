@@ -13,7 +13,7 @@ class TestResultClass:
 
     def test_reflectance_keys(self):
         test = ReflectanceResult(a=1, b=2)
-        assert test.keys() == ['a', 'b']
+        assert list(test.keys()) == ['a', 'b']
 
     def test_emissivity(self):
         test = EmissivityResult(a=1, b=2)
@@ -22,7 +22,7 @@ class TestResultClass:
 
     def test_emissivity_keys(self):
         test = EmissivityResult(a=1, b=2)
-        assert test.keys() == ['a', 'b']
+        assert list(test.keys()) == ['a', 'b']
 
     def test_sail(self):
         test = SailResult(a=1, b=2)
@@ -31,7 +31,7 @@ class TestResultClass:
 
     def test_sail_keys(self):
         test = SailResult(a=1, b=2)
-        assert test.keys() == ['a', 'b']
+        assert list(test.keys()) == ['a', 'b']
 
 @pytest.mark.webtest
 @pytest.mark.parametrize("iza, vza, raa, ref", [
