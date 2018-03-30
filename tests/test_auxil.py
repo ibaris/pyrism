@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import pytest
 
@@ -13,7 +15,10 @@ class TestResultClass:
 
     def test_reflectance_keys(self):
         test = ReflectanceResult(a=1, b=2)
-        assert list(test.keys()) == ['a', 'b']
+        if sys.version_info < (3, 0):
+            assert list(test.keys()) == ['a', 'b']
+        else:
+            assert list(test.keys()) == ['b', 'a']
 
     def test_emissivity(self):
         test = EmissivityResult(a=1, b=2)
@@ -22,7 +27,10 @@ class TestResultClass:
 
     def test_emissivity_keys(self):
         test = EmissivityResult(a=1, b=2)
-        assert list(test.keys()) == ['a', 'b']
+        if sys.version_info < (3, 0):
+            assert list(test.keys()) == ['a', 'b']
+        else:
+            assert list(test.keys()) == ['b', 'a']
 
     def test_sail(self):
         test = SailResult(a=1, b=2)
@@ -31,7 +39,10 @@ class TestResultClass:
 
     def test_sail_keys(self):
         test = SailResult(a=1, b=2)
-        assert list(test.keys()) == ['a', 'b']
+        if sys.version_info < (3, 0):
+            assert list(test.keys()) == ['a', 'b']
+        else:
+            assert list(test.keys()) == ['b', 'a']
 
 @pytest.mark.webtest
 @pytest.mark.parametrize("iza, vza, raa, ref", [
