@@ -2,6 +2,7 @@
 
 * [ ] Are you running the latest version?
 * [ ] Are you reporting to the correct repository?
+* [ ] Have you labeld your issue corretly?  
 
 ### Description
 
