@@ -548,7 +548,7 @@ class SAIL(Kernel):
 
         else:
             pass
-        
+
         self.ks = ks
         self.kt = kt
         self.lai = lai
@@ -570,12 +570,14 @@ class SAIL(Kernel):
         self.kt_iza = tss
         self.kt_vza = too
         self.canopy = SailResult(BHR=rdd, BHT=tdd, DHR=rsd, DHT=tsd, HDR=rdo, HDT=tdo, BRF=rso)
+        self.l = np.arange(400, 2501)
 
-        self.BRF = SailResult(ref=rsot, refdB=dB(rsot))
-        self.BRDF = SailResult(ref=rsot / np.pi, refdB=dB(rsot / np.pi))
-        self.BHR = SailResult(ref=rddt, refdB=dB(rddt))
-        self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt))
-        self.HDR = SailResult(ref=rdot, refdB=dB(rdot))
+        self.BRF = SailResult(ref=rsot, refdB=dB(rsot), L8=self.__store_L8(rsot), ASTER=self.__store_aster(rsot))
+        self.BRDF = SailResult(ref=rsot / np.pi, refdB=dB(rsot / np.pi), L8=self.__store_L8(rsot / np.pi),
+                               ASTER=self.__store_aster(rsot / np.pi))
+        self.BHR = SailResult(ref=rddt, refdB=dB(rddt), L8=self.__store_L8(rddt), ASTER=self.__store_aster(rddt))
+        self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt), L8=self.__store_L8(rsdt), ASTER=self.__store_aster(rsdt))
+        self.HDR = SailResult(ref=rdot, refdB=dB(rdot), L8=self.__store_L8(rdot), ASTER=self.__store_aster(rdot))
 
     def __calc(self):
         sdb = 0.5 * (self.VollScat.ks + self.VollScat.bf)
@@ -784,6 +786,68 @@ class SAIL(Kernel):
     def __Jfunc2(self, k, l, t):
         """J2 function."""
         return (1. - np.exp(-(k + l) * t)) / (k + l)
+
+    def __store_aster(self, value):
+        """
+        Store the leaf reflectance for ASTER bands B1 - B9.
+        """
+
+        value = np.array([self.l, value])
+        value = value.transpose()
+
+        ASTER = namedtuple('ASTER', 'B1 B2 B3 B4 B5 B6 B7 B8 B9')
+
+        b1 = (520, 600)
+        b2 = (630, 690)
+        b3 = (760, 860)
+        b4 = (1600, 1700)
+        b5 = (2145, 2185)
+        b6 = (2185, 2225)
+        b7 = (2235, 2285)
+        b8 = (2295, 2365)
+        b9 = (2360, 2430)
+
+        ARefB1 = value[(value[:, 0] >= b1[0]) & (value[:, 0] <= b1[1])]
+        ARefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
+        ARefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
+        ARefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
+        ARefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
+        ARefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
+        ARefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
+        ARefB8 = value[(value[:, 0] >= b8[0]) & (value[:, 0] <= b8[1])]
+        ARefB9 = value[(value[:, 0] >= b9[0]) & (value[:, 0] <= b9[1])]
+
+        return ASTER(ARefB1[:, 1].mean(), ARefB2[:, 1].mean(), ARefB3[:, 1].mean(), ARefB4[:, 1].mean(),
+                     ARefB5[:, 1].mean(), ARefB6[:, 1].mean(), ARefB7[:, 1].mean(), ARefB8[:, 1].mean(),
+                     ARefB9[:, 1].mean())
+
+    def __store_L8(self, value):
+        """
+        Store the leaf reflectance for LANDSAT8 bands
+        B2 - B7.
+        """
+
+        value = np.array([self.l, value])
+        value = value.transpose()
+
+        L8 = namedtuple('L8', 'B2 B3 B4 B5 B6 B7')
+
+        b2 = (452, 452 + 60)
+        b3 = (533, 533 + 57)
+        b4 = (636, 636 + 37)
+        b5 = (851, 851 + 28)
+        b6 = (1566, 1566 + 85)
+        b7 = (2107, 2107 + 187)
+
+        LRefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
+        LRefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
+        LRefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
+        LRefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
+        LRefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
+        LRefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
+
+        return L8(LRefB2[:, 1].mean(), LRefB3[:, 1].mean(), LRefB4[:, 1].mean(), LRefB5[:, 1].mean(),
+                  LRefB6[:, 1].mean(), LRefB7[:, 1].mean())
 
 
 class PROSPECT:
