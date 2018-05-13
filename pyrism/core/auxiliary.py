@@ -93,6 +93,11 @@ class SailResult(dict):
     HDR.ref, HDR.refdB : array_like
         Hemispherical-Directional reflectance factor.
 
+    Note
+    ----
+    All returns have in addition the attributes `L8.Bx` and `ASTER.Bx`. L8 is the Landsat 8 average reflectance values
+    for Bx band (B2 until B7). `ASTER` is the ASTER average reflectance for Bx band (B1 until B9).
+
     Notes
     -----
     There may be additional attributes not listed above depending of the
