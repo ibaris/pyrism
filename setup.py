@@ -17,7 +17,7 @@ def get_packages():
 
 setup(name='pyrism',
 
-      version='0.0.3',
+      version='0.0.4',
 
       description='Python bindings for Remote Sensing Models',
 
