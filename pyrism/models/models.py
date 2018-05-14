@@ -1849,6 +1849,23 @@ class xpower(CorrFunc):
             self.rss = 0
 
 
+class mixed(CorrFunc):
+    def __init__(self, n, wvnb, sigma, corrlength, Ts):
+        self.n = n
+        self.wvnb = wvnb
+        self.sigma = sigma
+        self.corrlen = corrlength
+        self.Ts = Ts
+        self.calc()
+
+    def calc(self):
+        gauss = gaussian(self.n, self.wvnb, self.sigma, self.corrlen, self.Ts)
+        exp = exponential(self.n, self.wvnb, self.sigma, self.corrlen, self.Ts)
+
+        self.Wn = gauss.Wn / exp.Wn
+        self.rss = gauss.rss / exp.rss
+
+
 # ---- Surface Models ----
 class LSM:
     """
@@ -2030,8 +2047,6 @@ class I2EM(Kernel):
      ----------
      iza, vza, raa : int, float or ndarray
          Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-     stand : StandResult, optional
-         Values assigned by Stand class.
      normalize : boolean, optional
          Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
          the default value is False.
@@ -2041,19 +2056,20 @@ class I2EM(Kernel):
      angle_unit : {'DEG', 'RAD'}, optional
          * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
          * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+     frequency : int or float
+         RADAR Frequency (GHz).
      diel_constant : int or float
          Complex dielectric constant of soil.
      corrlength : int or float
          Correlation length (cm).
      sigma : int or float
          RMS Height (cm)
-     frequency : int or float
-         RADAR Frequency (GHz)
      n : int (default = 10), optinal
          Coefficient needed for x-power and x-exponential
-         correlation function
-     corrfunc : {'exponential', 'gaussian', 'xpower'}, optional
-         Correlation distribution functions. Default is 'exponential'.
+         correlation function.
+     corrfunc : {'exponential', 'gaussian', 'xpower', 'mixed'}, optional
+         Correlation distribution functions. The `mixed` correlation function is the result of the division of
+         gaussian correlation function with exponential correlation function. Default is 'exponential'.
 
      Returns
      -------
@@ -2087,6 +2103,8 @@ class I2EM(Kernel):
             self.corrfunc = gaussian
         elif corrfunc is 'xpower':
             self.corrfunc = xpower
+        elif corrfunc is 'mixed':
+            self.corrfunc = mixed
         else:
             raise ValueError("The parameter corrfunc must be 'exponential', 'gaussian' or 'xpower'")
 
@@ -2468,35 +2486,28 @@ class I2EM(Kernel):
 
         Parameters
         ----------
-        iza, vza, raa : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        stand : StandResult, optional
-            Values assigned by Stand class.
-        normalize : boolean, optional
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-        phase_function : {'uniform', 'vertical', 'horizontal'}, optional
-            Phase function for different plant stands: 'uniform' (default), 'horizontal', 'vertical'
-        phase_angle_method : {'Ross', 'Omari'}, optional
-            * 'Ross': Phase angle calculation based on [Ross81] (default).
-            * 'Omari': Phase angle calculation based on [OmWS09].
-        lower_bound, upper_bound : tuple, optional
-            Lower and upper bounds of zenith and azimuth angle. Default for lower bound and upper bound is (0,0),
-            (1, pi/2).
-        frequency : int or float
-            RADAR Frequency (GHz)
-        diel_constant : complex
-            Complex dielectric constant of soil.
-        corrlength : int or float
-            Correlation length (cm).
-        sigma : int or float
-            RMS Height (cm)
+         iza, vza, raa : int, float or ndarray
+             Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+         normalize : boolean, optional
+             Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+             the default value is False.
+         nbar : float, optional
+             The sun or incidence zenith angle at which the isotropic term is set
+             to if normalize is True. The default value is 0.0.
+         angle_unit : {'DEG', 'RAD'}, optional
+             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+         frequency : int or float
+             RADAR Frequency (GHz).
+         diel_constant : int or float
+             Complex dielectric constant of soil.
+         corrlength : int or float
+             Correlation length (cm).
+         sigma : int or float
+             RMS Height (cm)
+         corrfunc : {'exponential', 'gaussian', 'mixed'}, optional
+             Correlation distribution functions. The `mixed` correlation function is the result of the division of
+             gaussian correlation function with exponential correlation function. Default is 'exponential'.
 
         Returns
         -------
@@ -2507,10 +2518,10 @@ class I2EM(Kernel):
         pyrism.core.EmissivityResult
         """
 
-        def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG', align=True,
-                     corrfunc='exponential', frequency=1.26, diel_constant=10 + 1j, corrlength=10, sigma=0.3):
+        def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG',
+                     frequency=1.26, diel_constant=10 + 1j, corrlength=10, sigma=0.3, corrfunc='exponential'):
 
-            super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize, nbar, angle_unit, align)
+            super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize, nbar, angle_unit)
 
             self.diel_constant = diel_constant
             self.corrlen = corrlength  # in cm
@@ -2580,13 +2591,25 @@ class I2EM(Kernel):
 
             wn = np.zeros([n_spec, nr])
 
-            if self.corrfunc == 'exponential':  # exponential
+            if self.corrfunc is 'exponential':  # exponential
                 for n in srange(n_spec):
                     wn[n, :] = (n + 1) * self.kl ** 2 / ((n + 1) ** 2 + (wvnb * self.corrlen) ** 2) ** 1.5
 
-            elif self.corrfunc == 'gaussian':  # gaussian
+            elif self.corrfunc is 'gaussian':  # gaussian
                 for n in srange(n_spec):
                     wn[n, :] = 0.5 * self.kl ** 2 / (n + 1) * np.exp(-(wvnb * self.corrlen) ** 2 / (4 * (n + 1)))
+
+            elif self.corrfunc is 'mixed':
+                gauss = np.zeros([n_spec, nr])
+                exp = np.zeros([n_spec, nr])
+
+                for n in srange(n_spec):
+                    gauss[n, :] = 0.5 * self.kl ** 2 / (n + 1) * np.exp(-(wvnb * self.corrlen) ** 2 / (4 * (n + 1)))
+
+                for n in srange(n_spec):
+                    exp[n, :] = (n + 1) * self.kl ** 2 / ((n + 1) ** 2 + (wvnb * self.corrlen) ** 2) ** 1.5
+
+                wn = gauss / exp
 
             else:
                 raise ValueError(
