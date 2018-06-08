@@ -599,6 +599,7 @@ class SAIL(Kernel):
 
         att = 1. - sigf
         m = np.sqrt(att ** 2. - sigb ** 2.)
+        self.ke = m
         sb = sdb * self.ks + sdf * self.kt
         sf = sdf * self.ks + sdb * self.kt
         vb = dob * self.ks + dof * self.kt
