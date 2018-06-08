@@ -32,18 +32,18 @@ class ReflectanceResult(dict):
     Returns
     -------
     All returns are attributes!
-    BSC.ref, BSC.refdB, BSC.ms.ref, BSC.ms.refdB : array_like
+    BSC.ref, BSC.refdB : array_like
         Radar Backscatter values (polarization-independent).
-    BSC.VV, BSC.HH, BSC.VVdB, BSC.HHdB, BSC.ms.VV, BSC.ms.HH, BSC.ms.VVdB, BSC.ms.HHdB : array_like
-        Radar Backscatter values (polarization-dependent).
-    BRDF.ref, BRDF.refdB, BRDF.ms.ref, BRDF.ms.refdB : array_like
+    BSC.VV, BSC.HH, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
+        Radar Backscatter values (polarization-dependent). BSC.array contains the results as an array like array([BSC.VV, BSC.HH]).
+    BRDF.ref, BRDF.refdB : array_like
         BRDF reflectance values (polarization-independent).
-    BRDF.VV, BRDF.HH, BRDF.VVdB, BRDF.HHdB, BSC.ms.VV, BRDF.ms.HH, BRDF.ms.VVdB, BRDF.ms.HHdB : array_like
-        BRDF reflectance values (polarization-dependent).
-    BRF.ref, BRF.refdB, BRF.ms.ref, BRF.ms.refdB : array_like
+    BRDF.VV, BRDF.HH, BRDF.VVdB, BRDF.HHdB, BRDF.array, BRDF,arraydB : array_like
+        BRDF reflectance values (polarization-dependent). BRDF.array contains the results as an array like array([BRDF.VV, BRDF.HH]).
+    BRF.ref, BRF.refdB : array_like
         BRF reflectance values (polarization-independent).
-    BRF.VV, BRF.HH, BRF.VVdB, BRF.HHdB, BSC.ms.VV, BRF.ms.HH, BRF.ms.VVdB, BRF.ms.HHdB : array_like
-        BRF reflectance values (polarization-dependent).
+    BRF.VV, BRF.HH, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
+        BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([BRF.VV, BRF.HH]).
 
     Notes
     -----
@@ -137,14 +137,14 @@ class EmissivityResult(dict):
     Returns
     -------
     All returns are attributes!
-    EMS.ref, EMS.refdB : array_like
-        Emission values (polarization-independent).
-    EMS.VV, EMS.HH, EMS.VVdB, EMS.HHdB : array_like
-        Emission values (polarization-dependent).
-    EMN.VV, EMN.HH, EMN.VVdB, EMN.HHdB : array_like
-        Due to the several conversions in ROM this output format delivers the emission values divided through the
+    EMN.VV, EMN.HH, EMN.VVdB, EMN.HHdB, EMN.array, EMN,arraydB : array_like : array_like
+        Normalized Emission values (use EMS for emission values). Due to the several conversions in some other models
+        this output format delivers the emission values divided through the
         sensing geometry times 4pi. This attribute is only for the I2EM.Emissivity class. If you want to calculate the
-        emissivity of a scene, use this output from I2EM.Emissivity.
+        emissivity of a scene, use this output from EMS.
+        EMN.array contains the results as an array like array([EMN.VV, EMN.HH]).
+    EMS.VV, EMS.HH, EMS.VVdB, EMS.HHdB, EMN.array, EMN,arraydB : array_like
+        Emission values. EMS.array contains the results as an array like array([EMS.VV, EMS.HH]).
 
     Notes
     -----
