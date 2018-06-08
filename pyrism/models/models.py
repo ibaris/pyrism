@@ -2464,24 +2464,24 @@ class I2EM(Kernel):
             self.HHdB = dB(np.asarray(self.HH, dtype=np.float))
 
     def __store(self):
-        self.BSC = ReflectanceResult(array=np.array([self.VV[0], self.HH[0]]),
-                                     arraydB=np.array([dB(self.VV[0]), dB(self.HH[0])]),
+        self.BSC = ReflectanceResult(array=np.array([[self.VV[0]], [self.HH[0]]]),
+                                     arraydB=np.array([[dB(self.VV[0])], [dB(self.HH[0])]]),
                                      VV=self.VV,
                                      HH=self.HH,
                                      VVdB=self.VVdB,
                                      HHdB=self.HHdB)
 
         self.BRDF = ReflectanceResult(
-            array=np.array([BRDF(self.VV, self.iza, self.vza)[0], BRDF(self.HH, self.iza, self.vza)[0]]).flatten(),
+            array=np.array([[BRDF(self.VV, self.iza, self.vza)[0]], [BRDF(self.HH, self.iza, self.vza)[0]]]),
             arraydB=np.array(
-                [dB(BRDF(self.VV, self.iza, self.vza))[0], dB(BRDF(self.HH, self.iza, self.vza))[0]]).flatten(),
+                [[dB(BRDF(self.VV, self.iza, self.vza))[0]], [dB(BRDF(self.HH, self.iza, self.vza))[0]]]),
             VV=BRDF(self.VV, self.iza, self.vza),
             HH=BRDF(self.HH, self.iza, self.vza),
             VVdB=dB(BRDF(self.VV, self.iza, self.vza)),
             HHdB=dB(BRDF(self.HH, self.iza, self.vza)))
 
-        self.BRF = ReflectanceResult(array=np.array([BRF(self.BRDF.VV)[0], BRF(self.BRDF.HH)[0]]).flatten(),
-                                     arraydB=np.array([dB(BRF(self.BRDF.VV))[0], dB(BRF(self.BRDF.HH))[0]]).flatten(),
+        self.BRF = ReflectanceResult(array=np.array([[BRF(self.BRDF.VV)[0]], [BRF(self.BRDF.HH)[0]]]),
+                                     arraydB=np.array([[dB(BRF(self.BRDF.VV))[0]], [dB(BRF(self.BRDF.HH))[0]]]),
                                      VV=BRF(self.BRDF.VV),
                                      HH=BRF(self.BRDF.HH),
                                      VVdB=dB(BRF(self.BRDF.VV)),
@@ -2576,36 +2576,36 @@ class I2EM(Kernel):
 
         def __store(self):
             self.EMN = EmissivityResult(array=np.array(
-                [(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
-                 (1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)]).flatten(),
+                [[(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)],
+                 [(1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)]]),
                                         arraydB=np.array(
-                                            [dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)),
-                                             dB((1 - self.HH) / (
-                                                     np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))]).flatten(),
+                                            [[dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))],
+                                             [dB((1 - self.HH) / (
+                                                     np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))]]),
                                         VV=(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
                                         HH=(1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
                                         VVdB=dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)),
                                         HHdB=dB((1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)))
 
-            self.EMS = EmissivityResult(array=np.array([self.VV, self.HH]).flatten(),
-                                        arraydB=np.array([dB(self.VV), dB(self.HH)]).flatten(),
+            self.EMS = EmissivityResult(array=np.array([[self.VV], [self.HH]]),
+                                        arraydB=np.array([[dB(self.VV)], [dB(self.HH)]]),
                                         VV=self.VV,
                                         HH=self.HH,
                                         VVdB=dB(self.VV),
                                         HHdB=dB(self.HH))
 
             self.BRDF = EmissivityResult(
-                array=np.array([BRDF(self.VV, self.iza, self.vza)[0], BRDF(self.HH, self.iza, self.vza)[0]]).flatten(),
+                array=np.array([[BRDF(self.VV, self.iza, self.vza)[0]], [BRDF(self.HH, self.iza, self.vza)[0]]]),
                 arraydB=np.array(
-                    [dB(BRDF(self.VV, self.iza, self.vza))[0], dB(BRDF(self.HH, self.iza, self.vza))[0]]).flatten(),
+                    [[dB(BRDF(self.VV, self.iza, self.vza))[0]], [dB(BRDF(self.HH, self.iza, self.vza))[0]]]),
                 VV=BRDF(self.VV, self.iza, self.iza),
                 HH=BRDF(self.HH, self.iza, self.iza),
                 VVdB=dB(BRDF(self.VV, self.iza, self.iza)),
                 HHdB=dB(BRDF(self.HH, self.iza, self.iza)))
 
-            self.BRF = EmissivityResult(array=np.array([BRF(self.BRDF.VV)[0], BRF(self.BRDF.HH)[0]]).flatten(),
+            self.BRF = EmissivityResult(array=np.array([[BRF(self.BRDF.VV)[0]], [BRF(self.BRDF.HH)[0]]]),
                                         arraydB=np.array(
-                                            [dB(BRF(self.BRDF.VV))[0], dB(BRF(self.BRDF.HH))[0]]).flatten(),
+                                            [[dB(BRF(self.BRDF.VV))[0]], [dB(BRF(self.BRDF.HH))[0]]]),
                                         VV=BRF(self.BRDF.VV),
                                         HH=BRF(self.BRDF.HH),
                                         VVdB=dB(BRF(self.BRDF.VV)),
