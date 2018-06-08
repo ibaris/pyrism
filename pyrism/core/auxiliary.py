@@ -35,15 +35,15 @@ class ReflectanceResult(dict):
     BSC.ref, BSC.refdB : array_like
         Radar Backscatter values (polarization-independent).
     BSC.VV, BSC.HH, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
-        Radar Backscatter values (polarization-dependent). BSC.array contains the results as an array like array([BSC.VV, BSC.HH]).
+        Radar Backscatter values (polarization-dependent). BSC.array contains the results as an array like array([[BSC.VV], [BSC.HH]]).
     BRDF.ref, BRDF.refdB : array_like
         BRDF reflectance values (polarization-independent).
     BRDF.VV, BRDF.HH, BRDF.VVdB, BRDF.HHdB, BRDF.array, BRDF,arraydB : array_like
-        BRDF reflectance values (polarization-dependent). BRDF.array contains the results as an array like array([BRDF.VV, BRDF.HH]).
+        BRDF reflectance values (polarization-dependent). BRDF.array contains the results as an array like array([[BRDF.VV], [BRDF.HH]]).
     BRF.ref, BRF.refdB : array_like
         BRF reflectance values (polarization-independent).
     BRF.VV, BRF.HH, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
-        BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([BRF.VV, BRF.HH]).
+        BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([[BRF.VV], [BRF.HH]]).
 
     Notes
     -----
@@ -142,9 +142,9 @@ class EmissivityResult(dict):
         this output format delivers the emission values divided through the
         sensing geometry times 4pi. This attribute is only for the I2EM.Emissivity class. If you want to calculate the
         emissivity of a scene, use this output from EMS.
-        EMN.array contains the results as an array like array([EMN.VV, EMN.HH]).
+        EMN.array contains the results as an array like array([[EMN.VV], [EMN.HH]]).
     EMS.VV, EMS.HH, EMS.VVdB, EMS.HHdB, EMN.array, EMN,arraydB : array_like
-        Emission values. EMS.array contains the results as an array like array([EMS.VV, EMS.HH]).
+        Emission values. EMS.array contains the results as an array like array(][EMS.VV], [EMS.HH]]).
 
     Notes
     -----
