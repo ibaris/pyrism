@@ -32,6 +32,9 @@
     <img src='https://readthedocs.org/projects/pyrism/badge/?version=latest' alt='Documentation Status' /></a>
 </p>
 
+# Important Changes in Licence
+On the basis of current events, no one with affiliation "Friedrich-Schiller-University Jena" is allowed to use this software without the express permission of the Author.
+
 # Description
 This repository contains the Python bindings to different radar and optical backscattering and reflectance models, respectively. The bindings implement the following models:
 ### Optical Models:
