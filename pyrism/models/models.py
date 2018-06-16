@@ -2577,12 +2577,12 @@ class I2EM(Kernel):
 
         def __store(self):
             self.EMN = EmissivityResult(array=np.array(
-                [[(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)],
-                 [(1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)]]),
+                [(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
+                 (1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)]),
                                         arraydB=np.array(
-                                            [[dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))],
-                                             [dB((1 - self.HH) / (
-                                                     np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))]]),
+                                            [dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)),
+                                             dB((1 - self.HH) / (
+                                                     np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi))]),
                                         VV=(1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
                                         HH=(1 - self.HH) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi),
                                         VVdB=dB((1 - self.VV) / (np.cos(self.iza) * np.cos(self.vza) * 4 * np.pi)),
