@@ -103,9 +103,9 @@ class VolScatt(Kernel):
         -------
         All returns are attributes!
         self.ks : int, float or array_like
-            Volume scattering coeffient in incidence path.
+            Volume scattering coefficient in incidence path.
         self.ko : int, float or array_like
-            Volume scattering coeffient in scattering path.
+            Volume scattering coefficient in scattering path.
         self.Fs : int, float or array_like
             Function to be multiplied by leaf reflectance to obtain the volume scattering.
         self.Ft : int, float or array_like
