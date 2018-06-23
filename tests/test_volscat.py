@@ -33,7 +33,7 @@ class TestVolScatVerhoef:
     def test_vol_verhoef(self, iza, vza, raa, a, b, ks, ko, bf, Fs, Ft):
         vol = VolScatt(iza, vza, raa)
         vol.coef(a=a, b=b, lidf_type='verhoef')
-        res = (vol.ks[0], vol.ko[0], vol.bf, vol.Fs[0], vol.Ft[0])
+        res = (vol.kei[0], vol.kev[0], vol.bf, vol.Fs[0], vol.Ft[0])
         true = (ks, ko, bf, Fs, Ft)
         assert np.allclose(res, true, atol=1e-4)
 
@@ -47,6 +47,6 @@ class TestVolScatVerhoef:
     def test_vol_verhoef(self, iza, vza, raa, a, ks, ko, bf, Fs, Ft):
         vol = VolScatt(iza, vza, raa)
         vol.coef(a=a, lidf_type='campbell')
-        res = (vol.ks[0], vol.ko[0], vol.bf, vol.Fs[0], vol.Ft[0])
+        res = (vol.kei[0], vol.kev[0], vol.bf, vol.Fs[0], vol.Ft[0])
         true = (ks, ko, bf, Fs, Ft)
         assert np.allclose(res, true, atol=1e-4)

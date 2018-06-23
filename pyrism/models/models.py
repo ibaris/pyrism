@@ -141,8 +141,8 @@ class VolScatt(Kernel):
         else:
             raise AttributeError("lad_method must be verhoef, nilson or campbell")
 
-        self.ks = 0.
-        self.ko = 0.
+        self.kei = 0.
+        self.kev = 0.
         self.bf = 0.
         self.Fs = 0.
         self.Ft = 0.
@@ -166,8 +166,8 @@ class VolScatt(Kernel):
             sobli = self.frho * np.pi / (np.cos(self.iza) * np.cos(self.vza))
             sofli = self.ftau * np.pi / (np.cos(self.iza) * np.cos(self.vza))
             bfli = cttl ** 2.
-            self.ks += ksli * float(lidf[i])
-            self.ko += koli * float(lidf[i])
+            self.kei += ksli * float(lidf[i])
+            self.kev += koli * float(lidf[i])
             self.bf += bfli * float(lidf[i])
             self.Fs += sobli * float(lidf[i])
             self.Ft += sofli * float(lidf[i])
@@ -580,10 +580,10 @@ class SAIL(Kernel):
         self.HDR = SailResult(ref=rdot, refdB=dB(rdot), L8=self.__store_L8(rdot), ASTER=self.__store_aster(rdot))
 
     def __calc(self):
-        sdb = 0.5 * (self.VollScat.ks + self.VollScat.bf)
-        sdf = 0.5 * (self.VollScat.ks - self.VollScat.bf)
-        dob = 0.5 * (self.VollScat.ko + self.VollScat.bf)
-        dof = 0.5 * (self.VollScat.ko - self.VollScat.bf)
+        sdb = 0.5 * (self.VollScat.kei + self.VollScat.bf)
+        sdf = 0.5 * (self.VollScat.kei - self.VollScat.bf)
+        dob = 0.5 * (self.VollScat.kev + self.VollScat.bf)
+        dof = 0.5 * (self.VollScat.kev - self.VollScat.bf)
         ddb = 0.5 * (1.0 + self.VollScat.bf)
         ddf = 0.5 * (1.0 - self.VollScat.bf)
 
@@ -599,7 +599,9 @@ class SAIL(Kernel):
 
         att = 1. - sigf
         m = np.sqrt(att ** 2. - sigb ** 2.)
-        self.ke = m
+
+        self.ke = self.VollScat.kei
+
         sb = sdb * self.ks + sdf * self.kt
         sf = sdf * self.ks + sdb * self.kt
         vb = dob * self.ks + dof * self.kt
@@ -641,10 +643,10 @@ class SAIL(Kernel):
             re = rinf * e1
             denom = 1. - rinf2 * e2
 
-            J1ks = self.__Jfunc1(self.VollScat.ks, m, self.lai)
-            J2ks = self.__Jfunc2(self.VollScat.ks, m, self.lai)
-            J1ko = self.__Jfunc1(self.VollScat.ko, m, self.lai)
-            J2ko = self.__Jfunc2(self.VollScat.ko, m, self.lai)
+            J1ks = self.__Jfunc1(self.VollScat.kei, m, self.lai)
+            J2ks = self.__Jfunc2(self.VollScat.kei, m, self.lai)
+            J1ko = self.__Jfunc1(self.VollScat.kev, m, self.lai)
+            J2ko = self.__Jfunc2(self.VollScat.kev, m, self.lai)
 
             Pss = (sf + sb * rinf) * J1ks
             Qss = (sf * rinf + sb) * J2ks
@@ -661,12 +663,12 @@ class SAIL(Kernel):
             gammasdf = (1. + rinf) * (J1ks - re * J2ks) / denom
             gammasdb = (1. + rinf) * (-re * J1ks + J2ks) / denom
 
-            tss = np.exp(-self.VollScat.ks * self.lai)
-            too = np.exp(-self.VollScat.ko * self.lai)
-            z = self.__Jfunc2(self.VollScat.ks, self.VollScat.ko, self.lai)
+            tss = np.exp(-self.VollScat.kei * self.lai)
+            too = np.exp(-self.VollScat.kev * self.lai)
+            z = self.__Jfunc2(self.VollScat.kei, self.VollScat.kev, self.lai)
 
-            g1 = (z - J1ks * too) / (self.VollScat.ko + m)
-            g2 = (z - J1ko * tss) / (self.VollScat.ks + m)
+            g1 = (z - J1ks * too) / (self.VollScat.kev + m)
+            g2 = (z - J1ko * tss) / (self.VollScat.kei + m)
 
             Tv1 = (vf * rinf + vb) * g1
             Tv2 = (vf + vb * rinf) * g2
@@ -691,20 +693,20 @@ class SAIL(Kernel):
                                                                                             self.raaDeg)
 
             if self.hotspot > 0.:
-                alf = (dso / self.hotspot) * 2. / (self.VollScat.ks + self.VollScat.ko)
+                alf = (dso / self.hotspot) * 2. / (self.VollScat.kei + self.VollScat.kev)
 
             if alf == 0.:
                 # The pure hotspot
                 tsstoo = tss
-                sumint = (1. - tss) / (self.VollScat.ks * self.lai)
+                sumint = (1. - tss) / (self.VollScat.kei * self.lai)
             else:
                 # Outside the hotspot
-                tsstoo, sumint = self.__hotspot_calculations(alf, self.lai, self.VollScat.ko, self.VollScat.ks)
+                tsstoo, sumint = self.__hotspot_calculations(alf, self.lai, self.VollScat.kev, self.VollScat.kei)
 
             # Bidirectional reflectance
             # Single scattering contribution
             rsos = w * self.lai * sumint
-            gammasos = self.VollScat.ko * self.lai * sumint
+            gammasos = self.VollScat.kev * self.lai * sumint
 
             # Total canopy contribution
             rso = rsos + rsod
