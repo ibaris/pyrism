@@ -499,6 +499,8 @@ class SAIL(Kernel):
             * If lidf_type is 'campbell': Parameter a is the mean leaf angle (degrees) use 57 for a spherical LIDF.
               The default value represents a spherical leaf distribution a = 57.
 
+    skyl : float
+        Fraction of diffuse shortwave radiation. Default is 0.2.
     normalize : boolean, optional
         Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
         the default value is False.
@@ -526,7 +528,7 @@ class SAIL(Kernel):
     """
 
     def __init__(self, iza, vza, raa, ks, kt, lai, hotspot, rho_surface,
-                 lidf_type='campbell', a=57, b=0, normalize=False, nbar=0.0, angle_unit='DEG'):
+                 lidf_type='campbell', a=57, b=0, skyl=0.2, normalize=False, nbar=0.0, angle_unit='DEG'):
 
         super(SAIL, self).__init__(iza=iza, vza=vza, raa=raa, normalize=normalize, nbar=nbar, angle_unit=angle_unit,
                                    align=True)
@@ -572,9 +574,13 @@ class SAIL(Kernel):
         self.canopy = SailResult(BHR=rdd, BHT=tdd, DHR=rsd, DHT=tsd, HDR=rdo, HDT=tdo, BRF=rso)
         self.l = np.arange(400, 2501)
 
-        self.BRF = SailResult(ref=rsot, refdB=dB(rsot), L8=self.__store_L8(rsot), ASTER=self.__store_aster(rsot))
-        self.BRDF = SailResult(ref=rsot / np.pi, refdB=dB(rsot / np.pi), L8=self.__store_L8(rsot / np.pi),
-                               ASTER=self.__store_aster(rsot / np.pi))
+        canopy_ref = rdot * skyl + rsot * (1 - skyl)
+
+        self.BRF = SailResult(ref=canopy_ref, refdB=dB(canopy_ref), L8=self.__store_L8(canopy_ref),
+                              ASTER=self.__store_aster(canopy_ref))
+        self.BRDF = SailResult(ref=canopy_ref / np.pi, refdB=dB(canopy_ref / np.pi),
+                               L8=self.__store_L8(canopy_ref / np.pi),
+                               ASTER=self.__store_aster(canopy_ref / np.pi))
         self.BHR = SailResult(ref=rddt, refdB=dB(rddt), L8=self.__store_L8(rddt), ASTER=self.__store_aster(rddt))
         self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt), L8=self.__store_L8(rsdt), ASTER=self.__store_aster(rsdt))
         self.HDR = SailResult(ref=rdot, refdB=dB(rdot), L8=self.__store_L8(rdot), ASTER=self.__store_aster(rdot))
