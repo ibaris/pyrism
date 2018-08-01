@@ -4,7 +4,8 @@ import warnings
 import numpy as np
 
 from phase.phase_c import phase_matrix
-from ...core import Scattering, Kernel
+from ..auxiliary import Scattering
+from ...core import Kernel
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
