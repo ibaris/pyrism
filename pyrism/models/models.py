@@ -1247,63 +1247,6 @@ class PROSPECT:
                 delattr(self, item)
 
 
-class Rayleigh(Scattering):
-    """
-    Calculate the extinction coefficients in terms of Rayleigh
-    scattering (:cite:`Ulaby.2015` and :cite:`Ulaby.2015b`).
-
-    Parameters
-    ----------
-    frequency : int or float
-        Frequency (GHz)
-    particle_size : int, float or array
-        Particle size a [m].
-    diel_constant_p : complex
-        Dielectric constant of the medium.
-    diel_constant_b : complex
-        Dielectric constant of the background.
-
-    Returns
-    -------
-    All returns are attributes!
-    self.ke : int, float or array_like
-        Extinction coefficient.
-    self.ks : int, float or array_like
-        Scattering coefficient.
-    self.ka : int, float or array_like
-        Absorption coefficient.
-    self.om : int, float or array_like
-        Omega.
-    self.s0 : int, float or array_like
-        Backscatter coefficient sigma 0.
-
-    """
-
-    def __init__(self, frequency, particle_size, diel_constant_p, diel_constant_b=(1 + 1j)):
-
-        super(Rayleigh, self).__init__(frequency, particle_size, diel_constant_p, diel_constant_b)
-
-        # Check validity
-        lm = 299792458 / (self.freq * 1e9)  # Wavelength in meter
-        self.condition = (2 * np.pi * self.a) / lm
-
-        if np.any(self.condition >= 0.5):
-            warnings.warn("Rayleigh condition not holds. You should use Mie scattering.", Warning)
-        else:
-            pass
-
-        self.__calc()
-
-    def __calc(self):
-        self.bigK = (self.n ** 2 - 1) / (self.n ** 2 + 2)
-        self.ks = (8 / 3) * self.chi ** 4 * np.abs(self.bigK) ** 2
-        self.ka = 4 * self.chi * (-self.bigK.imag)
-        self.ke = self.ka + self.ks
-        self.kt = 1 - self.ke
-        self.s0 = 4 * self.chi ** 4 * np.abs(self.bigK) ** 2
-        self.omega = self.ks / self.ke
-
-
 class Mie(Scattering):
     """
     Calculate the extinction coefficients in terms of Mie
