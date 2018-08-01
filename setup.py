@@ -6,8 +6,39 @@ This file is part of pyrism.
 For COPYING and LICENSE details, please refer to the LICENSE file
 """
 
+import numpy
+
+try:
+    from setuptools import setup
+    from setuptools import Extension
+except ImportError:
+    from distutils.core import setup
+    from distutils.extension import Extension
+
+try:
+    from Cython.Distutils import build_ext
+except ImportError:
+    use_cython = False
+
+else:
+    use_cython = True
+
 from setuptools import find_packages
-from setuptools import setup
+
+cmdclass = {}
+ext_modules = []
+
+if use_cython:
+    ext_modules += [
+        Extension("pyrism.scattering.rayleigh.phase.phase_c",
+                  ["pyrism/scattering/rayleigh/phase/phase_c.pyx"], include_dirs=['.'])]
+
+    cmdclass.update({'build_ext': build_ext})
+
+else:
+    ext_modules += [
+        Extension("pyrism.scattering.rayleigh.phase.phase_c",
+                  ["pyrism/scattering/rayleigh/phase/phase_c.c"], include_dirs=['.'])]
 
 
 def get_packages():
@@ -23,6 +54,11 @@ setup(name='pyrism',
 
       packages=get_packages(),
       package_dir={'core': 'core', 'models': 'models'},
+
+      cmdclass=cmdclass,
+
+      include_dirs=[numpy.get_include()],
+      ext_modules=ext_modules,
 
       author="Ismail Baris",
       maintainer='Ismail Baris',
