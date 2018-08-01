@@ -1021,7 +1021,7 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":12
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":8
  * 
  * DTYPE = np.float
  * ctypedef np.float_t DTYPE_t             # <<<<<<<<<<<<<<
@@ -1567,8 +1567,6 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'cython' */
-
 /* Module declarations from 'pyrism.scattering.rayleigh.phase.phase_c' */
 static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, __pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, __pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t); /*proto*/
 static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, __pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, __pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t); /*proto*/
@@ -1600,7 +1598,6 @@ static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_iza[] = "iza";
 static const char __pyx_k_raa[] = "raa";
-static const char __pyx_k_sci[] = "sci";
 static const char __pyx_k_vza[] = "vza";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_test[] = "__test__";
@@ -1609,7 +1606,6 @@ static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_float[] = "float";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_scipy[] = "scipy";
 static const char __pyx_k_zeros[] = "zeros";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_ValueError[] = "ValueError";
@@ -1653,8 +1649,6 @@ static PyObject *__pyx_kp_s_pyrism_scattering_rayleigh_phase;
 static PyObject *__pyx_n_s_pyrism_scattering_rayleigh_phase_2;
 static PyObject *__pyx_n_s_raa;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_sci;
-static PyObject *__pyx_n_s_scipy;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_vza;
@@ -1682,7 +1676,7 @@ static PyObject *__pyx_tuple__14;
 static PyObject *__pyx_codeobj__15;
 /* Late includes */
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":14
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":10
  * ctypedef np.float_t DTYPE_t
  * 
  * cdef p11_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1699,7 +1693,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p11_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":15
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":11
  * 
  * cdef p11_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = pow(sin(vza), 2) * pow(sin(iza), 2)             # <<<<<<<<<<<<<<
@@ -1708,7 +1702,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
  */
   __pyx_v_first = (pow(sin(__pyx_v_vza), 2.0) * pow(sin(__pyx_v_iza), 2.0));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":16
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":12
  * cdef p11_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = pow(sin(vza), 2) * pow(sin(iza), 2)
  *     cdef float second = pow(cos(vza), 2) * pow(cos(iza), 2) * pow(cos(raa), 2)             # <<<<<<<<<<<<<<
@@ -1717,7 +1711,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
  */
   __pyx_v_second = ((pow(cos(__pyx_v_vza), 2.0) * pow(cos(__pyx_v_iza), 2.0)) * pow(cos(__pyx_v_raa), 2.0));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":17
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":13
  *     cdef float first = pow(sin(vza), 2) * pow(sin(iza), 2)
  *     cdef float second = pow(cos(vza), 2) * pow(cos(iza), 2) * pow(cos(raa), 2)
  *     cdef float third = 2 * sin(vza) * sin(iza) * cos(vza) * cos(iza) * cos(raa)             # <<<<<<<<<<<<<<
@@ -1726,7 +1720,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
  */
   __pyx_v_third = (((((2.0 * sin(__pyx_v_vza)) * sin(__pyx_v_iza)) * cos(__pyx_v_vza)) * cos(__pyx_v_iza)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":19
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":15
  *     cdef float third = 2 * sin(vza) * sin(iza) * cos(vza) * cos(iza) * cos(raa)
  * 
  *     return first + second + third             # <<<<<<<<<<<<<<
@@ -1734,13 +1728,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
  * cdef p12_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((__pyx_v_first + __pyx_v_second) + __pyx_v_third)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((__pyx_v_first + __pyx_v_second) + __pyx_v_third)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":14
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":10
  * ctypedef np.float_t DTYPE_t
  * 
  * cdef p11_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1759,7 +1753,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":21
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":17
  *     return first + second + third
  * 
  * cdef p12_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1774,7 +1768,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(CY
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p12_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":22
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":18
  * 
  * cdef p12_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = pow(cos(vza), 2) * pow(sin(raa), 2)             # <<<<<<<<<<<<<<
@@ -1783,7 +1777,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(CY
  */
   __pyx_v_first = (pow(cos(__pyx_v_vza), 2.0) * pow(sin(__pyx_v_raa), 2.0));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":24
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":20
  *     cdef float first = pow(cos(vza), 2) * pow(sin(raa), 2)
  * 
  *     return first             # <<<<<<<<<<<<<<
@@ -1791,13 +1785,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(CY
  * cdef p13_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":21
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":17
  *     return first + second + third
  * 
  * cdef p12_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1816,7 +1810,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(CY
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":26
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":22
  *     return first
  * 
  * cdef p13_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1832,7 +1826,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p13_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":27
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":23
  * 
  * cdef p13_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = cos(vza) * sin(vza) * sin(iza) * sin(raa)             # <<<<<<<<<<<<<<
@@ -1841,7 +1835,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__
  */
   __pyx_v_first = (((cos(__pyx_v_vza) * sin(__pyx_v_vza)) * sin(__pyx_v_iza)) * sin(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":28
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":24
  * cdef p13_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = cos(vza) * sin(vza) * sin(iza) * sin(raa)
  *     cdef float second = pow(cos(vza), 2) * cos(iza) * sin(raa) * cos(raa)             # <<<<<<<<<<<<<<
@@ -1850,7 +1844,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__
  */
   __pyx_v_second = (((pow(cos(__pyx_v_vza), 2.0) * cos(__pyx_v_iza)) * sin(__pyx_v_raa)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":30
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":26
  *     cdef float second = pow(cos(vza), 2) * cos(iza) * sin(raa) * cos(raa)
  * 
  *     return first + second             # <<<<<<<<<<<<<<
@@ -1858,13 +1852,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__
  * cdef p21_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":26
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":22
  *     return first
  * 
  * cdef p13_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1883,7 +1877,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":32
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":28
  *     return first + second
  * 
  * cdef p21_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1898,7 +1892,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p21_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":33
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":29
  * 
  * cdef p21_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = pow(cos(iza), 2) * pow(sin(raa), 2)             # <<<<<<<<<<<<<<
@@ -1907,7 +1901,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__
  */
   __pyx_v_first = (pow(cos(__pyx_v_iza), 2.0) * pow(sin(__pyx_v_raa), 2.0));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":35
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":31
  *     cdef float first = pow(cos(iza), 2) * pow(sin(raa), 2)
  * 
  *     return first             # <<<<<<<<<<<<<<
@@ -1915,13 +1909,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__
  * cdef p22_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":32
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":28
  *     return first + second
  * 
  * cdef p21_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1940,7 +1934,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":37
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":33
  *     return first
  * 
  * cdef p22_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1955,7 +1949,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(CY
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p22_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":38
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":34
  * 
  * cdef p22_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = pow(cos(raa), 2)             # <<<<<<<<<<<<<<
@@ -1964,7 +1958,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(CY
  */
   __pyx_v_first = pow(cos(__pyx_v_raa), 2.0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":40
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":36
  *     cdef float first = pow(cos(raa), 2)
  * 
  *     return first             # <<<<<<<<<<<<<<
@@ -1972,13 +1966,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(CY
  * cdef p23_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":37
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":33
  *     return first
  * 
  * cdef p22_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -1997,7 +1991,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(CY
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":42
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":38
  *     return first
  * 
  * cdef p23_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2012,7 +2006,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p23_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":43
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":39
  * 
  * cdef p23_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = -cos(iza) * sin(raa) * cos(raa)             # <<<<<<<<<<<<<<
@@ -2021,7 +2015,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__
  */
   __pyx_v_first = (((-cos(__pyx_v_iza)) * sin(__pyx_v_raa)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":45
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":41
  *     cdef float first = -cos(iza) * sin(raa) * cos(raa)
  * 
  *     return first             # <<<<<<<<<<<<<<
@@ -2029,13 +2023,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__
  * cdef p31_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":42
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":38
  *     return first
  * 
  * cdef p23_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2054,7 +2048,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":47
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":43
  *     return first
  * 
  * cdef p31_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2070,7 +2064,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p31_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":48
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":44
  * 
  * cdef p31_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = -2 * cos(vza) * sin(iza) * cos(iza) * sin(raa)             # <<<<<<<<<<<<<<
@@ -2079,7 +2073,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__
  */
   __pyx_v_first = ((((-2.0 * cos(__pyx_v_vza)) * sin(__pyx_v_iza)) * cos(__pyx_v_iza)) * sin(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":49
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":45
  * cdef p31_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = -2 * cos(vza) * sin(iza) * cos(iza) * sin(raa)
  *     cdef float second = - cos(vza) * pow(cos(iza), 2) * cos(raa) * sin(raa)             # <<<<<<<<<<<<<<
@@ -2088,7 +2082,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__
  */
   __pyx_v_second = ((((-cos(__pyx_v_vza)) * pow(cos(__pyx_v_iza), 2.0)) * cos(__pyx_v_raa)) * sin(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":51
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":47
  *     cdef float second = - cos(vza) * pow(cos(iza), 2) * cos(raa) * sin(raa)
  * 
  *     return first + second             # <<<<<<<<<<<<<<
@@ -2096,13 +2090,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__
  * cdef p32_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":47
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":43
  *     return first
  * 
  * cdef p31_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2121,7 +2115,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":53
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":49
  *     return first + second
  * 
  * cdef p32_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2136,7 +2130,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(CY
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p32_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":54
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":50
  * 
  * cdef p32_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = 2 * cos(vza) * sin(raa) * cos(raa)             # <<<<<<<<<<<<<<
@@ -2145,7 +2139,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(CY
  */
   __pyx_v_first = (((2.0 * cos(__pyx_v_vza)) * sin(__pyx_v_raa)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":56
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":52
  *     cdef float first = 2 * cos(vza) * sin(raa) * cos(raa)
  * 
  *     return first             # <<<<<<<<<<<<<<
@@ -2153,13 +2147,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(CY
  * cdef p33_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_first); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":53
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":49
  *     return first + second
  * 
  * cdef p32_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2178,7 +2172,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(CY
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":58
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":54
  *     return first
  * 
  * cdef p33_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2194,7 +2188,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p33_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":59
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":55
  * 
  * cdef p33_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = sin(vza) * sin(iza) * cos(raa)             # <<<<<<<<<<<<<<
@@ -2203,7 +2197,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__
  */
   __pyx_v_first = ((sin(__pyx_v_vza) * sin(__pyx_v_iza)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":60
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":56
  * cdef p33_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = sin(vza) * sin(iza) * cos(raa)
  *     cdef float second = cos(vza) * cos(iza) * cos(2 * raa)             # <<<<<<<<<<<<<<
@@ -2212,7 +2206,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__
  */
   __pyx_v_second = ((cos(__pyx_v_vza) * cos(__pyx_v_iza)) * cos((2.0 * __pyx_v_raa)));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":62
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":58
  *     cdef float second = cos(vza) * cos(iza) * cos(2 * raa)
  * 
  *     return first + second             # <<<<<<<<<<<<<<
@@ -2220,13 +2214,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__
  * cdef p44_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":58
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":54
  *     return first
  * 
  * cdef p33_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2245,7 +2239,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":64
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":60
  *     return first + second
  * 
  * cdef p44_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2261,7 +2255,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p44_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":65
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":61
  * 
  * cdef p44_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = sin(vza) * sin(iza) * cos(raa)             # <<<<<<<<<<<<<<
@@ -2270,7 +2264,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__
  */
   __pyx_v_first = ((sin(__pyx_v_vza) * sin(__pyx_v_iza)) * cos(__pyx_v_raa));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":66
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":62
  * cdef p44_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef float first = sin(vza) * sin(iza) * cos(raa)
  *     cdef float second = cos(vza) * cos(iza)             # <<<<<<<<<<<<<<
@@ -2279,7 +2273,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__
  */
   __pyx_v_second = (cos(__pyx_v_vza) * cos(__pyx_v_iza));
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":68
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":64
  *     cdef float second = cos(vza) * cos(iza)
  * 
  *     return first + second             # <<<<<<<<<<<<<<
@@ -2287,13 +2281,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__
  * cdef p11_int_c(DTYPE_t vza):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_first + __pyx_v_second)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":64
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":60
  *     return first + second
  * 
  * cdef p44_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
@@ -2312,11 +2306,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":70
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":66
  *     return first + second
  * 
  * cdef p11_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*sin(vza)**2 + pi/3
+ *     return pi * sin(vza) ** 2 + pi / 3
  * 
  */
 
@@ -2326,25 +2320,25 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_int_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p11_int_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":71
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":67
  * 
  * cdef p11_int_c(DTYPE_t vza):
- *     return pi*sin(vza)**2 + pi/3             # <<<<<<<<<<<<<<
+ *     return pi * sin(vza) ** 2 + pi / 3             # <<<<<<<<<<<<<<
  * 
  * cdef p12_int_c(DTYPE_t vza):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((M_PI * pow(sin(__pyx_v_vza), 2.0)) + (M_PI / 3.0))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((M_PI * pow(sin(__pyx_v_vza), 2.0)) + (M_PI / 3.0))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":70
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":66
  *     return first + second
  * 
  * cdef p11_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*sin(vza)**2 + pi/3
+ *     return pi * sin(vza) ** 2 + pi / 3
  * 
  */
 
@@ -2359,11 +2353,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_int_
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":73
- *     return pi*sin(vza)**2 + pi/3
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":69
+ *     return pi * sin(vza) ** 2 + pi / 3
  * 
  * cdef p12_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*cos(vza)**2
+ *     return pi * cos(vza) ** 2
  * 
  */
 
@@ -2373,25 +2367,25 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_int_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p12_int_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":74
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":70
  * 
  * cdef p12_int_c(DTYPE_t vza):
- *     return pi*cos(vza)**2             # <<<<<<<<<<<<<<
+ *     return pi * cos(vza) ** 2             # <<<<<<<<<<<<<<
  * 
  * cdef p21_int_c(DTYPE_t vza):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((M_PI * pow(cos(__pyx_v_vza), 2.0))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((M_PI * pow(cos(__pyx_v_vza), 2.0))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":73
- *     return pi*sin(vza)**2 + pi/3
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":69
+ *     return pi * sin(vza) ** 2 + pi / 3
  * 
  * cdef p12_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*cos(vza)**2
+ *     return pi * cos(vza) ** 2
  * 
  */
 
@@ -2406,11 +2400,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_int_
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":76
- *     return pi*cos(vza)**2
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":72
+ *     return pi * cos(vza) ** 2
  * 
  * cdef p21_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi/3
+ *     return pi / 3
  * 
  */
 
@@ -2420,25 +2414,25 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_int_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p21_int_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":77
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":73
  * 
  * cdef p21_int_c(DTYPE_t vza):
- *     return pi/3             # <<<<<<<<<<<<<<
+ *     return pi / 3             # <<<<<<<<<<<<<<
  * 
  * cdef p22_int_c(DTYPE_t vza):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((M_PI / 3.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((M_PI / 3.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":76
- *     return pi*cos(vza)**2
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":72
+ *     return pi * cos(vza) ** 2
  * 
  * cdef p21_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi/3
+ *     return pi / 3
  * 
  */
 
@@ -2453,8 +2447,8 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_int_
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":79
- *     return pi/3
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":75
+ *     return pi / 3
  * 
  * cdef p22_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
  *     return pi
@@ -2467,7 +2461,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_int_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p22_int_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":80
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":76
  * 
  * cdef p22_int_c(DTYPE_t vza):
  *     return pi             # <<<<<<<<<<<<<<
@@ -2475,14 +2469,14 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_int_
  * cdef p44_int_c(DTYPE_t vza):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(M_PI); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(M_PI); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":79
- *     return pi/3
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":75
+ *     return pi / 3
  * 
  * cdef p22_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
  *     return pi
@@ -2500,11 +2494,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_int_
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":82
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":78
  *     return pi
  * 
  * cdef p44_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*cos(vza)
+ *     return pi * cos(vza)
  * 
  */
 
@@ -2514,25 +2508,25 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_int_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("p44_int_c", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":83
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":79
  * 
  * cdef p44_int_c(DTYPE_t vza):
- *     return pi*cos(vza)             # <<<<<<<<<<<<<<
+ *     return pi * cos(vza)             # <<<<<<<<<<<<<<
  * 
  * cdef phase_matrix_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((M_PI * cos(__pyx_v_vza))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((M_PI * cos(__pyx_v_vza))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":82
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":78
  *     return pi
  * 
  * cdef p44_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
- *     return pi*cos(vza)
+ *     return pi * cos(vza)
  * 
  */
 
@@ -2547,8 +2541,8 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_int_
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":85
- *     return pi*cos(vza)
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":81
+ *     return pi * cos(vza)
  * 
  * cdef phase_matrix_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
@@ -2594,38 +2588,38 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_pybuffernd_mat.data = NULL;
   __pyx_pybuffernd_mat.rcbuffer = &__pyx_pybuffer_mat;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":86
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":82
  * 
  * cdef phase_matrix_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     mat[0, 0] = p11_c(iza, vza, raa)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__2, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__2, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 82, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 86, __pyx_L1_error)
+      __PYX_ERR(0, 82, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2633,16 +2627,16 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":88
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":84
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  * 
  *     mat[0, 0] = p11_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[0, 1] = p12_c(iza, vza, raa)
  *     mat[0, 2] = p13_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
@@ -2657,20 +2651,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 88, __pyx_L1_error)
+    __PYX_ERR(0, 84, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_8, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":89
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":85
  * 
  *     mat[0, 0] = p11_c(iza, vza, raa)
  *     mat[0, 1] = p12_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[0, 2] = p13_c(iza, vza, raa)
  * 
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_10 = 0;
   __pyx_t_11 = 1;
@@ -2685,20 +2679,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_11 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 89, __pyx_L1_error)
+    __PYX_ERR(0, 85, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":90
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":86
  *     mat[0, 0] = p11_c(iza, vza, raa)
  *     mat[0, 1] = p12_c(iza, vza, raa)
  *     mat[0, 2] = p13_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  * 
  *     mat[1, 0] = p21_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p13_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_12 = 0;
   __pyx_t_13 = 2;
@@ -2713,20 +2707,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_13 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 90, __pyx_L1_error)
+    __PYX_ERR(0, 86, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":92
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":88
  *     mat[0, 2] = p13_c(iza, vza, raa)
  * 
  *     mat[1, 0] = p21_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[1, 1] = p22_c(iza, vza, raa)
  *     mat[1, 2] = p23_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_14 = 1;
   __pyx_t_15 = 0;
@@ -2741,20 +2735,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_15 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 92, __pyx_L1_error)
+    __PYX_ERR(0, 88, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":93
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":89
  * 
  *     mat[1, 0] = p21_c(iza, vza, raa)
  *     mat[1, 1] = p22_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[1, 2] = p23_c(iza, vza, raa)
  * 
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_16 = 1;
   __pyx_t_17 = 1;
@@ -2769,20 +2763,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_17 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 93, __pyx_L1_error)
+    __PYX_ERR(0, 89, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":94
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":90
  *     mat[1, 0] = p21_c(iza, vza, raa)
  *     mat[1, 1] = p22_c(iza, vza, raa)
  *     mat[1, 2] = p23_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  * 
  *     mat[2, 0] = p31_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p23_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_18 = 1;
   __pyx_t_19 = 2;
@@ -2797,20 +2791,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_19 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 94, __pyx_L1_error)
+    __PYX_ERR(0, 90, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":96
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":92
  *     mat[1, 2] = p23_c(iza, vza, raa)
  * 
  *     mat[2, 0] = p31_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[2, 1] = p32_c(iza, vza, raa)
  *     mat[2, 2] = p33_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p31_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_20 = 2;
   __pyx_t_21 = 0;
@@ -2825,20 +2819,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_21 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 96, __pyx_L1_error)
+    __PYX_ERR(0, 92, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":97
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":93
  * 
  *     mat[2, 0] = p31_c(iza, vza, raa)
  *     mat[2, 1] = p32_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  *     mat[2, 2] = p33_c(iza, vza, raa)
  * 
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p32_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_22 = 2;
   __pyx_t_23 = 1;
@@ -2853,20 +2847,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_23 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 97, __pyx_L1_error)
+    __PYX_ERR(0, 93, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":98
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":94
  *     mat[2, 0] = p31_c(iza, vza, raa)
  *     mat[2, 1] = p32_c(iza, vza, raa)
  *     mat[2, 2] = p33_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  * 
  *     mat[3, 3] = p44_c(iza, vza, raa)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p33_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_24 = 2;
   __pyx_t_25 = 2;
@@ -2881,20 +2875,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_25 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 98, __pyx_L1_error)
+    __PYX_ERR(0, 94, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":100
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":96
  *     mat[2, 2] = p33_c(iza, vza, raa)
  * 
  *     mat[3, 3] = p44_c(iza, vza, raa)             # <<<<<<<<<<<<<<
  * 
  *     return mat
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_c(__pyx_v_iza, __pyx_v_vza, __pyx_v_raa); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_26 = 3;
   __pyx_t_27 = 3;
@@ -2909,11 +2903,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_27 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 100, __pyx_L1_error)
+    __PYX_ERR(0, 96, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":102
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":98
  *     mat[3, 3] = p44_c(iza, vza, raa)
  * 
  *     return mat             # <<<<<<<<<<<<<<
@@ -2925,8 +2919,8 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_r = ((PyObject *)__pyx_v_mat);
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":85
- *     return pi*cos(vza)
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":81
+ *     return pi * cos(vza)
  * 
  * cdef phase_matrix_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
@@ -2957,7 +2951,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":104
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":100
  *     return mat
  * 
  * cdef phase_matrix_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
@@ -2994,38 +2988,38 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_pybuffernd_mat.data = NULL;
   __pyx_pybuffernd_mat.rcbuffer = &__pyx_pybuffer_mat;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":105
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":101
  * 
  * cdef phase_matrix_int_c(DTYPE_t vza):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     mat[0, 0] = p11_int_c(vza)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__4, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__4, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 101, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 105, __pyx_L1_error)
+      __PYX_ERR(0, 101, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3033,16 +3027,16 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":107
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":103
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  * 
  *     mat[0, 0] = p11_int_c(vza)             # <<<<<<<<<<<<<<
  *     mat[0, 1] = p12_int_c(vza)
  * 
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p11_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
@@ -3057,20 +3051,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 107, __pyx_L1_error)
+    __PYX_ERR(0, 103, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_8, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":108
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":104
  * 
  *     mat[0, 0] = p11_int_c(vza)
  *     mat[0, 1] = p12_int_c(vza)             # <<<<<<<<<<<<<<
  * 
  *     mat[1, 0] = p21_int_c(vza)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p12_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_10 = 0;
   __pyx_t_11 = 1;
@@ -3085,20 +3079,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_11 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 108, __pyx_L1_error)
+    __PYX_ERR(0, 104, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":110
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":106
  *     mat[0, 1] = p12_int_c(vza)
  * 
  *     mat[1, 0] = p21_int_c(vza)             # <<<<<<<<<<<<<<
  *     mat[1, 1] = p22_int_c(vza)
  * 
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p21_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_12 = 1;
   __pyx_t_13 = 0;
@@ -3113,20 +3107,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_13 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 110, __pyx_L1_error)
+    __PYX_ERR(0, 106, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":111
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":107
  * 
  *     mat[1, 0] = p21_int_c(vza)
  *     mat[1, 1] = p22_int_c(vza)             # <<<<<<<<<<<<<<
  * 
  *     mat[3, 3] = p44_int_c(vza)
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p22_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_14 = 1;
   __pyx_t_15 = 1;
@@ -3141,20 +3135,20 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_15 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 111, __pyx_L1_error)
+    __PYX_ERR(0, 107, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":113
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":109
  *     mat[1, 1] = p22_int_c(vza)
  * 
  *     mat[3, 3] = p44_int_c(vza)             # <<<<<<<<<<<<<<
  * 
  *     return mat
  */
-  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_p44_int_c(__pyx_v_vza); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_16 = 3;
   __pyx_t_17 = 3;
@@ -3169,11 +3163,11 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   } else if (unlikely(__pyx_t_17 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_9 = 1;
   if (unlikely(__pyx_t_9 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_9);
-    __PYX_ERR(0, 113, __pyx_L1_error)
+    __PYX_ERR(0, 109, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_6;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":115
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":111
  *     mat[3, 3] = p44_int_c(vza)
  * 
  *     return mat             # <<<<<<<<<<<<<<
@@ -3185,7 +3179,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   __pyx_r = ((PyObject *)__pyx_v_mat);
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":104
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":100
  *     return mat
  * 
  * cdef phase_matrix_int_c(DTYPE_t vza):             # <<<<<<<<<<<<<<
@@ -3217,7 +3211,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_ma
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":117
+/* "pyrism/scattering/rayleigh/phase/phase_c.pyx":113
  *     return mat
  * 
  * def phase_matrix(iza, vza, raa, integration=0):             # <<<<<<<<<<<<<<
@@ -3264,13 +3258,13 @@ static PyObject *__pyx_pw_6pyrism_10scattering_8rayleigh_5phase_7phase_c_1phase_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_vza)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, 1); __PYX_ERR(0, 117, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, 1); __PYX_ERR(0, 113, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_raa)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, 2); __PYX_ERR(0, 117, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, 2); __PYX_ERR(0, 113, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -3280,7 +3274,7 @@ static PyObject *__pyx_pw_6pyrism_10scattering_8rayleigh_5phase_7phase_c_1phase_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "phase_matrix") < 0)) __PYX_ERR(0, 117, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "phase_matrix") < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3300,7 +3294,7 @@ static PyObject *__pyx_pw_6pyrism_10scattering_8rayleigh_5phase_7phase_c_1phase_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 117, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("phase_matrix", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 113, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.scattering.rayleigh.phase.phase_c.phase_matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3323,20 +3317,20 @@ static PyObject *__pyx_pf_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_m
   __pyx_t_6pyrism_10scattering_8rayleigh_5phase_7phase_c_DTYPE_t __pyx_t_5;
   __Pyx_RefNannySetupContext("phase_matrix", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":118
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":114
  * 
  * def phase_matrix(iza, vza, raa, integration=0):
  *     if integration == 0:             # <<<<<<<<<<<<<<
  *         return phase_matrix_c(iza, vza, raa)
  *     if integration == 1:
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_integration, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_integration, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":119
+    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":115
  * def phase_matrix(iza, vza, raa, integration=0):
  *     if integration == 0:
  *         return phase_matrix_c(iza, vza, raa)             # <<<<<<<<<<<<<<
@@ -3344,16 +3338,16 @@ static PyObject *__pyx_pf_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_m
  *         return phase_matrix_int_c(vza)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_iza); if (unlikely((__pyx_t_3 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_vza); if (unlikely((__pyx_t_4 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
-    __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_raa); if (unlikely((__pyx_t_5 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
-    __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_matrix_c(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_v_iza); if (unlikely((__pyx_t_3 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_vza); if (unlikely((__pyx_t_4 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_raa); if (unlikely((__pyx_t_5 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_matrix_c(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":118
+    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":114
  * 
  * def phase_matrix(iza, vza, raa, integration=0):
  *     if integration == 0:             # <<<<<<<<<<<<<<
@@ -3362,44 +3356,40 @@ static PyObject *__pyx_pf_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_m
  */
   }
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":120
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":116
  *     if integration == 0:
  *         return phase_matrix_c(iza, vza, raa)
  *     if integration == 1:             # <<<<<<<<<<<<<<
  *         return phase_matrix_int_c(vza)
- * 
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_integration, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_integration, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":121
+    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":117
  *         return phase_matrix_c(iza, vza, raa)
  *     if integration == 1:
  *         return phase_matrix_int_c(vza)             # <<<<<<<<<<<<<<
- * 
- * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_vza); if (unlikely((__pyx_t_5 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L1_error)
-    __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_matrix_int_c(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_vza); if (unlikely((__pyx_t_5 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_5phase_7phase_c_phase_matrix_int_c(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":120
+    /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":116
  *     if integration == 0:
  *         return phase_matrix_c(iza, vza, raa)
  *     if integration == 1:             # <<<<<<<<<<<<<<
  *         return phase_matrix_int_c(vza)
- * 
  */
   }
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":117
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":113
  *     return mat
  * 
  * def phase_matrix(iza, vza, raa, integration=0):             # <<<<<<<<<<<<<<
@@ -5944,8 +5934,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyrism_scattering_rayleigh_phase_2, __pyx_k_pyrism_scattering_rayleigh_phase_2, sizeof(__pyx_k_pyrism_scattering_rayleigh_phase_2), 0, 0, 1, 1},
   {&__pyx_n_s_raa, __pyx_k_raa, sizeof(__pyx_k_raa), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_sci, __pyx_k_sci, sizeof(__pyx_k_sci), 0, 0, 1, 1},
-  {&__pyx_n_s_scipy, __pyx_k_scipy, sizeof(__pyx_k_scipy), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {&__pyx_n_s_vza, __pyx_k_vza, sizeof(__pyx_k_vza), 0, 0, 1, 1},
@@ -5966,31 +5954,31 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":86
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":82
  * 
  * cdef phase_matrix_c(DTYPE_t iza, DTYPE_t vza, DTYPE_t raa):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     mat[0, 0] = p11_c(iza, vza, raa)
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_tuple_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_tuple_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":105
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":101
  * 
  * cdef phase_matrix_int_c(DTYPE_t vza):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     mat[0, 0] = p11_int_c(vza)
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_tuple__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_tuple__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
@@ -6091,17 +6079,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":117
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":113
  *     return mat
  * 
  * def phase_matrix(iza, vza, raa, integration=0):             # <<<<<<<<<<<<<<
  *     if integration == 0:
  *         return phase_matrix_c(iza, vza, raa)
  */
-  __pyx_tuple__14 = PyTuple_Pack(4, __pyx_n_s_iza, __pyx_n_s_vza, __pyx_n_s_raa, __pyx_n_s_integration); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(4, __pyx_n_s_iza, __pyx_n_s_vza, __pyx_n_s_raa, __pyx_n_s_integration); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_scattering_rayleigh_phase, __pyx_n_s_phase_matrix, 117, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_scattering_rayleigh_phase, __pyx_n_s_phase_matrix, 113, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6372,61 +6360,49 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":3
- * # cython: cdivision=True
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":4
  * 
- * import scipy as sci             # <<<<<<<<<<<<<<
- * cimport numpy as np
- * import numpy as np
- */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_scipy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sci, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":5
- * import scipy as sci
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
  * from libc.math cimport cos, sin, pow, pi
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":11
- * cimport cython
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":7
+ * from libc.math cimport cos, sin, pow, pi
  * 
  * DTYPE = np.float             # <<<<<<<<<<<<<<
  * ctypedef np.float_t DTYPE_t
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":117
+  /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":113
  *     return mat
  * 
  * def phase_matrix(iza, vza, raa, integration=0):             # <<<<<<<<<<<<<<
  *     if integration == 0:
  *         return phase_matrix_c(iza, vza, raa)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_10scattering_8rayleigh_5phase_7phase_c_1phase_matrix, NULL, __pyx_n_s_pyrism_scattering_rayleigh_phase_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_10scattering_8rayleigh_5phase_7phase_c_1phase_matrix, NULL, __pyx_n_s_pyrism_scattering_rayleigh_phase_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_phase_matrix, __pyx_t_2) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_phase_matrix, __pyx_t_2) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pyrism/scattering/rayleigh/phase/phase_c.pyx":1
  * # cython: cdivision=True             # <<<<<<<<<<<<<<
  * 
- * import scipy as sci
+ * cimport numpy as np
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

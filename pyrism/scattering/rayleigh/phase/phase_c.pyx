@@ -1,5 +1,6 @@
 # cython: cdivision=True
 
+cimport numpy as np
 import numpy as np
 from libc.math cimport cos, sin, pow, pi
 
