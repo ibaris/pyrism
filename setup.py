@@ -30,15 +30,19 @@ ext_modules = []
 
 if use_cython:
     ext_modules += [
-        Extension("pyrism.scattering.rayleigh.phase.phase_c",
-                  ["pyrism/scattering/rayleigh/phase/phase_c.pyx"], include_dirs=['.'])]
+        Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
+                  ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx"], include_dirs=['.']),
+        Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
+                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx"], include_dirs=['.'])]
 
     cmdclass.update({'build_ext': build_ext})
 
 else:
     ext_modules += [
-        Extension("pyrism.scattering.rayleigh.phase.phase_c",
-                  ["pyrism/scattering/rayleigh/phase/phase_c.c"], include_dirs=['.'])]
+        Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
+                  ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.c"], include_dirs=['.']),
+        Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
+                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.c"], include_dirs=['.'])]
 
 
 def get_packages():

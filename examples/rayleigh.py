@@ -8,14 +8,6 @@ iza = 35  # Incidence zenith angle
 vza = 30  # Viewing zenith angle
 raa = 50  # Relative azimuth angle
 
-ray = pyr.Rayleigh(frequency=1.26, particle_size=0.010, diel_constant_p=(0.25 + 0.1j))
+ray = pyr.Rayleigh(frequency=1.26, radius=0.010, eps_p=(0.25 + 0.1j))
 
-ray.phase_matrix(iza, vza, raa, normalize=False, integrate=True)
-
-mat = pyr.Rayleigh.phase_matrix(iza, vza, raa)
-
-iza = np.arange(30, 35, 1)  # Incidence zenith angle
-vza = np.arange(25, 30, 1)  # Viewing zenith angle
-raa = np.arange(40, 45, 1)  # Relative azimuth angle
-
-ray.phase_matrix(iza, vza, raa, normalize=False, integrate=True)
+ray.pmatrix(iza, vza, raa, dblquad=True)

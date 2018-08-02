@@ -1,1 +1,1 @@
-from rscatt import Rayleigh
+from rayleigh import Rayleigh
