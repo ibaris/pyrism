@@ -1,5 +1,5 @@
-from .core.rayleigh_scatt_c import rayleigh_scattering_wrapper
-from .core.rayleigh_phase_c import pmatrix_wrapper, dblquad_c_wrapper
+from pyrism.scattering.rayleigh.core.rayleigh_scatt_c import rayleigh_scattering_wrapper
+from pyrism.scattering.rayleigh.core.rayleigh_phase_c import pmatrix_wrapper, dblquad_c_wrapper
 import warnings
 import numpy as np
 from ...core import Kernel
