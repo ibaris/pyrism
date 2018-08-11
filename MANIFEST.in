@@ -1,1 +1,2 @@
 recursive-include pyrism/data *.txt
+recursive-include pyrism/scattering/rayleigh *.c
