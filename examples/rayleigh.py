@@ -10,4 +10,6 @@ raa = 50  # Relative azimuth angle
 
 ray = pyr.Rayleigh(frequency=1.26, radius=0.010, eps_p=(0.25 + 0.1j))
 
-ray.pmatrix(iza, vza, raa, dblquad=True)
+ray.pmatrix(iza, vza, raa, dblquad=False)
+
+mie = pyr.Mie(frequency=1.26, radius=0.010, eps_p=(0.25 + 0.1j))

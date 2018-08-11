@@ -33,7 +33,9 @@ if use_cython:
         Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
                   ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx"], include_dirs=['.']),
         Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx"], include_dirs=['.'])]
+                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx"], include_dirs=['.'])
+
+    ]
 
     cmdclass.update({'build_ext': build_ext})
 
@@ -42,7 +44,9 @@ else:
         Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
                   ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.c"], include_dirs=['.']),
         Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.c"], include_dirs=['.'])]
+                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.c"], include_dirs=['.'])
+
+    ]
 
 
 def get_packages():
@@ -52,7 +56,7 @@ def get_packages():
 
 setup(name='pyrism',
 
-      version='0.0.5',
+      version='1.0.0',
 
       description='Python bindings for Remote Sensing Models',
 

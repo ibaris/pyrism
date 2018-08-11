@@ -77,7 +77,7 @@ def p44_sym(sym_iza, sym_vza, sym_raa):
 
 
 def phase_matrix_sym(sym_iza, sym_vza, sym_raa):
-    mat = np.zeros((4, 4), dtype=np.float)
+    mat = np.zeros((4, 4), dtype=np.object)
 
     mat[0, 0] = p11_sym(sym_iza, sym_vza, sym_raa)
     mat[0, 1] = p12_sym(sym_iza, sym_vza, sym_raa)

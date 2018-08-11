@@ -1,7 +1,6 @@
 import pytest
 from numpy import allclose
-
-from pyrism import DielConstant
+from pyrism import EPS
 
 
 @pytest.mark.webtest
@@ -10,17 +9,17 @@ from pyrism import DielConstant
 ])
 class TestDielConst:
     def test_water(self, freq, temp, sal, S, C, mv, rho_b, mg, water_true, water_sal_true, soil_true, veg_true):
-        r = DielConstant.water(freq, temp)
+        r = EPS.water(freq, temp)
         assert allclose(r, water_true, atol=1e-4)
 
     def test_water_sal(self, freq, temp, sal, S, C, mv, rho_b, mg, water_true, water_sal_true, soil_true, veg_true):
-        r = DielConstant.saline_water(freq, temp, sal)
+        r = EPS.saline_water(freq, temp, sal)
         assert allclose(r, water_sal_true, atol=1e-4)
 
     def test_soil(self, freq, temp, sal, S, C, mv, rho_b, mg, water_true, water_sal_true, soil_true, veg_true):
-        r = DielConstant.soil(freq, temp, S, C, mv, rho_b)
+        r = EPS.soil(freq, temp, S, C, mv, rho_b)
         assert allclose(r, soil_true, atol=1e-4)
 
     def test_veg(self, freq, temp, sal, S, C, mv, rho_b, mg, water_true, water_sal_true, soil_true, veg_true):
-        r = DielConstant.vegetation(freq, mg)
+        r = EPS.vegetation(freq, mg)
         assert allclose(r, veg_true, atol=1e-4)

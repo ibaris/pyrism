@@ -1,1 +1,1 @@
-recursive-include pyrism/models *.txt
+recursive-include pyrism/data *.txt

@@ -16,11 +16,11 @@ from pyrism import I2EM
 ])
 class TestI2EM:
     def test_i2emVV(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
-        eim = I2EM(iza, vza, raa, frequency=frequency, diel_constant=diel_constant, corrlength=corrlength, sigma=sigma)
+        eim = I2EM(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength, sigma=sigma)
         assert allclose(outVV, eim.BSC.VVdB[0], atol=1e-1)
 
     def test_i2emHH(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
-        eim = I2EM(iza, vza, raa, frequency=frequency, diel_constant=diel_constant, corrlength=corrlength, sigma=sigma)
+        eim = I2EM(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength, sigma=sigma)
         assert allclose(outHH, eim.BSC.HHdB[0], atol=1e-1)
 
 
@@ -36,11 +36,11 @@ class TestI2EM:
 ])
 class TestI2EMEMS:
     def test_i2em_ems_VV(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
-        eim = I2EM.Emissivity(iza, vza, raa, frequency=frequency, diel_constant=diel_constant, corrlength=corrlength,
+        eim = I2EM.Emissivity(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength,
                               sigma=sigma)
         assert allclose(outVV, eim.EMS.VV[0], atol=1e-1)
 
     def test_i2em_ems_HH(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
-        eim = I2EM.Emissivity(iza, vza, raa, frequency=frequency, diel_constant=diel_constant, corrlength=corrlength,
+        eim = I2EM.Emissivity(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength,
                               sigma=sigma)
         assert allclose(outHH, eim.EMS.HH[0], atol=1e-1)

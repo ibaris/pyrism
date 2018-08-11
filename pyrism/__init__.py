@@ -1,4 +1,5 @@
-from scattering import Rayleigh
+from scattering import Rayleigh, Mie
+from soil import I2EM, LSM
+import EPS
+from volume import VolScatt, LIDF, PROSPECT, SAIL
 from .core import (ReflectanceResult, EmissivityResult, SailResult)
-from .models import (VolScatt, LIDF, PROSPECT, Mie, DielConstant, CorrFunc, exponential, gaussian, xpower,
-                     I2EM, LSM, SAIL)
