@@ -61,8 +61,6 @@ setup(name='pyrism',
       description='Python bindings for Remote Sensing Models',
 
       packages=get_packages(),
-      package_dir={'core': 'core', 'data': 'data', 'EPS': 'EPS', 'scattering': 'scattering',
-                   'soil': 'soil', 'volume': 'volume'},
 
       cmdclass=cmdclass,
 
@@ -104,3 +102,5 @@ setup(name='pyrism',
           'pytest',
       ],
       )
+
+print ('******** Compiling with CYTHON accomplished ******')
