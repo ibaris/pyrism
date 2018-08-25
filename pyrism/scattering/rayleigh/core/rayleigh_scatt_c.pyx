@@ -24,6 +24,7 @@ cdef rayleigh_scattering_c(float frequency, float radius, double complex eps_p, 
     cdef float omega = ks / ke
 
     return ks, ka, kt, ke, omega, bsc
+
 def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,
                                 double complex eps_b):
     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)

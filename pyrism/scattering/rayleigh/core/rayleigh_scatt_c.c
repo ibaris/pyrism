@@ -1812,8 +1812,8 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c
  *     cdef float omega = ks / ke
  * 
  *     return ks, ka, kt, ke, omega, bsc             # <<<<<<<<<<<<<<
+ * 
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,
- *                                 double complex eps_b):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2 = PyFloat_FromDouble(__pyx_v_ks); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -1877,9 +1877,9 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c
   return __pyx_r;
 }
 
-/* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":27
- * 
+/* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":28
  *     return ks, ka, kt, ke, omega, bsc
+ * 
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,             # <<<<<<<<<<<<<<
  *                                 double complex eps_b):
  *     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)
@@ -1923,23 +1923,23 @@ static PyObject *__pyx_pw_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_radius)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 27, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_eps_p)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 27, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_eps_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 27, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 28, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rayleigh_scattering_wrapper") < 0)) __PYX_ERR(0, 27, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "rayleigh_scattering_wrapper") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -1949,14 +1949,14 @@ static PyObject *__pyx_pw_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_frequency = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_frequency == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
-    __pyx_v_radius = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_radius == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
-    __pyx_v_eps_p = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
-    __pyx_v_eps_b = __Pyx_PyComplex_As___pyx_t_double_complex(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_frequency = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_frequency == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_radius = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_radius == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_eps_p = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_eps_b = __Pyx_PyComplex_As___pyx_t_double_complex(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 27, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("rayleigh_scattering_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.scattering.rayleigh.core.rayleigh_scatt_c.rayleigh_scattering_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1975,21 +1975,21 @@ static PyObject *__pyx_pf_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("rayleigh_scattering_wrapper", 0);
 
-  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":29
+  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":30
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,
  *                                 double complex eps_b):
  *     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c_rayleigh_scattering_c(__pyx_v_frequency, __pyx_v_radius, __pyx_v_eps_p, __pyx_v_eps_b); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c_rayleigh_scattering_c(__pyx_v_frequency, __pyx_v_radius, __pyx_v_eps_p, __pyx_v_eps_b); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":27
- * 
+  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":28
  *     return ks, ka, kt, ke, omega, bsc
+ * 
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,             # <<<<<<<<<<<<<<
  *                                 double complex eps_b):
  *     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)
@@ -4645,17 +4645,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":27
- * 
+  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":28
  *     return ks, ka, kt, ke, omega, bsc
+ * 
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,             # <<<<<<<<<<<<<<
  *                                 double complex eps_b):
  *     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)
  */
-  __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_frequency, __pyx_n_s_radius, __pyx_n_s_eps_p, __pyx_n_s_eps_b); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_frequency, __pyx_n_s_radius, __pyx_n_s_eps_p, __pyx_n_s_eps_b); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_scattering_rayleigh_core, __pyx_n_s_rayleigh_scattering_wrapper, 27, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_scattering_rayleigh_core, __pyx_n_s_rayleigh_scattering_wrapper, 28, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4946,16 +4946,16 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_cmath, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":27
- * 
+  /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":28
  *     return ks, ka, kt, ke, omega, bsc
+ * 
  * def rayleigh_scattering_wrapper(float frequency, float radius, double complex eps_p,             # <<<<<<<<<<<<<<
  *                                 double complex eps_b):
  *     return rayleigh_scattering_c(frequency, radius, eps_p, eps_b)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c_1rayleigh_scattering_wrapper, NULL, __pyx_n_s_pyrism_scattering_rayleigh_core_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_10scattering_8rayleigh_4core_16rayleigh_scatt_c_1rayleigh_scattering_wrapper, NULL, __pyx_n_s_pyrism_scattering_rayleigh_core_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rayleigh_scattering_wrapper, __pyx_t_1) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_rayleigh_scattering_wrapper, __pyx_t_1) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx":1

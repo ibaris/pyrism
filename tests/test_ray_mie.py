@@ -2,6 +2,7 @@ import pytest
 from numpy import allclose, array
 
 from pyrism import Rayleigh, Mie
+import numpy as np
 
 
 # ---- Test Rayleigh ----
@@ -9,7 +10,7 @@ from pyrism import Rayleigh, Mie
 # Test coefficients
 @pytest.mark.webtest
 @pytest.mark.parametrize("freq, a, eps_1, eps_2, ks_true, ka_true, ke_true, s0_true", [
-    (1.26, 0.010, 0.25 + 0.1j, 1 + 1j, 0.0019, 0.0501, 0.0520, 0.0028)
+    (1.26, 1, 0.25 + 0.1j, 1 + 1j, 0.0019, 0.0501, 0.0520, 0.0028)
 ])
 class TestScatteringRayCoef:
     """
@@ -24,6 +25,18 @@ class TestScatteringRayCoef:
         assert allclose(round(r.ka, 4), ka_true, atol=1e-4)
         assert allclose(round(r.ke, 4), ke_true, atol=1e-4)
         assert allclose(round(r.BSC, 4), s0_true, atol=1e-4)
+
+    def rest_rayleigh_length(self, freq, a, eps_1, eps_2, ks_true, ka_true, ke_true, s0_true):
+        # After that we specify the sensing geometry we want to simulate
+        radius = np.arange(0, 0.0205, 0.0005)
+
+        ray = Rayleigh(frequency=1.26, radius=radius, eps_p=(0.25 + 0.1j))
+
+        assert len(ray.ks) == len(radius)
+        assert len(ray.ka) == len(radius)
+        assert len(ray.ke) == len(radius)
+        assert len(ray.BSC) == len(radius)
+
 
 
 # The "true" values are calculated with sympy.integrate. Look at sympy_integrate_results_rayleig_phase.py in the test
@@ -40,19 +53,40 @@ class TestScatteringRayPhase:
     """
 
     def test_rayleighphase(self, p11, p12, p21, p22, iza, vza, raa):
-        mat = Rayleigh.pmatrix(iza, vza, raa, dblquad=True)
+        mat = Rayleigh.Phase(iza, vza, raa)
+        mat.dblquad()
 
-        p11_ = mat[0, 0]
-        p12_ = mat[0, 1]
+        p11_ = mat.p11
+        p12_ = mat.p12
 
-        p21_ = mat[1, 0]
-        p22_ = mat[1, 1]
+        p21_ = mat.p21
+        p22_ = mat.p22
 
         assert allclose(p11_, p11, atol=1e-4)
         assert allclose(p12_, p12, atol=1e-4)
 
         assert allclose(p21_, p21, atol=1e-4)
         assert allclose(p22_, p22, atol=1e-4)
+
+    def test_rayleighphase2(self, p11, p12, p21, p22, iza, vza, raa):
+        iza = np.arange(10, 30, 1)  # Incidence zenith angle
+        vza = 30  # Viewing zenith angle
+        raa = 50  # Relative azimuth angle
+
+        mat = Rayleigh.Phase(iza, vza, raa)
+        mat.dblquad()
+
+        p11_ = mat.p11
+        p12_ = mat.p12
+
+        p21_ = mat.p21
+        p22_ = mat.p22
+
+        assert len(p11_) == len(iza)
+        assert len(p12_) == len(iza)
+
+        assert len(p21_) == len(iza)
+        assert len(p22_) == len(iza)
 
 #
 # # ---- Test Mie ----

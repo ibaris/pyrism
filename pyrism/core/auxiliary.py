@@ -348,6 +348,9 @@ def asarrays(data):
     return [np.asarray(item).flatten() for item in data]
 
 
+def same_len(args):
+    return all(len(item) == len(args[0]) for item in args)
+
 def load_param():
     sensing = Memorize(freq=1.26,
                        iza=35,
