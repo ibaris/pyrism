@@ -40,6 +40,8 @@ if use_cython:
 
     cmdclass.update({'build_ext': build_ext})
 
+    print ('******** Compiling with CYTHON accomplished ******')
+
 else:
     ext_modules += [
         Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
@@ -50,6 +52,7 @@ else:
                   ["pyrism/soil/fresnel/core/auxiliary.c"], include_dirs=['.'])
     ]
 
+    print ('******** CYTHON Not Found. Use distributed .c files *******')
 
 def get_packages():
     find_packages(exclude=['docs', 'tests']),
@@ -105,4 +108,4 @@ setup(name='pyrism',
       ],
       )
 
-print ('******** Compiling with CYTHON accomplished ******')
+print ('******** Installation completed ******')
