@@ -32,18 +32,14 @@ class SoilResult(dict):
     Returns
     -------
     All returns are attributes!
-    BSC.ref, BSC.refdB : array_like
-        Radar Backscatter values (polarization-independent).
-    BSC.VV, BSC.HH, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
-        Radar Backscatter values (polarization-dependent). BSC.array contains the results as an array like array([[BSC.VV], [BSC.HH]]).
-    BRDF.ref, BRDF.refdB : array_like
-        BRDF reflectance values (polarization-independent).
-    BRDF.VV, BRDF.HH, BRDF.VVdB, BRDF.HHdB, BRDF.array, BRDF,arraydB : array_like
-        BRDF reflectance values (polarization-dependent). BRDF.array contains the results as an array like array([[BRDF.VV], [BRDF.HH]]).
-    BRF.ref, BRF.refdB : array_like
-        BRF reflectance values (polarization-independent).
-    BRF.VV, BRF.HH, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
+    BSC.ISO, BSC.VV, BSC.HH, BSC.ISOdB, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
+        Radar Backscatter values. BSC.array contains the results as an array like array([[BSC.VV], [BSC.HH]]).
+    I.ISO, I.VV, I.HH, I.ISOdB, I.VVdB, I.HHdB, I.array, I,arraydB : array_like
+        Intensity (BRDF) values. BRDF.array contains the results as an array like array([[BRDF.VV], [BRDF.HH]]).
+    BRF.ISO, BRF.VV, BRF.HH, BRF.ISOdB, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
         BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([[BRF.VV], [BRF.HH]]).
+    E.ISO, E.VV, E.HH, E.ISOdB, E.VVdB, E.HHdB, E.array, E,arraydB : array_like
+        Emissivity values. E.array contains the results as an array like array([[E.VV], [E.HH]]).
 
     Notes
     -----
@@ -51,10 +47,6 @@ class SoilResult(dict):
     specific solver. Since this class is essentially a subclass of dict
     with attribute accessors, one can see which attributes are available
     using the `keys()` method. adar Backscatter values of multi scattering contribution of surface and volume
-
-    The attribute 'ms' is the multi scattering contribution. This is only available if it is calculated. For detailed
-    parametrisation one can use BSC.ms.sms or BSC.ms.smv for the multiple scattering contribution of surface or volume,
-    respectively.
     """
 
     def __getattr__(self, name):

@@ -1,27 +1,46 @@
 from __future__ import division, print_function, absolute_import
 
-from .core.auxiliary import reflectivity_wrapper, transmissivity_wrapper, quad_wrapper, snell_wrapper
-from ...core import SoilResult
-
-from radarpy import Angles, align_all, asarrays, BSC, BRF, dB
-
 import sys
 
 import numpy as np
-import scipy as sp
-from numpy import cos, pi
+from radarpy import Angles, align_all, asarrays, BSC, BRF, dB, stacks
+
+from .core.auxiliary import reflectivity_wrapper, transmissivity_wrapper, quad_wrapper, snell_wrapper
+from ...core import SoilResult
 
 EPSILON = sys.float_info.epsilon  # typical floating-point calculation error
 
 
 class Fresnel(Angles):
-    def __init__(self, iza, frequency, n1, n2, sigma, normalize=False, nbar=0.0, angle_unit='DEG', isometric=False,
+    def __init__(self, iza, frequency, n1, n2, sigma, normalize=False, nbar=0.0, angle_unit='DEG',
                  x=[0, np.pi / 2]):
-
+        """
+        Parameters
+        ----------
+        iza, : int, float or ndarray
+            Incidence (iza) zenith angle.
+        normalize : boolean, optional
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        nbar : float, optional
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. The default value is 0.0.
+        angle_unit : {'DEG', 'RAD'}, optional
+            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency : int or float
+            Frequency (GHz).
+        n1, n2 : complex
+            Complex refractive indices of incident (n1) and underlying (n2) medium.
+        sigma : int or float
+            RMS Height (cm)
+        x : list
+            Integration lower and upper bound as a list to calculate the emissivity. Default ist x=[0, pi/2].
+        """
         frequency, sigma = asarrays((frequency, sigma))
         n1, n2 = asarrays((n1, n2))
 
-        self.iso = 0 if not isometric else 1
+        self.iso = 1
 
         self.frequency = frequency
         self.k0 = 2 * np.pi * frequency / 30
@@ -40,6 +59,9 @@ class Fresnel(Angles):
         self.sigma = sigma.real
         self.iza = iza.real
         self.rza = self.__rza_calc()
+
+        self.h = 4 * self.sigma ** 2 * self.k0 ** 2
+        self.loss = np.exp(-self.h * np.cos(self.iza) ** 2)
 
         self.__rmatrix = self.__rcalc()
         self.__tmatrix = self.__tcalc()
@@ -62,10 +84,10 @@ class Fresnel(Angles):
         if len(self.iza) > 1:
             matrix = list()
             for i in range(self.iza.shape[0]):
-                matrix.append(reflectivity_wrapper(self.iza[i], self.n1[i], self.n2[i], self.iso))
+                matrix.append(reflectivity_wrapper(self.iza[i], self.n1[i], self.n2[i], self.iso) * self.loss[i])
 
         else:
-            matrix = reflectivity_wrapper(self.iza[0], self.n1[0], self.n2[0], self.iso)
+            matrix = reflectivity_wrapper(self.iza[0], self.n1[0], self.n2[0], self.iso) * self.loss
 
         return matrix
 
@@ -133,6 +155,8 @@ class Fresnel(Angles):
                             VH=self.__pol(self.__rmatrix, 'VH'),
                             HV=self.__pol(self.__rmatrix, 'HV'))
 
+        self.I['array'] = stacks((self.I.ISO, self.I.VV, self.I.HH, self.I.VH, self.I.HV))
+
         self.BSC = SoilResult(ISO=BSC(self.I.ISO, self.vza),
                               VV=BSC(self.I.VV, self.vza),
                               HH=BSC(self.I.HH, self.vza),
@@ -145,17 +169,24 @@ class Fresnel(Angles):
                               VHdB=dB(BSC(self.I.VH, self.vza)),
                               HVdB=dB(BSC(self.I.HV, self.vza)))
 
+        self.BSC['array'] = stacks((self.BSC.ISO, self.BSC.VV, self.BSC.HH, self.BSC.VH, self.BSC.HV))
+        self.BSC['arraydB'] = stacks((self.BSC.ISOdB, self.BSC.VVdB, self.BSC.HHdB, self.BSC.VHdB, self.BSC.HVdB))
+
         self.BRF = SoilResult(ISO=BRF(self.I.ISO),
                               VV=BRF(self.I.VV),
                               HH=BRF(self.I.HH),
                               VH=BRF(self.I.VH),
                               HV=BRF(self.I.HV))
 
+        self.BRF['array'] = stacks((self.BRF.ISO, self.BRF.VV, self.BRF.HH, self.BRF.VH, self.BRF.HV))
+
         self.E = SoilResult(ISO=self.__pol(self.__ematrix, 'iso'),
                             VV=self.__pol(self.__ematrix, 'VV'),
                             HH=self.__pol(self.__ematrix, 'HH'),
                             VH=self.__pol(self.__ematrix, 'VH'),
                             HV=self.__pol(self.__ematrix, 'HV'))
+
+        self.E['array'] = stacks((self.E.ISO, self.E.VV, self.E.HH, self.E.VH, self.E.HV))
 
     def __pol(self, input, pol):
         if self.iso == 0:
@@ -203,13 +234,9 @@ class Fresnel(Angles):
                 return np.sum(input[selection])
 
     @property
-    def ematrix(self):
-        return self.__ematrix
-
-    @property
     def rmatrix(self):
         return self.__rmatrix
 
     @property
-    def tmatrix(self):
-        return self.__tmatrix
+    def ematrix(self):
+        return self.__ematrix

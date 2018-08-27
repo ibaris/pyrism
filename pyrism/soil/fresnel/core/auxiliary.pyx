@@ -3,7 +3,7 @@ from __future__ import division
 
 cimport numpy as np
 import numpy as np
-from libc.math cimport pow, pi, sqrt, abs, asin, cos
+from libc.math cimport pow, pi, abs, cos
 import cmath
 from scipy.integrate import quad as squad
 
@@ -117,10 +117,8 @@ cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
 cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     V, H = reflection_c(xza, n1, n2)
 
-    cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,
-                                                                                                        n2) + r44(xza,
-                                                                                                                  n1,
-                                                                                                                  n2)) / 4
+    cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
+                        + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
 
     return iso
 
@@ -137,22 +135,22 @@ cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
 cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     V, H = reflection_c(xza, n1, n2)
 
-    return np.real(V * np.conjugate(H))
+    return 0  # np.real(V * np.conjugate(H))
 
 cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     V, H = reflection_c(xza, n1, n2)
 
-    return -np.imag(V * np.conjugate(H))
+    return 0  #-np.imag(V * np.conjugate(H))
 
 cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     V, H = reflection_c(xza, n1, n2)
 
-    return np.imag(V * np.conjugate(H))
+    return 0  # np.imag(V * np.conjugate(H))
 
 cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     V, H = reflection_c(xza, n1, n2)
 
-    return np.real(V * np.conjugate(H))
+    return 0  #np.real(V * np.conjugate(H))
 
 cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)

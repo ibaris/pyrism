@@ -1728,7 +1728,6 @@ static const char __pyx_k_sin[] = "sin";
 static const char __pyx_k_xza[] = "xza";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_asin[] = "asin";
-static const char __pyx_k_imag[] = "imag";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_quad[] = "quad";
 static const char __pyx_k_real[] = "real";
@@ -1804,7 +1803,6 @@ static PyObject *__pyx_n_s_cos;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_error_string;
 static PyObject *__pyx_n_s_float;
-static PyObject *__pyx_n_s_imag;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_is_forward_angle;
 static PyObject *__pyx_n_s_iso;
@@ -1848,6 +1846,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap(PyObject *__pyx_self, __pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2); /* proto */
 static PyObject *__pyx_tp_new___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_4;
 static PyObject *__pyx_int_5;
 static PyObject *__pyx_tuple_;
@@ -3680,7 +3679,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_t_6py
  * cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
- *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,
+ *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
  */
   __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3738,9 +3737,9 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_t_6py
   /* "pyrism/soil/fresnel/core/auxiliary.pyx":120
  *     V, H = reflection_c(xza, n1, n2)
  * 
- *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,             # <<<<<<<<<<<<<<
- *                                                                                                         n2) + r44(xza,
- *                                                                                                                   n1,
+ *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)             # <<<<<<<<<<<<<<
+ *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
+ * 
  */
   __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3756,72 +3755,48 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_t_6py
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":121
+ * 
+ *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
+ *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4             # <<<<<<<<<<<<<<
+ * 
+ *     return iso
+ */
+  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":121
- * 
- *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,
- *                                                                                                         n2) + r44(xza,             # <<<<<<<<<<<<<<
- *                                                                                                                   n1,
- *                                                                                                                   n2)) / 4
- */
-  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":120
- *     V, H = reflection_c(xza, n1, n2)
- * 
- *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,             # <<<<<<<<<<<<<<
- *                                                                                                         n2) + r44(xza,
- *                                                                                                                   n1,
- */
-  __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":121
- * 
- *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2) + r34(xza, n1, n2) + r43(xza, n1,
- *                                                                                                         n2) + r44(xza,             # <<<<<<<<<<<<<<
- *                                                                                                                   n1,
- *                                                                                                                   n2)) / 4
- */
   __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":123
- *                                                                                                         n2) + r44(xza,
- *                                                                                                                   n1,
- *                                                                                                                   n2)) / 4             # <<<<<<<<<<<<<<
- * 
- *     return iso
- */
-  __pyx_t_3 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_TrueDivideObjC(__pyx_t_2, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_6 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_iso = __pyx_t_6;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":125
- *                                                                                                                   n2)) / 4
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":123
+ *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
  * 
  *     return iso             # <<<<<<<<<<<<<<
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_iso); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_iso); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -3851,7 +3826,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":127
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":125
  *     return iso
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3872,14 +3847,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
   double __pyx_t_6;
   __Pyx_RefNannySetupContext("r11", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":128
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":126
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return pow(abs(V), 2)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -3887,7 +3862,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 126, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -3900,15 +3875,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -3916,7 +3891,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -3924,7 +3899,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 126, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -3932,7 +3907,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":130
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":128
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return pow(abs(V), 2)             # <<<<<<<<<<<<<<
@@ -3940,17 +3915,17 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Absolute(__pyx_v_V); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Absolute(__pyx_v_V); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(pow(__pyx_t_6, 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(pow(__pyx_t_6, 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":127
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":125
  *     return iso
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3974,7 +3949,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":132
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":130
  *     return pow(abs(V), 2)
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3995,14 +3970,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
   double __pyx_t_6;
   __Pyx_RefNannySetupContext("r22", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":133
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":131
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return pow(abs(H), 2)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4010,7 +3985,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 133, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -4023,15 +3998,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -4039,7 +4014,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -4047,7 +4022,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 133, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -4055,7 +4030,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":135
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":133
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return pow(abs(H), 2)             # <<<<<<<<<<<<<<
@@ -4063,17 +4038,17 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Absolute(__pyx_v_H); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Absolute(__pyx_v_H); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(pow(__pyx_t_6, 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(pow(__pyx_t_6, 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":132
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":130
  *     return pow(abs(V), 2)
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4097,7 +4072,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":137
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":135
  *     return pow(abs(H), 2)
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4106,8 +4081,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_t_6py
  */
 
 static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
-  PyObject *__pyx_v_V = NULL;
-  PyObject *__pyx_v_H = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4115,18 +4090,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("r33", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":138
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":136
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
- *     return np.real(V * np.conjugate(H))
+ *     return 0  # np.real(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4134,7 +4107,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 138, __pyx_L1_error)
+      __PYX_ERR(0, 136, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -4147,15 +4120,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 136, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -4163,7 +4136,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -4171,7 +4144,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 138, __pyx_L1_error)
+    __PYX_ERR(0, 136, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -4179,121 +4152,19 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":140
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":138
  *     V, H = reflection_c(xza, n1, n2)
  * 
- *     return np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
+ *     return 0  # np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_real); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_conjugate); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  if (!__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_H); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
-      __Pyx_INCREF(__pyx_v_H);
-      __Pyx_GIVEREF(__pyx_v_H);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_H);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_V, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
-      __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":137
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":135
  *     return pow(abs(H), 2)
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4307,8 +4178,6 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.r33", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -4319,8 +4188,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":142
- *     return np.real(V * np.conjugate(H))
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":140
+ *     return 0  # np.real(V * np.conjugate(H))
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4328,8 +4197,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_t_6py
  */
 
 static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
-  PyObject *__pyx_v_V = NULL;
-  PyObject *__pyx_v_H = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4337,18 +4206,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("r34", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":143
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":141
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
- *     return -np.imag(V * np.conjugate(H))
+ *     return 0  #-np.imag(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4356,7 +4223,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 143, __pyx_L1_error)
+      __PYX_ERR(0, 141, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -4369,15 +4236,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -4385,7 +4252,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 141, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -4393,7 +4260,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 143, __pyx_L1_error)
+    __PYX_ERR(0, 141, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -4401,125 +4268,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":145
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":143
  *     V, H = reflection_c(xza, n1, n2)
  * 
- *     return -np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
+ *     return 0  #-np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_imag); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_conjugate); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  if (!__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_H); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
-      __Pyx_INCREF(__pyx_v_H);
-      __Pyx_GIVEREF(__pyx_v_H);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_H);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_V, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
-      __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Negative(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":142
- *     return np.real(V * np.conjugate(H))
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":140
+ *     return 0  # np.real(V * np.conjugate(H))
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4532,8 +4294,6 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.r34", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -4544,8 +4304,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":147
- *     return -np.imag(V * np.conjugate(H))
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":145
+ *     return 0  #-np.imag(V * np.conjugate(H))
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4553,8 +4313,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_t_6py
  */
 
 static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
-  PyObject *__pyx_v_V = NULL;
-  PyObject *__pyx_v_H = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4562,18 +4322,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("r43", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":148
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":146
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
- *     return np.imag(V * np.conjugate(H))
+ *     return 0  # np.imag(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4581,7 +4339,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 148, __pyx_L1_error)
+      __PYX_ERR(0, 146, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -4594,15 +4352,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -4610,7 +4368,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 146, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -4618,7 +4376,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 148, __pyx_L1_error)
+    __PYX_ERR(0, 146, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -4626,122 +4384,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":150
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":148
  *     V, H = reflection_c(xza, n1, n2)
  * 
- *     return np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
+ *     return 0  # np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_imag); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_conjugate); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  if (!__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_H); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
-      __Pyx_INCREF(__pyx_v_H);
-      __Pyx_GIVEREF(__pyx_v_H);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_H);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_V, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 150, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
-      __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":147
- *     return -np.imag(V * np.conjugate(H))
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":145
+ *     return 0  #-np.imag(V * np.conjugate(H))
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4754,8 +4410,6 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.r43", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -4766,8 +4420,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":152
- *     return np.imag(V * np.conjugate(H))
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":150
+ *     return 0  # np.imag(V * np.conjugate(H))
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4775,8 +4429,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_t_6py
  */
 
 static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
-  PyObject *__pyx_v_V = NULL;
-  PyObject *__pyx_v_H = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4784,18 +4438,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("r44", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":153
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":151
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
- *     return np.real(V * np.conjugate(H))
+ *     return 0  #np.real(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4803,7 +4455,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 153, __pyx_L1_error)
+      __PYX_ERR(0, 151, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -4816,15 +4468,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -4832,7 +4484,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 153, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -4840,7 +4492,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 153, __pyx_L1_error)
+    __PYX_ERR(0, 151, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -4848,122 +4500,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":155
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":153
  *     V, H = reflection_c(xza, n1, n2)
  * 
- *     return np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
+ *     return 0  #np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_real); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 155, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_conjugate); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 155, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  if (!__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_H); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_H};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
-      __Pyx_INCREF(__pyx_v_H);
-      __Pyx_GIVEREF(__pyx_v_H);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_v_H);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_V, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 155, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_t_6};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3); __pyx_t_3 = NULL;
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
-      __pyx_t_6 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":152
- *     return np.imag(V * np.conjugate(H))
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":150
+ *     return 0  # np.imag(V * np.conjugate(H))
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     V, H = reflection_c(xza, n1, n2)
@@ -4976,8 +4526,6 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.r44", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -4988,8 +4536,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_t_6py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":157
- *     return np.real(V * np.conjugate(H))
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":155
+ *     return 0  #np.real(V * np.conjugate(H))
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
@@ -5053,38 +4601,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":158
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":156
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 158, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__2, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__2, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 158, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 156, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 158, __pyx_L1_error)
+      __PYX_ERR(0, 156, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -5092,38 +4640,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":159
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":157
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     V, H = reflection_c(xza, n1, n2)
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 157, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 159, __pyx_L1_error)
+      __PYX_ERR(0, 157, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -5131,14 +4679,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":161
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":159
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     if iso == 0:
  */
-  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
     PyObject* sequence = __pyx_t_3;
@@ -5146,7 +4694,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 161, __pyx_L1_error)
+      __PYX_ERR(0, 159, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -5159,15 +4707,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     __Pyx_INCREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_1);
     #else
-    __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext;
@@ -5175,7 +4723,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     __Pyx_GOTREF(__pyx_t_4);
     index = 1; __pyx_t_1 = __pyx_t_7(__pyx_t_2); if (unlikely(!__pyx_t_1)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_1);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_7(__pyx_t_2), 2) < 0) __PYX_ERR(0, 161, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_7(__pyx_t_2), 2) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
     __pyx_t_7 = NULL;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     goto __pyx_L4_unpacking_done;
@@ -5183,7 +4731,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_7 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 161, __pyx_L1_error)
+    __PYX_ERR(0, 159, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_4;
@@ -5191,7 +4739,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   __pyx_v_H = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":163
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":161
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -5201,16 +4749,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   __pyx_t_8 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_8) {
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":165
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":163
  *     if iso == 0:
  * 
  *         mat[0, 0] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 163, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_10 = 0;
     __pyx_t_11 = 0;
@@ -5225,20 +4773,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_11 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 165, __pyx_L1_error)
+      __PYX_ERR(0, 163, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":166
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":164
  * 
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_13 = 1;
     __pyx_t_14 = 1;
@@ -5253,20 +4801,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_14 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 166, __pyx_L1_error)
+      __PYX_ERR(0, 164, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":167
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":165
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_15 = 2;
     __pyx_t_16 = 2;
@@ -5281,20 +4829,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_16 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 167, __pyx_L1_error)
+      __PYX_ERR(0, 165, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":168
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":166
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_17 = 2;
     __pyx_t_18 = 3;
@@ -5309,20 +4857,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_18 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 168, __pyx_L1_error)
+      __PYX_ERR(0, 166, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":169
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":167
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 169, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_19 = 3;
     __pyx_t_20 = 2;
@@ -5337,20 +4885,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_20 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 169, __pyx_L1_error)
+      __PYX_ERR(0, 167, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":170
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":168
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_21 = 3;
     __pyx_t_22 = 3;
@@ -5365,11 +4913,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_22 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 170, __pyx_L1_error)
+      __PYX_ERR(0, 168, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":172
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":170
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  *         return mat             # <<<<<<<<<<<<<<
@@ -5381,7 +4929,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     __pyx_r = ((PyObject *)__pyx_v_mat);
     goto __pyx_L0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":163
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":161
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -5390,7 +4938,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
  */
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":176
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":174
  *     else:
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)             # <<<<<<<<<<<<<<
@@ -5398,9 +4946,9 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
  *         mat2[2, 2] = r22(xza, n1, n2)
  */
   /*else*/ {
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_23 = 0;
     __pyx_t_24 = 0;
@@ -5415,20 +4963,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_24 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 176, __pyx_L1_error)
+      __PYX_ERR(0, 174, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":177
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":175
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_25 = 1;
     __pyx_t_26 = 1;
@@ -5443,20 +4991,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_26 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 177, __pyx_L1_error)
+      __PYX_ERR(0, 175, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":178
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":176
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 178, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_27 = 2;
     __pyx_t_28 = 2;
@@ -5471,20 +5019,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_28 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 178, __pyx_L1_error)
+      __PYX_ERR(0, 176, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":179
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":177
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_29 = 3;
     __pyx_t_30 = 3;
@@ -5499,20 +5047,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_30 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 179, __pyx_L1_error)
+      __PYX_ERR(0, 177, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":180
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":178
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_31 = 3;
     __pyx_t_32 = 4;
@@ -5527,20 +5075,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_32 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 180, __pyx_L1_error)
+      __PYX_ERR(0, 178, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":181
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":179
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_33 = 4;
     __pyx_t_34 = 3;
@@ -5555,20 +5103,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_34 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 181, __pyx_L1_error)
+      __PYX_ERR(0, 179, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":182
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":180
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat2
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 182, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_35 = 4;
     __pyx_t_36 = 4;
@@ -5583,11 +5131,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     } else if (unlikely(__pyx_t_36 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_12 = 1;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 182, __pyx_L1_error)
+      __PYX_ERR(0, 180, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":184
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":182
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  *         return mat2             # <<<<<<<<<<<<<<
@@ -5600,8 +5148,8 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
     goto __pyx_L0;
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":157
- *     return np.real(V * np.conjugate(H))
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":155
+ *     return 0  #np.real(V * np.conjugate(H))
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
@@ -5637,7 +5185,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":186
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":184
  *         return mat2
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -5707,14 +5255,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":187
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":185
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     V, H = transmission_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmission_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmission_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -5722,7 +5270,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 187, __pyx_L1_error)
+      __PYX_ERR(0, 185, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -5735,15 +5283,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -5751,7 +5299,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 185, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -5759,7 +5307,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 187, __pyx_L1_error)
+    __PYX_ERR(0, 185, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_V = __pyx_t_2;
@@ -5767,38 +5315,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":189
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":187
  *     V, H = transmission_c(xza, n1, n2)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__6, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__6, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 189, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 187, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 189, __pyx_L1_error)
+      __PYX_ERR(0, 187, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -5806,38 +5354,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":190
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":188
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__8, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__8, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 190, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 188, __pyx_L1_error)
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 190, __pyx_L1_error)
+      __PYX_ERR(0, 188, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -5845,34 +5393,34 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":192
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":190
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  */
-  __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_8 = __Pyx_PyComplex_As___pyx_t_double_complex(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyComplex_As___pyx_t_double_complex(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_rza = __pyx_t_8;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":194
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":192
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  * 
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)             # <<<<<<<<<<<<<<
  * 
  *     if iso == 0:
  */
-  __pyx_t_2 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_cmath); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_cmath); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_cos); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_cos); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_rza); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_rza); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_9 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -5885,14 +5433,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     }
   }
   if (!__pyx_t_9) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_1};
-      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5901,42 +5449,42 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_9, __pyx_t_1};
-      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9); __pyx_t_9 = NULL;
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_real); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_real); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyFloat_FromDouble(__Pyx_CREAL(__Pyx_c_prod_double(__pyx_v_n2, __pyx_t_double_complex_from_parts(cos(__pyx_v_xza), 0)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__Pyx_CREAL(__Pyx_c_prod_double(__pyx_v_n2, __pyx_t_double_complex_from_parts(cos(__pyx_v_xza), 0)))); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_factor = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":196
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":194
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -5946,16 +5494,16 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   __pyx_t_11 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_11) {
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":198
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":196
  *     if iso == 0:
  * 
  *         mat[0, 0] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_13 = 0;
     __pyx_t_14 = 0;
@@ -5970,20 +5518,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_14 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 198, __pyx_L1_error)
+      __PYX_ERR(0, 196, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":199
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":197
  * 
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_16 = 1;
     __pyx_t_17 = 1;
@@ -5998,20 +5546,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_17 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 199, __pyx_L1_error)
+      __PYX_ERR(0, 197, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":200
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":198
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_18 = 2;
     __pyx_t_19 = 2;
@@ -6026,20 +5574,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_19 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 200, __pyx_L1_error)
+      __PYX_ERR(0, 198, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":201
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":199
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 201, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_20 = 2;
     __pyx_t_21 = 3;
@@ -6054,20 +5602,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_21 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 201, __pyx_L1_error)
+      __PYX_ERR(0, 199, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":202
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":200
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_22 = 3;
     __pyx_t_23 = 2;
@@ -6082,20 +5630,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_23 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 202, __pyx_L1_error)
+      __PYX_ERR(0, 200, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":203
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":201
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat * factor
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 201, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_24 = 3;
     __pyx_t_25 = 3;
@@ -6110,11 +5658,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_25 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 203, __pyx_L1_error)
+      __PYX_ERR(0, 201, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":205
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":203
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  *         return mat * factor             # <<<<<<<<<<<<<<
@@ -6122,13 +5670,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
  *     else:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyNumber_Multiply(((PyObject *)__pyx_v_mat), __pyx_v_factor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Multiply(((PyObject *)__pyx_v_mat), __pyx_v_factor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 203, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":196
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":194
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -6137,7 +5685,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
  */
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":209
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":207
  *     else:
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)             # <<<<<<<<<<<<<<
@@ -6145,9 +5693,9 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
  *         mat2[2, 2] = r22(xza, n1, n2)
  */
   /*else*/ {
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_26 = 0;
     __pyx_t_27 = 0;
@@ -6162,20 +5710,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_27 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 209, __pyx_L1_error)
+      __PYX_ERR(0, 207, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":210
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":208
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_28 = 1;
     __pyx_t_29 = 1;
@@ -6190,20 +5738,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_29 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 210, __pyx_L1_error)
+      __PYX_ERR(0, 208, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":211
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":209
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_30 = 2;
     __pyx_t_31 = 2;
@@ -6218,20 +5766,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_31 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 211, __pyx_L1_error)
+      __PYX_ERR(0, 209, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":212
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":210
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_32 = 3;
     __pyx_t_33 = 3;
@@ -6246,20 +5794,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_33 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 212, __pyx_L1_error)
+      __PYX_ERR(0, 210, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":213
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":211
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_34 = 3;
     __pyx_t_35 = 4;
@@ -6274,20 +5822,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_35 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 213, __pyx_L1_error)
+      __PYX_ERR(0, 211, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":214
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":212
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_36 = 4;
     __pyx_t_37 = 3;
@@ -6302,20 +5850,20 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_37 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 214, __pyx_L1_error)
+      __PYX_ERR(0, 212, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":215
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":213
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat2 * factor
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 215, __pyx_L1_error)
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_38 = 4;
     __pyx_t_39 = 4;
@@ -6330,11 +5878,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
     } else if (unlikely(__pyx_t_39 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_15 = 1;
     if (unlikely(__pyx_t_15 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
-      __PYX_ERR(0, 215, __pyx_L1_error)
+      __PYX_ERR(0, 213, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":217
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":215
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  *         return mat2 * factor             # <<<<<<<<<<<<<<
@@ -6342,14 +5890,14 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyNumber_Multiply(((PyObject *)__pyx_v_mat2), __pyx_v_factor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Multiply(((PyObject *)__pyx_v_mat2), __pyx_v_factor); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":186
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":184
  *         return mat2
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -6389,7 +5937,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":219
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":217
  *         return mat2 * factor
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -6460,38 +6008,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":220
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":218
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_float); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__10, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__10, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 220, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 218, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 220, __pyx_L1_error)
+      __PYX_ERR(0, 218, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -6499,38 +6047,38 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":221
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":219
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     if iso == 0:
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__12, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__12, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 221, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 219, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 221, __pyx_L1_error)
+      __PYX_ERR(0, 219, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -6538,7 +6086,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":223
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":221
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -6548,22 +6096,22 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
   __pyx_t_7 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_7) {
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":224
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":222
  * 
  *     if iso == 0:
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -6574,13 +6122,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -6588,35 +6136,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_4);
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_r11i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":225
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":223
  *     if iso == 0:
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -6627,13 +6175,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -6641,35 +6189,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_9);
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_r22i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":226
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":224
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -6680,13 +6228,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -6694,35 +6242,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_v_r33i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":227
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":225
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -6733,13 +6281,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -6747,35 +6295,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_8);
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_r34i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":228
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":226
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -6786,13 +6334,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -6800,35 +6348,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_4);
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 228, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 228, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_r43i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":229
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":227
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  * 
  *         mat[0, 0] = r11i
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -6839,13 +6387,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -6853,27 +6401,27 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_9);
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 229, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_r44i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":231
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":229
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  *         mat[0, 0] = r11i             # <<<<<<<<<<<<<<
  *         mat[1, 1] = r22i
  *         mat[2, 2] = r33i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r11i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r11i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 229, __pyx_L1_error)
     __pyx_t_11 = 0;
     __pyx_t_12 = 0;
     __pyx_t_13 = -1;
@@ -6887,18 +6435,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_12 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 231, __pyx_L1_error)
+      __PYX_ERR(0, 229, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":232
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":230
  * 
  *         mat[0, 0] = r11i
  *         mat[1, 1] = r22i             # <<<<<<<<<<<<<<
  *         mat[2, 2] = r33i
  *         mat[2, 3] = r34i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r22i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r22i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
     __pyx_t_14 = 1;
     __pyx_t_15 = 1;
     __pyx_t_13 = -1;
@@ -6912,18 +6460,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_15 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 232, __pyx_L1_error)
+      __PYX_ERR(0, 230, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":233
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":231
  *         mat[0, 0] = r11i
  *         mat[1, 1] = r22i
  *         mat[2, 2] = r33i             # <<<<<<<<<<<<<<
  *         mat[2, 3] = r34i
  *         mat[3, 2] = r43i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r33i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 233, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r33i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L1_error)
     __pyx_t_16 = 2;
     __pyx_t_17 = 2;
     __pyx_t_13 = -1;
@@ -6937,18 +6485,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_17 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 233, __pyx_L1_error)
+      __PYX_ERR(0, 231, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":234
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":232
  *         mat[1, 1] = r22i
  *         mat[2, 2] = r33i
  *         mat[2, 3] = r34i             # <<<<<<<<<<<<<<
  *         mat[3, 2] = r43i
  *         mat[3, 3] = r44i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r34i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r34i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L1_error)
     __pyx_t_18 = 2;
     __pyx_t_19 = 3;
     __pyx_t_13 = -1;
@@ -6962,18 +6510,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_19 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 234, __pyx_L1_error)
+      __PYX_ERR(0, 232, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":235
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":233
  *         mat[2, 2] = r33i
  *         mat[2, 3] = r34i
  *         mat[3, 2] = r43i             # <<<<<<<<<<<<<<
  *         mat[3, 3] = r44i
  * 
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r43i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r43i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 233, __pyx_L1_error)
     __pyx_t_20 = 3;
     __pyx_t_21 = 2;
     __pyx_t_13 = -1;
@@ -6987,18 +6535,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_21 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 235, __pyx_L1_error)
+      __PYX_ERR(0, 233, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":236
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":234
  *         mat[2, 3] = r34i
  *         mat[3, 2] = r43i
  *         mat[3, 3] = r44i             # <<<<<<<<<<<<<<
  * 
  *         return mat
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r44i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r44i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
     __pyx_t_22 = 3;
     __pyx_t_23 = 3;
     __pyx_t_13 = -1;
@@ -7012,11 +6560,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_23 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 236, __pyx_L1_error)
+      __PYX_ERR(0, 234, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":238
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":236
  *         mat[3, 3] = r44i
  * 
  *         return mat             # <<<<<<<<<<<<<<
@@ -7028,7 +6576,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_r = ((PyObject *)__pyx_v_mat);
     goto __pyx_L0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":223
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":221
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -7037,7 +6585,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
  */
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":241
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":239
  * 
  *     else:
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -7045,15 +6593,15 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r00); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -7064,13 +6612,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -7078,35 +6626,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_v_r00i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":242
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":240
  *     else:
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -7117,13 +6665,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -7131,35 +6679,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_8);
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 242, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_r11i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":243
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":241
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r22); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -7170,13 +6718,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -7184,35 +6732,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_4);
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_r22i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":244
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":242
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r33); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -7223,13 +6771,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -7237,35 +6785,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_9);
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_1) < 0) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_r33i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":245
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":243
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r34); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -7276,13 +6824,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -7290,35 +6838,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_8) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_v_r34i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":246
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":244
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r43); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -7329,13 +6877,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_8 = 0;
     __pyx_t_9 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_9 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_8 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_9);
@@ -7343,35 +6891,35 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_8);
     __pyx_t_9 = 0;
     __pyx_t_8 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 246, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_args, __pyx_t_4) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_r43i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":247
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":245
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
  * 
  *         mat2[0, 0] = r00i
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_r44); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_4);
@@ -7382,13 +6930,13 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_1 = __pyx_PyComplex_FromComplex(__pyx_v_n1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_v_n2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -7396,27 +6944,27 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_4);
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 247, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_args, __pyx_t_9) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_9, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_r44i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":249
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":247
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  *         mat2[0, 0] = r00i             # <<<<<<<<<<<<<<
  *         mat2[1, 1] = r11i
  *         mat2[2, 2] = r22i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r00i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 249, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r00i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
     __pyx_t_24 = 0;
     __pyx_t_25 = 0;
     __pyx_t_13 = -1;
@@ -7430,18 +6978,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_25 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 249, __pyx_L1_error)
+      __PYX_ERR(0, 247, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":250
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":248
  * 
  *         mat2[0, 0] = r00i
  *         mat2[1, 1] = r11i             # <<<<<<<<<<<<<<
  *         mat2[2, 2] = r22i
  *         mat2[3, 3] = r33i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r11i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r11i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 248, __pyx_L1_error)
     __pyx_t_26 = 1;
     __pyx_t_27 = 1;
     __pyx_t_13 = -1;
@@ -7455,18 +7003,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_27 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 250, __pyx_L1_error)
+      __PYX_ERR(0, 248, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":251
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":249
  *         mat2[0, 0] = r00i
  *         mat2[1, 1] = r11i
  *         mat2[2, 2] = r22i             # <<<<<<<<<<<<<<
  *         mat2[3, 3] = r33i
  *         mat2[3, 4] = r34i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r22i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r22i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 249, __pyx_L1_error)
     __pyx_t_28 = 2;
     __pyx_t_29 = 2;
     __pyx_t_13 = -1;
@@ -7480,18 +7028,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_29 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 251, __pyx_L1_error)
+      __PYX_ERR(0, 249, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":252
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":250
  *         mat2[1, 1] = r11i
  *         mat2[2, 2] = r22i
  *         mat2[3, 3] = r33i             # <<<<<<<<<<<<<<
  *         mat2[3, 4] = r34i
  *         mat2[4, 3] = r43i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r33i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r33i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L1_error)
     __pyx_t_30 = 3;
     __pyx_t_31 = 3;
     __pyx_t_13 = -1;
@@ -7505,18 +7053,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_31 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 252, __pyx_L1_error)
+      __PYX_ERR(0, 250, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":253
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":251
  *         mat2[2, 2] = r22i
  *         mat2[3, 3] = r33i
  *         mat2[3, 4] = r34i             # <<<<<<<<<<<<<<
  *         mat2[4, 3] = r43i
  *         mat2[4, 4] = r44i
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r34i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r34i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L1_error)
     __pyx_t_32 = 3;
     __pyx_t_33 = 4;
     __pyx_t_13 = -1;
@@ -7530,18 +7078,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_33 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 253, __pyx_L1_error)
+      __PYX_ERR(0, 251, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":254
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":252
  *         mat2[3, 3] = r33i
  *         mat2[3, 4] = r34i
  *         mat2[4, 3] = r43i             # <<<<<<<<<<<<<<
  *         mat2[4, 4] = r44i
  * 
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r43i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 254, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r43i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
     __pyx_t_34 = 4;
     __pyx_t_35 = 3;
     __pyx_t_13 = -1;
@@ -7555,18 +7103,18 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_35 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 254, __pyx_L1_error)
+      __PYX_ERR(0, 252, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":255
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":253
  *         mat2[3, 4] = r34i
  *         mat2[4, 3] = r43i
  *         mat2[4, 4] = r44i             # <<<<<<<<<<<<<<
  * 
  *         return mat2
  */
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r44i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 255, __pyx_L1_error)
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_r44i); if (unlikely((__pyx_t_10 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
     __pyx_t_36 = 4;
     __pyx_t_37 = 4;
     __pyx_t_13 = -1;
@@ -7580,11 +7128,11 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     } else if (unlikely(__pyx_t_37 >= __pyx_pybuffernd_mat2.diminfo[1].shape)) __pyx_t_13 = 1;
     if (unlikely(__pyx_t_13 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
-      __PYX_ERR(0, 255, __pyx_L1_error)
+      __PYX_ERR(0, 253, __pyx_L1_error)
     }
     *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4soil_7fresnel_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/soil/fresnel/core/auxiliary.pyx":257
+    /* "pyrism/soil/fresnel/core/auxiliary.pyx":255
  *         mat2[4, 4] = r44i
  * 
  *         return mat2             # <<<<<<<<<<<<<<
@@ -7597,7 +7145,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
     goto __pyx_L0;
   }
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":219
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":217
  *         return mat2 * factor
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7641,7 +7189,7 @@ static PyObject *__pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(float __py
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":259
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7687,23 +7235,23 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_3reflectivity_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 259, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 257, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 259, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 257, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_iso)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 259, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 257, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "reflectivity_wrapper") < 0)) __PYX_ERR(0, 259, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "reflectivity_wrapper") < 0)) __PYX_ERR(0, 257, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -7713,14 +7261,14 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_3reflectivity_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_xza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_xza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 259, __pyx_L3_error)
-    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 259, __pyx_L3_error)
-    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 259, __pyx_L3_error)
-    __pyx_v_iso = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 259, __pyx_L3_error)
+    __pyx_v_xza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_xza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+    __pyx_v_iso = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 259, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 257, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.reflectivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7739,7 +7287,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_2reflectivity_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("reflectivity_wrapper", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":260
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":258
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return reflectivity_c(xza, n1, n2, iso)             # <<<<<<<<<<<<<<
@@ -7747,13 +7295,13 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_2reflectivity_
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_reflectivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":259
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7772,7 +7320,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_2reflectivity_
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":262
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7818,23 +7366,23 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_5transmissivit
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 1); __PYX_ERR(0, 260, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 2); __PYX_ERR(0, 260, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_iso)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 262, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, 3); __PYX_ERR(0, 260, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "transmissivity_wrapper") < 0)) __PYX_ERR(0, 262, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "transmissivity_wrapper") < 0)) __PYX_ERR(0, 260, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -7844,14 +7392,14 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_5transmissivit
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_xza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_xza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L3_error)
-    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L3_error)
-    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L3_error)
-    __pyx_v_iso = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L3_error)
+    __pyx_v_xza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_xza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L3_error)
+    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L3_error)
+    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L3_error)
+    __pyx_v_iso = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 262, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 260, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.transmissivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7870,7 +7418,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_4transmissivit
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("transmissivity_wrapper", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":263
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":261
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return transmissivity_c(xza, n1, n2, iso)             # <<<<<<<<<<<<<<
@@ -7878,13 +7426,13 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_4transmissivit
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_transmissivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":262
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7903,7 +7451,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_4transmissivit
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":265
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -7946,17 +7494,17 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_7snell_wrapper
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, 1); __PYX_ERR(0, 265, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, 1); __PYX_ERR(0, 263, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, 2); __PYX_ERR(0, 265, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, 2); __PYX_ERR(0, 263, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "snell_wrapper") < 0)) __PYX_ERR(0, 265, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "snell_wrapper") < 0)) __PYX_ERR(0, 263, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -7965,13 +7513,13 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_7snell_wrapper
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_iza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_iza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L3_error)
-    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L3_error)
-    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 265, __pyx_L3_error)
+    __pyx_v_iza = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_iza == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 263, __pyx_L3_error)
+    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 263, __pyx_L3_error)
+    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 263, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 265, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 263, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.snell_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7990,7 +7538,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_6snell_wrapper
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("snell_wrapper", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":266
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":264
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):
  *     return snell_c(iza, n1, n2)             # <<<<<<<<<<<<<<
@@ -7998,13 +7546,13 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_6snell_wrapper
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_snell_c(__pyx_v_iza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_snell_c(__pyx_v_iza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":265
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -8023,7 +7571,7 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_6snell_wrapper
   return __pyx_r;
 }
 
-/* "pyrism/soil/fresnel/core/auxiliary.pyx":268
+/* "pyrism/soil/fresnel/core/auxiliary.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -8071,29 +7619,29 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_9quad_wrapper(
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 1); __PYX_ERR(0, 268, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 1); __PYX_ERR(0, 266, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 2); __PYX_ERR(0, 268, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 2); __PYX_ERR(0, 266, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 3); __PYX_ERR(0, 268, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 3); __PYX_ERR(0, 266, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_iso)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 4); __PYX_ERR(0, 268, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, 4); __PYX_ERR(0, 266, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "quad_wrapper") < 0)) __PYX_ERR(0, 268, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "quad_wrapper") < 0)) __PYX_ERR(0, 266, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -8104,15 +7652,15 @@ static PyObject *__pyx_pw_6pyrism_4soil_7fresnel_4core_9auxiliary_9quad_wrapper(
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_a = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_a == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
-    __pyx_v_b = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_b == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
-    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
-    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
-    __pyx_v_iso = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+    __pyx_v_a = __pyx_PyFloat_AsFloat(values[0]); if (unlikely((__pyx_v_a == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+    __pyx_v_b = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_b == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+    __pyx_v_n1 = __Pyx_PyComplex_As___pyx_t_double_complex(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+    __pyx_v_n2 = __Pyx_PyComplex_As___pyx_t_double_complex(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+    __pyx_v_iso = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_iso == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 268, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 266, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyrism.soil.fresnel.core.auxiliary.quad_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8131,19 +7679,19 @@ static PyObject *__pyx_pf_6pyrism_4soil_7fresnel_4core_9auxiliary_8quad_wrapper(
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("quad_wrapper", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":269
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":267
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return quad(a, b, n1, n2, iso)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(__pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4soil_7fresnel_4core_9auxiliary_quad(__pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":268
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -10964,7 +10512,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_error_string, __pyx_k_error_string, sizeof(__pyx_k_error_string), 0, 0, 1, 1},
   {&__pyx_n_s_float, __pyx_k_float, sizeof(__pyx_k_float), 0, 0, 1, 1},
-  {&__pyx_n_s_imag, __pyx_k_imag, sizeof(__pyx_k_imag), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_is_forward_angle, __pyx_k_is_forward_angle, sizeof(__pyx_k_is_forward_angle), 0, 0, 1, 1},
   {&__pyx_n_s_iso, __pyx_k_iso, sizeof(__pyx_k_iso), 0, 0, 1, 1},
@@ -11016,87 +10563,87 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":158
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":156
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_tuple_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_tuple_); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":159
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":157
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     V, H = reflection_c(xza, n1, n2)
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_tuple__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_tuple__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":189
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":187
  *     V, H = transmission_c(xza, n1, n2)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_tuple__5); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_tuple__5); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":190
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":188
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  */
-  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_tuple__7); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_tuple__7); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":220
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":218
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  */
-  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_tuple__9); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 220, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_tuple__9); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":221
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":219
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
  *     if iso == 0:
  */
-  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_int_5, __pyx_int_5); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_tuple__11); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_tuple__11); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
@@ -11221,52 +10768,52 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__24);
   __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_is_forward_angle, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 18, __pyx_L1_error)
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":259
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_tuple__26 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_reflectivity_wrapper, 259, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_reflectivity_wrapper, 257, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 257, __pyx_L1_error)
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":262
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_tuple__28 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_transmissivity_wrapper, 262, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_transmissivity_wrapper, 260, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 260, __pyx_L1_error)
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":265
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     return snell_c(iza, n1, n2)
  * 
  */
-  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_iza, __pyx_n_s_n1, __pyx_n_s_n2); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_iza, __pyx_n_s_n1, __pyx_n_s_n2); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_snell_wrapper, 265, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_snell_wrapper, 263, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 263, __pyx_L1_error)
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":268
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return quad(a, b, n1, n2, iso)
  */
-  __pyx_tuple__32 = PyTuple_Pack(5, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(5, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_quad_wrapper, 268, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_soil_fresnel_core_auxilia, __pyx_n_s_quad_wrapper, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -11276,6 +10823,7 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_4 = PyInt_FromLong(4); if (unlikely(!__pyx_int_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
@@ -11549,7 +11097,7 @@ if (!__Pyx_RefNanny) {
  * 
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
- * from libc.math cimport pow, pi, sqrt, abs, asin, cos
+ * from libc.math cimport pow, pi, abs, cos
  * import cmath
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -11559,7 +11107,7 @@ if (!__Pyx_RefNanny) {
 
   /* "pyrism/soil/fresnel/core/auxiliary.pyx":7
  * import numpy as np
- * from libc.math cimport pow, pi, sqrt, abs, asin, cos
+ * from libc.math cimport pow, pi, abs, cos
  * import cmath             # <<<<<<<<<<<<<<
  * from scipy.integrate import quad as squad
  * 
@@ -11570,7 +11118,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pyrism/soil/fresnel/core/auxiliary.pyx":8
- * from libc.math cimport pow, pi, sqrt, abs, asin, cos
+ * from libc.math cimport pow, pi, abs, cos
  * import cmath
  * from scipy.integrate import quad as squad             # <<<<<<<<<<<<<<
  * 
@@ -11641,51 +11189,51 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_forward_angle, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":259
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_3reflectivity_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_3reflectivity_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reflectivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 259, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reflectivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":262
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_5transmissivity_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_5transmissivity_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_transmissivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 262, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_transmissivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":265
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     return snell_c(iza, n1, n2)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_7snell_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_7snell_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_snell_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 265, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_snell_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/soil/fresnel/core/auxiliary.pyx":268
+  /* "pyrism/soil/fresnel/core/auxiliary.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return quad(a, b, n1, n2, iso)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_9quad_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4soil_7fresnel_4core_9auxiliary_9quad_wrapper, NULL, __pyx_n_s_pyrism_soil_fresnel_core_auxilia_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quad_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 268, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quad_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pyrism/soil/fresnel/core/auxiliary.pyx":1

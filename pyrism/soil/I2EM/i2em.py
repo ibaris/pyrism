@@ -11,8 +11,8 @@ from .core import (exponential, gaussian, xpower, mixed, reflection_coefficients
                    mixed_ems, r_transition, Ra_integration,
                    biStatic_coefficient, Ipp, shadowing_function, emsv_integralfunc)
 
-from radarpy import Angles, dB, BRDF, BRF
-from ...core import ReflectanceResult, EmissivityResult
+from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays, stacks
+from ...core import SoilResult
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -23,7 +23,7 @@ else:
 
 class I2EM(Angles):
 
-    def __init__(self, iza, vza, raa, normalize=True, nbar=0.0, angle_unit='DEG', frequency=None, eps=None,
+    def __init__(self, iza, vza, raa, nbar=0.0, angle_unit='DEG', frequency=None, eps=None,
                  corrlength=None, sigma=None, n=10, corrfunc='exponential'):
 
         """
@@ -78,7 +78,7 @@ class I2EM(Angles):
 
         """
 
-        super(I2EM, self).__init__(iza, vza, raa, normalize, nbar, angle_unit)
+        super(I2EM, self).__init__(iza, vza, raa, normalize=False, nbar=nbar, angle_unit=angle_unit)
 
         if corrfunc is 'exponential':
             self.corrfunc = exponential
@@ -90,6 +90,11 @@ class I2EM(Angles):
             self.corrfunc = mixed
         else:
             raise ValueError("The parameter corrfunc must be 'exponential', 'gaussian', 'xpower' or 'mixed'")
+
+        # frequency, eps, corrlength, sigma = asarrays((frequency, eps, corrlength, sigma))
+        # iza, frequency, eps, corrlength, sigma = align_all((self.iza, frequency, eps, corrlength, sigma))
+
+        # self.iza = iza.real
 
         self.eps = eps
         self.corrlength = corrlength
@@ -118,6 +123,10 @@ class I2EM(Angles):
         self.VV, self.HH, self.VVdB, self.HHdB = self.__sigma_nought(Ts, Wn, Ivv, Ihh, ShdwS, self.k, kz_iza, kz_vza,
                                                                      self.sigma)
 
+        self.EVV, self.EHH, self.EVVdB, self.EHHdB = self.__sigma_nought(Ts, Wn, Ivv, Ihh, ShdwS, self.k, kz_iza,
+                                                                         kz_vza,
+                                                                         self.sigma)
+
         self.__store()
 
     def __sigma_nought(self, Ts, Wn, Ivv, Ihh, ShdwS, k, kz_iza, kz_vza, sigma):
@@ -142,29 +151,85 @@ class I2EM(Angles):
 
         return VV, HH, VVdB, HHdB
 
+    def __emissivity(self):
+
+        # fr = self.freq / 1e9
+        # k =
+        ks = self.k * self.sigma  # roughness parameter
+        kl = self.k * self.corrlength
+
+        # -- calculation of reflection coefficients
+        sq = np.sqrt(self.eps - np.sin(self.iza) ** 2)
+
+        rv = (self.eps * np.cos(self.iza) - sq) / (
+                self.eps * np.cos(self.iza) + sq)
+
+        rh = (np.cos(self.iza) - sq) / (np.cos(self.iza) + sq)
+
+        refv = dblquad(emsv_integralfunc, 0, np.pi / 2, lambda x: 0, lambda x: np.pi,
+                       args=(
+                           self.iza, self.eps, self.rv, self.rh, self.k, kl, ks, sq, self.corrfunc, self.corrlength,
+                           'vv'))
+
+        refh = dblquad(emsv_integralfunc, 0, np.pi / 2, lambda x: 0, lambda x: np.pi,
+                       args=(
+                           self.iza, self.eps, self.rv, self.rh, self.k, kl, ks, sq, self.corrfunc, self.corrlength,
+                           'hh'))
+
+        VV = 1 - refv[0] - np.exp(-ks ** 2 * np.cos(self.iza) * np.cos(self.iza)) * (
+            abs(rv)) ** 2
+        HH = 1 - refh[0] - np.exp(-ks ** 2 * np.cos(self.iza) * np.cos(self.iza)) * (
+            abs(rh)) ** 2
+
+        with np.errstate(invalid='ignore'):
+            VVdB = dB(np.asarray(VV, dtype=np.float))
+            HHdB = dB(np.asarray(HH, dtype=np.float))
+
+        return VV, HH, VVdB, HHdB
+
     def __store(self):
-        self.BSC = ReflectanceResult(array=np.array([[self.VV[0]], [self.HH[0]]]),
-                                     arraydB=np.array([[dB(self.VV[0])], [dB(self.HH[0])]]),
-                                     VV=self.VV,
-                                     HH=self.HH,
-                                     VVdB=self.VVdB,
-                                     HHdB=self.HHdB)
 
-        self.BRDF = ReflectanceResult(
-            array=np.array([[BRDF(self.VV, self.vza)[0]], [BRDF(self.VV, self.vza)[0]]]),
-            arraydB=np.array(
-                [[dB(BRDF(self.VV, self.vza))[0]], [dB(BRDF(self.VV, self.vza))[0]]]),
-            VV=BRDF(self.VV, self.vza),
-            HH=BRDF(self.VV, self.vza),
-            VVdB=dB(BRDF(self.VV, self.vza)),
-            HHdB=dB(BRDF(self.VV, self.vza)))
+        self.BSC = SoilResult(VV=self.VV,
+                              HH=self.HH,
+                              VVdB=self.VVdB,
+                              HHdB=self.HHdB,
+                              VH=np.zeros_like(self.VV),
+                              HV=np.zeros_like(self.VV),
+                              VHdB=np.zeros_like(self.VV),
+                              HVdB=np.zeros_like(self.VV))
 
-        self.BRF = ReflectanceResult(array=np.array([[BRF(self.BRDF.VV)[0]], [BRF(self.BRDF.HH)[0]]]),
-                                     arraydB=np.array([[dB(BRF(self.BRDF.VV))[0]], [dB(BRF(self.BRDF.HH))[0]]]),
-                                     VV=BRF(self.BRDF.VV),
-                                     HH=BRF(self.BRDF.HH),
-                                     VVdB=dB(BRF(self.BRDF.VV)),
-                                     HHdB=dB(BRF(self.BRDF.HH)))
+        self.BSC['ISO'] = (self.BSC.VV + self.BSC.HH) / 2
+        self.BSC['ISOdB'] = dB(self.BSC.ISO)
+
+        self.BSC['array'] = stacks((self.BSC.ISO, self.BSC.VV, self.BSC.HH, self.BSC.VH, self.BSC.HV))
+        self.BSC['arraydB'] = stacks((self.BSC.ISOdB, self.BSC.VVdB, self.BSC.HHdB, self.BSC.VHdB, self.BSC.HVdB))
+
+        self.I = SoilResult(VV=BRDF(self.VV, self.vza),
+                            HH=BRDF(self.VV, self.vza),
+                            VH=np.zeros_like(self.VV),
+                            HV=np.zeros_like(self.VV))
+
+        self.I['ISO'] = (self.I.VV + self.I.HH) / 2
+
+        self.I['array'] = stacks((self.I.ISO, self.I.VV, self.I.HH, self.I.VH, self.I.HV))
+
+        self.BRF = SoilResult(VV=BRF(self.I.VV),
+                              HH=BRF(self.I.HH),
+                              VH=np.zeros_like(self.VV),
+                              HV=np.zeros_like(self.VV))
+
+        self.BRF['ISO'] = (self.BRF.VV + self.BRF.HH) / 2
+
+        self.BRF['array'] = stacks((self.BRF.ISO, self.BRF.VV, self.BRF.HH, self.BRF.VH, self.BRF.HV))
+
+        self.E = SoilResult(VV=self.EVV,
+                            HH=self.EHH,
+                            VH=np.zeros_like(self.EVV),
+                            HV=np.zeros_like(self.VV))
+
+        self.E['ISO'] = (self.E.VV + self.E.HH) / 2
+
+        self.E['array'] = stacks((self.E.ISO, self.E.VV, self.E.HH, self.E.VH, self.E.HV))
 
     class Emissivity(Angles):
 
@@ -241,12 +306,12 @@ class I2EM(Angles):
             self.VV, self.HH, self.VVdB, self.HHdB = self.__calc(self.iza, eps, rv, rh, self.k, kl, ks, sq,
                                                                  self.corrfunc, corrlength)
 
-            self.EMS = EmissivityResult(array=np.array([[self.VV], [self.HH]]),
-                                        arraydB=np.array([[dB(self.VV)], [dB(self.HH)]]),
-                                        VV=self.VV,
-                                        HH=self.HH,
-                                        VVdB=dB(self.VV),
-                                        HHdB=dB(self.HH))
+            self.EMS = SoilResult(array=np.array([[self.VV], [self.HH]]),
+                                  arraydB=np.array([[dB(self.VV)], [dB(self.HH)]]),
+                                  VV=self.VV,
+                                  HH=self.HH,
+                                  VVdB=dB(self.VV),
+                                  HHdB=dB(self.HH))
 
         def __calc(self, iza, eps, rv, rh, k, kl, ks, sq, corrfunc, corrlength):
             refv = dblquad(emsv_integralfunc, 0, np.pi / 2, lambda x: 0, lambda x: np.pi,

@@ -5,6 +5,8 @@ from collections import namedtuple
 import numpy as np
 
 from ...volume.library import get_data_one, get_data_two
+from ...core import SoilResult
+from radarpy import stacks
 
 try:
     lib = get_data_two()
@@ -59,11 +61,19 @@ class LSM:
         self.__store()
 
     def __calc(self):
-        self.ref = self.sRef * (self.moisture * lib.soil.rsoil1 + (1 - self.moisture) * lib.soil.rsoil2)
-        self.int = [self.l, self.ref]
+        self.I = self.sRef * (self.moisture * lib.soil.rsoil1 + (1 - self.moisture) * lib.soil.rsoil2)
+        self.int = [self.l, self.I]
         self.int = np.asarray(self.int, dtype=np.float32)
         self.int = self.int.transpose()
 
+        self.I = SoilResult(ISO=self.I,
+                            VV=np.zeros_like(self.I),
+                            HH=np.zeros_like(self.I),
+                            VH=np.zeros_like(self.I),
+                            HV=np.zeros_like(self.I),
+                            )
+
+        self.I['array'] = stacks((self.I.ISO, self.I.VV, self.I.HH, self.I.VH, self.I.HV))
     #        self.surface = ReflectanceResult(ref=self.ref,
     #       l=self.l)
 
