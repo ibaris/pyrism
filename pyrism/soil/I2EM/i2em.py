@@ -10,7 +10,9 @@ from scipy.misc import factorial
 from .core import (exponential, gaussian, xpower, mixed, reflection_coefficients, exponential_ems, gaussian_ems,
                    mixed_ems, r_transition, Ra_integration,
                    biStatic_coefficient, Ipp, shadowing_function, emsv_integralfunc)
-from ...core import (Kernel, ReflectanceResult, EmissivityResult, dB, BRDF, BRF)
+
+from radarpy import Angles, dB, BRDF, BRF
+from ...core import ReflectanceResult, EmissivityResult
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -19,62 +21,62 @@ else:
     srange = range
 
 
-class I2EM(Kernel):
+class I2EM(Angles):
 
     def __init__(self, iza, vza, raa, normalize=True, nbar=0.0, angle_unit='DEG', frequency=None, eps=None,
                  corrlength=None, sigma=None, n=10, corrfunc='exponential'):
 
         """
-             RADAR Surface Scatter Based Kernel (I2EM). Compute BSC VV and
-             BSC HH and the emissivity for single-scale random surface for
-             Bi and Mono-static acquisitions (:cite:`Ulaby.2015` and :cite:`Ulaby.2015b`).
+        RADAR Surface Scatter Based Kernel (I2EM). Compute BSC VV and
+        BSC HH and the emissivity for single-scale random surface for
+        Bi and Mono-static acquisitions (:cite:`Ulaby.2015` and :cite:`Ulaby.2015b`).
 
-             Parameters
-             ----------
-             iza, vza, raa : int, float or ndarray
-                 Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-             normalize : boolean, optional
-                 Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-                 the default value is False.
-             nbar : float, optional
-                 The sun or incidence zenith angle at which the isotropic term is set
-                 to if normalize is True. The default value is 0.0.
-             angle_unit : {'DEG', 'RAD'}, optional
-                 * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-                 * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-             frequency : int or float
-                 RADAR Frequency (GHz).
-             diel_constant : int or float
-                 Complex dielectric constant of soil.
-             corrlength : int or float
-                 Correlation length (cm).
-             sigma : int or float
-                 RMS Height (cm)
-             n : int (default = 10), optinal
-                 Coefficient needed for x-power and x-exponential
-                 correlation function.
-             corrfunc : {'exponential', 'gaussian', 'xpower', 'mixed'}, optional
-                 Correlation distribution functions. The `mixed` correlation function is the result of the division of
-                 gaussian correlation function with exponential correlation function. Default is 'exponential'.
+        Parameters
+        ----------
+        iza, vza, raa : int, float or ndarray
+            Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+        normalize : boolean, optional
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        nbar : float, optional
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. The default value is 0.0.
+        angle_unit : {'DEG', 'RAD'}, optional
+            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency : int or float
+            RADAR Frequency (GHz).
+        diel_constant : int or float
+            Complex dielectric constant of soil.
+        corrlength : int or float
+            Correlation length (cm).
+        sigma : int or float
+            RMS Height (cm)
+        n : int (default = 10), optinal
+            Coefficient needed for x-power and x-exponential
+            correlation function.
+        corrfunc : {'exponential', 'gaussian', 'xpower', 'mixed'}, optional
+            Correlation distribution functions. The `mixed` correlation function is the result of the division of
+            gaussian correlation function with exponential correlation function. Default is 'exponential'.
 
-             Returns
-             -------
-             For more attributes see also pyrism.core.Kernel and pyrism.core.ReflectanceResult.
+        Returns
+        -------
+        For more attributes see also pyrism.core.Kernel and pyrism.core.ReflectanceResult.
 
-             See Also
-             --------
-             I2EM.Emissivity
-             pyrism.core.Kernel
-             pyrism.core.ReflectanceResult
+        See Also
+        --------
+        I2EM.Emissivity
+        pyrism.core.Kernel
+        pyrism.core.ReflectanceResult
 
 
-             Note
-             ----
-             The model is constrained to realistic surfaces with
-             (rms height / correlation length) ≤ 0.25.
-             Hot spot direction is vza == iza and raa = 0.0
+        Note
+        ----
+        The model is constrained to realistic surfaces with
+        (rms height / correlation length) ≤ 0.25.
+        Hot spot direction is vza == iza and raa = 0.0
 
-             """
+        """
 
         super(I2EM, self).__init__(iza, vza, raa, normalize, nbar, angle_unit)
 
@@ -149,13 +151,13 @@ class I2EM(Kernel):
                                      HHdB=self.HHdB)
 
         self.BRDF = ReflectanceResult(
-            array=np.array([[BRDF(self.VV, self.iza, self.vza)[0]], [BRDF(self.HH, self.iza, self.vza)[0]]]),
+            array=np.array([[BRDF(self.VV, self.vza)[0]], [BRDF(self.VV, self.vza)[0]]]),
             arraydB=np.array(
-                [[dB(BRDF(self.VV, self.iza, self.vza))[0]], [dB(BRDF(self.HH, self.iza, self.vza))[0]]]),
-            VV=BRDF(self.VV, self.iza, self.vza),
-            HH=BRDF(self.HH, self.iza, self.vza),
-            VVdB=dB(BRDF(self.VV, self.iza, self.vza)),
-            HHdB=dB(BRDF(self.HH, self.iza, self.vza)))
+                [[dB(BRDF(self.VV, self.vza))[0]], [dB(BRDF(self.VV, self.vza))[0]]]),
+            VV=BRDF(self.VV, self.vza),
+            HH=BRDF(self.VV, self.vza),
+            VVdB=dB(BRDF(self.VV, self.vza)),
+            HHdB=dB(BRDF(self.VV, self.vza)))
 
         self.BRF = ReflectanceResult(array=np.array([[BRF(self.BRDF.VV)[0]], [BRF(self.BRDF.HH)[0]]]),
                                      arraydB=np.array([[dB(BRF(self.BRDF.VV))[0]], [dB(BRF(self.BRDF.HH))[0]]]),
@@ -164,7 +166,7 @@ class I2EM(Kernel):
                                      VVdB=dB(BRF(self.BRDF.VV)),
                                      HHdB=dB(BRF(self.BRDF.HH)))
 
-    class Emissivity(Kernel):
+    class Emissivity(Angles):
 
         def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG',
                      frequency=1.26, eps=10 + 1j, corrlength=10, sigma=0.3, corrfunc='exponential'):

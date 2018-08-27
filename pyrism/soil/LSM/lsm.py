@@ -4,7 +4,7 @@ from collections import namedtuple
 
 import numpy as np
 
-from ...models.library import get_data_one, get_data_two
+from ...volume.library import get_data_one, get_data_two
 
 try:
     lib = get_data_two()

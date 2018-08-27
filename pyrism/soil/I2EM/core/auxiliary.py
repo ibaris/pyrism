@@ -11,7 +11,7 @@ from scipy.integrate import dblquad
 from scipy.misc import factorial
 from scipy.special import erf
 
-from ....core import (cot)
+from radarpy import cot
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):

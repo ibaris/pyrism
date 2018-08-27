@@ -1,5 +1,5 @@
 import numpy as np
-from ....core import cot
+from radarpy import cot
 import cmath
 from .auxiliary import end_sum
 

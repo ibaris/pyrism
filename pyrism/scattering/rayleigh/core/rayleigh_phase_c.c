@@ -7503,7 +7503,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c
  * cdef quad_pcalc_c(DTYPE_t vza, DTYPE_t raa):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
- * 
+ *     mat[0, 0] = 0.08333333333333333 * (
  */
   __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -7537,12 +7537,12 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx":201
+  /* "pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx":200
+ *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  * 
- * 
- *     mat[0, 0] = 0.08333333333333333 * (5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))             # <<<<<<<<<<<<<<
+ *     mat[0, 0] = 0.08333333333333333 * (             # <<<<<<<<<<<<<<
+ *                 5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))
  *     mat[0, 1] = cos(vza) ** 2 * sin(raa) ** 2
- *     mat[0, 2] = 0.125 * sin(raa) * (4 * cos(raa) * cos(vza) ** 2 + pi * sin(2 * vza))
  */
   __pyx_t_6 = 0;
   __pyx_t_7 = 0;
@@ -7557,13 +7557,13 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c
   } else if (unlikely(__pyx_t_7 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_8 = 1;
   if (unlikely(__pyx_t_8 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_8);
-    __PYX_ERR(0, 201, __pyx_L1_error)
+    __PYX_ERR(0, 200, __pyx_L1_error)
   }
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_7, __pyx_pybuffernd_mat.diminfo[1].strides) = (0.08333333333333333 * (((5.0 + cos((2.0 * __pyx_v_raa))) + ((-3.0 + cos((2.0 * __pyx_v_raa))) * cos((2.0 * __pyx_v_vza)))) + ((4.0 * cos(__pyx_v_raa)) * sin((2.0 * __pyx_v_vza)))));
 
   /* "pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx":202
- * 
- *     mat[0, 0] = 0.08333333333333333 * (5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))
+ *     mat[0, 0] = 0.08333333333333333 * (
+ *                 5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))
  *     mat[0, 1] = cos(vza) ** 2 * sin(raa) ** 2             # <<<<<<<<<<<<<<
  *     mat[0, 2] = 0.125 * sin(raa) * (4 * cos(raa) * cos(vza) ** 2 + pi * sin(2 * vza))
  * 
@@ -7586,7 +7586,7 @@ static PyObject *__pyx_f_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c
   *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_10scattering_8rayleigh_4core_16rayleigh_phase_c_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[1].strides) = (pow(cos(__pyx_v_vza), 2.0) * pow(sin(__pyx_v_raa), 2.0));
 
   /* "pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx":203
- *     mat[0, 0] = 0.08333333333333333 * (5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))
+ *                 5 + cos(2 * raa) + (-3 + cos(2 * raa)) * cos(2 * vza) + 4 * cos(raa) * sin(2 * vza))
  *     mat[0, 1] = cos(vza) ** 2 * sin(raa) ** 2
  *     mat[0, 2] = 0.125 * sin(raa) * (4 * cos(raa) * cos(vza) ** 2 + pi * sin(2 * vza))             # <<<<<<<<<<<<<<
  * 
@@ -11102,7 +11102,7 @@ static int __Pyx_InitCachedConstants(void) {
  * cdef quad_pcalc_c(DTYPE_t vza, DTYPE_t raa):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
  * 
- * 
+ *     mat[0, 0] = 0.08333333333333333 * (
  */
   __pyx_tuple__10 = PyTuple_Pack(2, __pyx_int_4, __pyx_int_4); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);

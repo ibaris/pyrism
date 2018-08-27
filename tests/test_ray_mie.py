@@ -88,18 +88,17 @@ class TestScatteringRayPhase:
         assert len(p21_) == len(iza)
         assert len(p22_) == len(iza)
 
-#
-# # ---- Test Mie ----
-#
+# ---- Test Mie ----
+
 # # Test Scattering Coefficients
 # @pytest.mark.webtest
 # @pytest.mark.parametrize("freq, a, eps_1, eps_2, ks_true, ka_true, ke_true, s0_true", [
-#     (1.26, 0.01, 0.25 + 0.1j, 1 + 1j, 0.0017, 0.0480, 0.0498, 0.0026)
+#     (1.26, 1, 0.25 + 0.1j, 1 + 1j, 0.0017, 0.0480, 0.0498, 0.0026)
 # ])
 # class TestScatteringMie:
 #     def test_mie(self, freq, a, eps_1, eps_2, ks_true, ka_true, ke_true, s0_true):
 #         r = Mie(freq, a, eps_1, eps_2)
-#         result = array([r.ks[0], r.ka[0], r.ke[0], r.s0[0]])
+#         result = array([r.ks, r.ka, r.ke, r.BSC])
 #         true = array([ks_true, ka_true, ke_true, s0_true])
 #
 #         assert allclose(result, true, atol=1e-4)

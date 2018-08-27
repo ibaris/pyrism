@@ -1,7 +1,7 @@
 from .core.mie_scatt import mie_scattering
 import warnings
 import numpy as np
-from ...core import Kernel
+
 import sys
 
 # python 3.6 comparability

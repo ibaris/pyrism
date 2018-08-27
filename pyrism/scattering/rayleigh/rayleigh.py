@@ -4,7 +4,7 @@ from pyrism.scattering.rayleigh.core.rayleigh_phase_c import (pmatrix_wrapper, d
                                                               dblquad_pcalc_c_wrapper, quad_pcalc_c_wrapper)
 import warnings
 import numpy as np
-from ...core import Kernel, align_all, asarrays
+from radarpy import Angles, align_all, asarrays
 import sys
 
 # python 3.6 comparability
@@ -91,7 +91,7 @@ class Rayleigh(object):
 
         return info
 
-    class Phase(Kernel):
+    class Phase(Angles):
         """
         Calculate the rayleigh phase matrix (:cite:`Ulaby.2015` and :cite:`Ulaby.2015b`).
 

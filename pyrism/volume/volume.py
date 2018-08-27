@@ -11,7 +11,8 @@ from scipy.misc import factorial
 from scipy.special import expi
 
 from .library import get_data_one, get_data_two
-from ..core import (Kernel, ReflectanceResult, EmissivityResult, SailResult, cot, rad, dB, BRDF, BRF)
+from ..core import ReflectanceResult, EmissivityResult, SailResult
+from radarpy import Angles, cot, rad, dB, BRF, BRDF
 
 try:
     lib = get_data_two()
@@ -26,7 +27,7 @@ else:
 
 
 # ---- Scattering Coefficients ----
-class VolScatt(Kernel):
+class VolScatt(Angles):
     """
     Compute volume scattering functions and interception coefficients
     for given solar zenith, viewing zenith, azimuth and leaf inclination angle (:cite:`Campbell.1986`,
@@ -471,7 +472,7 @@ class LIDF:
                 return np.asarray(lad_list)
 
 
-class SAIL(Kernel):
+class SAIL(Angles):
     """
     Run the SAIL radiative transfer model (See Note) (:cite:`GomezDans.2018`).
 
