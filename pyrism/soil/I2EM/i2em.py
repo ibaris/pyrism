@@ -12,7 +12,7 @@ from .core import (exponential, gaussian, xpower, mixed, reflection_coefficients
                    biStatic_coefficient, Ipp, shadowing_function, emsv_integralfunc)
 
 from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays, stacks
-from ...core import SoilResult
+from ...auxil import SoilResult
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):

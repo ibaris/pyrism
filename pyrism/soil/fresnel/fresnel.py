@@ -4,8 +4,8 @@ import sys
 
 import numpy as np
 from radarpy import Angles, align_all, asarrays, BSC, BRF, dB, stacks
+from ...core.fauxil import reflectivity_wrapper, transmissivity_wrapper, quad_wrapper, snell_wrapper
 
-from ...core.fresnel_auxiliary_c import reflectivity_wrapper, transmissivity_wrapper, quad_wrapper, snell_wrapper
 from ...auxil import SoilResult
 
 EPSILON = sys.float_info.epsilon  # typical floating-point calculation error

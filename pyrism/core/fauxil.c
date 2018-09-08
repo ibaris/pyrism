@@ -558,8 +558,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__pyrism__core__auxiliary
-#define __PYX_HAVE_API__pyrism__core__auxiliary
+#define __PYX_HAVE__pyrism__core__fauxil
+#define __PYX_HAVE_API__pyrism__core__fauxil
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -791,7 +791,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "pyrism\\core\\fresnel_auxiliary_c.pyx",
+  "pyrism\\core\\fauxil.pyx",
   "__init__.pxd",
   "stringsource",
   "type.pxd",
@@ -1022,14 +1022,14 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":11
+/* "pyrism/core/fauxil.pyx":11
  * 
  * DTYPE = np.float
  * ctypedef np.float_t DTYPE_t             # <<<<<<<<<<<<<<
  * 
  * DTYPEC = np.complex128
  */
-typedef __pyx_t_5numpy_float_t __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t;
+typedef __pyx_t_5numpy_float_t __pyx_t_6pyrism_4core_6fauxil_DTYPE_t;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1103,7 +1103,7 @@ typedef npy_cdouble __pyx_t_5numpy_complex_t;
  */
 struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py {
   PyObject_HEAD
-  PyObject *(*__pyx_v_f)(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex);
+  PyObject *(*__pyx_v_f)(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex);
 };
 
 
@@ -1687,29 +1687,29 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'pyrism.core.auxiliary' */
+/* Module declarations from 'pyrism.core.fauxil' */
 static PyTypeObject *__pyx_ptype___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py = 0;
-static float __pyx_v_6pyrism_4core_9auxiliary_EPSILON;
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float, float, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
-static PyObject *__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyObject *(*)(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex)); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "pyrism.core.auxiliary"
-extern int __pyx_module_is_main_pyrism__core__auxiliary;
-int __pyx_module_is_main_pyrism__core__auxiliary = 0;
+static float __pyx_v_6pyrism_4core_6fauxil_EPSILON;
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_transmission_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r00(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r11(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r22(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r33(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r34(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r43(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r44(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_reflectivity_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_transmissivity_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_quad(float, float, __pyx_t_double_complex, __pyx_t_double_complex, int); /*proto*/
+static PyObject *__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyObject *(*)(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex)); /*proto*/
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t), { 0 }, 0, 'R', 0, 0 };
+#define __Pyx_MODULE_NAME "pyrism.core.fauxil"
+extern int __pyx_module_is_main_pyrism__core__fauxil;
+int __pyx_module_is_main_pyrism__core__fauxil = 0;
 
-/* Implementation of 'pyrism.core.auxiliary' */
+/* Implementation of 'pyrism.core.fauxil' */
 static PyObject *__pyx_builtin_AssertionError;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
@@ -1761,13 +1761,13 @@ static const char __pyx_k_AssertionError[] = "AssertionError";
 static const char __pyx_k_scipy_integrate[] = "scipy.integrate";
 static const char __pyx_k_is_forward_angle[] = "is_forward_angle";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_pyrism_core_fauxil[] = "pyrism.core.fauxil";
 static const char __pyx_k_reflectivity_wrapper[] = "reflectivity_wrapper";
-static const char __pyx_k_pyrism_core_auxiliary[] = "pyrism.core.auxiliary";
+static const char __pyx_k_pyrism_core_fauxil_pyx[] = "pyrism\\core\\fauxil.pyx";
 static const char __pyx_k_transmissivity_wrapper[] = "transmissivity_wrapper";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_Pyx_CFunc_object____DTYPE__t[] = "__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py.<locals>.wrap";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
-static const char __pyx_k_pyrism_core_fresnel_auxiliary_c[] = "pyrism\\core\\fresnel_auxiliary_c.pyx";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static const char __pyx_k_For_materials_with_gain_it_s_amb[] = "For materials with gain, it's ambiguous which beam is incoming vs outgoing. See https://arxiv.org/abs/1603.02720 Appendix C.\nn: ";
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
@@ -1818,8 +1818,8 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
-static PyObject *__pyx_n_s_pyrism_core_auxiliary;
-static PyObject *__pyx_kp_s_pyrism_core_fresnel_auxiliary_c;
+static PyObject *__pyx_n_s_pyrism_core_fauxil;
+static PyObject *__pyx_kp_s_pyrism_core_fauxil_pyx;
 static PyObject *__pyx_n_s_quad;
 static PyObject *__pyx_n_s_quad_wrapper;
 static PyObject *__pyx_n_s_range;
@@ -1837,14 +1837,14 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_wrap;
 static PyObject *__pyx_n_s_xza;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_double_complex __pyx_v_n, __pyx_t_double_complex __pyx_v_theta); /* proto */
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2); /* proto */
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_8quad_wrapper(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_is_forward_angle(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_double_complex __pyx_v_n, __pyx_t_double_complex __pyx_v_theta); /* proto */
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_2reflectivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4transmissivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_6snell_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2); /* proto */
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_8quad_wrapper(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap(PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2); /* proto */
+static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap(PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2); /* proto */
 static PyObject *__pyx_tp_new___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_4;
@@ -1884,7 +1884,7 @@ static PyObject *__pyx_codeobj__31;
 static PyObject *__pyx_codeobj__33;
 /* Late includes */
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":18
+/* "pyrism/core/fauxil.pyx":18
  * cdef float EPSILON = 2.220446049250313e-16
  * 
  * def is_forward_angle(DTYPEC_t n, DTYPEC_t theta):             # <<<<<<<<<<<<<<
@@ -1893,10 +1893,10 @@ static PyObject *__pyx_codeobj__33;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_1is_forward_angle(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_6pyrism_4core_9auxiliary_is_forward_angle[] = "\n    if a wave is traveling at angle theta from normal in a medium with index n,\n    calculate whether or not this is the forward-traveling wave (i.e., the one\n    going from front to back of the stack, like the incoming or outgoing waves,\n    but unlike the reflected wave). For real n & theta, the criterion is simply\n    -pi/2 < theta < pi/2, but for complex n & theta, it's more complicated.\n    See https://arxiv.org/abs/1603.02720 appendix D. If theta is the forward\n    angle, then (pi-theta) is the backward angle and vice-versa.\n    ";
-static PyMethodDef __pyx_mdef_6pyrism_4core_9auxiliary_1is_forward_angle = {"is_forward_angle", (PyCFunction)__pyx_pw_6pyrism_4core_9auxiliary_1is_forward_angle, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6pyrism_4core_9auxiliary_is_forward_angle};
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_1is_forward_angle(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_1is_forward_angle(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6pyrism_4core_6fauxil_is_forward_angle[] = "\n    if a wave is traveling at angle theta from normal in a medium with index n,\n    calculate whether or not this is the forward-traveling wave (i.e., the one\n    going from front to back of the stack, like the incoming or outgoing waves,\n    but unlike the reflected wave). For real n & theta, the criterion is simply\n    -pi/2 < theta < pi/2, but for complex n & theta, it's more complicated.\n    See https://arxiv.org/abs/1603.02720 appendix D. If theta is the forward\n    angle, then (pi-theta) is the backward angle and vice-versa.\n    ";
+static PyMethodDef __pyx_mdef_6pyrism_4core_6fauxil_1is_forward_angle = {"is_forward_angle", (PyCFunction)__pyx_pw_6pyrism_4core_6fauxil_1is_forward_angle, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6pyrism_4core_6fauxil_is_forward_angle};
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_1is_forward_angle(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __pyx_t_double_complex __pyx_v_n;
   __pyx_t_double_complex __pyx_v_theta;
   PyObject *__pyx_r = 0;
@@ -1944,18 +1944,18 @@ static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_1is_forward_angle(PyObject *_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("is_forward_angle", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 18, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pyrism.core.auxiliary.is_forward_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.is_forward_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(__pyx_self, __pyx_v_n, __pyx_v_theta);
+  __pyx_r = __pyx_pf_6pyrism_4core_6fauxil_is_forward_angle(__pyx_self, __pyx_v_n, __pyx_v_theta);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_double_complex __pyx_v_n, __pyx_t_double_complex __pyx_v_theta) {
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_is_forward_angle(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_double_complex __pyx_v_n, __pyx_t_double_complex __pyx_v_theta) {
   __pyx_t_double_complex __pyx_v_ncostheta;
   PyObject *__pyx_v_answer = NULL;
   PyObject *__pyx_v_error_string = NULL;
@@ -1974,7 +1974,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   PyObject *__pyx_t_11 = NULL;
   __Pyx_RefNannySetupContext("is_forward_angle", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":29
+  /* "pyrism/core/fauxil.pyx":29
  *     """
  * 
  *     assert n.real * n.imag >= 0, ("For materials with gain, it's ambiguous which "             # <<<<<<<<<<<<<<
@@ -1985,7 +1985,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__Pyx_CREAL(__pyx_v_n) * __Pyx_CIMAG(__pyx_v_n)) >= 0.0) != 0))) {
 
-      /* "pyrism/core/fresnel_auxiliary_c.pyx":32
+      /* "pyrism/core/fauxil.pyx":32
  *                                   "beam is incoming vs outgoing. See "
  *                                   "https://arxiv.org/abs/1603.02720 Appendix C.\n"
  *                                   "n: " + str(n) + "   angle: " + str(theta))             # <<<<<<<<<<<<<<
@@ -2022,7 +2022,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   }
   #endif
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":34
+  /* "pyrism/core/fauxil.pyx":34
  *                                   "n: " + str(n) + "   angle: " + str(theta))
  * 
  *     cdef DTYPEC_t ncostheta = n * cmath.cos(theta)             # <<<<<<<<<<<<<<
@@ -2092,17 +2092,17 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_ncostheta = __pyx_t_7;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":36
+  /* "pyrism/core/fauxil.pyx":36
  *     cdef DTYPEC_t ncostheta = n * cmath.cos(theta)
  * 
  *     if abs(ncostheta.imag) > 100 * EPSILON:             # <<<<<<<<<<<<<<
  *         # Either evanescent decay or lossy medium. Either way, the one that
  *         # decays is the forward-moving wave
  */
-  __pyx_t_8 = ((fabs(__Pyx_CIMAG(__pyx_v_ncostheta)) > (100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)) != 0);
+  __pyx_t_8 = ((fabs(__Pyx_CIMAG(__pyx_v_ncostheta)) > (100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)) != 0);
   if (__pyx_t_8) {
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":39
+    /* "pyrism/core/fauxil.pyx":39
  *         # Either evanescent decay or lossy medium. Either way, the one that
  *         # decays is the forward-moving wave
  *         answer = (ncostheta.imag > 0)             # <<<<<<<<<<<<<<
@@ -2114,7 +2114,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     __pyx_v_answer = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":36
+    /* "pyrism/core/fauxil.pyx":36
  *     cdef DTYPEC_t ncostheta = n * cmath.cos(theta)
  * 
  *     if abs(ncostheta.imag) > 100 * EPSILON:             # <<<<<<<<<<<<<<
@@ -2124,7 +2124,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     goto __pyx_L3;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":45
+  /* "pyrism/core/fauxil.pyx":45
  *         # Re[n cos(theta*)] for p-polarization, but it turns out they're consistent
  *         # so I'll just assume s then check both below
  *         answer = (ncostheta.real > 0)             # <<<<<<<<<<<<<<
@@ -2139,7 +2139,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   }
   __pyx_L3:;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":47
+  /* "pyrism/core/fauxil.pyx":47
  *         answer = (ncostheta.real > 0)
  *     # convert from numpy boolean to the normal Python boolean
  *     answer = bool(answer)             # <<<<<<<<<<<<<<
@@ -2152,7 +2152,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __Pyx_DECREF_SET(__pyx_v_answer, __pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":51
+  /* "pyrism/core/fauxil.pyx":51
  *     error_string = ("It's not clear which beam is incoming vs outgoing. Weird"
  *                     " index maybe?\n"
  *                     "n: " + str(n) + "   angle: " + str(theta))             # <<<<<<<<<<<<<<
@@ -2182,7 +2182,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __pyx_v_error_string = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":53
+  /* "pyrism/core/fauxil.pyx":53
  *                     "n: " + str(n) + "   angle: " + str(theta))
  * 
  *     if answer is True:             # <<<<<<<<<<<<<<
@@ -2193,7 +2193,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __pyx_t_9 = (__pyx_t_8 != 0);
   if (__pyx_t_9) {
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":54
+    /* "pyrism/core/fauxil.pyx":54
  * 
  *     if answer is True:
  *         assert ncostheta.imag > -100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2202,7 +2202,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
  */
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      if (unlikely(!((__Pyx_CIMAG(__pyx_v_ncostheta) > (-100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)) != 0))) {
+      if (unlikely(!((__Pyx_CIMAG(__pyx_v_ncostheta) > (-100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)) != 0))) {
         __pyx_t_4 = PyTuple_Pack(1, __pyx_v_error_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         PyErr_SetObject(PyExc_AssertionError, __pyx_t_4);
@@ -2212,7 +2212,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     }
     #endif
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":55
+    /* "pyrism/core/fauxil.pyx":55
  *     if answer is True:
  *         assert ncostheta.imag > -100 * EPSILON, error_string
  *         assert ncostheta.real > -100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2221,7 +2221,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
  */
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      if (unlikely(!((__Pyx_CREAL(__pyx_v_ncostheta) > (-100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)) != 0))) {
+      if (unlikely(!((__Pyx_CREAL(__pyx_v_ncostheta) > (-100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)) != 0))) {
         __pyx_t_4 = PyTuple_Pack(1, __pyx_v_error_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         PyErr_SetObject(PyExc_AssertionError, __pyx_t_4);
@@ -2231,7 +2231,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     }
     #endif
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":56
+    /* "pyrism/core/fauxil.pyx":56
  *         assert ncostheta.imag > -100 * EPSILON, error_string
  *         assert ncostheta.real > -100 * EPSILON, error_string
  *         assert (n * cmath.cos(np.conjugate(theta))).real > -100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2353,7 +2353,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
       __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_real); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyFloat_FromDouble((-100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_6 = PyFloat_FromDouble((-100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_t_6, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2370,7 +2370,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     }
     #endif
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":53
+    /* "pyrism/core/fauxil.pyx":53
  *                     "n: " + str(n) + "   angle: " + str(theta))
  * 
  *     if answer is True:             # <<<<<<<<<<<<<<
@@ -2380,7 +2380,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     goto __pyx_L4;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":58
+  /* "pyrism/core/fauxil.pyx":58
  *         assert (n * cmath.cos(np.conjugate(theta))).real > -100 * EPSILON, error_string
  *     else:
  *         assert ncostheta.imag < 100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2390,7 +2390,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   /*else*/ {
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      if (unlikely(!((__Pyx_CIMAG(__pyx_v_ncostheta) < (100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)) != 0))) {
+      if (unlikely(!((__Pyx_CIMAG(__pyx_v_ncostheta) < (100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)) != 0))) {
         __pyx_t_4 = PyTuple_Pack(1, __pyx_v_error_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         PyErr_SetObject(PyExc_AssertionError, __pyx_t_4);
@@ -2400,7 +2400,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     }
     #endif
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":59
+    /* "pyrism/core/fauxil.pyx":59
  *     else:
  *         assert ncostheta.imag < 100 * EPSILON, error_string
  *         assert ncostheta.real < 100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2409,7 +2409,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
  */
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      if (unlikely(!((__Pyx_CREAL(__pyx_v_ncostheta) < (100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)) != 0))) {
+      if (unlikely(!((__Pyx_CREAL(__pyx_v_ncostheta) < (100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)) != 0))) {
         __pyx_t_4 = PyTuple_Pack(1, __pyx_v_error_string); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         PyErr_SetObject(PyExc_AssertionError, __pyx_t_4);
@@ -2419,7 +2419,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
     }
     #endif
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":60
+    /* "pyrism/core/fauxil.pyx":60
  *         assert ncostheta.imag < 100 * EPSILON, error_string
  *         assert ncostheta.real < 100 * EPSILON, error_string
  *         assert (n * cmath.cos(np.conjugate(theta))).real < 100 * EPSILON, error_string             # <<<<<<<<<<<<<<
@@ -2541,7 +2541,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
       __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_real); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyFloat_FromDouble((100.0 * __pyx_v_6pyrism_4core_9auxiliary_EPSILON)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_11 = PyFloat_FromDouble((100.0 * __pyx_v_6pyrism_4core_6fauxil_EPSILON)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_11, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -2560,7 +2560,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   }
   __pyx_L4:;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":61
+  /* "pyrism/core/fauxil.pyx":61
  *         assert ncostheta.real < 100 * EPSILON, error_string
  *         assert (n * cmath.cos(np.conjugate(theta))).real < 100 * EPSILON, error_string
  *     return answer             # <<<<<<<<<<<<<<
@@ -2572,7 +2572,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __pyx_r = __pyx_v_answer;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":18
+  /* "pyrism/core/fauxil.pyx":18
  * cdef float EPSILON = 2.220446049250313e-16
  * 
  * def is_forward_angle(DTYPEC_t n, DTYPEC_t theta):             # <<<<<<<<<<<<<<
@@ -2590,7 +2590,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.is_forward_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.is_forward_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_answer);
@@ -2600,7 +2600,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":63
+/* "pyrism/core/fauxil.pyx":63
  *     return answer
  * 
  * cdef snell_c(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -2608,7 +2608,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_is_forward_angle(CYTHON_UNUSE
  *     return angle theta in layer 2 with refractive index n_2, assuming
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   __pyx_t_double_complex __pyx_v_th_2_guess;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2628,7 +2628,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
   int __pyx_t_14;
   __Pyx_RefNannySetupContext("snell_c", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":70
+  /* "pyrism/core/fauxil.pyx":70
  *     """
  * 
  *     cdef DTYPEC_t th_2_guess = cmath.asin(n1 * np.sin(iza) / n2)             # <<<<<<<<<<<<<<
@@ -2755,7 +2755,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_th_2_guess = __pyx_t_9;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":72
+  /* "pyrism/core/fauxil.pyx":72
  *     cdef DTYPEC_t th_2_guess = cmath.asin(n1 * np.sin(iza) / n2)
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -2771,7 +2771,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
     __Pyx_XGOTREF(__pyx_t_12);
     /*try:*/ {
 
-      /* "pyrism/core/fresnel_auxiliary_c.pyx":73
+      /* "pyrism/core/fauxil.pyx":73
  * 
  *     try:
  *         if is_forward_angle(n2, th_2_guess):             # <<<<<<<<<<<<<<
@@ -2837,7 +2837,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_14) {
 
-        /* "pyrism/core/fresnel_auxiliary_c.pyx":75
+        /* "pyrism/core/fauxil.pyx":75
  *         if is_forward_angle(n2, th_2_guess):
  * 
  *             return th_2_guess             # <<<<<<<<<<<<<<
@@ -2851,7 +2851,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
         __pyx_t_1 = 0;
         goto __pyx_L7_try_return;
 
-        /* "pyrism/core/fresnel_auxiliary_c.pyx":73
+        /* "pyrism/core/fauxil.pyx":73
  * 
  *     try:
  *         if is_forward_angle(n2, th_2_guess):             # <<<<<<<<<<<<<<
@@ -2860,7 +2860,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
  */
       }
 
-      /* "pyrism/core/fresnel_auxiliary_c.pyx":77
+      /* "pyrism/core/fauxil.pyx":77
  *             return th_2_guess
  *         else:
  *             return pi - th_2_guess             # <<<<<<<<<<<<<<
@@ -2877,7 +2877,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
         goto __pyx_L7_try_return;
       }
 
-      /* "pyrism/core/fresnel_auxiliary_c.pyx":72
+      /* "pyrism/core/fauxil.pyx":72
  *     cdef DTYPEC_t th_2_guess = cmath.asin(n1 * np.sin(iza) / n2)
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -2895,7 +2895,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":79
+    /* "pyrism/core/fauxil.pyx":79
  *             return pi - th_2_guess
  * 
  *     except AssertionError:             # <<<<<<<<<<<<<<
@@ -2904,13 +2904,13 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
  */
     __pyx_t_13 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_AssertionError);
     if (__pyx_t_13) {
-      __Pyx_AddTraceback("pyrism.core.auxiliary.snell_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("pyrism.core.fauxil.snell_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
       if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_3, &__pyx_t_8) < 0) __PYX_ERR(0, 79, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_t_8);
 
-      /* "pyrism/core/fresnel_auxiliary_c.pyx":80
+      /* "pyrism/core/fauxil.pyx":80
  * 
  *     except AssertionError:
  *         return th_2_guess             # <<<<<<<<<<<<<<
@@ -2930,7 +2930,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":72
+    /* "pyrism/core/fauxil.pyx":72
  *     cdef DTYPEC_t th_2_guess = cmath.asin(n1 * np.sin(iza) / n2)
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -2956,7 +2956,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
     goto __pyx_L0;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":63
+  /* "pyrism/core/fauxil.pyx":63
  *     return answer
  * 
  * cdef snell_c(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -2974,7 +2974,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.snell_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.snell_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2982,7 +2982,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":82
+/* "pyrism/core/fauxil.pyx":82
  *         return th_2_guess
  * 
  * cdef reflection_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -2990,7 +2990,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_t_6pyrism_4core_
  *     reflection amplitude (from Fresnel equations)
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   __pyx_t_double_complex __pyx_v_rza;
   __pyx_t_double_complex __pyx_v_V;
   __pyx_t_double_complex __pyx_v_H;
@@ -3007,20 +3007,20 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   PyObject *__pyx_t_9 = NULL;
   __Pyx_RefNannySetupContext("reflection_c", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":91
+  /* "pyrism/core/fauxil.pyx":91
  *     """
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPEC_t V = ((n2 * cos(xza) - n1 * cmath.cos(rza)) /
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyComplex_As___pyx_t_double_complex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_rza = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":93
+  /* "pyrism/core/fauxil.pyx":93
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  * 
  *     cdef DTYPEC_t V = ((n2 * cos(xza) - n1 * cmath.cos(rza)) /             # <<<<<<<<<<<<<<
@@ -3094,7 +3094,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":94
+  /* "pyrism/core/fauxil.pyx":94
  * 
  *     cdef DTYPEC_t V = ((n2 * cos(xza) - n1 * cmath.cos(rza)) /
  *                        (n2 * cos(xza) + n1 * cmath.cos(rza)))             # <<<<<<<<<<<<<<
@@ -3168,7 +3168,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":93
+  /* "pyrism/core/fauxil.pyx":93
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  * 
  *     cdef DTYPEC_t V = ((n2 * cos(xza) - n1 * cmath.cos(rza)) /             # <<<<<<<<<<<<<<
@@ -3183,7 +3183,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_V = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":96
+  /* "pyrism/core/fauxil.pyx":96
  *                        (n2 * cos(xza) + n1 * cmath.cos(rza)))
  * 
  *     cdef DTYPEC_t H = ((n1 * cos(xza) - n2 * cmath.cos(rza)) /             # <<<<<<<<<<<<<<
@@ -3257,7 +3257,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":97
+  /* "pyrism/core/fauxil.pyx":97
  * 
  *     cdef DTYPEC_t H = ((n1 * cos(xza) - n2 * cmath.cos(rza)) /
  *                        (n1 * cos(xza) + n2 * cmath.cos(rza)))             # <<<<<<<<<<<<<<
@@ -3331,7 +3331,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":96
+  /* "pyrism/core/fauxil.pyx":96
  *                        (n2 * cos(xza) + n1 * cmath.cos(rza)))
  * 
  *     cdef DTYPEC_t H = ((n1 * cos(xza) - n2 * cmath.cos(rza)) /             # <<<<<<<<<<<<<<
@@ -3346,7 +3346,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_H = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":99
+  /* "pyrism/core/fauxil.pyx":99
  *                        (n1 * cos(xza) + n2 * cmath.cos(rza)))
  * 
  *     return V, H             # <<<<<<<<<<<<<<
@@ -3370,7 +3370,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":82
+  /* "pyrism/core/fauxil.pyx":82
  *         return th_2_guess
  * 
  * cdef reflection_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3388,7 +3388,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.reflection_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.reflection_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3396,7 +3396,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":101
+/* "pyrism/core/fauxil.pyx":101
  *     return V, H
  * 
  * cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3404,7 +3404,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_t_6pyrism_4
  *     transmission amplitude (frem Fresnel equations)
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_transmission_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   __pyx_t_double_complex __pyx_v_rza;
   __pyx_t_double_complex __pyx_v_V;
   __pyx_t_double_complex __pyx_v_H;
@@ -3421,20 +3421,20 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   PyObject *__pyx_t_9 = NULL;
   __Pyx_RefNannySetupContext("transmission_c", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":110
+  /* "pyrism/core/fauxil.pyx":110
  *     """
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPEC_t V = 2 * n2 * cos(xza) / (n2 * cos(xza) + n1 * cmath.cos(rza))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyComplex_As___pyx_t_double_complex(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_rza = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":112
+  /* "pyrism/core/fauxil.pyx":112
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  * 
  *     cdef DTYPEC_t V = 2 * n2 * cos(xza) / (n2 * cos(xza) + n1 * cmath.cos(rza))             # <<<<<<<<<<<<<<
@@ -3518,7 +3518,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_v_V = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":113
+  /* "pyrism/core/fauxil.pyx":113
  * 
  *     cdef DTYPEC_t V = 2 * n2 * cos(xza) / (n2 * cos(xza) + n1 * cmath.cos(rza))
  *     cdef DTYPEC_t H = 2 * n2 * cos(xza) / (n1 * cos(xza) + n2 * cmath.cos(rza))             # <<<<<<<<<<<<<<
@@ -3602,7 +3602,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_v_H = __pyx_t_2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":115
+  /* "pyrism/core/fauxil.pyx":115
  *     cdef DTYPEC_t H = 2 * n2 * cos(xza) / (n1 * cos(xza) + n2 * cmath.cos(rza))
  * 
  *     return V, H             # <<<<<<<<<<<<<<
@@ -3626,7 +3626,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":101
+  /* "pyrism/core/fauxil.pyx":101
  *     return V, H
  * 
  * cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3644,7 +3644,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.transmission_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.transmission_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3652,7 +3652,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":117
+/* "pyrism/core/fauxil.pyx":117
  *     return V, H
  * 
  * cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3660,10 +3660,10 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_t_6pyrism
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r00(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_iso;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_iso;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3671,17 +3671,17 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_t_6;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_t_6;
   __Pyx_RefNannySetupContext("r00", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":118
+  /* "pyrism/core/fauxil.pyx":118
  * 
  * cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -3734,48 +3734,48 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":120
+  /* "pyrism/core/fauxil.pyx":120
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
  * 
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":121
+  /* "pyrism/core/fauxil.pyx":121
  * 
  *     cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
  *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4             # <<<<<<<<<<<<<<
  * 
  *     return iso
  */
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3788,7 +3788,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_iso = __pyx_t_6;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":123
+  /* "pyrism/core/fauxil.pyx":123
  *                         + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
  * 
  *     return iso             # <<<<<<<<<<<<<<
@@ -3802,7 +3802,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":117
+  /* "pyrism/core/fauxil.pyx":117
  *     return V, H
  * 
  * cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3816,7 +3816,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r00", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r00", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -3826,7 +3826,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":125
+/* "pyrism/core/fauxil.pyx":125
  *     return iso
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3834,7 +3834,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r11(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -3847,14 +3847,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
   double __pyx_t_6;
   __Pyx_RefNannySetupContext("r11", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":126
+  /* "pyrism/core/fauxil.pyx":126
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return pow(abs(V), 2)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -3907,7 +3907,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":128
+  /* "pyrism/core/fauxil.pyx":128
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return pow(abs(V), 2)             # <<<<<<<<<<<<<<
@@ -3925,7 +3925,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":125
+  /* "pyrism/core/fauxil.pyx":125
  *     return iso
  * 
  * cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3939,7 +3939,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r11", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r11", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -3949,7 +3949,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":130
+/* "pyrism/core/fauxil.pyx":130
  *     return pow(abs(V), 2)
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -3957,7 +3957,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r22(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -3970,14 +3970,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
   double __pyx_t_6;
   __Pyx_RefNannySetupContext("r22", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":131
+  /* "pyrism/core/fauxil.pyx":131
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return pow(abs(H), 2)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4030,7 +4030,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":133
+  /* "pyrism/core/fauxil.pyx":133
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return pow(abs(H), 2)             # <<<<<<<<<<<<<<
@@ -4048,7 +4048,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":130
+  /* "pyrism/core/fauxil.pyx":130
  *     return pow(abs(V), 2)
  * 
  * cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4062,7 +4062,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r22", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r22", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -4072,7 +4072,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":135
+/* "pyrism/core/fauxil.pyx":135
  *     return pow(abs(H), 2)
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4080,7 +4080,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r33(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -4092,14 +4092,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
   PyObject *(*__pyx_t_5)(PyObject *);
   __Pyx_RefNannySetupContext("r33", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":136
+  /* "pyrism/core/fauxil.pyx":136
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return 0  # np.real(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4152,7 +4152,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":138
+  /* "pyrism/core/fauxil.pyx":138
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return 0  # np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
@@ -4164,7 +4164,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
   __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":135
+  /* "pyrism/core/fauxil.pyx":135
  *     return pow(abs(H), 2)
  * 
  * cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4178,7 +4178,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r33", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r33", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -4188,7 +4188,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":140
+/* "pyrism/core/fauxil.pyx":140
  *     return 0  # np.real(V * np.conjugate(H))
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4196,7 +4196,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r34(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -4208,14 +4208,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
   PyObject *(*__pyx_t_5)(PyObject *);
   __Pyx_RefNannySetupContext("r34", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":141
+  /* "pyrism/core/fauxil.pyx":141
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return 0  #-np.imag(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4268,7 +4268,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":143
+  /* "pyrism/core/fauxil.pyx":143
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return 0  #-np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
@@ -4280,7 +4280,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
   __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":140
+  /* "pyrism/core/fauxil.pyx":140
  *     return 0  # np.real(V * np.conjugate(H))
  * 
  * cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4294,7 +4294,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r34", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r34", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -4304,7 +4304,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":145
+/* "pyrism/core/fauxil.pyx":145
  *     return 0  #-np.imag(V * np.conjugate(H))
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4312,7 +4312,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r43(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -4324,14 +4324,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
   PyObject *(*__pyx_t_5)(PyObject *);
   __Pyx_RefNannySetupContext("r43", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":146
+  /* "pyrism/core/fauxil.pyx":146
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return 0  # np.imag(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4384,7 +4384,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":148
+  /* "pyrism/core/fauxil.pyx":148
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return 0  # np.imag(V * np.conjugate(H))             # <<<<<<<<<<<<<<
@@ -4396,7 +4396,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
   __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":145
+  /* "pyrism/core/fauxil.pyx":145
  *     return 0  #-np.imag(V * np.conjugate(H))
  * 
  * cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4410,7 +4410,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r43", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r43", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -4420,7 +4420,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":150
+/* "pyrism/core/fauxil.pyx":150
  *     return 0  # np.imag(V * np.conjugate(H))
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4428,7 +4428,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_t_6pyrism_4core_9aux
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_r44(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyObject *__pyx_r = NULL;
@@ -4440,14 +4440,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
   PyObject *(*__pyx_t_5)(PyObject *);
   __Pyx_RefNannySetupContext("r44", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":151
+  /* "pyrism/core/fauxil.pyx":151
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     return 0  #np.real(V * np.conjugate(H))
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -4500,7 +4500,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":153
+  /* "pyrism/core/fauxil.pyx":153
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     return 0  #np.real(V * np.conjugate(H))             # <<<<<<<<<<<<<<
@@ -4512,7 +4512,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
   __pyx_r = __pyx_int_0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":150
+  /* "pyrism/core/fauxil.pyx":150
  *     return 0  # np.imag(V * np.conjugate(H))
  * 
  * cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -4526,7 +4526,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.r44", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.r44", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_V);
@@ -4536,7 +4536,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":155
+/* "pyrism/core/fauxil.pyx":155
  *     return 0  #np.real(V * np.conjugate(H))
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -4544,7 +4544,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_t_6pyrism_4core_9aux
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_reflectivity_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   PyArrayObject *__pyx_v_mat = 0;
   PyArrayObject *__pyx_v_mat2 = 0;
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
@@ -4563,7 +4563,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   PyArrayObject *__pyx_t_6 = NULL;
   PyObject *(*__pyx_t_7)(PyObject *);
   int __pyx_t_8;
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_t_9;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
   int __pyx_t_12;
@@ -4601,7 +4601,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":156
+  /* "pyrism/core/fauxil.pyx":156
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -4630,7 +4630,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 156, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
@@ -4640,7 +4640,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":157
+  /* "pyrism/core/fauxil.pyx":157
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -4669,7 +4669,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 157, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
@@ -4679,14 +4679,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":159
+  /* "pyrism/core/fauxil.pyx":159
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     V, H = reflection_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     if iso == 0:
  */
-  __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_reflection_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
     PyObject* sequence = __pyx_t_3;
@@ -4739,7 +4739,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_v_H = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":161
+  /* "pyrism/core/fauxil.pyx":161
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -4749,14 +4749,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   __pyx_t_8 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_8) {
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":163
+    /* "pyrism/core/fauxil.pyx":163
  *     if iso == 0:
  * 
  *         mat[0, 0] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 163, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4775,16 +4775,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 163, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":164
+    /* "pyrism/core/fauxil.pyx":164
  * 
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4803,16 +4803,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 164, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":165
+    /* "pyrism/core/fauxil.pyx":165
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4831,16 +4831,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 165, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":166
+    /* "pyrism/core/fauxil.pyx":166
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4859,16 +4859,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 166, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":167
+    /* "pyrism/core/fauxil.pyx":167
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4887,16 +4887,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 167, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":168
+    /* "pyrism/core/fauxil.pyx":168
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4915,9 +4915,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 168, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":170
+    /* "pyrism/core/fauxil.pyx":170
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  *         return mat             # <<<<<<<<<<<<<<
@@ -4929,7 +4929,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
     __pyx_r = ((PyObject *)__pyx_v_mat);
     goto __pyx_L0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":161
+    /* "pyrism/core/fauxil.pyx":161
  *     V, H = reflection_c(xza, n1, n2)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -4938,7 +4938,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
  */
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":174
+  /* "pyrism/core/fauxil.pyx":174
  *     else:
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)             # <<<<<<<<<<<<<<
@@ -4946,7 +4946,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
  *         mat2[2, 2] = r22(xza, n1, n2)
  */
   /*else*/ {
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4965,16 +4965,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 174, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":175
+    /* "pyrism/core/fauxil.pyx":175
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4993,16 +4993,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 175, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":176
+    /* "pyrism/core/fauxil.pyx":176
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5021,16 +5021,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 176, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":177
+    /* "pyrism/core/fauxil.pyx":177
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5049,16 +5049,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 177, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":178
+    /* "pyrism/core/fauxil.pyx":178
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 178, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5077,16 +5077,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 178, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":179
+    /* "pyrism/core/fauxil.pyx":179
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5105,16 +5105,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 179, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":180
+    /* "pyrism/core/fauxil.pyx":180
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat2
  */
-    __pyx_t_3 = __pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_6pyrism_4core_6fauxil_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_9 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5133,9 +5133,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
       __PYX_ERR(0, 180, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_9;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":182
+    /* "pyrism/core/fauxil.pyx":182
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  *         return mat2             # <<<<<<<<<<<<<<
@@ -5148,7 +5148,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
     goto __pyx_L0;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":155
+  /* "pyrism/core/fauxil.pyx":155
  *     return 0  #np.real(V * np.conjugate(H))
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -5169,7 +5169,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("pyrism.core.auxiliary.reflectivity_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.reflectivity_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5185,7 +5185,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":184
+/* "pyrism/core/fauxil.pyx":184
  *         return mat2
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -5193,7 +5193,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_t_6pyrism
  * 
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_transmissivity_c(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   CYTHON_UNUSED PyObject *__pyx_v_V = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_H = NULL;
   PyArrayObject *__pyx_v_mat = 0;
@@ -5217,7 +5217,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   int __pyx_t_11;
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_t_12;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_t_12;
   Py_ssize_t __pyx_t_13;
   Py_ssize_t __pyx_t_14;
   int __pyx_t_15;
@@ -5255,14 +5255,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":185
+  /* "pyrism/core/fauxil.pyx":185
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     V, H = transmission_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  */
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_transmission_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_transmission_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -5315,7 +5315,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_v_H = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":187
+  /* "pyrism/core/fauxil.pyx":187
  *     V, H = transmission_c(xza, n1, n2)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -5344,7 +5344,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 187, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
@@ -5354,7 +5354,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":188
+  /* "pyrism/core/fauxil.pyx":188
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -5383,7 +5383,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 188, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
@@ -5393,20 +5393,20 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":190
+  /* "pyrism/core/fauxil.pyx":190
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  */
-  __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_8 = __Pyx_PyComplex_As___pyx_t_double_complex(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_rza = __pyx_t_8;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":192
+  /* "pyrism/core/fauxil.pyx":192
  *     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
  * 
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)             # <<<<<<<<<<<<<<
@@ -5484,7 +5484,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_v_factor = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":194
+  /* "pyrism/core/fauxil.pyx":194
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -5494,14 +5494,14 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   __pyx_t_11 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_11) {
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":196
+    /* "pyrism/core/fauxil.pyx":196
  *     if iso == 0:
  * 
  *         mat[0, 0] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5520,16 +5520,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 196, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":197
+    /* "pyrism/core/fauxil.pyx":197
  * 
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5548,16 +5548,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 197, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":198
+    /* "pyrism/core/fauxil.pyx":198
  *         mat[0, 0] = r11(xza, n1, n2)
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5576,16 +5576,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 198, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":199
+    /* "pyrism/core/fauxil.pyx":199
  *         mat[1, 1] = r22(xza, n1, n2)
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5604,16 +5604,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 199, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":200
+    /* "pyrism/core/fauxil.pyx":200
  *         mat[2, 2] = r33(xza, n1, n2)
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 200, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5632,16 +5632,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 200, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":201
+    /* "pyrism/core/fauxil.pyx":201
  *         mat[2, 3] = r34(xza, n1, n2)
  *         mat[3, 2] = r43(xza, n1, n2)
  *         mat[3, 3] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat * factor
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 201, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 201, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5660,9 +5660,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 201, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":203
+    /* "pyrism/core/fauxil.pyx":203
  *         mat[3, 3] = r44(xza, n1, n2)
  * 
  *         return mat * factor             # <<<<<<<<<<<<<<
@@ -5676,7 +5676,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":194
+    /* "pyrism/core/fauxil.pyx":194
  *     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -5685,7 +5685,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
  */
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":207
+  /* "pyrism/core/fauxil.pyx":207
  *     else:
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)             # <<<<<<<<<<<<<<
@@ -5693,7 +5693,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
  *         mat2[2, 2] = r22(xza, n1, n2)
  */
   /*else*/ {
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r00(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5712,16 +5712,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 207, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":208
+    /* "pyrism/core/fauxil.pyx":208
  * 
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r11(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5740,16 +5740,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 208, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":209
+    /* "pyrism/core/fauxil.pyx":209
  *         mat2[0, 0] = r00(xza, n1, n2)
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r22(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 209, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5768,16 +5768,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 209, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":210
+    /* "pyrism/core/fauxil.pyx":210
  *         mat2[1, 1] = r11(xza, n1, n2)
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r33(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5796,16 +5796,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 210, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":211
+    /* "pyrism/core/fauxil.pyx":211
  *         mat2[2, 2] = r22(xza, n1, n2)
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r34(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5824,16 +5824,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 211, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":212
+    /* "pyrism/core/fauxil.pyx":212
  *         mat2[3, 3] = r33(xza, n1, n2)
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)             # <<<<<<<<<<<<<<
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r43(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5852,16 +5852,16 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 212, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":213
+    /* "pyrism/core/fauxil.pyx":213
  *         mat2[3, 4] = r34(xza, n1, n2)
  *         mat2[4, 3] = r43(xza, n1, n2)
  *         mat2[4, 4] = r44(xza, n1, n2)             # <<<<<<<<<<<<<<
  * 
  *         return mat2 * factor
  */
-    __pyx_t_2 = __pyx_f_6pyrism_4core_9auxiliary_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6pyrism_4core_6fauxil_r44(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_12 == ((npy_double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -5880,9 +5880,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 213, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_12;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":215
+    /* "pyrism/core/fauxil.pyx":215
  *         mat2[4, 4] = r44(xza, n1, n2)
  * 
  *         return mat2 * factor             # <<<<<<<<<<<<<<
@@ -5897,7 +5897,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
     goto __pyx_L0;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":184
+  /* "pyrism/core/fauxil.pyx":184
  *         return mat2
  * 
  * cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -5920,7 +5920,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("pyrism.core.auxiliary.transmissivity_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.transmissivity_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5937,7 +5937,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":217
+/* "pyrism/core/fauxil.pyx":217
  *         return mat2 * factor
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -5945,7 +5945,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_t_6pyri
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  */
 
-static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_f_6pyrism_4core_6fauxil_quad(float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   PyArrayObject *__pyx_v_mat = 0;
   PyArrayObject *__pyx_v_mat2 = 0;
   PyObject *__pyx_v_r11i = NULL;
@@ -5970,7 +5970,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_t_10;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
   Py_ssize_t __pyx_t_12;
   int __pyx_t_13;
@@ -6008,7 +6008,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_pybuffernd_mat2.data = NULL;
   __pyx_pybuffernd_mat2.rcbuffer = &__pyx_pybuffer_mat2;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":218
+  /* "pyrism/core/fauxil.pyx":218
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -6037,7 +6037,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 218, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
@@ -6047,7 +6047,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":219
+  /* "pyrism/core/fauxil.pyx":219
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -6076,7 +6076,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_6pyrism_4core_6fauxil_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_mat2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 219, __pyx_L1_error)
     } else {__pyx_pybuffernd_mat2.diminfo[0].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat2.diminfo[0].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat2.diminfo[1].strides = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat2.diminfo[1].shape = __pyx_pybuffernd_mat2.rcbuffer->pybuffer.shape[1];
@@ -6086,7 +6086,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_v_mat2 = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":221
+  /* "pyrism/core/fauxil.pyx":221
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -6096,7 +6096,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   __pyx_t_7 = ((__pyx_v_iso == 0) != 0);
   if (__pyx_t_7) {
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":222
+    /* "pyrism/core/fauxil.pyx":222
  * 
  *     if iso == 0:
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6105,7 +6105,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -6149,7 +6149,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r11i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":223
+    /* "pyrism/core/fauxil.pyx":223
  *     if iso == 0:
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6158,7 +6158,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r22); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 223, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r22); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -6202,7 +6202,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r22i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":224
+    /* "pyrism/core/fauxil.pyx":224
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6211,7 +6211,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r33); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r33); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -6255,7 +6255,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r33i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":225
+    /* "pyrism/core/fauxil.pyx":225
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6264,7 +6264,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r34); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r34); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
@@ -6308,7 +6308,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r34i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":226
+    /* "pyrism/core/fauxil.pyx":226
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6317,7 +6317,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r43); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r43); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -6361,7 +6361,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r43i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":227
+    /* "pyrism/core/fauxil.pyx":227
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6370,7 +6370,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r44); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r44); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 227, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -6414,7 +6414,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r44i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":229
+    /* "pyrism/core/fauxil.pyx":229
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  *         mat[0, 0] = r11i             # <<<<<<<<<<<<<<
@@ -6437,9 +6437,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 229, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":230
+    /* "pyrism/core/fauxil.pyx":230
  * 
  *         mat[0, 0] = r11i
  *         mat[1, 1] = r22i             # <<<<<<<<<<<<<<
@@ -6462,9 +6462,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 230, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":231
+    /* "pyrism/core/fauxil.pyx":231
  *         mat[0, 0] = r11i
  *         mat[1, 1] = r22i
  *         mat[2, 2] = r33i             # <<<<<<<<<<<<<<
@@ -6487,9 +6487,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 231, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_17, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":232
+    /* "pyrism/core/fauxil.pyx":232
  *         mat[1, 1] = r22i
  *         mat[2, 2] = r33i
  *         mat[2, 3] = r34i             # <<<<<<<<<<<<<<
@@ -6512,9 +6512,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 232, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_19, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":233
+    /* "pyrism/core/fauxil.pyx":233
  *         mat[2, 2] = r33i
  *         mat[2, 3] = r34i
  *         mat[3, 2] = r43i             # <<<<<<<<<<<<<<
@@ -6537,9 +6537,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 233, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":234
+    /* "pyrism/core/fauxil.pyx":234
  *         mat[2, 3] = r34i
  *         mat[3, 2] = r43i
  *         mat[3, 3] = r44i             # <<<<<<<<<<<<<<
@@ -6562,9 +6562,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 234, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_23, __pyx_pybuffernd_mat.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":236
+    /* "pyrism/core/fauxil.pyx":236
  *         mat[3, 3] = r44i
  * 
  *         return mat             # <<<<<<<<<<<<<<
@@ -6576,7 +6576,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_r = ((PyObject *)__pyx_v_mat);
     goto __pyx_L0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":221
+    /* "pyrism/core/fauxil.pyx":221
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
  * 
  *     if iso == 0:             # <<<<<<<<<<<<<<
@@ -6585,7 +6585,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":239
+  /* "pyrism/core/fauxil.pyx":239
  * 
  *     else:
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6595,7 +6595,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   /*else*/ {
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r00); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r00); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -6639,7 +6639,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r00i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":240
+    /* "pyrism/core/fauxil.pyx":240
  *     else:
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6648,7 +6648,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 240, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
@@ -6692,7 +6692,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r11i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":241
+    /* "pyrism/core/fauxil.pyx":241
  *         r00i = squad(r00, a, b, args=(n1, n2))[0]
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6701,7 +6701,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r22); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r22); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -6745,7 +6745,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r22i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":242
+    /* "pyrism/core/fauxil.pyx":242
  *         r11i = squad(r11, a, b, args=(n1, n2))[0]
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6754,7 +6754,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r33); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r33); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_8 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 242, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
@@ -6798,7 +6798,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r33i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":243
+    /* "pyrism/core/fauxil.pyx":243
  *         r22i = squad(r22, a, b, args=(n1, n2))[0]
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6807,7 +6807,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r34); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r34); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 243, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -6851,7 +6851,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r34i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":244
+    /* "pyrism/core/fauxil.pyx":244
  *         r33i = squad(r33, a, b, args=(n1, n2))[0]
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6860,7 +6860,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r43); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r43); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_9 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
@@ -6904,7 +6904,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r43i = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":245
+    /* "pyrism/core/fauxil.pyx":245
  *         r34i = squad(r34, a, b, args=(n1, n2))[0]
  *         r43i = squad(r43, a, b, args=(n1, n2))[0]
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]             # <<<<<<<<<<<<<<
@@ -6913,7 +6913,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_squad); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_9auxiliary_r44); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(__pyx_f_6pyrism_4core_6fauxil_r44); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = PyFloat_FromDouble(__pyx_v_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -6957,7 +6957,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __pyx_v_r44i = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":247
+    /* "pyrism/core/fauxil.pyx":247
  *         r44i = squad(r44, a, b, args=(n1, n2))[0]
  * 
  *         mat2[0, 0] = r00i             # <<<<<<<<<<<<<<
@@ -6980,9 +6980,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 247, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":248
+    /* "pyrism/core/fauxil.pyx":248
  * 
  *         mat2[0, 0] = r00i
  *         mat2[1, 1] = r11i             # <<<<<<<<<<<<<<
@@ -7005,9 +7005,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 248, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":249
+    /* "pyrism/core/fauxil.pyx":249
  *         mat2[0, 0] = r00i
  *         mat2[1, 1] = r11i
  *         mat2[2, 2] = r22i             # <<<<<<<<<<<<<<
@@ -7030,9 +7030,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 249, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_29, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":250
+    /* "pyrism/core/fauxil.pyx":250
  *         mat2[1, 1] = r11i
  *         mat2[2, 2] = r22i
  *         mat2[3, 3] = r33i             # <<<<<<<<<<<<<<
@@ -7055,9 +7055,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 250, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":251
+    /* "pyrism/core/fauxil.pyx":251
  *         mat2[2, 2] = r22i
  *         mat2[3, 3] = r33i
  *         mat2[3, 4] = r34i             # <<<<<<<<<<<<<<
@@ -7080,9 +7080,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 251, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":252
+    /* "pyrism/core/fauxil.pyx":252
  *         mat2[3, 3] = r33i
  *         mat2[3, 4] = r34i
  *         mat2[4, 3] = r43i             # <<<<<<<<<<<<<<
@@ -7105,9 +7105,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 252, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":253
+    /* "pyrism/core/fauxil.pyx":253
  *         mat2[3, 4] = r34i
  *         mat2[4, 3] = r43i
  *         mat2[4, 4] = r44i             # <<<<<<<<<<<<<<
@@ -7130,9 +7130,9 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 253, __pyx_L1_error)
     }
-    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
+    *__Pyx_BufPtrStrided2d(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t *, __pyx_pybuffernd_mat2.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_mat2.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_mat2.diminfo[1].strides) = __pyx_t_10;
 
-    /* "pyrism/core/fresnel_auxiliary_c.pyx":255
+    /* "pyrism/core/fauxil.pyx":255
  *         mat2[4, 4] = r44i
  * 
  *         return mat2             # <<<<<<<<<<<<<<
@@ -7145,7 +7145,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     goto __pyx_L0;
   }
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":217
+  /* "pyrism/core/fauxil.pyx":217
  *         return mat2 * factor
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7168,7 +7168,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat2.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("pyrism.core.auxiliary.quad", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.quad", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -7189,7 +7189,7 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":257
+/* "pyrism/core/fauxil.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7198,10 +7198,10 @@ static PyObject *__pyx_f_6pyrism_4core_9auxiliary_quad(float __pyx_v_a, float __
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_3reflectivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_6pyrism_4core_9auxiliary_3reflectivity_wrapper = {"reflectivity_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_9auxiliary_3reflectivity_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_3reflectivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza;
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_3reflectivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6pyrism_4core_6fauxil_3reflectivity_wrapper = {"reflectivity_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_6fauxil_3reflectivity_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_3reflectivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza;
   __pyx_t_double_complex __pyx_v_n1;
   __pyx_t_double_complex __pyx_v_n2;
   int __pyx_v_iso;
@@ -7270,24 +7270,24 @@ static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_3reflectivity_wrapper(PyObjec
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("reflectivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 257, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pyrism.core.auxiliary.reflectivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.reflectivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(__pyx_self, __pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
+  __pyx_r = __pyx_pf_6pyrism_4core_6fauxil_2reflectivity_wrapper(__pyx_self, __pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_2reflectivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("reflectivity_wrapper", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":258
+  /* "pyrism/core/fauxil.pyx":258
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return reflectivity_c(xza, n1, n2, iso)             # <<<<<<<<<<<<<<
@@ -7295,13 +7295,13 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_reflectivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_reflectivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":257
+  /* "pyrism/core/fauxil.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7312,7 +7312,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.reflectivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.reflectivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7320,7 +7320,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":260
+/* "pyrism/core/fauxil.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7329,10 +7329,10 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_2reflectivity_wrapper(CYTHON_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_5transmissivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_6pyrism_4core_9auxiliary_5transmissivity_wrapper = {"transmissivity_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_9auxiliary_5transmissivity_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_5transmissivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza;
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_5transmissivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6pyrism_4core_6fauxil_5transmissivity_wrapper = {"transmissivity_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_6fauxil_5transmissivity_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_5transmissivity_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza;
   __pyx_t_double_complex __pyx_v_n1;
   __pyx_t_double_complex __pyx_v_n2;
   int __pyx_v_iso;
@@ -7401,24 +7401,24 @@ static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_5transmissivity_wrapper(PyObj
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("transmissivity_wrapper", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 260, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pyrism.core.auxiliary.transmissivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.transmissivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(__pyx_self, __pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
+  __pyx_r = __pyx_pf_6pyrism_4core_6fauxil_4transmissivity_wrapper(__pyx_self, __pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4transmissivity_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("transmissivity_wrapper", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":261
+  /* "pyrism/core/fauxil.pyx":261
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return transmissivity_c(xza, n1, n2, iso)             # <<<<<<<<<<<<<<
@@ -7426,13 +7426,13 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHO
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_transmissivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_transmissivity_c(__pyx_v_xza, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":260
+  /* "pyrism/core/fauxil.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7443,7 +7443,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.transmissivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.transmissivity_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7451,7 +7451,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHO
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":263
+/* "pyrism/core/fauxil.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -7460,10 +7460,10 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_4transmissivity_wrapper(CYTHO
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_7snell_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_6pyrism_4core_9auxiliary_7snell_wrapper = {"snell_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_9auxiliary_7snell_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_7snell_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_iza;
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_7snell_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6pyrism_4core_6fauxil_7snell_wrapper = {"snell_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_6fauxil_7snell_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_7snell_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_iza;
   __pyx_t_double_complex __pyx_v_n1;
   __pyx_t_double_complex __pyx_v_n2;
   PyObject *__pyx_r = 0;
@@ -7521,24 +7521,24 @@ static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_7snell_wrapper(PyObject *__py
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("snell_wrapper", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 263, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pyrism.core.auxiliary.snell_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.snell_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(__pyx_self, __pyx_v_iza, __pyx_v_n1, __pyx_v_n2);
+  __pyx_r = __pyx_pf_6pyrism_4core_6fauxil_6snell_wrapper(__pyx_self, __pyx_v_iza, __pyx_v_n1, __pyx_v_n2);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_6snell_wrapper(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_iza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("snell_wrapper", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":264
+  /* "pyrism/core/fauxil.pyx":264
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):
  *     return snell_c(iza, n1, n2)             # <<<<<<<<<<<<<<
@@ -7546,13 +7546,13 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_snell_c(__pyx_v_iza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_snell_c(__pyx_v_iza, __pyx_v_n1, __pyx_v_n2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":263
+  /* "pyrism/core/fauxil.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -7563,7 +7563,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.snell_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.snell_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7571,7 +7571,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED 
   return __pyx_r;
 }
 
-/* "pyrism/core/fresnel_auxiliary_c.pyx":266
+/* "pyrism/core/fauxil.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7579,9 +7579,9 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_6snell_wrapper(CYTHON_UNUSED 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_9quad_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_6pyrism_4core_9auxiliary_9quad_wrapper = {"quad_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_9auxiliary_9quad_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_9quad_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_9quad_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6pyrism_4core_6fauxil_9quad_wrapper = {"quad_wrapper", (PyCFunction)__pyx_pw_6pyrism_4core_6fauxil_9quad_wrapper, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6pyrism_4core_6fauxil_9quad_wrapper(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_a;
   float __pyx_v_b;
   __pyx_t_double_complex __pyx_v_n1;
@@ -7662,36 +7662,36 @@ static PyObject *__pyx_pw_6pyrism_4core_9auxiliary_9quad_wrapper(PyObject *__pyx
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("quad_wrapper", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 266, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pyrism.core.auxiliary.quad_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.quad_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6pyrism_4core_9auxiliary_8quad_wrapper(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
+  __pyx_r = __pyx_pf_6pyrism_4core_6fauxil_8quad_wrapper(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_8quad_wrapper(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
+static PyObject *__pyx_pf_6pyrism_4core_6fauxil_8quad_wrapper(CYTHON_UNUSED PyObject *__pyx_self, float __pyx_v_a, float __pyx_v_b, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2, int __pyx_v_iso) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("quad_wrapper", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":267
+  /* "pyrism/core/fauxil.pyx":267
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     return quad(a, b, n1, n2, iso)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pyrism_4core_9auxiliary_quad(__pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pyrism_4core_6fauxil_quad(__pyx_v_a, __pyx_v_b, __pyx_v_n1, __pyx_v_n2, __pyx_v_iso); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":266
+  /* "pyrism/core/fauxil.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -7701,7 +7701,7 @@ static PyObject *__pyx_pf_6pyrism_4core_9auxiliary_8quad_wrapper(CYTHON_UNUSED P
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyrism.core.auxiliary.quad_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyrism.core.fauxil.quad_wrapper", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10184,7 +10184,7 @@ static PyObject *__pyx_pw_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____
 static char __pyx_doc_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap[] = "wrap(xza: 'DTYPE_t', n1: 'double complex', n2: 'double complex')";
 static PyMethodDef __pyx_mdef_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_1wrap = {"wrap", (PyCFunction)__pyx_pw_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_1wrap, METH_VARARGS|METH_KEYWORDS, __pyx_doc_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap};
 static PyObject *__pyx_pw_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_1wrap(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza;
+  __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza;
   __pyx_t_double_complex __pyx_v_n1;
   __pyx_t_double_complex __pyx_v_n2;
   PyObject *__pyx_r = 0;
@@ -10253,7 +10253,7 @@ static PyObject *__pyx_pw_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap(PyObject *__pyx_self, __pyx_t_6pyrism_4core_9auxiliary_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
+static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py_wrap(PyObject *__pyx_self, __pyx_t_6pyrism_4core_6fauxil_DTYPE_t __pyx_v_xza, __pyx_t_double_complex __pyx_v_n1, __pyx_t_double_complex __pyx_v_n2) {
   struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py *__pyx_cur_scope;
   struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py *__pyx_outer_scope;
   PyObject *__pyx_r = NULL;
@@ -10304,7 +10304,7 @@ static PyObject *__pyx_pf_11cfunc_dot_to_py_76__Pyx_CFunc_object____DTYPE__t____
  *         """wrap(xza: 'DTYPE_t', n1: 'double complex', n2: 'double complex')"""
  */
 
-static PyObject *__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyObject *(*__pyx_v_f)(__pyx_t_6pyrism_4core_9auxiliary_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex)) {
+static PyObject *__Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py(PyObject *(*__pyx_v_f)(__pyx_t_6pyrism_4core_6fauxil_DTYPE_t, __pyx_t_double_complex, __pyx_t_double_complex)) {
   struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py *__pyx_cur_scope;
   PyObject *__pyx_v_wrap = 0;
   PyObject *__pyx_r = NULL;
@@ -10392,7 +10392,7 @@ static void __pyx_tp_dealloc___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t_
 
 static PyTypeObject __pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py = {
   PyVarObject_HEAD_INIT(0, 0)
-  "pyrism.core.auxiliary.__pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py", /*tp_name*/
+  "pyrism.core.fauxil.__pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py", /*tp_name*/
   sizeof(struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc___pyx_scope_struct____Pyx_CFunc_object____DTYPE__t____double__complex____double__complex___to_py, /*tp_dealloc*/
@@ -10455,17 +10455,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_auxiliary(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_fauxil(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_auxiliary},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_fauxil},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "auxiliary",
+    "fauxil",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -10527,8 +10527,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
-  {&__pyx_n_s_pyrism_core_auxiliary, __pyx_k_pyrism_core_auxiliary, sizeof(__pyx_k_pyrism_core_auxiliary), 0, 0, 1, 1},
-  {&__pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_k_pyrism_core_fresnel_auxiliary_c, sizeof(__pyx_k_pyrism_core_fresnel_auxiliary_c), 0, 0, 1, 0},
+  {&__pyx_n_s_pyrism_core_fauxil, __pyx_k_pyrism_core_fauxil, sizeof(__pyx_k_pyrism_core_fauxil), 0, 0, 1, 1},
+  {&__pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_k_pyrism_core_fauxil_pyx, sizeof(__pyx_k_pyrism_core_fauxil_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_quad, __pyx_k_quad, sizeof(__pyx_k_quad), 0, 0, 1, 1},
   {&__pyx_n_s_quad_wrapper, __pyx_k_quad_wrapper, sizeof(__pyx_k_quad_wrapper), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
@@ -10563,7 +10563,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":156
+  /* "pyrism/core/fauxil.pyx":156
  * 
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10577,7 +10577,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":157
+  /* "pyrism/core/fauxil.pyx":157
  * cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10591,7 +10591,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":187
+  /* "pyrism/core/fauxil.pyx":187
  *     V, H = transmission_c(xza, n1, n2)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10605,7 +10605,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":188
+  /* "pyrism/core/fauxil.pyx":188
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10619,7 +10619,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":218
+  /* "pyrism/core/fauxil.pyx":218
  * 
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10633,7 +10633,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":219
+  /* "pyrism/core/fauxil.pyx":219
  * cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
  *     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -10756,7 +10756,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_wrap, 65, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(2, 65, __pyx_L1_error)
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":18
+  /* "pyrism/core/fauxil.pyx":18
  * cdef float EPSILON = 2.220446049250313e-16
  * 
  * def is_forward_angle(DTYPEC_t n, DTYPEC_t theta):             # <<<<<<<<<<<<<<
@@ -10766,9 +10766,9 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__24 = PyTuple_Pack(5, __pyx_n_s_n, __pyx_n_s_theta, __pyx_n_s_ncostheta, __pyx_n_s_answer, __pyx_n_s_error_string); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_n_s_is_forward_angle, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_n_s_is_forward_angle, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 18, __pyx_L1_error)
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":257
+  /* "pyrism/core/fauxil.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -10778,9 +10778,9 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__26 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_n_s_reflectivity_wrapper, 257, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_n_s_reflectivity_wrapper, 257, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 257, __pyx_L1_error)
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":260
+  /* "pyrism/core/fauxil.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -10790,9 +10790,9 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__28 = PyTuple_Pack(4, __pyx_n_s_xza, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_n_s_transmissivity_wrapper, 260, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_n_s_transmissivity_wrapper, 260, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 260, __pyx_L1_error)
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":263
+  /* "pyrism/core/fauxil.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
@@ -10802,9 +10802,9 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_iza, __pyx_n_s_n1, __pyx_n_s_n2); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_n_s_snell_wrapper, 263, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_n_s_snell_wrapper, 263, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 263, __pyx_L1_error)
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":266
+  /* "pyrism/core/fauxil.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
@@ -10813,7 +10813,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__32 = PyTuple_Pack(5, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_n1, __pyx_n_s_n2, __pyx_n_s_iso); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fresnel_auxiliary_c, __pyx_n_s_quad_wrapper, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyrism_core_fauxil_pyx, __pyx_n_s_quad_wrapper, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -10945,11 +10945,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initauxiliary(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initauxiliary(void)
+__Pyx_PyMODINIT_FUNC initfauxil(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initfauxil(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_auxiliary(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_auxiliary(void)
+__Pyx_PyMODINIT_FUNC PyInit_fauxil(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_fauxil(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -10989,7 +10989,7 @@ bad:
 }
 
 
-static int __pyx_pymod_exec_auxiliary(PyObject *__pyx_pyinit_module)
+static int __pyx_pymod_exec_fauxil(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -11010,7 +11010,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_auxiliary(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_fauxil(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -11046,7 +11046,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("auxiliary", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("fauxil", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -11065,14 +11065,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_pyrism__core__auxiliary) {
+  if (__pyx_module_is_main_pyrism__core__fauxil) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "pyrism.core.auxiliary")) {
-      if (unlikely(PyDict_SetItemString(modules, "pyrism.core.auxiliary", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "pyrism.core.fauxil")) {
+      if (unlikely(PyDict_SetItemString(modules, "pyrism.core.fauxil", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -11093,7 +11093,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":5
+  /* "pyrism/core/fauxil.pyx":5
  * 
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -11105,7 +11105,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":7
+  /* "pyrism/core/fauxil.pyx":7
  * import numpy as np
  * from libc.math cimport pow, pi, abs, cos
  * import cmath             # <<<<<<<<<<<<<<
@@ -11117,7 +11117,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_cmath, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":8
+  /* "pyrism/core/fauxil.pyx":8
  * from libc.math cimport pow, pi, abs, cos
  * import cmath
  * from scipy.integrate import quad as squad             # <<<<<<<<<<<<<<
@@ -11138,7 +11138,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":10
+  /* "pyrism/core/fauxil.pyx":10
  * from scipy.integrate import quad as squad
  * 
  * DTYPE = np.float             # <<<<<<<<<<<<<<
@@ -11153,7 +11153,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_1) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":13
+  /* "pyrism/core/fauxil.pyx":13
  * ctypedef np.float_t DTYPE_t
  * 
  * DTYPEC = np.complex128             # <<<<<<<<<<<<<<
@@ -11168,75 +11168,75 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPEC, __pyx_t_2) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":16
+  /* "pyrism/core/fauxil.pyx":16
  * ctypedef np.complex128_t DTYPEC_t
  * 
  * cdef float EPSILON = 2.220446049250313e-16             # <<<<<<<<<<<<<<
  * 
  * def is_forward_angle(DTYPEC_t n, DTYPEC_t theta):
  */
-  __pyx_v_6pyrism_4core_9auxiliary_EPSILON = 2.220446049250313e-16;
+  __pyx_v_6pyrism_4core_6fauxil_EPSILON = 2.220446049250313e-16;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":18
+  /* "pyrism/core/fauxil.pyx":18
  * cdef float EPSILON = 2.220446049250313e-16
  * 
  * def is_forward_angle(DTYPEC_t n, DTYPEC_t theta):             # <<<<<<<<<<<<<<
  *     """
  *     if a wave is traveling at angle theta from normal in a medium with index n,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_9auxiliary_1is_forward_angle, NULL, __pyx_n_s_pyrism_core_auxiliary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_1is_forward_angle, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_forward_angle, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":257
+  /* "pyrism/core/fauxil.pyx":257
  *         return mat2
  * 
  * def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_9auxiliary_3reflectivity_wrapper, NULL, __pyx_n_s_pyrism_core_auxiliary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_3reflectivity_wrapper, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reflectivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":260
+  /* "pyrism/core/fauxil.pyx":260
  *     return reflectivity_c(xza, n1, n2, iso)
  * 
  * def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_9auxiliary_5transmissivity_wrapper, NULL, __pyx_n_s_pyrism_core_auxiliary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_5transmissivity_wrapper, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_transmissivity_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":263
+  /* "pyrism/core/fauxil.pyx":263
  *     return transmissivity_c(xza, n1, n2, iso)
  * 
  * def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):             # <<<<<<<<<<<<<<
  *     return snell_c(iza, n1, n2)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_9auxiliary_7snell_wrapper, NULL, __pyx_n_s_pyrism_core_auxiliary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_7snell_wrapper, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_snell_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":266
+  /* "pyrism/core/fauxil.pyx":266
  *     return snell_c(iza, n1, n2)
  * 
  * def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):             # <<<<<<<<<<<<<<
  *     return quad(a, b, n1, n2, iso)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_9auxiliary_9quad_wrapper, NULL, __pyx_n_s_pyrism_core_auxiliary); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_9quad_wrapper, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_quad_wrapper, __pyx_t_2) < 0) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pyrism/core/fresnel_auxiliary_c.pyx":1
+  /* "pyrism/core/fauxil.pyx":1
  * # cython: cdivision=True             # <<<<<<<<<<<<<<
  * from __future__ import division
  * 
@@ -11262,11 +11262,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init pyrism.core.auxiliary", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init pyrism.core.fauxil", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init pyrism.core.auxiliary");
+    PyErr_SetString(PyExc_ImportError, "init pyrism.core.fauxil");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

@@ -11,7 +11,7 @@ from scipy.misc import factorial
 from scipy.special import expi
 
 from .library import get_data_one, get_data_two
-from ..core import ReflectanceResult, EmissivityResult, SailResult
+from ..auxil import ReflectanceResult, EmissivityResult, SailResult
 from radarpy import Angles, cot, rad, dB, BRF, BRDF
 
 try:

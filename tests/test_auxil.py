@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pyrism.core import (ReflectanceResult, EmissivityResult, SailResult)
+from pyrism.auxil import (ReflectanceResult, EmissivityResult, SailResult)
 
 
 class TestResultClass:

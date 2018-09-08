@@ -5,7 +5,7 @@ from collections import namedtuple
 import numpy as np
 
 from ...volume.library import get_data_one, get_data_two
-from ...core import SoilResult
+from ...auxil import SoilResult
 from radarpy import stacks
 
 try:
