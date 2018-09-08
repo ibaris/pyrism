@@ -49,7 +49,7 @@ else:
         Extension("pyrism.core.rayleigh_phase_c",
                   ["pyrism/core/rayleigh_phase_c.c"], include_dirs=['.']),
         Extension("pyrism.core.auxiliary",
-                  ["pyrism/core/auxiliary.c"], include_dirs=['.'])
+                  ["pyrism/core/fresnel_auxiliary_c.c"], include_dirs=['.'])
     ]
 
     print ('******** CYTHON Not Found. Use distributed .c files *******')
