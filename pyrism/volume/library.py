@@ -7,7 +7,7 @@ from collections import namedtuple
 import numpy as np
 import pkg_resources
 
-path = 'pyrism'  # os.path.split(__file__)
+path = 'pyrism/volume'  # os.path.split(__file__)
 
 # Create a header
 Spectra = namedtuple('Spectra', 'p5 pd soil light')
