@@ -21,10 +21,10 @@ corrlength = 10  # Correlation length in cm
 sigma = 0.5  # RMS Height in cm
 
 # At first we will simulate the Fresnel reflectivity.
-# fresnel = pyr.Fresnel(iza=iza, frequency=frequency, n1=n1, n2=n2, sigma=sigma)
+fresnel = pyr.Fresnel(iza=iza, frequency=frequency, n1=n1, n2=n2, sigma=sigma)
 
 # Now we we will calculate the BSC with the I2EM Model.
-# i2em = pyr.I2EM(iza, vza, raa, frequency=frequency, eps=eps, corrlength=corrlength, sigma=sigma)
+i2em = pyr.I2EM(iza, vza, raa, frequency=frequency, eps=eps, corrlength=corrlength, sigma=sigma)
 
 # Now an optical model
 lsm = pyr.LSM(0.01, 0.25)

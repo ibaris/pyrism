@@ -205,9 +205,9 @@ class I2EM(Angles):
         self.BSC['arraydB'] = stacks((self.BSC.ISOdB, self.BSC.VVdB, self.BSC.HHdB, self.BSC.VHdB, self.BSC.HVdB))
 
         self.I = SoilResult(VV=BRDF(self.VV, self.vza),
-                            HH=BRDF(self.VV, self.vza),
+                            HH=BRDF(self.HH, self.vza),
                             VH=np.zeros_like(self.VV),
-                            HV=np.zeros_like(self.VV))
+                            HV=np.zeros_like(self.HH))
 
         self.I['ISO'] = (self.I.VV + self.I.HH) / 2
 
@@ -216,7 +216,7 @@ class I2EM(Angles):
         self.BRF = SoilResult(VV=BRF(self.I.VV),
                               HH=BRF(self.I.HH),
                               VH=np.zeros_like(self.VV),
-                              HV=np.zeros_like(self.VV))
+                              HV=np.zeros_like(self.HH))
 
         self.BRF['ISO'] = (self.BRF.VV + self.BRF.HH) / 2
 

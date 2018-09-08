@@ -582,6 +582,7 @@ class SAIL(Angles):
         self.BRDF = SailResult(ref=canopy_ref / np.pi, refdB=dB(canopy_ref / np.pi),
                                L8=self.__store_L8(canopy_ref / np.pi),
                                ASTER=self.__store_aster(canopy_ref / np.pi))
+
         self.BHR = SailResult(ref=rddt, refdB=dB(rddt), L8=self.__store_L8(rddt), ASTER=self.__store_aster(rddt))
         self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt), L8=self.__store_L8(rsdt), ASTER=self.__store_aster(rsdt))
         self.HDR = SailResult(ref=rdot, refdB=dB(rdot), L8=self.__store_L8(rdot), ASTER=self.__store_aster(rdot))
