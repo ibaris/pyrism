@@ -1,2 +1,2 @@
-recursive-include pyrism/data *.txt
+recursive-include pyrism/volume/data *.txt
 recursive-include pyrism/core *.c

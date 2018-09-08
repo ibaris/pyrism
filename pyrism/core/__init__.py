@@ -1,3 +1,3 @@
-import rayleigh_phase
-import rayleigh_scatt
+import rscat
+import rphs
 import fauxil

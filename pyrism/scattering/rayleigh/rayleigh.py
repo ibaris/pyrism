@@ -1,6 +1,6 @@
 from __future__ import division
-from ...core.rayleigh_scatt import rayleigh_scattering_wrapper
-from ...core.rayleigh_phase import (pmatrix_wrapper, dblquad_c_wrapper, quad_c_wrapper,
+from ...core.rscat import rayleigh_scattering_wrapper
+from ...core.rphs import (pmatrix_wrapper, dblquad_c_wrapper, quad_c_wrapper,
                                     dblquad_pcalc_c_wrapper, quad_pcalc_c_wrapper)
 import warnings
 import numpy as np

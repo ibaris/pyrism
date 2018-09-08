@@ -30,11 +30,11 @@ ext_modules = []
 
 if use_cython:
     ext_modules += [
-        Extension("pyrism.core.rayleigh_scatt",
-                  ["pyrism/core/rayleigh_scatt.pyx"], include_dirs=['.']),
+        Extension("pyrism.core.rscat",
+                  ["pyrism/core/rscat.pyx"], include_dirs=['.']),
 
-        Extension("pyrism.core.rayleigh_phase",
-                  ["pyrism/core/rayleigh_phase.pyx"], include_dirs=['.']),
+        Extension("pyrism.core.rphs",
+                  ["pyrism/core/rphs.pyx"], include_dirs=['.']),
 
         Extension("pyrism.core.fauxil",
                   ["pyrism/core/fauxil.pyx"], include_dirs=['.'])
@@ -46,11 +46,11 @@ if use_cython:
 
 else:
     ext_modules += [
-        Extension("pyrism.core.rayleigh_scatt",
-                  ["pyrism/core/rayleigh_scatt.c"], include_dirs=['.']),
+        Extension("pyrism.core.rscat",
+                  ["pyrism/core/rscat.c"], include_dirs=['.']),
 
-        Extension("pyrism.core.rayleigh_phase",
-                  ["pyrism/core/rayleigh_phase.c"], include_dirs=['.']),
+        Extension("pyrism.core.rphs",
+                  ["pyrism/core/rphs.c"], include_dirs=['.']),
 
         Extension("pyrism.core.fauxil",
                   ["pyrism/core/fauxil.c"], include_dirs=['.'])
