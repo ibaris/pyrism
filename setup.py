@@ -30,12 +30,12 @@ ext_modules = []
 
 if use_cython:
     ext_modules += [
-        Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.pyx"], include_dirs=['.']),
-        Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.pyx"], include_dirs=['.']),
-        Extension("pyrism.soil.fresnel.core.auxiliary",
-                  ["pyrism/soil/fresnel/core/auxiliary.pyx"], include_dirs=['.'])
+        Extension("pyrism.core.rayleigh_scatt_c",
+                  ["pyrism/core/rayleigh_scatt_c.pyx"], include_dirs=['.']),
+        Extension("pyrism.core.rayleigh_phase_c",
+                  ["pyrism/core/rayleigh_phase_c.pyx"], include_dirs=['.']),
+        Extension("pyrism.core.auxiliary",
+                  ["pyrism/core/fresnel_auxiliary_c.pyx"], include_dirs=['.'])
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -44,12 +44,12 @@ if use_cython:
 
 else:
     ext_modules += [
-        Extension("pyrism.scattering.rayleigh.core.rayleigh_scatt_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_scatt_c.c"], include_dirs=['.']),
-        Extension("pyrism.scattering.rayleigh.core.rayleigh_phase_c",
-                  ["pyrism/scattering/rayleigh/core/rayleigh_phase_c.c"], include_dirs=['.']),
-        Extension("pyrism.soil.fresnel.core.auxiliary",
-                  ["pyrism/soil/fresnel/core/auxiliary.c"], include_dirs=['.'])
+        Extension("pyrism.core.rayleigh_scatt_c",
+                  ["pyrism/core/rayleigh_scatt_c.c"], include_dirs=['.']),
+        Extension("pyrism.core.rayleigh_phase_c",
+                  ["pyrism/core/rayleigh_phase_c.c"], include_dirs=['.']),
+        Extension("pyrism.core.auxiliary",
+                  ["pyrism/core/auxiliary.c"], include_dirs=['.'])
     ]
 
     print ('******** CYTHON Not Found. Use distributed .c files *******')

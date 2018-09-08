@@ -1,9 +1,9 @@
 from __future__ import division
-from pyrism.scattering.rayleigh.core.rayleigh_phase_c import (p11_c_wrapper, p12_c_wrapper, p13_c_wrapper,
-                                                              p21_c_wrapper,
-                                                              p22_c_wrapper, p23_c_wrapper, p31_c_wrapper,
-                                                              p32_c_wrapper,
-                                                              p33_c_wrapper, p44_c_wrapper)
+from core.rayleigh_phase_c import (p11_c_wrapper, p12_c_wrapper, p13_c_wrapper,
+                                   p21_c_wrapper,
+                                   p22_c_wrapper, p23_c_wrapper, p31_c_wrapper,
+                                   p32_c_wrapper,
+                                   p33_c_wrapper, p44_c_wrapper)
 
 
 def p11(iza, raa, vza):
