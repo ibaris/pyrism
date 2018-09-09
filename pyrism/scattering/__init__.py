@@ -1,2 +1,2 @@
-from rayleigh.rayleigh import Rayleigh
+from rayleigh import Rayleigh
 from mie import Mie

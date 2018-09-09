@@ -1,3 +1,4 @@
+from __future__ import division
 from .core.mie_scatt import mie_scattering
 import warnings
 import numpy as np
@@ -21,7 +22,7 @@ class Mie(object):
     frequency : int or float
         Frequency (GHz)
     radius : int, float or array
-        Particle size a [m].
+        Particle size a [cm].
     eps_p : complex
         Dielectric constant of the medium (a + bj).
     eps_b : complex
@@ -46,7 +47,7 @@ class Mie(object):
 
         # Check validity
 
-        radius = radius / 100
+        radius /= 100
 
         lm = 299792458 / (frequency * 1e9)  # Wavelength in meter
         self.condition = (2 * np.pi * radius) / lm

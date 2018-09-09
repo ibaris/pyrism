@@ -37,7 +37,10 @@ if use_cython:
                   ["pyrism/core/rphs.pyx"], include_dirs=['.']),
 
         Extension("pyrism.core.fauxil",
-                  ["pyrism/core/fauxil.pyx"], include_dirs=['.'])
+                  ["pyrism/core/fauxil.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.core.iemauxil",
+                  ["pyrism/core/iemauxil.pyx"], include_dirs=['.'])
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -53,7 +56,10 @@ else:
                   ["pyrism/core/rphs.c"], include_dirs=['.']),
 
         Extension("pyrism.core.fauxil",
-                  ["pyrism/core/fauxil.c"], include_dirs=['.'])
+                  ["pyrism/core/fauxil.c"], include_dirs=['.']),
+
+        Extension("pyrism.core.iemauxil",
+                  ["pyrism/core/iemauxil.c"], include_dirs=['.'])
     ]
 
     print ('******** CYTHON Not Found. Use distributed .c files *******')
