@@ -4,6 +4,7 @@ from __future__ import division
 import sys
 
 import numpy as np
+from radarpy import asarrays, align_all
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -188,7 +189,9 @@ def vegetation(frequency, mg):
     Dielectric Constant:    complex
 
     """
-    frequency = np.asarray(frequency).flatten()
+    frequency, mg = asarrays((frequency, mg))
+
+    frequency, mg = align_all((frequency, mg))
 
     S = 15
 
@@ -207,10 +210,10 @@ def vegetation(frequency, mg):
                 (1 + np.sqrt(frequency[i] / 0.36)) ** 2 + (frequency[i] / 0.36))
 
         # emnp.pirical fits
-        v_fw = mg * (0.55 * mg - 0.076)
-        v_bw = 4.64 * mg ** 2 / (1 + 7.36 * mg ** 2)
+        v_fw = mg[i] * (0.55 * mg[i] - 0.076)
+        v_bw = 4.64 * mg[i] ** 2 / (1 + 7.36 * mg[i] ** 2)
 
-        eps_r = 1.7 - 0.74 * mg + 6.16 * mg ** 2
+        eps_r = 1.7 - 0.74 * mg[i] + 6.16 * mg[i] ** 2
         eps_v_r = eps_r + v_fw * eps_w_r + v_bw * eps_b_r
         eps_v_i = v_fw * eps_w_i + v_bw * eps_b_i
 
@@ -218,3 +221,25 @@ def vegetation(frequency, mg):
         epsl.append(eps)
 
     return np.asarray(epsl, dtype=np.complex)
+
+
+def topp(mv, eps=None):
+    """
+    Calculate the conplex dielectric constant from soil moisture with Topps model.
+
+    Parameters
+    ----------
+    mv : float or array_like
+        Soil moisture.
+
+    Returns
+    -------
+
+    """
+    eps = 42.6357 - 0.00724503 / (
+            -2.62313e-10 + 4.9923e-10 * mv + 4.9923e-10 * np.sqrt(0.282633 - 1.05087 * mv + mv ** 2)) ** (
+                  1 / 3.) + 61527.2 * (
+                  -2.62313e-10 + 4.9923e-10 * mv + 4.9923e-10 * np.sqrt(0.282633 - 1.05087 * mv + mv ** 2)) ** (
+                  1 / 3.)
+
+    return eps

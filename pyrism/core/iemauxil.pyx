@@ -3,7 +3,6 @@ from __future__ import division
 
 cimport numpy as np
 import numpy as np
-# from numpy import cmath.sin, np.cos, np.sqrt, np.exp
 from libc.math cimport cos, sin, sqrt, exp, abs
 import cmath
 from scipy.integrate import dblquad

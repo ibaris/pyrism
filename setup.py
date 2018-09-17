@@ -29,6 +29,8 @@ cmdclass = {}
 ext_modules = []
 
 if use_cython:
+    print ('******** Compiling with CYTHON accomplished ******')
+
     ext_modules += [
         Extension("pyrism.core.rscat",
                   ["pyrism/core/rscat.pyx"], include_dirs=['.']),
@@ -45,9 +47,9 @@ if use_cython:
 
     cmdclass.update({'build_ext': build_ext})
 
-    print ('******** Compiling with CYTHON accomplished ******')
-
 else:
+    print ('******** CYTHON Not Found. Use distributed .c files *******')
+
     ext_modules += [
         Extension("pyrism.core.rscat",
                   ["pyrism/core/rscat.c"], include_dirs=['.']),
@@ -61,8 +63,6 @@ else:
         Extension("pyrism.core.iemauxil",
                   ["pyrism/core/iemauxil.c"], include_dirs=['.'])
     ]
-
-    print ('******** CYTHON Not Found. Use distributed .c files *******')
 
 def get_packages():
     find_packages(exclude=['docs', 'tests']),
@@ -118,4 +118,42 @@ setup(name='pyrism',
       ],
       )
 
-print ('******** Installation completed ******')
+print ('******** Build the f2py fortran extension ********')
+
+# Build the f2py fortran extension
+# --------------------------------
+from numpy.distutils.core import Extension
+from numpy.distutils.core import setup
+
+# if use_cython:
+#     print ('******** Compiling with FORTRAN accomplished ******')
+#
+#
+#     flib = Extension(name='pyrism.fortran_tm.fotm'
+#                           '',
+#                      sources=['pyrism/fortran_tm/fotm.pyf',
+#                               'pyrism/fortran_tm/ampld.lp.f',
+#                               'pyrism/fortran_tm/lpd.f'],
+#                      )
+#
+# else:
+#     print ('******** FORTRAN Not Found. Use distributed .o files *******')
+#
+#     flib = Extension(name='pyrism.fortran_tm.tmatrix'
+#                           '',
+#                      sources=['pyrism/fortran_tm/tmatrixmodule.c',
+#                               'pyrism/fortran_tm/tmatrix.o'],
+#                      )
+#
+
+flib = Extension(name='pyrism.fortran_tm.fotm',
+                 sources=['pyrism/fortran_tm/fotm.pyf',
+                          'pyrism/fortran_tm/ampld.lp.f',
+                          'pyrism/fortran_tm/lpd.f'],
+                 )
+
+setup(
+    ext_modules=[flib]
+)
+
+print ('******** Installation completed ********')

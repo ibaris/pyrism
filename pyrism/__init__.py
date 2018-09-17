@@ -1,4 +1,4 @@
-from scattering import Rayleigh, Mie
+from scattering import Rayleigh, Mie, TMatrix
 from soil import I2EM, LSM, Fresnel
 import EPS
 from volume import VolScatt, LIDF, PROSPECT, SAIL

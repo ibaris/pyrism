@@ -11,12 +11,10 @@ raa = 50  # Relative azimuth angle
 
 ray = pyr.Rayleigh(frequency=1.26, radius=np.arange(0, 0.0205, 0.0005), eps_p=(0.25 + 0.1j))
 
-pmatrix = pyr.Rayleigh.Phase(iza, vza, raa)
+pmatrix = pyr.Rayleigh.Phase(20, vza, raa)
+print pmatrix
+
 pmatrix.quad()
 pmatrix.quad(precalc=False)
 pmatrix.dblquad()
 pmatrix.dblquad(precalc=False)
-
-# ray.pmatrix(iza, vza, raa, dblquad=False)
-#
-# mie = pyr.Mie(frequency=1.26, radius=0.010, eps_p=(0.25 + 0.1j))

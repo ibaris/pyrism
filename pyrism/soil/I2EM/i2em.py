@@ -70,7 +70,7 @@ class I2EM(Angles):
 
         iza, vza, raa, frequency, corrlength, sigma, eps = align_all((iza, vza, raa, frequency, corrlength, sigma, eps))
 
-        super(I2EM, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit)
+        super(I2EM, self).__init__(iza.real, vza.real, raa.real, normalize=False, nbar=0.0, angle_unit=angle_unit)
 
         # Setup variables
         k = 2 * np.pi * frequency / 30

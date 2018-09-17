@@ -12,7 +12,7 @@ def mie_scattering(frequency, radius, eps_p, eps_b):
     n = n_p / n_b
 
     chi = 20.0 / 3.0 * np.pi * radius * frequency * np.sqrt(eps_b_real)
-    BigK = ((n * n) - 1) / ((n * n) + 2)
+    # BigK = ((n * n) - 1) / ((n * n) + 2)
 
     l = 1
     first = True
@@ -49,8 +49,8 @@ def mie_scattering(frequency, radius, eps_p, eps_b):
 
         first = False
 
-    oldSum = oldSum
-    runSum = runSum
+    # oldSum = oldSum
+    # runSum = runSum
 
     ks = 2 / chi ** 2 * runSum
 

@@ -4,7 +4,7 @@ from pyrism.core.rphs import (pmatrix_wrapper, dblquad_c_wrapper, quad_c_wrapper
                                     dblquad_pcalc_c_wrapper, quad_pcalc_c_wrapper)
 import warnings
 import numpy as np
-from radarpy import Angles, align_all, asarrays
+from radarpy import Angles, align_all, asarrays, zeros_likes
 import sys
 
 # python 3.6 comparability
@@ -63,12 +63,7 @@ class Rayleigh(object):
 
         frequency, radius, eps_p, eps_b = align_all((frequency, radius, eps_p, eps_b))
 
-        self.ks = np.zeros_like(frequency, dtype=np.float)
-        self.ka = np.zeros_like(frequency, dtype=np.float)
-        self.kt = np.zeros_like(frequency, dtype=np.float)
-        self.ke = np.zeros_like(frequency, dtype=np.float)
-        self.omega = np.zeros_like(frequency, dtype=np.float)
-        self.BSC = np.zeros_like(frequency, dtype=np.float)
+        self.ke, self.ks, self.ka, self.kt, self.omega, self.BSC = zeros_likes(frequency, rep=6, dtype=np.float)
 
         for i in range(frequency.shape[0]):
             self.ks[i], self.ka[i], self.kt[i], self.ke[i], self.omega[i], self.BSC[i] = rayleigh_scattering_wrapper(
@@ -78,16 +73,17 @@ class Rayleigh(object):
     def __str__(self):
         vals = dict()
         vals['cond'], vals['ks'], vals['ka'], vals['kt'], vals['ke'], vals[
-            'omega'], vals['bsc'] = self.condition, self.ks, self.ka, self.kt, self.ke, self.omega, self.BSC
+            'omega'], vals[
+            'bsc'] = self.condition.mean(), self.ks.mean(), self.ka.mean(), self.kt.mean(), self.ke.mean(), self.omega.mean(), self.BSC.mean()
 
         info = 'Class                      : Rayleigh\n' \
-               'Particle size              : {cond}\n' \
-               'Scattering Coefficient     : {ks}\n' \
-               'Absorption Coefficient     : {ka}\n' \
-               'Transmission Coefficient   : {kt}\n' \
-               'Extinction Coefficient     : {ke}\n' \
-               'Backscattering Coefficient : {bsc}\n' \
-               'Single Scattering Albedo   : {omega}'.format(**vals)
+               'Mean Particle size              : {cond}\n' \
+               'Mean Scattering Coefficient     : {ks}\n' \
+               'Mean Absorption Coefficient     : {ka}\n' \
+               'Mean Transmission Coefficient   : {kt}\n' \
+               'Mean Extinction Coefficient     : {ke}\n' \
+               'Mean Backscattering Coefficient : {bsc}\n' \
+               'Mean Single Scattering Albedo   : {omega}'.format(**vals)
 
         return info
 
@@ -99,9 +95,6 @@ class Rayleigh(object):
         ----------
         iza, vza, raa : int, float or array_like
             Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
@@ -117,22 +110,30 @@ class Rayleigh(object):
         You can obtain the integrated phase matrix with self.dblquad or self.quad.
         """
 
-        def __init__(self, iza, vza, raa, normalize=False, nbar=0.0, angle_unit='DEG'):
+        def __init__(self, iza, vza, raa, angle_unit='DEG'):
 
-            super(Rayleigh.Phase, self).__init__(iza=iza, vza=vza, raa=raa, normalize=normalize, nbar=nbar,
+            super(Rayleigh.Phase, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0,
                                                  angle_unit=angle_unit,
                                                  align=True)
 
             self.__matrix = self.__calc()
 
-        def __calc(self):
-            if len(self.iza) > 1:
-                matrix = list()
-                for i in range(self.iza.shape[0]):
-                    matrix.append(pmatrix_wrapper(self.iza[i], self.vza[i], self.raa[i]))
+        def __str__(self):
+            vals = dict()
+            vals['VV'] = np.mean([self.__matrix[i][0, 0] for i in range(len(self.__matrix))])
+            vals['HH'] = np.mean([self.__matrix[i][1, 1] for i in range(len(self.__matrix))])
 
-            else:
-                matrix = pmatrix_wrapper(self.iza[0], self.vza[0], self.raa[0])
+            info = 'Class                      : Rayleigh Phase Matrix\n' \
+                   'Mean VV Polarization       : {VV}\n' \
+                   'Mean HH Polarization       : {HH}'.format(**vals)
+
+            return info
+
+        def __calc(self):
+            matrix = list()
+
+            for i in range(self.iza.shape[0]):
+                matrix.append(pmatrix_wrapper(self.iza[i], self.vza[i], self.raa[i]))
 
             return matrix
 
@@ -157,33 +158,20 @@ class Rayleigh(object):
                 raise AssertionError(
                     "x and y must be a list or a tuple with lower bound (1. element) and upper bound (2. element)")
 
+            matrix = list()
             a, b = y
             g, h = x
 
             if precalc:
-                if np.allclose(a, 0) and np.allclose(b, 2 * np.pi) and np.allclose(g, 0) and np.allclose(h, np.pi / 2):
+                for i in range(self.iza.shape[0]):
+                    matrix.append(dblquad_pcalc_c_wrapper(self.vza[i]))
 
-                    if len(self.iza) > 1:
-
-                        matrix = list()
-                        for i in range(self.iza.shape[0]):
-                            matrix.append(dblquad_pcalc_c_wrapper(self.vza[i]))
-
-                    else:
-                        matrix = dblquad_pcalc_c_wrapper(self.vza)
 
             else:
-                if len(self.iza) > 1:
-
-                    matrix = list()
-                    for i in range(self.iza.shape[0]):
-                        matrix.append(dblquad_c_wrapper(self.vza[i], float(a), float(b), float(g), float(h)))
-
-                else:
-                    matrix = dblquad_c_wrapper(self.vza, float(a), float(b), float(g), float(h))
+                for i in range(self.iza.shape[0]):
+                    matrix.append(dblquad_c_wrapper(self.vza[i], float(a), float(b), float(g), float(h)))
 
             self.__matrix = matrix
-            # return matrix
 
         def quad(self, x=[0, np.pi / 2], precalc=True):
             """
@@ -206,33 +194,18 @@ class Rayleigh(object):
                 raise AssertionError(
                     "x must be a list or a tuple with lower bound (1. element) and upper bound (2. element)")
 
+            matrix = list()
             a, b = x
 
             if precalc:
-                if np.allclose(a, 0) and np.allclose(b, np.pi / 2):
-
-                    if len(self.iza) > 1:
-
-                        matrix = list()
-                        for i in range(self.iza.shape[0]):
-                            matrix.append(quad_pcalc_c_wrapper(self.vza[i], self.raa[i]))
-
-                    else:
-                        matrix = quad_pcalc_c_wrapper(self.vza, self.raa)
+                for i in range(self.iza.shape[0]):
+                    matrix.append(quad_pcalc_c_wrapper(self.vza[i], self.raa[i]))
 
             else:
-
-                if len(self.iza) > 1:
-
-                    matrix = list()
-                    for i in range(self.iza.shape[0]):
-                        matrix.append(quad_c_wrapper(self.vza[i], self.raa[i], float(a), float(b)))
-
-                else:
-                    matrix = quad_c_wrapper(self.vza[0], self.raa[0], float(a), float(b))
+                for i in range(self.iza.shape[0]):
+                    matrix.append(quad_c_wrapper(self.vza[i], self.raa[i], float(a), float(b)))
 
             self.__matrix = matrix
-            # return matrix
 
         @property
         def matrix(self):
@@ -241,50 +214,6 @@ class Rayleigh(object):
         @matrix.setter
         def matrix(self, matrix):
             self.__matrix = matrix
-
-        @property
-        def HH(self):
-            if len(self.iza) > 1:
-                item = [np.sum(self.matrix[i][0,]) for i in range(self.iza.shape[0])]
-                item = np.asarray(item).flatten()
-
-            else:
-                item = np.sum(self.matrix[0,])
-
-            return item
-
-        @property
-        def VV(self):
-            if len(self.iza) > 1:
-                item = [np.sum(self.matrix[i][1,]) for i in range(self.iza.shape[0])]
-                item = np.asarray(item).flatten()
-
-            else:
-                item = np.sum(self.matrix[1,])
-
-            return item
-
-        @property
-        def VH(self):
-            if len(self.iza) > 1:
-                item = [np.sum(self.matrix[i][2,]) for i in range(self.iza.shape[0])]
-                item = np.asarray(item).flatten()
-
-            else:
-                item = np.sum(self.matrix[2,])
-
-            return item
-
-        @property
-        def HV(self):
-            if len(self.iza) > 1:
-                item = [np.sum(self.matrix[i][3,]) for i in range(self.iza.shape[0])]
-                item = np.asarray(item).flatten()
-
-            else:
-                item = np.sum(self.matrix[3,])
-
-            return item
 
         @property
         def p11(self):
