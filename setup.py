@@ -69,9 +69,18 @@ def get_packages():
     return find_packages()
 
 
+def get_version():
+    version = dict()
+
+    with open("pyrism/version.py") as fp:
+        exec (fp.read(), version)
+
+    return version['__version__']
+
+
 setup(name='pyrism',
 
-      version='1.0.0',
+      version=get_version(),
 
       description='Python bindings for Remote Sensing Models',
 

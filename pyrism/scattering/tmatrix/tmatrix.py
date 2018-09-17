@@ -1,40 +1,16 @@
-"""
-Copyright (C) 2009-2015 Jussi Leinonen, Finnish Meteorological Institute,
-California Institute of Technology
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-"""
+from __future__ import division
 from radarpy import Angles
 
-import warnings
 import numpy as np
 from pyrism.fortran_tm import fotm as tmatrix
-# from pytmatrix.fortran_tm import pytmatrix
-# from pytmatrix.quadrature import quadrature
-# import pytmatrix.orientation as orientation
-from scattering.sauxil import get_points_and_weights, gaussian_pdf, uniform_pdf
-from scipy.integrate import quad, dblquad
+from pyrism.scattering.tmatrix.sauxil import get_points_and_weights, gaussian_pdf, uniform_pdf, PSDIntegrator
+from scipy.integrate import dblquad
 
 
 class TMatrix(Angles):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, radius_type='REV', axis_ratio=1.0, shape='SPH',
                  alpha=0.0, beta=0.0, Kw_sqr=0.93, orient='S', or_pdf='gauss', n_alpha=5, n_beta=10,
-                 psd_integrator=None, psd=None, angle_unit='DEG'):
+                 psd_integrator=False, psd=None, angle_unit='DEG'):
         """T-Matrix scattering from nonspherical particles.
 
         Class for simulating scattering from nonspherical particles with the
@@ -134,9 +110,12 @@ class TMatrix(Angles):
         self.n_alpha = n_alpha
         self.n_beta = n_beta
 
-        self.psd_integrator = psd_integrator
-        self.psd = psd
+        if psd_integrator:
+            self.psd_integrator = PSDIntegrator()
+        else:
+            self.psd_integrator = None
 
+        self.psd = psd
         self.nmax = self._init_tmatrix()
 
     def _init_tmatrix(self):
@@ -172,8 +151,7 @@ class TMatrix(Angles):
             self._S, self._Z = self.get_SZ_orient()
         else:
             self._S, self._Z = self.psd_integrator(self.psd, self.izaDeg, self.vzaDeg, self.iaaDeg, self.vaaDeg,
-                                                   self.alpha,
-                                                   self.beta)
+                                                   self.alpha, self.beta)
 
         return self._S, self._Z
 
@@ -237,7 +215,7 @@ class TMatrix(Angles):
         Z = np.zeros((4, 4))
 
         def Sfunc(beta, alpha, i, j, real):
-            (S_ang, Z_ang) = self.get_SZ_single(alpha=alpha, beta=beta)
+            (S_ang, Z_ang) = self.get_SZ_single()
             s = S_ang[i, j].real if real else S_ang[i, j].imag
             return s * self.or_pdf(beta)
 
@@ -250,7 +228,7 @@ class TMatrix(Angles):
                                        lambda x: 0.0, lambda x: 180.0, (i, j, False))[0] / 360.0
 
         def Zfunc(beta, alpha, i, j):
-            (S_and, Z_ang) = self.get_SZ_single(alpha=alpha, beta=beta)
+            (S_and, Z_ang) = self.get_SZ_single()
             return Z_ang[i, j] * self.or_pdf(beta)
 
         ind = range(4)
@@ -260,21 +238,6 @@ class TMatrix(Angles):
                                   lambda x: 0.0, lambda x: 180.0, (i, j))[0] / 360.0
 
         return (S, Z)
-
-    def __equal_volume_from_maximum(self):
-        if self.shape == -1:
-            if self.axis_ratio > 1.0:  # oblate
-                r_eq = self.radius / self.axis_ratio ** (1.0 / 3.0)
-            else:  # prolate
-                r_eq = self.radius / self.axis_ratio ** (2.0 / 3.0)
-        elif self.shape == -2:
-            if self.axis_ratio > 1.0:  # oblate
-                r_eq = self.radius * (0.75 / self.axis_ratio) ** (1.0 / 3.0)
-            else:  # prolate
-                r_eq = self.radius * (0.75 / self.axis_ratio) ** (2.0 / 3.0)
-        else:
-            raise AttributeError("Unsupported shape for maximum radius.")
-        return r_eq
 
     def __orient_averaged_fixed(self):
         """Compute the T-matrix using variable orientation scatterers.
@@ -296,9 +259,9 @@ class TMatrix(Angles):
 
         self.beta_p, self.beta_w = get_points_and_weights(self.or_pdf, 0, 180, self.n_beta)
 
-        for alpha in ap:
+        for self.alpha in ap:
             for (beta, w) in zip(self.beta_p, self.beta_w):
-                (S_ang, Z_ang) = self.get_SZ_single(alpha=alpha, beta=beta)
+                (S_ang, Z_ang) = self.get_SZ_single()
                 S += w * S_ang
                 Z += w * Z_ang
 
@@ -308,3 +271,18 @@ class TMatrix(Angles):
         Z *= aw / sw
 
         return (S, Z)
+
+    def __equal_volume_from_maximum(self):
+        if self.shape == -1:
+            if self.axis_ratio > 1.0:  # oblate
+                r_eq = self.radius / self.axis_ratio ** (1.0 / 3.0)
+            else:  # prolate
+                r_eq = self.radius / self.axis_ratio ** (2.0 / 3.0)
+        elif self.shape == -2:
+            if self.axis_ratio > 1.0:  # oblate
+                r_eq = self.radius * (0.75 / self.axis_ratio) ** (1.0 / 3.0)
+            else:  # prolate
+                r_eq = self.radius * (0.75 / self.axis_ratio) ** (2.0 / 3.0)
+        else:
+            raise AttributeError("Unsupported shape for maximum radius.")
+        return r_eq

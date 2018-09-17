@@ -4,6 +4,14 @@ from __future__ import division
 import numpy as np
 
 
+def get_version():
+    version = dict()
+
+    with open("pyrism/version.py") as fp:
+        exec (fp.read(), version)
+
+    return version['__version__']
+
 class Memorize(dict):
     def __getattr__(self, name):
         try:
