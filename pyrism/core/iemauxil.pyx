@@ -9,15 +9,9 @@ from scipy.integrate import dblquad
 import cython
 from scipy.special import erf
 
-# cimport libcpp.double complex                     # imports classes and functions
-# from libcpp.double complex cimport *          # imports the operators
-
 DTYPE = np.float
 
 ctypedef np.float_t DTYPE_t
-
-# cdef extern from "complex.h":
-#     pass
 
 def factorial(int x):
     # Basic example of a cython function, which defines

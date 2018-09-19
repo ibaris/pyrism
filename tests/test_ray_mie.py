@@ -37,56 +37,55 @@ class TestScatteringRayCoef:
         assert len(ray.ke) == len(radius)
         assert len(ray.BSC) == len(radius)
 
-
-
-# The "true" values are calculated with sympy.integrate. Look at sympy_integrate_results_rayleig_phase.py in the test
-# directory
-@pytest.mark.webtest
-@pytest.mark.parametrize("p11, p12, p21, p22, "
-                         "iza, vza, raa, ", [
-                             (1.83259571459405, 2.35619449019235, 1.04719755119660, 3.14159265358979,
-                              35, 30, 50)
-                         ])
-class TestScatteringRayPhase:
-    """
-    The true values were calculated with sympy integrals. See tests/data/sympy_integration/sympy_phase_quad.py
-    """
-
-    def test_rayleighphase(self, p11, p12, p21, p22, iza, vza, raa):
-        mat = Rayleigh.Phase(iza, vza, raa)
-        mat.dblquad()
-
-        p11_ = mat.p11
-        p12_ = mat.p12
-
-        p21_ = mat.p21
-        p22_ = mat.p22
-
-        assert allclose(p11_, p11, atol=1e-4)
-        assert allclose(p12_, p12, atol=1e-4)
-
-        assert allclose(p21_, p21, atol=1e-4)
-        assert allclose(p22_, p22, atol=1e-4)
-
-    def test_rayleighphase2(self, p11, p12, p21, p22, iza, vza, raa):
-        iza = np.arange(10, 30, 1)  # Incidence zenith angle
-        vza = 30  # Viewing zenith angle
-        raa = 50  # Relative azimuth angle
-
-        mat = Rayleigh.Phase(iza, vza, raa)
-        mat.dblquad()
-
-        p11_ = mat.p11
-        p12_ = mat.p12
-
-        p21_ = mat.p21
-        p22_ = mat.p22
-
-        assert len(p11_) == len(iza)
-        assert len(p12_) == len(iza)
-
-        assert len(p21_) == len(iza)
-        assert len(p22_) == len(iza)
+#
+# # The "true" values are calculated with sympy.integrate. Look at sympy_integrate_results_rayleig_phase.py in the test
+# # directory
+# @pytest.mark.webtest
+# @pytest.mark.parametrize("p11, p12, p21, p22, "
+#                          "iza, vza, raa, ", [
+#                              (1.83259571459405, 2.35619449019235, 1.04719755119660, 3.14159265358979,
+#                               35, 30, 50)
+#                          ])
+# class TestScatteringRayPhase:
+#     """
+#     The true values were calculated with sympy integrals. See tests/data/sympy_integration/sympy_phase_quad.py
+#     """
+#
+#     def test_rayleighphase(self, p11, p12, p21, p22, iza, vza, raa):
+#         mat = Rayleigh.Phase(iza, vza, raa)
+#         mat.dblquad()
+#
+#         p11_ = mat.p11
+#         p12_ = mat.p12
+#
+#         p21_ = mat.p21
+#         p22_ = mat.p22
+#
+#         assert allclose(p11_, p11, atol=1e-4)
+#         assert allclose(p12_, p12, atol=1e-4)
+#
+#         assert allclose(p21_, p21, atol=1e-4)
+#         assert allclose(p22_, p22, atol=1e-4)
+#
+#     def test_rayleighphase2(self, p11, p12, p21, p22, iza, vza, raa):
+#         iza = np.arange(10, 30, 1)  # Incidence zenith angle
+#         vza = 30  # Viewing zenith angle
+#         raa = 50  # Relative azimuth angle
+#
+#         mat = Rayleigh.Phase(iza, vza, raa)
+#         mat.dblquad()
+#
+#         p11_ = mat.p11
+#         p12_ = mat.p12
+#
+#         p21_ = mat.p21
+#         p22_ = mat.p22
+#
+#         assert len(p11_) == len(iza)
+#         assert len(p12_) == len(iza)
+#
+#         assert len(p21_) == len(iza)
+#         assert len(p22_) == len(iza)
 
 # ---- Test Mie ----
 

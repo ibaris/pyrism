@@ -42,7 +42,10 @@ if use_cython:
                   ["pyrism/core/fauxil.pyx"], include_dirs=['.']),
 
         Extension("pyrism.core.iemauxil",
-                  ["pyrism/core/iemauxil.pyx"], include_dirs=['.'])
+                  ["pyrism/core/iemauxil.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.core.tma",
+                  ["pyrism/core/tma.pyx"], include_dirs=['.'])
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -61,7 +64,10 @@ else:
                   ["pyrism/core/fauxil.c"], include_dirs=['.']),
 
         Extension("pyrism.core.iemauxil",
-                  ["pyrism/core/iemauxil.c"], include_dirs=['.'])
+                  ["pyrism/core/iemauxil.c"], include_dirs=['.']),
+
+        Extension("pyrism.core.tma",
+                  ["pyrism/core/tma.c"], include_dirs=['.'])
     ]
 
 def get_packages():

@@ -20,9 +20,9 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import numpy as np
-from scipy.integrate import quad
 import sys
+
+import numpy as np
 
 
 def discrete_gautschi(z, w, n_iter):

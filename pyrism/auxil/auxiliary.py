@@ -2,6 +2,10 @@
 from __future__ import division
 
 import numpy as np
+from datetime import datetime
+import os
+
+from os.path import expanduser
 
 
 def get_version():
@@ -11,6 +15,7 @@ def get_version():
         exec (fp.read(), version)
 
     return version['__version__']
+
 
 class Memorize(dict):
     def __getattr__(self, name):
@@ -317,3 +322,48 @@ def load_param():
                     W1=W1,
                     W2=W2,
                     W3=W3)
+
+
+class Files(object):
+    def __init__(self, path=None):
+        if path is None:
+            self.path = os.path.join(expanduser("~"), '.pyrism')
+        else:
+            self.path = os.path.join(path, '.pyrism')
+
+        if not os.path.exists(self.path):
+            os.makedirs(self.path)
+
+        self.refresh()
+
+    @property
+    def files(self):
+        return self.__files
+
+    def select_newest(self):
+        diff = list()
+        for i, files in enumerate(self.files):
+            cont = files.split('-')
+            date = datetime(year=int(cont[0]), month=int(cont[1]), day=int(cont[2]), hour=int(cont[3]),
+                            minute=int(cont[4]), second=int(cont[5]))
+
+            delta = datetime.now() - date
+            minutes, seconds = divmod(delta.seconds + delta.days * 86400, 60)
+            delta = minutes + (seconds * 0.016666666666667)
+
+            diff.append(delta)
+
+        val, idx = min((val, idx) for (idx, val) in enumerate(diff))
+
+        return self.files[idx]
+
+    def generate_fn(self, name='pyr-st'):
+        time = datetime.now().isoformat()
+        time = time.split('.')[0]
+        time = time.replace(':', '-')
+        time = time.replace('T', '-')
+
+        return time + '-' + name
+
+    def refresh(self):
+        self.__files = os.listdir(self.path)

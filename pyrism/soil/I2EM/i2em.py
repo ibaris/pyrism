@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
-import sys
-
 import numpy as np
 from pyrism.core.iemauxil import calc_i2em_auxil, calc_iem_ems_wrapper
-from radarpy import Angles, dB, BRDF, BRF, stacks, align_all, asarrays
+from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays
 
 from .core import (exponential, gaussian, xpower, mixed)
 from ...auxil import SoilResult, EmissivityResult
-
 
 class I2EM(Angles):
 
@@ -70,7 +67,8 @@ class I2EM(Angles):
 
         iza, vza, raa, frequency, corrlength, sigma, eps = align_all((iza, vza, raa, frequency, corrlength, sigma, eps))
 
-        super(I2EM, self).__init__(iza.real, vza.real, raa.real, normalize=False, nbar=0.0, angle_unit=angle_unit)
+        super(I2EM, self).__init__(iza=iza.real, vza=vza.real, raa=raa.real, normalize=False, nbar=0.0,
+                                   angle_unit=angle_unit)
 
         # Setup variables
         k = 2 * np.pi * frequency / 30
