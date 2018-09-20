@@ -1,6 +1,6 @@
 from __future__ import division
 
-from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ
+from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, ext_xsect, asym_wrapper
 
 from datetime import datetime
 
@@ -130,27 +130,44 @@ class TMatrixPSD(Angles):
             raise AssertionError(
                 "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
 
-    def __trapz_sca_xsect(self, geom):
-        psd_w = self.psd(self._psd_D)
+    def __trapz_sca_xsect(self, geom, pol):
+        psd_w = self.psd(self._psd_D / 2)
 
-        return trapz(self._angular_table["sca_xsect"][geom] * psd_w, self._psd_D)
+        if pol == 1:
+            return trapz(self._angular_table["sca_xsect_VV"][geom] * psd_w, self._psd_D)
+        if pol == 2:
+            return trapz(self._angular_table["sca_xsect_HH"][geom] * psd_w, self._psd_D)
 
     def calc_xsec(self):
-        ks_list = list()
-        ke_list = list()
+        ksVV_list = list()
+        keVV_list = list()
+        ksHH_list = list()
+        keHH_list = list()
 
         for geom in self.geometriesDeg:
-            ks_list.append(self.__sca_xsect(geom))
-            ke_list.append(self.__ext_xsect(geom))
+            ksVV, ksHH = self.sca_xsect(geom)
+            keVV, keHH = self.__ext_xsect(geom)
 
-        ks = np.asarray(ks_list).flatten()
-        ke = np.asarray(ke_list).flatten()
-        ka = ke - ks
-        omega = ks / ke
+            ksVV_list.append(ksVV)
+            keVV_list.append(keVV)
+            ksHH_list.append(ksHH)
+            keHH_list.append(keHH)
 
-        return ks, ka, ke, omega
+        ksVV = np.asarray(ksVV_list).flatten()
+        ksHH = np.asarray(ksHH_list).flatten()
 
-    def __sca_xsect(self, geometries):
+        keVV = np.asarray(keVV_list).flatten()
+        keHH = np.asarray(keHH_list).flatten()
+
+        kaVV = keVV - ksVV
+        kaHH = keHH - ksHH
+
+        omegaVV = ksVV / keVV
+        omegaHH = ksHH / keHH
+
+        return ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH
+
+    def sca_xsect(self, geometries):
         """Scattering cross section for the current setup, with polarization.
 
         Args:
@@ -167,9 +184,10 @@ class TMatrixPSD(Angles):
                 "quantities first."
             )
 
-        sca_prop = self.__trapz_sca_xsect(geometries)
+        ksVV = self.__trapz_sca_xsect(geometries, 1)
+        ksHH = self.__trapz_sca_xsect(geometries, 2)
 
-        return sca_prop
+        return ksVV, ksHH
 
     def __ext_xsect(self, geometries):
         """Extinction cross section for the current setup, with polarization.
@@ -188,11 +206,12 @@ class TMatrixPSD(Angles):
                 "quantities first."
             )
 
-        psd_w = self.psd(self._psd_D)
+        psd_w = self.psd(self._psd_D / 2)
 
-        sca_prop = trapz(self._angular_table["ext_xsect"][geometries] * psd_w, self._psd_D)
+        keVV = trapz(self._angular_table["ext_xsect_VV"][geometries] * psd_w, self._psd_D)
+        keHH = trapz(self._angular_table["ext_xsect_HH"][geometries] * psd_w, self._psd_D)
 
-        return sca_prop
+        return keVV, keHH
 
     def __asym(self, geometries):
         """Asymmetry parameter for the current setup, with polarization.
@@ -211,19 +230,30 @@ class TMatrixPSD(Angles):
                 "quantities first."
             )
 
-        psd_w = self.psd(self._psd_D)
+        psd_w = self.psd(self._psd_D / 2)
 
-        sca_xsect_int = self.__trapz_sca_xsect(geometries)
-        if sca_xsect_int > 0:
-            sca_prop = trapz(
-                self._angular_table["asym"][geometries] * self._angular_table["sca_xsect"][
-                    geometries] * psd_w, self._psd_D)
+        ksVV = self.__trapz_sca_xsect(geometries, 1)
+        ksHH = self.__trapz_sca_xsect(geometries, 2)
 
-            sca_prop /= sca_xsect_int
+        if ksVV > 0:
+            asym_VV = trapz(
+                self._angular_table["asym_VV"][geometries] * self._angular_table["sca_xsect_VV"][geometries] * psd_w,
+                self._psd_D)
+
+            asym_VV /= ksVV
         else:
-            sca_prop = 0.0
+            asym_VV = 0.0
 
-        return sca_prop
+        if ksHH > 0:
+            asym_HH = trapz(
+                self._angular_table["asym_HH"][geometries] * self._angular_table["sca_xsect_HH"][geometries] * psd_w,
+                self._psd_D)
+
+            asym_HH /= ksHH
+        else:
+            asym_HH = 0.0
+
+        return asym_VV, asym_HH
 
     def init_scatter_table(self, verbose=False):
         """Initialize the scattering lookup tables.
@@ -248,11 +278,13 @@ class TMatrixPSD(Angles):
 
         self._S_table = {}
         self._Z_table = {}
+        self.nmax = list()
 
         self._m_table = np.empty(self.num_points, dtype=complex)
 
         if self.angular_integration:
-            self._angular_table = {"sca_xsect": {}, "ext_xsect": {}, "asym": {}}
+            self._angular_table = {"sca_xsect_VV": {}, "ext_xsect_VV": {}, "asym_VV": {}, "sca_xsect_HH": {},
+                                   "ext_xsect_HH": {}, "asym_HH": {}}
         else:
             self._angular_table = None
 
@@ -261,7 +293,7 @@ class TMatrixPSD(Angles):
             self._Z_table[geom] = np.empty((4, 4, self.num_points))
 
             if self.angular_integration:
-                for int_var in ["sca_xsect", "ext_xsect", "asym"]:
+                for int_var in ["sca_xsect_VV", "ext_xsect_VV", "asym_VV", "sca_xsect_HH", "ext_xsect_HH", "asym_HH"]:
                     self._angular_table[int_var][geom] = np.empty(self.num_points)
 
         for (i, D) in enumerate(self._psd_D):
@@ -274,24 +306,56 @@ class TMatrixPSD(Angles):
 
             self._m_table[i] = m
             radius = D / 2.0
-
+            nmax = calc_nmax_wrapper(radius, self.radius_type, self.wavelength, m, axis_ratio, self.shape)
+            self.nmax.append(nmax)
             for geom in self.geometriesDeg:
                 iza, vza, iaa, vaa, alpha, beta = geom
 
-                nmax = calc_nmax_wrapper(radius, self.radius_type, self.wavelength, m, axis_ratio, self.shape)
-
                 S, Z = get_oriented_SZ(nmax, self.wavelength, iza, vza, iaa, vaa, alpha, beta, self.n_alpha,
-                                       self.n_beta,
-                                       self.or_pdf,
-                                       self.orient)
+                                       self.n_beta, self.or_pdf, self.orient)
 
                 self._S_table[geom][:, :, i] = S
                 self._Z_table[geom][:, :, i] = Z
 
+                # if self.angular_integration:
+                #     self._angular_table["sca_xsect"][geom][i] = self.sca_xsect(geom)
+                #     self._angular_table["ext_xsect"][geom][i] = self.__ext_xsect(geom)
+                #     self._angular_table["asym"][geom][i] = self.__asym(geom)
+
                 if self.angular_integration:
-                    self._angular_table["sca_xsect"][geom][i] = self.__sca_xsect(geom)
-                    self._angular_table["ext_xsect"][geom][i] = self.__ext_xsect(geom)
-                    self._angular_table["asym"][geom][i] = self.__asym(geom)
+                    sca_xsect_VV, sca_xsect_HH = sca_xsect_wrapper(nmax,
+                                                                   self.wavelength,
+                                                                   iza,
+                                                                   iaa,
+                                                                   alpha,
+                                                                   beta,
+                                                                   self.n_alpha,
+                                                                   self.n_beta,
+                                                                   self.or_pdf,
+                                                                   self.orient)
+
+                    ext_xsect_VV, ext_xsect_HH = ext_xsect(nmax, self.wavelength, iza, vza, iaa, vaa, alpha, beta,
+                                                           self.n_alpha, self.n_beta, self.or_pdf, self.orient)
+
+                    asym_xsect_VV, asym_xsect_HH = asym_wrapper(nmax,
+                                                                self.wavelength,
+                                                                iza,
+                                                                iaa,
+                                                                alpha,
+                                                                beta,
+                                                                self.n_alpha,
+                                                                self.n_beta,
+                                                                self.or_pdf,
+                                                                self.orient)
+
+                    self._angular_table["sca_xsect_VV"][geom][i] = sca_xsect_VV
+                    self._angular_table["sca_xsect_HH"][geom][i] = sca_xsect_HH
+
+                    self._angular_table["ext_xsect_VV"][geom][i] = ext_xsect_VV
+                    self._angular_table["ext_xsect_HH"][geom][i] = ext_xsect_HH
+
+                    self._angular_table["asym_VV"][geom][i] = asym_xsect_VV
+                    self._angular_table["asym_HH"][geom][i] = asym_xsect_HH
 
     def calc_SZ(self):
         """
@@ -310,7 +374,7 @@ class TMatrixPSD(Angles):
         S_list = list()
         Z_list = list()
 
-        psd_w = self.psd(self._psd_D)
+        psd_w = self.psd(self._psd_D / 2)
 
         for geom in self.geometriesDeg:
             S_list.append(trapz(self._S_table[geom] * psd_w, self._psd_D))

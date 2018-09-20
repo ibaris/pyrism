@@ -14,6 +14,10 @@ from pyrism.fortran_tm import fotm as tmatrix
 
 deg_to_rad = pi / 180.0
 
+# ----------------------------------------------------------------------------------------------------------------------
+# T-Matrix to calculate nmax, S and Z
+# ----------------------------------------------------------------------------------------------------------------------
+# ---- Auxiliary functions ----
 cdef equal_volume_from_maximum(float radius, float axis_ratio, int shape):
     cdef float r_eq
 
@@ -32,6 +36,27 @@ cdef equal_volume_from_maximum(float radius, float axis_ratio, int shape):
 
     return r_eq
 
+# Integration functions
+cdef ifunc_S(float beta, float alpha, int i, int j, int real, float nmax, float wavelength, float iza, float vza,
+             float iaa, float vaa, or_pdf):
+    cdef np.ndarray S_ang, Z_ang
+    cdef float s
+
+    S_ang, Z_ang = calc_SZ_single(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
+
+    s = S_ang[i, j].real if real == 1 else S_ang[i, j].imag
+
+    return s * or_pdf(beta)
+
+def ifunc_Z(float beta, float alpha, int i, int j, int real, float nmax, float wavelength, float iza, float vza,
+            float iaa, float vaa, or_pdf):
+    cdef np.ndarray S_ang, Z_ang
+
+    S_and, Z_ang = calc_SZ_single(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
+    return Z_ang[i, j] * or_pdf(beta)
+
+# ---- Calculation of namx, S and Z ----
+# Calc nmax
 cdef calc_nmax(float radius, int radius_type, float wavelength, double complex eps, float axis_ratio, int shape):
     """Initialize the T-matrix.
     """
@@ -50,26 +75,10 @@ cdef calc_nmax(float radius, int radius_type, float wavelength, double complex e
 
     return tmatrix.calctmat(radius, radius_type, wavelength, eps.real, eps.imag, axis_ratio, shape, ddelt, ndgs)
 
+# Calc S and Z for different types of orientations
 cdef calc_SZ_single(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, float alpha, float beta):
     return tmatrix.calcampl(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
 
-cdef Sfunc(float beta, float alpha, int i, int j, int real, float nmax, float wavelength, float iza, float vza,
-           float iaa, float vaa, or_pdf):
-    cdef np.ndarray S_ang, Z_ang
-    cdef float s
-
-    S_ang, Z_ang = calc_SZ_single(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
-
-    s = S_ang[i, j].real if real == 1 else S_ang[i, j].imag
-
-    return s * or_pdf(beta)
-
-def Zfunc(float beta, float alpha, int i, int j, int real, float nmax, float wavelength, float iza, float vza,
-          float iaa, float vaa, or_pdf):
-    cdef np.ndarray S_ang, Z_ang
-
-    S_and, Z_ang = calc_SZ_single(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
-    return Z_ang[i, j] * or_pdf(beta)
 
 cdef orient_averaged_adaptive(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, or_pdf):
     """Compute the T-matrix using variable orientation scatterers.
@@ -91,17 +100,17 @@ cdef orient_averaged_adaptive(float nmax, float wavelength, float iza, float vza
     ind = range(2)
     for i in ind:
         for j in ind:
-            S.real[i, j] = dblquad(Sfunc, 0.0, 360.0,
+            S.real[i, j] = dblquad(ifunc_S, 0.0, 360.0,
                                    lambda x: 0.0, lambda x: 180.0,
                                    (i, j, 1, nmax, wavelength, iza, vza, iaa, vaa, or_pdf))[0] / 360.0
-            S.imag[i, j] = dblquad(Sfunc, 0.0, 360.0,
+            S.imag[i, j] = dblquad(ifunc_S, 0.0, 360.0,
                                    lambda x: 0.0, lambda x: 180.0,
                                    (i, j, 0, nmax, wavelength, iza, vza, iaa, vaa, or_pdf))[0] / 360.0
 
     ind = range(4)
     for i in ind:
         for j in ind:
-            Z[i, j] = dblquad(Zfunc, 0.0, 360.0,
+            Z[i, j] = dblquad(ifunc_Z, 0.0, 360.0,
                               lambda x: 0.0, lambda x: 180.0,
                               (i, j, 1, nmax, wavelength, iza, vza, iaa, vaa, or_pdf))[0] / 360.0
 
@@ -145,7 +154,12 @@ cdef orient_averaged_fixed(float nmax, float wavelength, float iza, float vza, f
 
     return S, Z
 
-cdef iufun_sca_xsect(float vza, float vaa, float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
+# ----------------------------------------------------------------------------------------------------------------------
+# Scattering and Extinction Cross Section
+# ----------------------------------------------------------------------------------------------------------------------
+# ---- Auxiliary integration functions ----
+# Scattering
+cdef ifunc_ks_xsec(float vza, float vaa, float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
                      float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
     """Get the S and Z matrices for a single orientation.
     """
@@ -157,26 +171,10 @@ cdef iufun_sca_xsect(float vza, float vaa, float nmax, float wavelength, float i
     S, Z = get_oriented_SZ(nmax, wavelength, izaDeg, vza, iaaDeg, vaa, alphaDeg, betaDeg, n_alpha, n_beta, or_pdf,
                            orient)
 
-    if pol == 1:
-        return (Z[0, 0] + Z[0, 1]) * sin((np.pi / 180.0) * vza)
-    if pol == 2:
-        return (Z[0, 0] - Z[0, 1]) * sin((np.pi / 180.0) * vza)
+    return sca_intensity(Z, pol) * sin((np.pi / 180.0) * vza)
 
-cdef integrate_ifun_sca_xsect(float nmax, float wavelength, float izaDeg, float iaaDeg,
-                              float alphaDeg, float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
-    cdef float xsectVV, xsectHH
-
-    xsectVV = dblquad(iufun_sca_xsect, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
-                      args=(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
-                            betaDeg, n_alpha, n_beta, or_pdf, orient, 1))[0]
-
-    xsectHH = dblquad(iufun_sca_xsect, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
-                      args=(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
-                            betaDeg, n_alpha, n_beta, or_pdf, orient, 2))[0]
-
-    return xsectVV, xsectHH
-
-cdef iufun_asy(float vza, float vaa, float cos_t0, float sin_t0, float nmax, float wavelength, float izaDeg,
+#Asymmetry factor
+cdef ifunc_asym(float vza, float vaa, float cos_t0, float sin_t0, float nmax, float wavelength, float izaDeg,
                float iaaDeg, float alphaDeg,
                float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
     """Get the S and Z matrices for a single orientation.
@@ -193,11 +191,46 @@ cdef iufun_asy(float vza, float vaa, float cos_t0, float sin_t0, float nmax, flo
 
     cos_T_sin_t = 0.5 * (np.sin(2 * vza) * cos_t0 + (1 - np.cos(2 * vza)) * sin_t0 * np.cos(iaa - vaa))
 
-    if pol == 1:
-        return (Z[0, 0] + Z[0, 1]) * cos_T_sin_t
-    if pol == 2:
-        return (Z[0, 0] - Z[0, 1]) * cos_T_sin_t
+    return sca_intensity(Z, pol) * cos_T_sin_t
 
+# ---- Cross Sections ----
+# Scattering intensity
+cdef sca_intensity(np.ndarray Z, int pol):
+    """Scattering intensity (phase function) for the current setup.
+
+    Args:
+        scatterer: a Scatterer instance.
+        h_pol: If True (default), use horizontal polarization.
+        If False, use vertical polarization.
+
+    Returns:
+        The differential scattering cross section.
+    """
+    cdef float VV, HH
+    VV = Z[0, 0] + Z[0, 1]
+    HH = Z[0, 0] - Z[0, 1]
+
+    if pol == 1:
+        return VV
+    if pol == 2:
+        return HH
+
+# Scattering cross section
+cdef sca_xsect(float nmax, float wavelength, float izaDeg, float iaaDeg,
+               float alphaDeg, float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
+    cdef float xsectVV, xsectHH
+
+    xsectVV = dblquad(ifunc_ks_xsec, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
+                      args=(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
+                            betaDeg, n_alpha, n_beta, or_pdf, orient, 1))[0]
+
+    xsectHH = dblquad(ifunc_ks_xsec, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
+                      args=(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
+                            betaDeg, n_alpha, n_beta, or_pdf, orient, 2))[0]
+
+    return xsectVV, xsectHH
+
+# Asymmetry factor
 cdef asym(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
           float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
     """Asymmetry parameter for the current setup, with polarization.
@@ -216,20 +249,21 @@ cdef asym(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaD
     sin_t0 = np.sin(izaDeg * deg_to_rad)
     p0 = iaaDeg * deg_to_rad
 
-    cos_int_VV = dblquad(iufun_asy, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
+    cos_int_VV = dblquad(ifunc_asym, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
                          args=(cos_t0, sin_t0, nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
                                betaDeg, n_alpha, n_beta, or_pdf, orient, 1))[0]
 
-    cos_int_HH = dblquad(iufun_asy, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
+    cos_int_HH = dblquad(ifunc_asym, 0.0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi,
                          args=(cos_t0, sin_t0, nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
                                betaDeg, n_alpha, n_beta, or_pdf, orient, 2))[0]
 
-    sca_xsecVV, sca_xsecHH = integrate_ifun_sca_xsect(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, n_alpha,
-                                                      n_beta, or_pdf,
-                                                      orient)
+    sca_xsecVV, sca_xsecHH = sca_xsect(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, n_alpha,
+                                       n_beta, or_pdf,
+                                       orient)
 
     return cos_int_VV / sca_xsecVV, cos_int_HH / sca_xsecHH
 
+# Extinction cross section
 def ext_xsect(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, float alpha, float beta,
               int n_alpha, int n_beta, or_pdf, orientation):
     cdef np.ndarray S, Z
@@ -246,14 +280,20 @@ def ext_xsect(float nmax, float wavelength, float iza, float vza, float iaa, flo
 
     return VV, HH
 
-def asm_wrapper(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
+# ----------------------------------------------------------------------------------------------------------------------
+# Wrapper Functions
+# ----------------------------------------------------------------------------------------------------------------------
+def sca_intensity_wrapper(np.ndarray Z, int pol):
+    return sca_intensity(Z, pol)
+
+def asym_wrapper(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
                 float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
     return asym(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, n_alpha, n_beta, or_pdf, orient)
 
 def sca_xsect_wrapper(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
                       float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
-    return integrate_ifun_sca_xsect(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
-                                    betaDeg, n_alpha, n_beta, or_pdf, orient)
+    return sca_xsect(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
+                     betaDeg, n_alpha, n_beta, or_pdf, orient)
 
 def get_oriented_SZ(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, float alpha, float beta,
                     int n_alpha, int n_beta, or_pdf, orientation):

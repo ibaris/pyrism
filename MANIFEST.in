@@ -1,2 +1,3 @@
 recursive-include pyrism/volume/data *.txt
 recursive-include pyrism/core *.c
+recursive-include pyrism/fortran_tm *.c

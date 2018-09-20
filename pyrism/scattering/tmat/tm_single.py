@@ -1,7 +1,8 @@
 from __future__ import division
 
 import numpy as np
-from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asm_wrapper, ext_xsect
+from pyrism.core.tma import (calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asym_wrapper, ext_xsect,
+                             sca_intensity_wrapper)
 
 from radarpy import Angles, asarrays, align_all
 
@@ -194,8 +195,8 @@ class TMatrixSingle(Angles):
         VV_list = list()
         HH_list = list()
         for i in range(len(self.iza)):
-            VV = self.__Z[i][0, 0] + self.__Z[i][0, 1]
-            HH = self.__Z[i][1, 0] + self.__Z[i][1, 1]
+            VV = sca_intensity_wrapper(self.__Z[i], 1)
+            HH = sca_intensity_wrapper(self.__Z[i], 2)
 
             VV_list.append(VV)
             HH_list.append(HH)
@@ -255,11 +256,11 @@ class TMatrixSingle(Angles):
         xsectVV_list = list()
         xsectHH_list = list()
         for i in range(len(self.iza)):
-            xsectVV, xsectHH = asm_wrapper(self.nmax[i],
-                                           self.wavelength[i], self.izaDeg[i],
-                                           self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
-                                           self.n_alpha, self.n_beta,
-                                           self.or_pdf, self.orient)
+            xsectVV, xsectHH = asym_wrapper(self.nmax[i],
+                                            self.wavelength[i], self.izaDeg[i],
+                                            self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
+                                            self.n_alpha, self.n_beta,
+                                            self.or_pdf, self.orient)
 
             xsectVV_list.append(xsectVV)
             xsectHH_list.append(xsectHH)

@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import pyrism as pyr
 from numpy import allclose, less
@@ -116,12 +117,12 @@ class TestTMatrix():
         iaa = 0
         vaa = 180
 
-        PSD = pyr.PSD(r0=1, mu=4, n0=1e3)
+        PSD = pyr.PSD(r0=0.5, mu=4, n0=1e3, rmax=5)
         psd = PSD.gamma
 
         tm = pyr.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                            radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                            psd=psd, num_points=500, max_radius=10)
+                            radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
+                            psd=psd, num_points=500, max_radius=5, angular_integration=False)
 
         S, Z = tm.S, tm.Z
 
@@ -259,6 +260,7 @@ class TestTMatrix():
     # def test_integrated_x_sca(self):
     #     """Test Rayleigh scattering cross section integrated over sizes.
     #     """
+    #
     #     iza = 90
     #     vza = 90
     #     iaa = 0
@@ -269,30 +271,17 @@ class TestTMatrix():
     #     N0 = 10
     #     Lambda = 1e4
     #
-    #     PSD = pyr.PSD(ilambda=Lambda, n0=10, rmax=0.002)
+    #     PSD = pyr.PSD(ilambda=Lambda, n0=N0, rmax=0.002/2)
     #     psd = PSD.exponential
     #
-    #     tm = pyr.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002,
-    #                         frequency=29.9792458, eps=complex(3, 0.5), psd=psd, num_points = 256,
+    #     tm = pyr.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002/2,
+    #                         frequency=1, eps=m, psd=psd, num_points=256,
     #                         angular_integration=True)
-    #
-    #     sca = Scatterer(wavelength=29.9792458, m=m)
-    #     sca.psd_integrator = psd.PSDIntegrator()
-    #     sca.psd = psd.ExponentialPSD(N0=N0, Lambda=Lambda)
-    #     sca.psd.D_max = 0.002
-    #     sca.psd_integrator.D_max = sca.psd.D_max
-    #     # 256 is quite low, but we want to run the test reasonably fast
-    #     sca.psd_integrator.num_points = 256
-    #     sca.psd_integrator.init_scatter_table(sca, angular_integration=True)
-    #
     #
     #     # This size-integrated scattering cross section has an analytical value.
     #     # Check that we can reproduce it.
     #     sca_xsect_ref = 480 * N0 * np.pi ** 5 * abs(K) ** 2 / Lambda ** 7
     #
-    #     sca_xsect, ka, ke, omega = tm.calc_xsec()
+    #     ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH = tm.calc_xsec()
     #
-    #     sca_xsect = scatter.sca_xsect(sca)
-    #
-    #     test_less(self, abs(1 - sca_xsect / sca_xsect_ref), 1e-3)
-    #
+    # #
