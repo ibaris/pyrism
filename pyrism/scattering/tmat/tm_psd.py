@@ -21,46 +21,93 @@ from .orientation import Orientation
 
 
 class TMatrixPSD(Angles, object):
-    """A class used to perform computations over PSDs.
-
-    This class can be used to integrate scattering properties over particle
-    size distributions.
-
-    Initialize an instance of the class and set the attributes as described
-    below. Call init_scatter_table to compute the lookup table for scattering
-    values at different scatterer geometries. Set the class instance as the
-    psd_integrator attribute of a Scatterer object to enable PSD averaging for
-    that object.
-
-    After a call to init_scatter_table, the scattering properties can be
-    retrieved multiple times without re-initializing. However, the geometry of
-    the Scatterer instance must be set to one of those specified in the
-    "geometries" attribute.
-
-    Attributes:
-
-        num_points: the number of points for which to sample the PSD and
-            scattering properties for; default num_points=1024 should be good
-            for most purposes
-        m_func: set to a callable object giving the refractive index as a
-            function of diameter, or None to use the "m" attribute of the
-            Scatterer for all sizes; default None
-        axis_ratio_func: set to a callable object giving the aspect ratio
-            (horizontal to rotational) as a function of diameter, or None to
-            use the "axis_ratio" attribute for all sizes; default None
-        D_max: set to the maximum single scatterer size that is desired to be
-            used (usually the D_max corresponding to the largest PSD you
-            intend to use)
-        geometries: tuple containing the scattering geometry tuples that are
-            initialized (thet0, thet, phi0, phi, alpha, beta);
-            default horizontal backscatter
-    """
 
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, max_radius=10,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, psd=None,
                  n_alpha=5, n_beta=10, num_points=1024,
                  angle_unit='DEG', angular_integration=True):
+        """T-Matrix scattering from an arrangement of nonspherical particles.
 
+        Class for simulating scattering from nonspherical particles with the
+        T-Matrix method. Uses a wrapper to the Fortran code by M. Mishchenko.
+
+        Parameters
+        ----------
+        iza, vza, iaa, vaa : int, float or array_like
+            Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+            azimuth angle (ira, vra) in [DEG] or [RAD] (see parameter angle_unit).
+        frequency : int float or array_like
+            The frequency of incident EM Wave in [GHz].
+        radius : int float or array_like
+            Equivalent particle radius in [cm].
+        radius_type : {'EV', 'M', 'REA'}
+            Specification of particle radius:
+                * 'REV': radius is the equivalent volume radius (default).
+                * 'M': radius is the maximum radius.
+                * 'REA': radius is the equivalent area radius.
+        eps : complex
+            The complex refractive index.
+        axis_ratio : int or float
+            The horizontal-to-rotational axis ratio.
+        shape : {'SPH', 'CYL'}
+            Shape of the particle:
+                * 'SPH' : spheroid,
+                * 'CYL' : cylinders.
+        alpha, beta: int, float or array_like
+            The Euler angles of the particle orientation in [DEG] or [RAD] (see parameter angle_unit).
+        orientation : {'S', 'AA', 'AF'}
+            The function to use to compute the orientational scattering properties:
+                * 'S': Single (default).
+                * 'AA': Averaged Adaptive
+                * 'AF': Averaged Fixed.
+        orientation_pdf: {'gauss', 'uniform'}
+            Particle orientation Probability Density Function (PDF) for orientational averaging:
+                * 'gauss': Use a Gaussian PDF (default).
+                * 'uniform': Use a uniform PDR.
+        n_alpha : int
+            Number of integration points in the alpha Euler angle. Default is 5.
+        n_beta : int
+            Umber of integration points in the beta Euler angle. Default is 10.
+        angle_unit : {'DEG', 'RAD'}, optional
+            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        psd : callable
+            Particle Size Distribution Function (PSD). See pyrism.PSD.
+        num_points : int
+            The number of points for which to sample the PSD and
+            scattering properties for; default num_points=1024 should be good
+            for most purposes
+        angular_integration : bool
+            If True, also calculate the angle-integrated quantities (scattering cross section,
+            extinction cross section, asymmetry parameter). The default is True.
+         max_radius : int, float or None:
+            Maximum diameter to consider. If None (default) max_radius will be approximated by the PSD functions.
+
+        Returns
+        -------
+        TMatrixSingle.S : array_like
+            Complex Scattering Matrix.
+        TMatrixSingle.Z : array_like
+            Phase Matrix.
+        TMatrixSingle.SZ : tuple
+             Complex Scattering Matrix and Phase Matrix.
+        TMatrixSingle.ksi : tuple
+            Scattering intensity for VV and HH polarization.
+        TMatrixSingle.ksx : tuple
+            Scattering Cross Section for VV and HH polarization.
+        TMatrixSingle.kex : tuple
+            Extinction Cross Section for VV and HH polarization.
+        TMatrixSingle.asx : tuple
+            Asymetry Factor for VV and HH polarization.
+        TMatrixPSD.save_scatter_table : None
+            Save all results to a file.
+
+        See Also
+        --------
+        radarpy.Angles
+        pyrism.PSD
+
+        """
         iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta, n_alpha, n_beta, max_radius = asarrays(
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta, n_alpha, n_beta, max_radius))
 
@@ -107,7 +154,7 @@ class TMatrixPSD(Angles, object):
 
         self._psd_D = np.linspace(self.D_max / self.num_points, self.D_max, self.num_points)
 
-        self.init_scatter_table()
+        # self.init_scatter_table()
 
     @property
     def S(self):
@@ -118,8 +165,12 @@ class TMatrixPSD(Angles, object):
                 return self.__S
 
         except AttributeError:
+            try:
+                self.__S, self.__Z = self.call_SZ()
 
-            self.__S, self.__Z = self.call_SZ()
+            except AttributeError:
+                self.init_scatter_table()
+                self.__S, self.__Z = self.call_SZ()
 
             if len(self.__S) == 1:
                 return self.__S[0]
@@ -135,8 +186,12 @@ class TMatrixPSD(Angles, object):
                 return self.__Z
 
         except AttributeError:
+            try:
+                self.__S, self.__Z = self.call_SZ()
 
-            self.__S, self.__Z = self.call_SZ()
+            except AttributeError:
+                self.init_scatter_table()
+                self.__S, self.__Z = self.call_SZ()
 
             if len(self.__Z) == 1:
                 return self.__Z[0]
@@ -152,8 +207,12 @@ class TMatrixPSD(Angles, object):
                 return self.__S, self.__Z
 
         except AttributeError:
+            try:
+                self.__S, self.__Z = self.call_SZ()
 
-            self.__S, self.__Z = self.call_SZ()
+            except AttributeError:
+                self.init_scatter_table()
+                self.__S, self.__Z = self.call_SZ()
 
             if len(self.__S) == 1:
                 return self.__S[0], self.__Z[0]

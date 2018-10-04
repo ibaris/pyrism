@@ -69,7 +69,18 @@ class TMatrixSingle(Angles, object):
             Phase Matrix.
         TMatrixSingle.SZ : tuple
              Complex Scattering Matrix and Phase Matrix.
-        TMatrixSingle.get
+        TMatrixSingle.ksi : tuple
+            Scattering intensity for VV and HH polarization.
+        TMatrixSingle.ksx : tuple
+            Scattering Cross Section for VV and HH polarization.
+        TMatrixSingle.kex : tuple
+            Extinction Cross Section for VV and HH polarization.
+        TMatrixSingle.asx : tuple
+            Asymetry Factor for VV and HH polarization.
+
+        See Also
+        --------
+        radarpy.Angles
 
         """
         param = {'REV': 1.0,
@@ -198,14 +209,6 @@ class TMatrixSingle(Angles, object):
 
     def ksi(self):
         """Scattering intensity (phase function) for the current setup.
-
-        Args:
-            scatterer: a Scatterer instance.
-            h_pol: If True (default), use horizontal polarization.
-            If False, use vertical polarization.
-
-        Returns:
-            The differential scattering cross section.
         """
         VV_list = list()
         HH_list = list()
@@ -220,14 +223,6 @@ class TMatrixSingle(Angles, object):
 
     def ksx(self):
         """Scattering cross section for the current setup, with polarization.
-
-        Args:
-            scatterer: a Scatterer instance.
-            h_pol: If True (default), use horizontal polarization.
-            If False, use vertical polarization.
-
-        Returns:
-            The scattering cross section.
         """
 
         xsectVV_list = list()
