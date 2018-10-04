@@ -4,7 +4,7 @@ from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrappe
 
 from datetime import datetime
 
-from radarpy import Angles, asarrays
+from radarpy import Angles, asarrays, align_all
 
 try:
     import cPickle as pickle
@@ -20,7 +20,7 @@ from scipy.integrate import trapz
 from .orientation import Orientation
 
 
-class TMatrixPSD(Angles):
+class TMatrixPSD(Angles, object):
     """A class used to perform computations over PSDs.
 
     This class can be used to integrate scattering properties over particle
@@ -57,7 +57,7 @@ class TMatrixPSD(Angles):
     """
 
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, max_radius=10,
-                 radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, or_pdf=None, psd=None,
+                 radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, psd=None,
                  n_alpha=5, n_beta=10, num_points=1024,
                  angle_unit='DEG', angular_integration=True):
 
@@ -65,6 +65,9 @@ class TMatrixPSD(Angles):
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta, n_alpha, n_beta, max_radius))
 
         eps = np.asarray(eps).flatten()
+
+        iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = align_all(
+            (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
         param = {'REV': 1.0,
                  'REA': 0.0,
@@ -86,14 +89,14 @@ class TMatrixPSD(Angles):
         self.beta = beta
         self.orient = orientation
 
-        self.or_pdf = self.__get_pdf(or_pdf)
+        self.or_pdf = self.__get_pdf(orientation_pdf)
         self.n_alpha = n_alpha.astype(int)
         self.n_beta = n_beta.astype(int)
 
         self.psd = psd
 
-        super(TMatrixPSD, self).__init__(iza=iza, vza=vza, iaa=iaa, vaa=vaa, normalize=False,
-                                         angle_unit=angle_unit)
+        Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
+                        normalize=False, angle_unit=angle_unit)
 
         self.num_points = num_points
         self.D_max = max_radius * 2
@@ -105,21 +108,57 @@ class TMatrixPSD(Angles):
         self._psd_D = np.linspace(self.D_max / self.num_points, self.D_max, self.num_points)
 
         self.init_scatter_table()
-        self.__S, self.__Z = self.calc_SZ()
 
     @property
     def S(self):
-        if len(self.__S) == 1:
-            return self.__S[0]
-        else:
-            return self.__S
+        try:
+            if len(self.__S) == 1:
+                return self.__S[0]
+            else:
+                return self.__S
+
+        except AttributeError:
+
+            self.__S, self.__Z = self.call_SZ()
+
+            if len(self.__S) == 1:
+                return self.__S[0]
+            else:
+                return self.__S
 
     @property
     def Z(self):
-        if len(self.__Z) == 1:
-            return self.__Z[0]
-        else:
-            return self.__Z
+        try:
+            if len(self.__Z) == 1:
+                return self.__Z[0]
+            else:
+                return self.__Z
+
+        except AttributeError:
+
+            self.__S, self.__Z = self.call_SZ()
+
+            if len(self.__Z) == 1:
+                return self.__Z[0]
+            else:
+                return self.__Z
+
+    @property
+    def SZ(self):
+        try:
+            if len(self.__S) == 1:
+                return self.__S[0], self.__Z[0]
+            else:
+                return self.__S, self.__Z
+
+        except AttributeError:
+
+            self.__S, self.__Z = self.call_SZ()
+
+            if len(self.__S) == 1:
+                return self.__S[0], self.__Z[0]
+            else:
+                return self.__S, self.__Z
 
     def __get_pdf(self, pdf):
         if callable(pdf):
@@ -138,36 +177,7 @@ class TMatrixPSD(Angles):
         if pol == 2:
             return trapz(self._angular_table["sca_xsect_HH"][geom] * psd_w, self._psd_D)
 
-    def calc_xsec(self):
-        ksVV_list = list()
-        keVV_list = list()
-        ksHH_list = list()
-        keHH_list = list()
-
-        for geom in self.geometriesDeg:
-            ksVV, ksHH = self.sca_xsect(geom)
-            keVV, keHH = self.__ext_xsect(geom)
-
-            ksVV_list.append(ksVV)
-            keVV_list.append(keVV)
-            ksHH_list.append(ksHH)
-            keHH_list.append(keHH)
-
-        ksVV = np.asarray(ksVV_list).flatten()
-        ksHH = np.asarray(ksHH_list).flatten()
-
-        keVV = np.asarray(keVV_list).flatten()
-        keHH = np.asarray(keHH_list).flatten()
-
-        kaVV = keVV - ksVV
-        kaHH = keHH - ksHH
-
-        omegaVV = ksVV / keVV
-        omegaHH = ksHH / keHH
-
-        return ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH
-
-    def sca_xsect(self, geometries):
+    def ksx(self, geometries):
         """Scattering cross section for the current setup, with polarization.
 
         Args:
@@ -189,7 +199,7 @@ class TMatrixPSD(Angles):
 
         return ksVV, ksHH
 
-    def __ext_xsect(self, geometries):
+    def kex(self, geometries):
         """Extinction cross section for the current setup, with polarization.
 
         Args:
@@ -213,7 +223,7 @@ class TMatrixPSD(Angles):
 
         return keVV, keHH
 
-    def __asym(self, geometries):
+    def asx(self, geometries):
         """Asymmetry parameter for the current setup, with polarization.
 
         Args:
@@ -317,11 +327,6 @@ class TMatrixPSD(Angles):
                 self._S_table[geom][:, :, i] = S
                 self._Z_table[geom][:, :, i] = Z
 
-                # if self.angular_integration:
-                #     self._angular_table["sca_xsect"][geom][i] = self.sca_xsect(geom)
-                #     self._angular_table["ext_xsect"][geom][i] = self.__ext_xsect(geom)
-                #     self._angular_table["asym"][geom][i] = self.__asym(geom)
-
                 if self.angular_integration:
                     sca_xsect_VV, sca_xsect_HH = sca_xsect_wrapper(nmax,
                                                                    self.wavelength,
@@ -357,7 +362,7 @@ class TMatrixPSD(Angles):
                     self._angular_table["asym_VV"][geom][i] = asym_xsect_VV
                     self._angular_table["asym_HH"][geom][i] = asym_xsect_HH
 
-    def calc_SZ(self):
+    def call_SZ(self):
         """
         Compute the scattering matrices for the given PSD and geometries.
 

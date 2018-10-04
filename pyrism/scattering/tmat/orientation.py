@@ -12,15 +12,18 @@ class Orientation(object):
     def gaussian(std=10.0, mean=0.0):
         """Gaussian probability distribution function (PDF) for orientation averaging.
 
-        Args:
-            std: The standard deviation in degrees of the Gaussian PDF
-            mean: The mean in degrees of the Gaussian PDF.  This should be a number
-              in the interval [0, 180)
+        Parameters
+        ----------
+        std: int or float
+            The standard deviation in degrees of the Gaussian PDF
+        mean: int or float
+            The mean in degrees of the Gaussian PDF.  This should be a number in the interval [0, 180)
 
-        Returns:
-            pdf(x), a function that returns the value of the spherical Jacobian-
-            normalized Gaussian PDF with the given STD at x (degrees). It is
-            normalized for the interval [0, 180].
+        Returns
+        -------
+        pdf(x): callable
+            A function that returns the value of the spherical Jacobian-normalized Gaussian PDF with the given STD at x
+            (degrees). It is normalized for the interval [0, 180].
         """
         norm_const = 1.0
 
@@ -37,9 +40,11 @@ class Orientation(object):
     def uniform():
         """Uniform probability distribution function (PDF) for orientation averaging.
 
-        Returns:
-            pdf(x), a function that returns the value of the spherical Jacobian-
-            normalized uniform PDF. It is normalized for the interval [0, 180].
+        Returns
+        -------
+        pdf(x): callable
+            A function that returns the value of the spherical Jacobian-normalized uniform PDF. It is normalized for
+            the interval [0, 180].
         """
         norm_const = 1.0
 

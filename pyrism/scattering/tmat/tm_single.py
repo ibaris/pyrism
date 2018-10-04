@@ -9,81 +9,67 @@ from radarpy import Angles, asarrays, align_all
 from .orientation import Orientation
 
 
-class TMatrixSingle(Angles):
+class TMatrixSingle(Angles, object):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
-                 radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, or_pdf=None, n_alpha=5, n_beta=10,
+                 radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
+                 n_beta=10,
                  angle_unit='DEG'):
 
-        """T-Matrix scattering from nonspherical particles.
+        """T-Matrix scattering from single nonspherical particles.
 
         Class for simulating scattering from nonspherical particles with the
         T-Matrix method. Uses a wrapper to the Fortran code by M. Mishchenko.
 
-        Usage instructions:
-
-        First, the class should be be initialized. Any attributes (see below)
-        can be passed as keyword arguments to the constructor. For example:
-        sca = tmatrix.Scatterer(wavelength=2.0, m=complex(0,2))
-
-        The properties of the scattering and the radiation should then be set
-        as attributes of this object.
-
-        The functions for computing the various scattering properties can then be
-        called. The Scatterer object will automatically recompute the T-matrix
-        and/or the amplitude and phase matrices when needed.
-
         Parameters
         ----------
-        iza, vza, raa, ira, vra : int, float or ndarray
-            Incidence (iza) and scattering (vza) zenith angle, incidence and viewing
-            azimuth angle (ira, vra). If raa is defined, ira and vra are not mandatory.
-        wavelength :
-            The wavelength of incident light.
-        radius :
-            Equivalent radius.
+        iza, vza, iaa, vaa : int, float or array_like
+            Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+            azimuth angle (ira, vra) in [DEG] or [RAD] (see parameter angle_unit).
+        frequency : int float or array_like
+            The frequency of incident EM Wave in [GHz].
+        radius : int float or array_like
+            Equivalent particle radius in [cm].
         radius_type : {'EV', 'M', 'REA'}
-            Specifacion of radius:
+            Specification of particle radius:
                 * 'REV': radius is the equivalent volume radius (default).
                 * 'M': radius is the maximum radius.
                 * 'REA': radius is the equivalent area radius.
-        eps :
+        eps : complex
             The complex refractive index.
-        axis_ratio :
+        axis_ratio : int or float
             The horizontal-to-rotational axis ratio.
         shape : {'SPH', 'CYL'}
-            Shape of the scatter:
+            Shape of the particle:
                 * 'SPH' : spheroid,
                 * 'CYL' : cylinders.
-        alpha, beta:
-            The Euler angles of the particle orientation (degrees).
-        Kw_sqr :
-            The squared reference water dielectric factor for computing
-            radar reflectivity.
-        orient : {'S', 'AA', 'AF'}
-        The function to use to compute the scattering properties:
-            * 'S': Single (default).
-            * 'AA': Averaged Adaptive
-            * 'AF': Averaged Fixed.
-        or_pdf: {'gauss', 'uniform'}
-            Particle orientation PDF for orientational averaging:
+        alpha, beta: int, float or array_like
+            The Euler angles of the particle orientation in [DEG] or [RAD] (see parameter angle_unit).
+        orientation : {'S', 'AA', 'AF'}
+            The function to use to compute the orientational scattering properties:
+                * 'S': Single (default).
+                * 'AA': Averaged Adaptive
+                * 'AF': Averaged Fixed.
+        orientation_pdf: {'gauss', 'uniform'}
+            Particle orientation Probability Density Function (PDF) for orientational averaging:
                 * 'gauss': Use a Gaussian PDF (default).
                 * 'uniform': Use a uniform PDR.
-        n_alpha :
-            Number of integration points in the alpha Euler angle.
-        n_beta :
-            Umber of integration points in the beta Euler angle.
-        psd_integrator :
-            Set this to a PSDIntegrator instance to enable size
-            distribution integration. If this is None (default), size
-            distribution integration is not used. See the PSDIntegrator
-            documentation for more information.
-        psd :
-            Set to a callable object giving the PSD value for a given
-            diameter (for example a GammaPSD instance); default None. Has no
-            effect if psd_integrator is None.
+        n_alpha : int
+            Number of integration points in the alpha Euler angle. Default is 5.
+        n_beta : int
+            Umber of integration points in the beta Euler angle. Default is 10.
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+
+        Returns
+        -------
+        TMatrixSingle.S : array_like
+            Complex Scattering Matrix.
+        TMatrixSingle.Z : array_like
+            Phase Matrix.
+        TMatrixSingle.SZ : tuple
+             Complex Scattering Matrix and Phase Matrix.
+        TMatrixSingle.get
 
         """
         param = {'REV': 1.0,
@@ -100,12 +86,16 @@ class TMatrixSingle(Angles):
         iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = align_all(
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
-        super(TMatrixSingle, self).__init__(iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                                            normalize=False,
-                                            angle_unit=angle_unit)
+        Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
+                        normalize=False, angle_unit=angle_unit)
+
+        # super(TMatrixSingle, self).__init__(iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
+        #                                     normalize=False,
+        #                                     angle_unit=angle_unit)
 
         self.radius = radius
         self.radius_type = param[radius_type]
+        self.frequency = frequency
 
         self.wavelength = 29.9792458 / frequency
         self.axis_ratio = axis_ratio
@@ -116,30 +106,67 @@ class TMatrixSingle(Angles):
         self.beta = beta
         self.orient = orientation
 
-        self.or_pdf = self.__get_pdf(or_pdf)
+        self.or_pdf = self.__get_pdf(orientation_pdf)
         self.n_alpha = int(n_alpha)
         self.n_beta = int(n_beta)
 
         self.eps, _ = align_all((eps, self.iza))
 
-        self.nmax = self.calc_nmax()
-        self.__S, self.__Z = self.calc_SZ()
+        self.nmax = self.__calc_nmax()
+        # self.__S, self.__Z = self.call_SZ()
 
     @property
     def S(self):
-        if len(self.__S) == 1:
-            return self.__S[0]
-        else:
-            return self.__S
+        try:
+            if len(self.__S) == 1:
+                return self.__S[0]
+            else:
+                return self.__S
+
+        except AttributeError:
+
+            self.__S, self.__Z = self.__call_SZ()
+
+            if len(self.__S) == 1:
+                return self.__S[0]
+            else:
+                return self.__S
 
     @property
     def Z(self):
-        if len(self.__Z) == 1:
-            return self.__Z[0]
-        else:
-            return self.__Z
+        try:
+            if len(self.__Z) == 1:
+                return self.__Z[0]
+            else:
+                return self.__Z
 
-    def calc_nmax(self):
+        except AttributeError:
+
+            self.__S, self.__Z = self.__call_SZ()
+
+            if len(self.__Z) == 1:
+                return self.__Z[0]
+            else:
+                return self.__Z
+
+    @property
+    def SZ(self):
+        try:
+            if len(self.__S) == 1:
+                return self.__S[0], self.__Z[0]
+            else:
+                return self.__S, self.__Z
+
+        except AttributeError:
+
+            self.__S, self.__Z = self.__call_SZ()
+
+            if len(self.__S) == 1:
+                return self.__S[0], self.__Z[0]
+            else:
+                return self.__S, self.__Z
+
+    def __calc_nmax(self):
         """Initialize the T-matrix.
         """
 
@@ -152,19 +179,7 @@ class TMatrixSingle(Angles):
 
         return np.asarray(nmax).flatten()
 
-    def calc_xsec(self):
-
-        ksVV, ksHH = self.sca_xsec()
-        keVV, keHH = self.ext_xsec()
-
-        kaVV = keVV - ksVV
-        kaHH = keHH - ksHH
-        omegaVV = ksVV / keVV
-        omegaHH = ksHH / keHH
-
-        return ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH
-
-    def calc_SZ(self):
+    def __call_SZ(self):
         """Get the S and Z matrices for a single orientation.
         """
         S_list = list()
@@ -181,7 +196,7 @@ class TMatrixSingle(Angles):
 
         return S_list, Z_list
 
-    def sca_intensity(self):
+    def ksi(self):
         """Scattering intensity (phase function) for the current setup.
 
         Args:
@@ -203,7 +218,7 @@ class TMatrixSingle(Angles):
 
         return np.asarray(VV_list).flatten(), np.asarray(HH_list).flatten()
 
-    def sca_xsec(self):
+    def ksx(self):
         """Scattering cross section for the current setup, with polarization.
 
         Args:
@@ -229,7 +244,7 @@ class TMatrixSingle(Angles):
 
         return np.asarray(xsectVV_list).flatten(), np.asarray(xsectHH_list).flatten()
 
-    def ext_xsec(self):
+    def kex(self):
         VV_list = list()
         HH_list = list()
         for i in range(len(self.iza)):
@@ -252,7 +267,7 @@ class TMatrixSingle(Angles):
             raise AssertionError(
                 "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
 
-    def calc_asym(self):
+    def asx(self):
         xsectVV_list = list()
         xsectHH_list = list()
         for i in range(len(self.iza)):

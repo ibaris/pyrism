@@ -202,7 +202,7 @@ class TestTMatrix():
                                 eps=complex(1.5, 0.5),
                                 axis_ratio=1.0)
 
-        av1, ah1 = tm1.calc_asym()
+        av1, ah1 = tm1.asx()
 
         iza = 180
         vza = 180
@@ -213,7 +213,7 @@ class TestTMatrix():
                                 eps=complex(1.5, 0.5),
                                 axis_ratio=1.0)
 
-        av2, ah2 = tm2.calc_asym()
+        av2, ah2 = tm2.asx()
 
         assert less(abs(1 - av1 / av2), 1e-6)
         assert less(abs(1 - ah1 / ah2), 1e-6)
@@ -227,7 +227,7 @@ class TestTMatrix():
                                 eps=complex(1.5, 0.5),
                                 axis_ratio=1.0)
 
-        av1, ah1 = tm1.calc_asym()
+        av1, ah1 = tm1.asx()
         # Is the asymmetry parameter zero for small particles?
 
         assert less(av1, 1e-8)
@@ -245,8 +245,9 @@ class TestTMatrix():
         tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                                radius=1, frequency=29.9792458, eps=complex(3, 0.5))
 
-        ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH = tm.calc_xsec()
-        av1, ah1 = tm.calc_asym()
+        ksVV, ksHH = tm.ksx()
+        keVV, keHH = tm.kex()
+        av1, ah1 = tm.asx()
 
         # Reference values computed with the Mie code of Maetzler
         sca_xsect_ref = 4.4471684294079958

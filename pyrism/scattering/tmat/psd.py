@@ -12,7 +12,27 @@ from scipy.special import gamma
 class PSD(object):
     def __init__(self, n0=1.0, ilambda=1.0, rmax=None, r0=0.5, mu=0.0, normalize=True, edges=None, psd=None):
         """
-        Callable class to provide different PSD functions.
+        Callable class to provide different particle size distribution (PSD) functions.
+
+        Parameters
+        ----------
+        n0 : float
+            The intercept parameter. Default is 1.0
+        ilambda : float
+            The inverse scale parameter. Default is 1.0
+        rmax : int, float or None.
+            Maximum diameter to consider. If None (default) rmax will be approximated by the PSD functions.
+        r0 : float
+            The median volume radius. Default is 0.5. This is only recognized by PSD.gamma PSD.
+        mu : float
+            The shape parameter. Default is 0.0. This is only recognized by PSD.gamma PSD.
+        normalize : bool
+            If True (default) the normalized gamma function will be calculated. This is only recognized by PSD.gamma PSD.
+        edges : array_like
+            n bin edges. This is only recognized by PSD.binned PSD.
+        psd : array_like
+            n+1 psd values. This is only recognized by PSD.binned PSD.
+
         """
         self.n0 = n0
         self.ilambda = ilambda
@@ -32,24 +52,19 @@ class PSD(object):
 
         Parameters
         ----------
-        n0 :
-            The intercept parameter. Default is 1.0
-        ilambda :
-            The inverse scale parameter. Default is 1.0
         r : int or float
             Radius of particle.
-        rmax : int, float or None.
-            Maximum diameter to consider. If None (default) rmax will be approximated by the PSD functions.
 
         Returns
         -------
-        PSD :
+        PSD : array_like
             The PSD value for the given diameter. Returns 0 for all diameters larger than D_max.
 
         Note
         ----
         If rmax is None the maximum diameter will be approximated by: 11/ilambda
         """
+
         D = r * 2
 
         D_max = 11.0 / self.ilambda if self.rmax is None else self.rmax * 2
@@ -80,24 +95,12 @@ class PSD(object):
 
         Parameters
         ----------
-        r0 :
-            The median volume radius. Default is 0.5.
-        n0 :
-            The intercept parameter. Default is 1.0.
-        mu :
-            The shape parameter. Default is 0.0.
-        ilambda :
-            The inverse scale parameter. It is only necessary if normalize is False. Default is 1.0.
-        normalize : bool
-            If True the normalized gamma function will be calculated.
         r : int or float
             Radius of particle.
-        rmax : int, float or None.
-            Maximum diameter to consider. If None (default) rmax will be approximated by the PSD functions.
 
         Returns
         -------
-        PSD :
+        PSD : array_like
             The PSD value for the given diameter. Returns 0 for all diameters larger than D_max.
 
         Note
@@ -135,19 +138,16 @@ class PSD(object):
 
     def binned(self, r):
         """
+        Binned PSD function.
 
         Parameters
         ----------
-        edges : array_like
-            n bin edges.
-        psd : array_like
-            n+1 psd values.
         r : int or float
             Radius of particle.
 
         Returns
         -------
-        PSD :
+        PSD : array_like
             The PSD value for the given diameter.
             Returns 0 for all diameters outside the bins.
         """
