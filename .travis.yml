@@ -10,7 +10,6 @@ before_install:
   - pip install -U pip
   - sudo apt-get install gfortran
   - pip install -r requirements.txt
-  - python setup.py install
 
 install:
   - pip install -r requirements.txt

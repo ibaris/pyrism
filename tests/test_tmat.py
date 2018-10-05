@@ -17,8 +17,8 @@ class TestTMatrix():
         iaa = 0
         vaa = 180
 
-        tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                               radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6)
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
+                         axis_ratio=1 / 0.6)
 
         S, Z = tm.S, tm.Z
 
@@ -50,9 +50,9 @@ class TestTMatrix():
         vaa = 180
 
         pdf = pyr.Orientation.gaussian(std=20)
-        tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                               radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                               or_pdf=pdf, orientation='AA')
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
+                         orientation_pdf=pdf, orientation='AA')
 
         S, Z = tm.S, tm.Z
 
@@ -84,9 +84,9 @@ class TestTMatrix():
         vaa = 180
 
         pdf = pyr.Orientation.gaussian(std=20)
-        tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                               radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                               or_pdf=pdf, orientation='AF')
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
+                         orientation_pdf=pdf, orientation='AF')
 
         S, Z = tm.S, tm.Z
 
@@ -120,9 +120,9 @@ class TestTMatrix():
         PSD = pyr.PSD(r0=0.5, mu=4, n0=1e3, rmax=5)
         psd = PSD.gamma
 
-        tm = pyr.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                            radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                            psd=psd, num_points=500, max_radius=5, angular_integration=False)
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
+                         psd=psd, num_points=500, max_radius=5, angular_integration=False)
 
         S, Z = tm.S, tm.Z
 
@@ -153,8 +153,8 @@ class TestTMatrix():
         iaa = 0
         vaa = 180
 
-        tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                               radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1)
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1)
 
         S = tm.S
 
@@ -198,9 +198,9 @@ class TestTMatrix():
         iaa = 0
         vaa = 0
 
-        tm1 = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
-                                eps=complex(1.5, 0.5),
-                                axis_ratio=1.0)
+        tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
+                          eps=complex(1.5, 0.5),
+                          axis_ratio=1.0)
 
         av1, ah1 = tm1.asx()
 
@@ -209,9 +209,9 @@ class TestTMatrix():
         iaa = 0
         vaa = 0
 
-        tm2 = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
-                                eps=complex(1.5, 0.5),
-                                axis_ratio=1.0)
+        tm2 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
+                          eps=complex(1.5, 0.5),
+                          axis_ratio=1.0)
 
         av2, ah2 = tm2.asx()
 
@@ -223,9 +223,9 @@ class TestTMatrix():
         iaa = 0
         vaa = 0
 
-        tm1 = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4e-4, frequency=4.612191661538,
-                                eps=complex(1.5, 0.5),
-                                axis_ratio=1.0)
+        tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4e-4, frequency=4.612191661538,
+                          eps=complex(1.5, 0.5),
+                          axis_ratio=1.0)
 
         av1, ah1 = tm1.asx()
         # Is the asymmetry parameter zero for small particles?
@@ -242,8 +242,8 @@ class TestTMatrix():
         iaa = 0
         vaa = 180
 
-        tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                               radius=1, frequency=29.9792458, eps=complex(3, 0.5))
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=1, frequency=29.9792458, eps=complex(3, 0.5))
 
         ksVV, ksHH = tm.ksx()
         keVV, keHH = tm.kex()
