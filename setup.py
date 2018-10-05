@@ -8,9 +8,6 @@ For COPYING and LICENSE details, please refer to the LICENSE file
 
 import numpy
 
-# from numpy.distutils.core import Extension
-# from numpy.distutils.core import setup
-
 try:
     from setuptools import setup
     from setuptools import Extension
@@ -31,6 +28,9 @@ from setuptools import find_packages
 cmdclass = {}
 ext_modules = []
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 if use_cython:
     print ('******** Compiling with CYTHON accomplished ******')
 
@@ -48,13 +48,7 @@ if use_cython:
                   ["pyrism/core/iemauxil.pyx"], include_dirs=['.']),
 
         Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.pyx"], include_dirs=['.']),
-
-        Extension(name='pyrism.fortran_tm.fotm',
-                  sources=['pyrism/fortran_tm/fotm.pyf',
-                           'pyrism/fortran_tm/ampld.lp.f',
-                           'pyrism/fortran_tm/lpd.f'], include_dirs=['.']
-                  )
+                  ["pyrism/core/tma.pyx"], include_dirs=['.'])
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -76,14 +70,9 @@ else:
                   ["pyrism/core/iemauxil.c"], include_dirs=['.']),
 
         Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.c"], include_dirs=['.']),
-
-        Extension(name='pyrism.fortran_tm.fotm',
-                  sources=['pyrism/fortran_tm/fotm.pyf',
-                           'pyrism/fortran_tm/ampld.lp.f',
-                           'pyrism/fortran_tm/lpd.f'], include_dirs=['.']
-                  )
+                  ["pyrism/core/tma.c"], include_dirs=['.'])
     ]
+
 
 def get_packages():
     find_packages(exclude=['docs', 'tests']),
@@ -139,7 +128,7 @@ setup(name='pyrism',
       ],
       # package_data={"": ["*.txt"]},
       include_package_data=True,
-      install_requires=['numpy', 'scipy'],
+      install_requires=required,
       setup_requires=[
           'pytest-runner',
       ],
@@ -174,14 +163,14 @@ from numpy.distutils.core import setup
 #                      )
 #
 #
-# flib = Extension(name='pyrism.fortran_tm.fotm',
-#                  sources=['pyrism/fortran_tm/fotm.pyf',
-#                           'pyrism/fortran_tm/ampld.lp.f',
-#                           'pyrism/fortran_tm/lpd.f'],
-#                  )
-#
-# setup(
-#     ext_modules=[flib]
-# )
+flib = Extension(name='pyrism.fortran_tm.fotm',
+                 sources=['pyrism/fortran_tm/fotm.pyf',
+                          'pyrism/fortran_tm/ampld.lp.f',
+                          'pyrism/fortran_tm/lpd.f'],
+                 )
+
+setup(
+    ext_modules=[flib]
+)
 
 print ('******** Installation completed ********')
