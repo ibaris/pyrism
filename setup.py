@@ -8,6 +8,9 @@ For COPYING and LICENSE details, please refer to the LICENSE file
 
 import numpy
 
+# from numpy.distutils.core import Extension
+# from numpy.distutils.core import setup
+
 try:
     from setuptools import setup
     from setuptools import Extension
@@ -45,7 +48,13 @@ if use_cython:
                   ["pyrism/core/iemauxil.pyx"], include_dirs=['.']),
 
         Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.pyx"], include_dirs=['.'])
+                  ["pyrism/core/tma.pyx"], include_dirs=['.']),
+
+        Extension(name='pyrism.fortran_tm.fotm',
+                  sources=['pyrism/fortran_tm/fotm.pyf',
+                           'pyrism/fortran_tm/ampld.lp.f',
+                           'pyrism/fortran_tm/lpd.f'], include_dirs=['.']
+                  )
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -67,7 +76,13 @@ else:
                   ["pyrism/core/iemauxil.c"], include_dirs=['.']),
 
         Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.c"], include_dirs=['.'])
+                  ["pyrism/core/tma.c"], include_dirs=['.']),
+
+        Extension(name='pyrism.fortran_tm.fotm',
+                  sources=['pyrism/fortran_tm/fotm.pyf',
+                           'pyrism/fortran_tm/ampld.lp.f',
+                           'pyrism/fortran_tm/lpd.f'], include_dirs=['.']
+                  )
     ]
 
 def get_packages():
@@ -133,8 +148,6 @@ setup(name='pyrism',
       ],
       )
 
-print ('******** Build the f2py fortran extension ********')
-
 # Build the f2py fortran extension
 # --------------------------------
 from numpy.distutils.core import Extension
@@ -160,15 +173,15 @@ from numpy.distutils.core import setup
 #                               'pyrism/fortran_tm/tmatrix.o'],
 #                      )
 #
-
-flib = Extension(name='pyrism.fortran_tm.fotm',
-                 sources=['pyrism/fortran_tm/fotm.pyf',
-                          'pyrism/fortran_tm/ampld.lp.f',
-                          'pyrism/fortran_tm/lpd.f'],
-                 )
-
-setup(
-    ext_modules=[flib]
-)
+#
+# flib = Extension(name='pyrism.fortran_tm.fotm',
+#                  sources=['pyrism/fortran_tm/fotm.pyf',
+#                           'pyrism/fortran_tm/ampld.lp.f',
+#                           'pyrism/fortran_tm/lpd.f'],
+#                  )
+#
+# setup(
+#     ext_modules=[flib]
+# )
 
 print ('******** Installation completed ********')
