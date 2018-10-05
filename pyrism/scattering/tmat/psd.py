@@ -20,7 +20,7 @@ class PSD(object):
             The intercept parameter. Default is 1.0
         ilambda : float
             The inverse scale parameter. Default is 1.0
-        rmax : int, float or None.
+        rmax : int float or None.
             Maximum diameter to consider. If None (default) rmax will be approximated by the PSD functions.
         r0 : float
             The median volume radius. Default is 0.5. This is only recognized by PSD.gamma PSD.

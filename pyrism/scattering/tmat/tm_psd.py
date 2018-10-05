@@ -1,9 +1,8 @@
 from __future__ import division
 
-from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, ext_xsect, asym_wrapper
-
 from datetime import datetime
 
+from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, ext_xsect, asym_wrapper
 from radarpy import Angles, asarrays, align_all
 
 try:
@@ -471,9 +470,38 @@ class TMatrixPSD(Angles, object):
         data = {
             "description": description,
             "time": datetime.now(),
-            "psd_scatter": (self.num_points, self.D_max, self._psd_D,
-                            self._S_table, self._Z_table, self._angular_table,
-                            self._m_table, self.geometriesDeg),
+            "psd_scatter": (self.num_points,
+                            self.D_max,
+                            self._psd_D,
+                            self._S_table,
+                            self._Z_table,
+                            self._angular_table,
+                            self._m_table,
+                            self.geometriesDeg),
+
+            "parameter": (self.izaDeg,
+                          self.vzaDeg,
+                          self.iaaDeg,
+                          self.vaaDeg,
+                          self.angular_integration,
+                          self.radius,
+                          self.radius_type,
+
+                          self.wavelength,
+                          self.eps,
+                          self.axis_ratio,
+                          self.shape,
+                          self.ddelt,
+                          self.ndgs,
+                          self.alpha,
+                          self.beta,
+                          self.orient,
+
+                          self.or_pdf,
+                          self.n_alpha,
+                          self.n_beta,
+
+                          self.psd),
             "version": get_version()
         }
         pickle.dump(data, open(files, 'w'), pickle.HIGHEST_PROTOCOL)
@@ -497,7 +525,11 @@ class TMatrixPSD(Angles, object):
         if ("version" not in data) or (data["version"] != get_version()):
             warnings.warn("Loading data saved with another version.", Warning)
 
-        (self.num_points, self.D_max, self._psd_D, self._S_table,
-         self._Z_table, self._angular_table, self._m_table,
+        (self.num_points, self.D_max, self._psd_D, self._S_table, self._Z_table, self._angular_table, self._m_table,
          self.geometriesDeg) = data["psd_scatter"]
+
+        (self.izaDeg, self.vzaDeg, self.iaaDeg, self.vaaDeg, self.angular_integration, self.radius, self.radius_type,
+         self.wavelength, self.eps, self.axis_ratio, self.shape, self.ddelt, self.ndgs, self.alpha, self.beta,
+         self.orient, self.or_pdf, self.n_alpha, self.n_beta, self.psd) = data["parameter"]
+
         return (data["time"], data["description"])

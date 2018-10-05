@@ -1,12 +1,19 @@
 from __future__ import division
 
+import sys
+
 import numpy as np
 from pyrism.core.tma import (calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asym_wrapper, ext_xsect,
                              sca_intensity_wrapper)
-
 from radarpy import Angles, asarrays, align_all
 
 from .orientation import Orientation
+
+# python 3.6 comparability
+if sys.version_info < (3, 0):
+    srange = xrange
+else:
+    srange = range
 
 
 class TMatrixSingle(Angles, object):
@@ -182,7 +189,7 @@ class TMatrixSingle(Angles, object):
         """
 
         nmax = list()
-        for i in range(len(self.izaDeg)):
+        for i in srange(len(self.izaDeg)):
             temp = calc_nmax_wrapper(self.radius[i], self.radius_type, self.wavelength[i], self.eps[i],
                                      self.axis_ratio[i], self.shape)
 
@@ -196,7 +203,7 @@ class TMatrixSingle(Angles, object):
         S_list = list()
         Z_list = list()
 
-        for i in range(len(self.izaDeg)):
+        for i in srange(len(self.izaDeg)):
             S, Z = get_oriented_SZ(self.nmax[i], self.wavelength[i], self.izaDeg[i], self.vzaDeg[i],
                                    self.iaaDeg[i], self.vaaDeg[i], self.alphaDeg[i],
                                    self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
@@ -212,7 +219,7 @@ class TMatrixSingle(Angles, object):
         """
         VV_list = list()
         HH_list = list()
-        for i in range(len(self.iza)):
+        for i in srange(len(self.iza)):
             VV = sca_intensity_wrapper(self.__Z[i], 1)
             HH = sca_intensity_wrapper(self.__Z[i], 2)
 
@@ -227,7 +234,7 @@ class TMatrixSingle(Angles, object):
 
         xsectVV_list = list()
         xsectHH_list = list()
-        for i in range(len(self.iza)):
+        for i in srange(len(self.iza)):
             xsectVV, xsectHH = sca_xsect_wrapper(self.nmax[i],
                                                  self.wavelength[i], self.izaDeg[i],
                                                  self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
@@ -242,7 +249,7 @@ class TMatrixSingle(Angles, object):
     def kex(self):
         VV_list = list()
         HH_list = list()
-        for i in range(len(self.iza)):
+        for i in srange(len(self.iza)):
             VV, HH = ext_xsect(self.nmax[i], self.wavelength[i], self.izaDeg[i], self.vzaDeg[i],
                                self.iaaDeg[i], self.vaaDeg[i], self.alphaDeg[i],
                                self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
@@ -265,7 +272,7 @@ class TMatrixSingle(Angles, object):
     def asx(self):
         xsectVV_list = list()
         xsectHH_list = list()
-        for i in range(len(self.iza)):
+        for i in srange(len(self.iza)):
             xsectVV, xsectHH = asym_wrapper(self.nmax[i],
                                             self.wavelength[i], self.izaDeg[i],
                                             self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],

@@ -202,7 +202,7 @@ class TestTMatrix():
                           eps=complex(1.5, 0.5),
                           axis_ratio=1.0)
 
-        av1, ah1 = tm1.asx()
+        av1, ah1 = tm1.asx
 
         iza = 180
         vza = 180
@@ -213,7 +213,7 @@ class TestTMatrix():
                           eps=complex(1.5, 0.5),
                           axis_ratio=1.0)
 
-        av2, ah2 = tm2.asx()
+        av2, ah2 = tm2.asx
 
         assert less(abs(1 - av1 / av2), 1e-6)
         assert less(abs(1 - ah1 / ah2), 1e-6)
@@ -227,7 +227,7 @@ class TestTMatrix():
                           eps=complex(1.5, 0.5),
                           axis_ratio=1.0)
 
-        av1, ah1 = tm1.asx()
+        av1, ah1 = tm1.asx
         # Is the asymmetry parameter zero for small particles?
 
         assert less(av1, 1e-8)
@@ -245,9 +245,9 @@ class TestTMatrix():
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=1, frequency=29.9792458, eps=complex(3, 0.5))
 
-        ksVV, ksHH = tm.ksx()
-        keVV, keHH = tm.kex()
-        av1, ah1 = tm.asx()
+        ksVV, ksHH = tm.ksx
+        keVV, keHH = tm.kex
+        av1, ah1 = tm.asx
 
         # Reference values computed with the Mie code of Maetzler
         sca_xsect_ref = 4.4471684294079958
@@ -275,14 +275,13 @@ class TestTMatrix():
     #     PSD = pyr.PSD(ilambda=Lambda, n0=N0, rmax=0.002/2)
     #     psd = PSD.exponential
     #
-    #     tm = pyr.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002/2,
+    #     tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002/2,
     #                         frequency=1, eps=m, psd=psd, num_points=256,
     #                         angular_integration=True)
     #
+    #     ksxV, ksxH = tm.ksx
     #     # This size-integrated scattering cross section has an analytical value.
     #     # Check that we can reproduce it.
     #     sca_xsect_ref = 480 * N0 * np.pi ** 5 * abs(K) ** 2 / Lambda ** 7
     #
-    #     ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH = tm.calc_xsec()
-    #
-    # #
+    #     assert less(abs(1 - ksxH / sca_xsect_ref), 1e-3)

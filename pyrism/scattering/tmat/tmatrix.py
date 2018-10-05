@@ -106,6 +106,7 @@ class TMatrix(Angles):
                                     n_alpha=n_alpha,
                                     n_beta=n_beta, angle_unit=angle_unit)
             self.psd = None
+            self.__NAME = 'SINGLE'
 
         else:
             self.TM = TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa, frequency=frequency, radius=radius,
@@ -117,6 +118,8 @@ class TMatrix(Angles):
 
                                  psd=psd, num_points=num_points, angular_integration=angular_integration,
                                  max_radius=max_radius)
+
+            self.__NAME = 'PSD'
 
             self.psd = self.TM.psd
             self.num_points = self.TM.num_points
@@ -158,6 +161,11 @@ class TMatrix(Angles):
         self.a = self.k0 * radius
         self.factor = complex(0, 2 * PI * self.N) / self.k0
 
+        self.__kex = None
+        self.__ksx = None
+        self.__asx = None
+        self.__ksi = None
+
     @property
     def S(self):
         return self.TM.S
@@ -186,6 +194,51 @@ class TMatrix(Angles):
                 return self.__ke[0]
             else:
                 return self.__ke
+
+    @property
+    def kex(self):
+        if self.__kex is None:
+            V, H = self.__get_kex()
+
+            if len(V) == 1:
+                return V[0], H[0]
+        else:
+            return self.__kex
+
+    @property
+    def ksx(self):
+        if self.__ksx is None:
+            V, H = self.__get_ksx()
+
+            if len(V) == 1:
+                return V[0], H[0]
+
+        else:
+            return self.__ksx
+
+    @property
+    def ksi(self):
+        if self.__ksi is None:
+            try:
+                V, H = self.__get_ksi()
+
+                if len(V) == 1:
+                    return V[0], H[0]
+
+            except TypeError:
+                return None
+        else:
+            return self.__ksi
+
+    @property
+    def asx(self):
+        if self.__asx is None:
+            V, H = self.__get_asx()
+
+            if len(V) == 1:
+                return V[0], H[0]
+        else:
+            return self.__asx
 
     def Mpq(self, factor, S):
         return factor * S
@@ -252,11 +305,153 @@ class TMatrix(Angles):
 
         return self.__ke
 
-    def asx(self, geometries=None):
-        if self.psd is None:
+    def __get_asx(self):
+
+        if self.__NAME is 'SINGLE':
             return self.TM.asx()
+
         else:
-            if geometries is None:
-                raise ValueError("Geometries must be defined.")
-            else:
-                return self.TM.asx(geometries)
+            try:
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.asx(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.asx(self.geometriesDeg)
+
+            except AttributeError:
+                print("Initialising angular-integrated quantities first.")
+                self.TM.init_scatter_table()
+
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.asx(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.asx(self.geometriesDeg)
+
+    def __get_ksx(self):
+        if self.__NAME is 'SINGLE':
+            return self.TM.ksx()
+
+        else:
+            try:
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.ksx(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.ksx(self.geometriesDeg)
+
+            except AttributeError:
+                print("Initialising angular-integrated quantities first.")
+                self.TM.init_scatter_table()
+
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.ksx(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.ksx(self.geometriesDeg)
+
+    def __get_kex(self):
+        if self.__NAME is 'SINGLE':
+            return self.TM.kex()
+
+        else:
+            try:
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.kex(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.kex(self.geometriesDeg)
+
+            except AttributeError:
+                print("Initialising angular-integrated quantities first.")
+                self.TM.init_scatter_table()
+
+                if isinstance(self.geometriesDeg[0], tuple):
+                    VV, HH = list(), list()
+
+                    for item in self.geometriesDeg:
+                        VV_temp, HH_temp = self.TM.kex(item)
+
+                        VV.append(VV_temp)
+                        HH.append(HH_temp)
+
+                    return VV, HH
+
+                else:
+                    return self.TM.kex(self.geometriesDeg)
+
+    def __get_ksi(self):
+        if self.__NAME is 'SINGLE':
+            return self.TM.ksi()
+
+        else:
+            return None
+
+    @classmethod
+    def load_scatter_table(cls, fn=None):
+        """Load the scattering lookup tables.
+
+        Load the scattering lookup tables saved with save_scatter_table.
+
+        Args:
+            fn: The name of the scattering table file.
+        """
+        if fn is None:
+            fn = Files.select_newest()
+            data = pickle.load(open(os.path.join(Files.path, fn)))
+        else:
+            data = pickle.load(open(fn))
+
+        if ("version" not in data) or (data["version"] != get_version()):
+            warnings.warn("Loading data saved with another version.", Warning)
+
+        (cls.num_points, cls.D_max, cls._psd_D, cls._S_table, cls._Z_table, cls._angular_table, cls._m_table,
+         cls.geometriesDeg) = data["psd_scatter"]
+
+        (cls.izaDeg, cls.vzaDeg, cls.iaaDeg, cls.vaaDeg, cls.angular_integration, cls.radius, cls.radius_type,
+         cls.wavelength, cls.eps, cls.axis_ratio, cls.shape, cls.ddelt, cls.ndgs, cls.alpha, cls.beta, cls.orient,
+         cls.or_pdf, cls.n_alpha, cls.n_beta, cls.psd) = data["parameter"]
+
+        print("File {0} load successfully.".format(str(fn)))
+
+        return (data["time"], data["description"])
