@@ -12,10 +12,10 @@ before_install:
   - pip install -r requirements.txt
 
 install:
-  - pip install -r requirements.txt
   - pip install coveralls
   - pip install coverage
-  - python setup.py install
+  - pip install .
+#  - python setup.py install
 
 script:
   - coverage run --source pyrism/ -m pytest
