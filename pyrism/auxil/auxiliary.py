@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
-import numpy as np
-from datetime import datetime
 import os
-
+from datetime import datetime
 from os.path import expanduser
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+import warnings
 
 
 def get_version():
@@ -367,3 +372,30 @@ class Files(object):
 
     def refresh(self):
         self.__files = os.listdir(self.path)
+
+    def load_param(self, fn=None):
+        """Load the scattering lookup tables.
+
+        Load the scattering lookup tables saved with save_scatter_table.
+
+        Args:
+            fn: The name of the scattering table file.
+        """
+
+        if fn is None:
+            fn = self.select_newest()
+            data = pickle.load(open(os.path.join(self.path, fn)))
+        else:
+            data = pickle.load(open(fn))
+
+        if ("version" not in data) or (data["version"] != get_version()):
+            warnings.warn("Loading data saved with another version.", Warning)
+
+        (self.num_points, self.D_max, self._psd_D, self._S_table, self._Z_table, self._angular_table, self._m_table,
+         self.geometriesDeg) = data["psd_scatter"]
+
+        (self.izaDeg, self.vzaDeg, self.iaaDeg, self.vaaDeg, self.angular_integration, self.radius, self.radius_type,
+         self.wavelength, self.eps, self.axis_ratio, self.shape, self.ddelt, self.ndgs, self.alpha, self.beta,
+         self.orient, self.or_pdf, self.n_alpha, self.n_beta, self.psd) = data["parameter"]
+
+        return (data["time"], data["description"])
