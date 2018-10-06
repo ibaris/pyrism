@@ -1,1 +1,1 @@
-from lsm import LSM
+from .lsm import LSM

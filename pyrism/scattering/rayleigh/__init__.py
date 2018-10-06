@@ -1,2 +1,2 @@
-from rayleigh import Rayleigh
+from .rayleigh import Rayleigh
 import elements
