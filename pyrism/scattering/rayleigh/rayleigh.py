@@ -222,7 +222,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[0, 0])
+                item = np.sum(self.matrix[0][0, 0])
 
             return item
 
@@ -233,7 +233,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[0, 1])
+                item = np.sum(self.matrix[0][0, 1])
 
             return item
 
@@ -244,7 +244,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[0, 2])
+                item = np.sum(self.matrix[0][0, 2])
 
             return item
 
@@ -255,7 +255,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[0, 3])
+                item = np.sum(self.matrix[0][0, 3])
 
             return item
 
@@ -266,7 +266,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[1, 0])
+                item = np.sum(self.matrix[0][1, 0])
 
             return item
 
@@ -277,7 +277,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[1, 1])
+                item = np.sum(self.matrix[0][1, 1])
 
             return item
 
@@ -288,7 +288,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[1, 2])
+                item = np.sum(self.matrix[0][1, 2])
 
             return item
 
@@ -299,7 +299,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[1, 3])
+                item = np.sum(self.matrix[0][1, 3])
 
             return item
 
@@ -310,7 +310,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[2, 0])
+                item = np.sum(self.matrix[0][2, 0])
 
             return item
 
@@ -321,7 +321,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[2, 1])
+                item = np.sum(self.matrix[0][2, 1])
 
             return item
 
@@ -332,7 +332,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[2, 2])
+                item = np.sum(self.matrix[0][2, 2])
 
             return item
 
@@ -343,7 +343,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[2, 3])
+                item = np.sum(self.matrix[0][2, 3])
 
             return item
 
@@ -354,7 +354,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[3, 0])
+                item = np.sum(self.matrix[0][3, 0])
 
             return item
 
@@ -365,7 +365,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[3, 1])
+                item = np.sum(self.matrix[0][3, 1])
 
             return item
 
@@ -376,7 +376,7 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[3, 2])
+                item = np.sum(self.matrix[0][3, 2])
 
             return item
 
@@ -387,6 +387,6 @@ class Rayleigh(object):
                 item = np.asarray(item).flatten()
 
             else:
-                item = np.sum(self.matrix[3, 3])
+                item = np.sum(self.matrix[0][3, 3])
 
             return item

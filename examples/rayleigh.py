@@ -9,8 +9,8 @@ iza = np.arange(10, 30, 1)  # Incidence zenith angle
 vza = 30  # Viewing zenith angle
 raa = 50  # Relative azimuth angle
 
-ray = pyr.Rayleigh(frequency=1.26, radius=np.arange(0, 0.0205, 0.0005), eps_p=(0.25 + 0.1j))
-
+ray = pyr.Rayleigh(frequency=1.26, radius=np.arange(0.01, 0.0205, 0.0005), eps_p=(0.25 + 0.1j))
+mie = pyr.Mie(frequency=1.26, radius=np.arange(0.01, 0.10, 0.01), eps_p=(0.25 + 0.1j))
 pmatrix = pyr.Rayleigh.Phase(20, vza, raa)
 print pmatrix
 

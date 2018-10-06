@@ -2,7 +2,7 @@ from __future__ import division
 from .core.mie_scatt import mie_scattering
 import warnings
 import numpy as np
-
+from radarpy import align_all, asarrays, zeros_likes
 import sys
 
 # python 3.6 comparability
@@ -47,6 +47,12 @@ class Mie(object):
 
         # Check validity
 
+        frequency, radius = asarrays((frequency, radius))
+        eps_b, eps_p = asarrays((eps_b, eps_p))
+
+        frequency, radius = align_all((frequency, radius))
+        _, eps_b, eps_p = align_all((frequency, eps_b, eps_p))
+
         radius /= 100
 
         lm = 299792458 / (frequency * 1e9)  # Wavelength in meter
@@ -57,7 +63,13 @@ class Mie(object):
         else:
             pass
 
-        self.ks, self.ka, self.kt, self.ke, self.omega, self.BSC = mie_scattering(frequency, radius, eps_p, eps_b)
+        self.ks, self.ka, self.kt, self.ke, self.omega, self.BSC = zeros_likes(frequency, 6)
+
+        for i in range(len(frequency)):
+            (self.ks[i], self.ka[i], self.kt[i], self.ke[i], self.omega[i], self.BSC[i]) = mie_scattering(frequency[i],
+                                                                                                          radius[i],
+                                                                                                          eps_p[i],
+                                                                                                          eps_b[i])
 
     def __str__(self):
         vals = dict()

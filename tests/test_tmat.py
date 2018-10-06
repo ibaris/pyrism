@@ -285,3 +285,13 @@ class TestTMatrix():
     #     sca_xsect_ref = 480 * N0 * np.pi ** 5 * abs(K) ** 2 / Lambda ** 7
     #
     #     assert less(abs(1 - ksxH / sca_xsect_ref), 1e-3)
+
+
+class TestOriantation:
+    def testuniform(self):
+        x = 0.5
+        ref = 7.615338836939474e-05
+        pdf = pyr.Orientation.uniform()
+        pdf = pdf(x)
+
+        assert (allclose(pdf, ref))
