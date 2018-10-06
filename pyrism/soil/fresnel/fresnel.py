@@ -226,6 +226,9 @@ class Fresnel(Angles):
             self.__ematrix = self.__ecalc()
             self.EMS = self.__store(self.VV, self.HH, self.VH, self.HV)
 
+        def quad(self):
+            pass
+
         def __quad(self, a=0, b=np.pi / 2):
             """
             Integral of the phase matrix with neglecting the phi dependence.

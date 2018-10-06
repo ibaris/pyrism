@@ -121,32 +121,32 @@ cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
 
     return V, H
 
-cdef r11(float xza, double complex eps, _):
+cdef r11c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return pow(abs(V), 2)
 
-cdef r22(float xza, double complex eps, _):
+cdef r22c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return pow(abs(H), 2)
 
-cdef r33(float xza, double complex eps, _):
+cdef r33c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return np.real(V * np.conjugate(H))
 
-cdef r34(float xza, double complex eps, _):
+cdef r34c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return -np.imag(V * np.conjugate(H))
 
-cdef r43(float xza, double complex eps, _):
+cdef r43c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return np.imag(V * np.conjugate(H))
 
-cdef r44(float xza, double complex eps, _):
+cdef r44c(float xza, double complex eps, _):
     V, H = reflection_coefficients(xza, eps)
 
     return np.real(V * np.conjugate(H))
@@ -155,12 +155,12 @@ cdef reflectivity_c(float xza, double complex eps):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
 
-    mat[0, 0] = r11(xza, eps, 0)
-    mat[1, 1] = r22(xza, eps, 0)
-    mat[2, 2] = r33(xza, eps, 0)
-    mat[2, 3] = r34(xza, eps, 0)
-    mat[3, 2] = r43(xza, eps, 0)
-    mat[3, 3] = r44(xza, eps, 0)
+    mat[0, 0] = r11c(xza, eps, 0)
+    mat[1, 1] = r22c(xza, eps, 0)
+    mat[2, 2] = r33c(xza, eps, 0)
+    mat[2, 3] = r34c(xza, eps, 0)
+    mat[3, 2] = r43c(xza, eps, 0)
+    mat[3, 3] = r44c(xza, eps, 0)
 
     return mat
 
@@ -175,12 +175,12 @@ cdef reflectivity_c(float xza, double complex eps):
 #     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
 #
 #
-#     mat[0, 0] = r11(xza, n1, n2)
-#     mat[1, 1] = r22(xza, n1, n2)
-#     mat[2, 2] = r33(xza, n1, n2)
-#     mat[2, 3] = r34(xza, n1, n2)
-#     mat[3, 2] = r43(xza, n1, n2)
-#     mat[3, 3] = r44(xza, n1, n2)
+#     mat[0, 0] = r11c(xza, n1, n2)
+#     mat[1, 1] = r22c(xza, n1, n2)
+#     mat[2, 2] = r33c(xza, n1, n2)
+#     mat[2, 3] = r34c(xza, n1, n2)
+#     mat[3, 2] = r43c(xza, n1, n2)
+#     mat[3, 3] = r44c(xza, n1, n2)
 #
 #     return mat * factor
 
@@ -189,21 +189,39 @@ cdef quad(float a, float b, double complex eps):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
 
-    r11i = squad(r11, a, b, args=(eps, 0))[0]
-    r22i = squad(r22, a, b, args=(eps, 0))[0]
-    r33i = squad(r33, a, b, args=(eps, 0))[0]
-    r34i = squad(r34, a, b, args=(eps, 0))[0]
-    r43i = squad(r43, a, b, args=(eps, 0))[0]
-    r44i = squad(r44, a, b, args=(eps, 0))[0]
+    r11ci = squad(r11c, a, b, args=(eps, 0))[0]
+    r22ci = squad(r22c, a, b, args=(eps, 0))[0]
+    r33ci = squad(r33c, a, b, args=(eps, 0))[0]
+    r34ci = squad(r34c, a, b, args=(eps, 0))[0]
+    r43ci = squad(r43c, a, b, args=(eps, 0))[0]
+    r44ci = squad(r44c, a, b, args=(eps, 0))[0]
 
-    mat[0, 0] = r11i
-    mat[1, 1] = r22i
-    mat[2, 2] = r33i
-    mat[2, 3] = r34i
-    mat[3, 2] = r43i
-    mat[3, 3] = r44i
+    mat[0, 0] = r11ci
+    mat[1, 1] = r22ci
+    mat[2, 2] = r33ci
+    mat[2, 3] = r34ci
+    mat[3, 2] = r43ci
+    mat[3, 3] = r44ci
 
     return mat
+
+def r11(float xza, double complex eps, _):
+    return r11c(xza, eps, _)
+
+def r22(float xza, double complex eps, _):
+    return r22c(xza, eps, _)
+
+def r33(float xza, double complex eps, _):
+    return r33c(xza, eps, _)
+
+def r34(float xza, double complex eps, _):
+    return r34c(xza, eps, _)
+
+def r43(float xza, double complex eps, _):
+    return r43c(xza, eps, _)
+
+def r44(float xza, double complex eps, _):
+    return r44c(xza, eps, _)
 
 def reflectivity_wrapper(float xza, double complex eps):
     return reflectivity_c(xza, eps)
