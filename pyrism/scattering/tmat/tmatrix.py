@@ -157,7 +157,7 @@ class TMatrix(Angles):
         self.n_beta = self.TM.n_beta
 
         self.N = N
-        self.k0 = (2 * PI) / self.wavelength
+        self.k0 = 2 * np.pi * frequency / 30
         self.a = self.k0 * radius
         self.factor = complex(0, 2 * PI * self.N) / self.k0
 

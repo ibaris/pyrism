@@ -98,6 +98,13 @@ cdef reflection_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
 
     return V, H
 
+def reflection_coefficients(float iza, double complex eps):
+    cdef double complex rt = np.sqrt(eps - pow(np.sin(iza + 0.01), 2))
+    cdef double complex Rvi = (eps * np.cos(iza + 0.01) - rt) / (eps * np.cos(iza + 0.01) + rt)
+    cdef double complex Rhi = (np.cos(iza + 0.01) - rt) / (np.cos(iza + 0.01) + rt)
+
+    return Rvi, Rhi
+
 cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
     """
     transmission amplitude (frem Fresnel equations)
@@ -114,154 +121,98 @@ cdef transmission_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
 
     return V, H
 
-cdef r00(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
-
-    cdef DTYPE_t iso = (r11(xza, n1, n2) + r22(xza, n1, n2) + r33(xza, n1, n2)
-                        + r34(xza, n1, n2) + r43(xza, n1, n2) + r44(xza, n1, n2)) / 4
-
-    return iso
-
-cdef r11(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r11(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
     return pow(abs(V), 2)
 
-cdef r22(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r22(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
     return pow(abs(H), 2)
 
-cdef r33(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r33(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
-    return 0  # np.real(V * np.conjugate(H))
+    return np.real(V * np.conjugate(H))
 
-cdef r34(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r34(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
-    return 0  #-np.imag(V * np.conjugate(H))
+    return -np.imag(V * np.conjugate(H))
 
-cdef r43(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r43(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
-    return 0  # np.imag(V * np.conjugate(H))
+    return np.imag(V * np.conjugate(H))
 
-cdef r44(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-    V, H = reflection_c(xza, n1, n2)
+cdef r44(float xza, double complex eps, _):
+    V, H = reflection_coefficients(xza, eps)
 
-    return 0  #np.real(V * np.conjugate(H))
+    return np.real(V * np.conjugate(H))
 
-cdef reflectivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
+cdef reflectivity_c(float xza, double complex eps):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
 
-    V, H = reflection_c(xza, n1, n2)
+    mat[0, 0] = r11(xza, eps, 0)
+    mat[1, 1] = r22(xza, eps, 0)
+    mat[2, 2] = r33(xza, eps, 0)
+    mat[2, 3] = r34(xza, eps, 0)
+    mat[3, 2] = r43(xza, eps, 0)
+    mat[3, 3] = r44(xza, eps, 0)
 
-    if iso == 0:
+    return mat
 
-        mat[0, 0] = r11(xza, n1, n2)
-        mat[1, 1] = r22(xza, n1, n2)
-        mat[2, 2] = r33(xza, n1, n2)
-        mat[2, 3] = r34(xza, n1, n2)
-        mat[3, 2] = r43(xza, n1, n2)
-        mat[3, 3] = r44(xza, n1, n2)
+# cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
+#     V, H = transmission_c(xza, n1, n2)
+#
+#     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
+#     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
+#
+#     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
+#
+#     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
+#
+#
+#     mat[0, 0] = r11(xza, n1, n2)
+#     mat[1, 1] = r22(xza, n1, n2)
+#     mat[2, 2] = r33(xza, n1, n2)
+#     mat[2, 3] = r34(xza, n1, n2)
+#     mat[3, 2] = r43(xza, n1, n2)
+#     mat[3, 3] = r44(xza, n1, n2)
+#
+#     return mat * factor
 
-        return mat
 
-    else:
-
-        mat2[0, 0] = r00(xza, n1, n2)
-        mat2[1, 1] = r11(xza, n1, n2)
-        mat2[2, 2] = r22(xza, n1, n2)
-        mat2[3, 3] = r33(xza, n1, n2)
-        mat2[3, 4] = r34(xza, n1, n2)
-        mat2[4, 3] = r43(xza, n1, n2)
-        mat2[4, 4] = r44(xza, n1, n2)
-
-        return mat2
-
-cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
-    V, H = transmission_c(xza, n1, n2)
-
+cdef quad(float a, float b, double complex eps):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
 
-    cdef DTYPEC_t rza = snell_c(xza, n1, n2)
+    r11i = squad(r11, a, b, args=(eps, 0))[0]
+    r22i = squad(r22, a, b, args=(eps, 0))[0]
+    r33i = squad(r33, a, b, args=(eps, 0))[0]
+    r34i = squad(r34, a, b, args=(eps, 0))[0]
+    r43i = squad(r43, a, b, args=(eps, 0))[0]
+    r44i = squad(r44, a, b, args=(eps, 0))[0]
 
-    factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
+    mat[0, 0] = r11i
+    mat[1, 1] = r22i
+    mat[2, 2] = r33i
+    mat[2, 3] = r34i
+    mat[3, 2] = r43i
+    mat[3, 3] = r44i
 
-    if iso == 0:
+    return mat
 
-        mat[0, 0] = r11(xza, n1, n2)
-        mat[1, 1] = r22(xza, n1, n2)
-        mat[2, 2] = r33(xza, n1, n2)
-        mat[2, 3] = r34(xza, n1, n2)
-        mat[3, 2] = r43(xza, n1, n2)
-        mat[3, 3] = r44(xza, n1, n2)
+def reflectivity_wrapper(float xza, double complex eps):
+    return reflectivity_c(xza, eps)
 
-        return mat * factor
-
-    else:
-
-        mat2[0, 0] = r00(xza, n1, n2)
-        mat2[1, 1] = r11(xza, n1, n2)
-        mat2[2, 2] = r22(xza, n1, n2)
-        mat2[3, 3] = r33(xza, n1, n2)
-        mat2[3, 4] = r34(xza, n1, n2)
-        mat2[4, 3] = r43(xza, n1, n2)
-        mat2[4, 4] = r44(xza, n1, n2)
-
-        return mat2 * factor
-
-cdef quad(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
-    cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
-    cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
-
-    if iso == 0:
-        r11i = squad(r11, a, b, args=(n1, n2))[0]
-        r22i = squad(r22, a, b, args=(n1, n2))[0]
-        r33i = squad(r33, a, b, args=(n1, n2))[0]
-        r34i = squad(r34, a, b, args=(n1, n2))[0]
-        r43i = squad(r43, a, b, args=(n1, n2))[0]
-        r44i = squad(r44, a, b, args=(n1, n2))[0]
-
-        mat[0, 0] = r11i
-        mat[1, 1] = r22i
-        mat[2, 2] = r33i
-        mat[2, 3] = r34i
-        mat[3, 2] = r43i
-        mat[3, 3] = r44i
-
-        return mat
-
-    else:
-        r00i = squad(r00, a, b, args=(n1, n2))[0]
-        r11i = squad(r11, a, b, args=(n1, n2))[0]
-        r22i = squad(r22, a, b, args=(n1, n2))[0]
-        r33i = squad(r33, a, b, args=(n1, n2))[0]
-        r34i = squad(r34, a, b, args=(n1, n2))[0]
-        r43i = squad(r43, a, b, args=(n1, n2))[0]
-        r44i = squad(r44, a, b, args=(n1, n2))[0]
-
-        mat2[0, 0] = r00i
-        mat2[1, 1] = r11i
-        mat2[2, 2] = r22i
-        mat2[3, 3] = r33i
-        mat2[3, 4] = r34i
-        mat2[4, 3] = r43i
-        mat2[4, 4] = r44i
-
-        return mat2
-
-def reflectivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
-    return reflectivity_c(xza, n1, n2, iso)
-
-def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2, int iso):
-    return transmissivity_c(xza, n1, n2, iso)
+# def transmissivity_wrapper(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
+#     return transmissivity_c(xza, n1, n2)
 
 def snell_wrapper(DTYPE_t iza, DTYPEC_t n1, DTYPEC_t n2):
     return snell_c(iza, n1, n2)
 
-def quad_wrapper(float a, float b, DTYPEC_t n1, DTYPEC_t n2, int iso):
-    return quad(a, b, n1, n2, iso)
+def quad_wrapper(float a, float b, double complex eps):
+    return quad(a, b, eps)

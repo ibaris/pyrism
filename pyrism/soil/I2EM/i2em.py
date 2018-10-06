@@ -8,6 +8,7 @@ from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays
 from .core import (exponential, gaussian, xpower, mixed)
 from ...auxil import SoilResult, EmissivityResult
 
+
 class I2EM(Angles):
 
     def __init__(self, iza, vza, raa, frequency, eps, corrlength, sigma, n=10, corrfunc='exponential', emissivity=False,
@@ -122,20 +123,22 @@ class I2EM(Angles):
 
     def __store(self, VV, HH):
 
-        BSC = SoilResult(VV=VV,
+        BSC = SoilResult(array=np.array([[VV], [HH]]),
+                         arraydB=np.array([[dB(VV)], [dB(HH)]]),
+                         VV=VV,
                          HH=HH,
                          VVdB=dB(VV),
-                         HHdB=dB(HH),
-                         ISO=(VV + HH) / 2,
-                         ISOdB=dB((VV + HH) / 2))
+                         HHdB=dB(HH))
 
-        I = SoilResult(VV=BRDF(VV, self.vza),
-                       HH=BRDF(HH, self.vza),
-                       ISO=BRDF(BSC.ISO, self.vza))
+        I = SoilResult(array=np.array([[BRDF(VV, self.vza)], [BRDF(HH, self.vza)]]),
+                       arraydB=np.array([[dB(BRDF(VV, self.vza))], [dB(BRDF(HH, self.vza))]]),
+                       VV=BRDF(VV, self.vza),
+                       HH=BRDF(HH, self.vza))
 
-        BRF_ = SoilResult(VV=BRF(I.VV),
-                          HH=BRF(I.HH),
-                          ISO=BRF(I.ISO))
+        BRF_ = SoilResult(array=np.array([[BRF(I.VV)], [BRF(I.HH)]]),
+                          arraydB=np.array([[dB(BRF(I.VV))], [dB(BRF(I.HH))]]),
+                          VV=BRF(I.VV),
+                          HH=BRF(I.HH))
 
         return I, BRF_, BSC
 
@@ -221,8 +224,5 @@ class I2EM(Angles):
                                    H=H,
                                    VdB=dB(V),
                                    HdB=dB(H))
-
-            EMS['ISO'] = (EMS.V + EMS.H) / 2
-            EMS['ISOdB'] = dB(EMS.ISO)
 
             return EMS
