@@ -96,9 +96,6 @@ class TestScatteringRayPhase:
 ])
 class TestScatteringMie:
     def test_mie(self, freq, a, eps_1, eps_2, ks_true, ka_true, ke_true, s0_true):
-        freq = 1.26
-        a = 0.001
-        eps_1 = 0.25 + 0.1j
         r = Mie(freq, a, eps_1)
         print (r)
         result = array([r.ks, r.ka, r.ke, r.BSC])
