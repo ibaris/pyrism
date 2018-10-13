@@ -19,8 +19,7 @@ else:
 class TMatrixSingle(Angles, object):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
-                 n_beta=10,
-                 angle_unit='DEG'):
+                 n_beta=10, angle_unit='DEG', normalize=False, nbar=0.0):
 
         """T-Matrix scattering from single nonspherical particles.
 
@@ -67,6 +66,12 @@ class TMatrixSingle(Angles, object):
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        normalize : boolean, optional
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        nbar : float, optional
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. The default value is 0.0.
 
         Returns
         -------
@@ -105,7 +110,11 @@ class TMatrixSingle(Angles, object):
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
         Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=False, angle_unit=angle_unit)
+                        normalize=normalize, nbar=nbar, angle_unit=angle_unit)
+
+        if normalize:
+            _, frequency, radius, axis_ratio, alpha, beta = align_all(
+                (self.iza, frequency, radius, axis_ratio, alpha, beta))
 
         # super(TMatrixSingle, self).__init__(iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
         #                                     normalize=False,
@@ -139,7 +148,14 @@ class TMatrixSingle(Angles, object):
             if len(self.__S) == 1:
                 return self.__S[0]
             else:
-                return self.__S
+                if self.normalize:
+                    if len(self.__S[0:-1]) == 1:
+                        return self.__S[0:-1][0]
+                    else:
+                        return self.__S[0:-1]
+
+                else:
+                    return self.__S
 
         except AttributeError:
 
@@ -148,7 +164,14 @@ class TMatrixSingle(Angles, object):
             if len(self.__S) == 1:
                 return self.__S[0]
             else:
-                return self.__S
+                if self.normalize:
+                    if len(self.__S[0:-1]) == 1:
+                        return self.__S[0:-1][0]
+                    else:
+                        return self.__S[0:-1]
+
+                else:
+                    return self.__S
 
     @property
     def Z(self):
@@ -156,7 +179,14 @@ class TMatrixSingle(Angles, object):
             if len(self.__Z) == 1:
                 return self.__Z[0]
             else:
-                return self.__Z
+                if self.normalize:
+                    if len(self.__Z[0:-1]) == 1:
+                        return self.__Z[0:-1][0] - self.__Z[-1]
+                    else:
+                        return self.__Z[0:-1] - self.__Z[-1]
+
+                else:
+                    return self.__Z
 
         except AttributeError:
 
@@ -165,24 +195,31 @@ class TMatrixSingle(Angles, object):
             if len(self.__Z) == 1:
                 return self.__Z[0]
             else:
-                return self.__Z
+                if self.normalize:
+                    if len(self.__Z[0:-1]) == 1:
+                        return self.__Z[0:-1][0] - self.__Z[-1]
+                    else:
+                        return self.__Z[0:-1] - self.__Z[-1]
+
+                else:
+                    return self.__Z
 
     @property
     def SZ(self):
-        try:
-            if len(self.__S) == 1:
-                return self.__S[0], self.__Z[0]
-            else:
-                return self.__S, self.__Z
+        return self.S, self.Z
 
-        except AttributeError:
+    @property
+    def norm(self):
+        if self.normalize:
+            try:
+                return self.__Z[-1]
 
-            self.__S, self.__Z = self.__call_SZ()
+            except AttributeError:
+                self.__S, self.__Z = self.__call_SZ()
 
-            if len(self.__S) == 1:
-                return self.__S[0], self.__Z[0]
-            else:
-                return self.__S, self.__Z
+                return self.__Z[-1]
+        else:
+            return None
 
     def __calc_nmax(self):
         """Initialize the T-matrix.

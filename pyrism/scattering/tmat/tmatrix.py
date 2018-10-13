@@ -1,7 +1,18 @@
-from .tm_single import TMatrixSingle
-from .tm_psd import TMatrixPSD
+import warnings
+
 import numpy as np
 from radarpy import Angles, asarrays, align_all
+
+from .tm_psd import TMatrixPSD
+from .tm_single import TMatrixSingle
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+import os
+from pyrism.auxil import get_version, Files
 
 PI = 3.14159265359
 
@@ -12,7 +23,7 @@ class TMatrix(Angles):
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
                  n_beta=10,
                  angle_unit='DEG', psd=None, max_radius=10, num_points=1024, angular_integration=True,
-                 N=1):
+                 N=1, normalize=False, nbar=0.0):
         """T-Matrix scattering from nonspherical particles.
 
         Class for simulating scattering from nonspherical particles with the
@@ -71,6 +82,12 @@ class TMatrix(Angles):
             Maximum diameter to consider. If None (default) max_radius will be approximated by the PSD functions.
         N : int
             Amount of scatterer. Default is 1.
+        normalize : boolean, optional
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        nbar : float, optional
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. The default value is 0.0.
 
         Returns
         -------
@@ -104,7 +121,8 @@ class TMatrix(Angles):
                                     alpha=alpha, beta=beta, radius_type=radius_type, shape=shape,
                                     orientation=orientation, axis_ratio=axis_ratio, orientation_pdf=orientation_pdf,
                                     n_alpha=n_alpha,
-                                    n_beta=n_beta, angle_unit=angle_unit)
+                                    n_beta=n_beta, angle_unit=angle_unit,
+                                    normalize=normalize, nbar=nbar)
             self.psd = None
             self.__NAME = 'SINGLE'
 
@@ -117,7 +135,8 @@ class TMatrix(Angles):
                                  n_beta=n_beta, angle_unit=angle_unit,
 
                                  psd=psd, num_points=num_points, angular_integration=angular_integration,
-                                 max_radius=max_radius)
+                                 max_radius=max_radius,
+                                 normalize=normalize, nbar=nbar)
 
             self.__NAME = 'PSD'
 
