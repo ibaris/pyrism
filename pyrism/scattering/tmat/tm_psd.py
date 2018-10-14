@@ -23,8 +23,7 @@ class TMatrixPSD(Angles, object):
 
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, max_radius=10,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, psd=None,
-                 n_alpha=5, n_beta=10, num_points=1024,
-                 angle_unit='DEG', angular_integration=True,
+                 n_alpha=5, n_beta=10, num_points=1024, angle_unit='DEG', angular_integration=True,
                  normalize=False, nbar=0.0):
         """T-Matrix scattering from an arrangement of nonspherical particles.
 
@@ -149,11 +148,13 @@ class TMatrixPSD(Angles, object):
         self.psd = psd
 
         Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=False, nbar=nbar, angle_unit=angle_unit)
+                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
 
         if normalize:
             _, frequency, radius, axis_ratio, alpha, beta = align_all(
                 (self.iza, frequency, radius, axis_ratio, alpha, beta))
+
+        self.normalize = normalize
 
         self.num_points = num_points
         self.D_max = max_radius * 2
@@ -171,20 +172,21 @@ class TMatrixPSD(Angles, object):
         try:
             if len(self.__S) == 1:
                 return self.__S[0]
+
             else:
                 if self.normalize:
                     if len(self.__S[0:-1]) == 1:
                         return self.__S[0:-1][0]
+
                     else:
-                        return self.__S[0:-1]
+                        return self.__S[0:-1][0]
 
                 else:
                     return self.__S
 
         except AttributeError:
-
             self.init_scatter_table()
-            self.__S, self.__Z = self.__call_SZ()
+            self.__S, self.__Z = self.call_SZ()
 
             if len(self.__S) == 1:
                 return self.__S[0]
@@ -192,11 +194,26 @@ class TMatrixPSD(Angles, object):
                 if self.normalize:
                     if len(self.__S[0:-1]) == 1:
                         return self.__S[0:-1][0]
+
                     else:
-                        return self.__S[0:-1]
+                        return self.__S[0:-1][0]
 
                 else:
                     return self.__S
+
+    @property
+    def norm(self):
+        if self.normalize:
+            try:
+                return self.__Z[-1]
+
+            except AttributeError:
+                self.init_scatter_table()
+                self.__S, self.__Z = self.call_SZ()
+
+                return self.__Z[-1]
+        else:
+            return None
 
     @property
     def Z(self):
@@ -214,9 +231,8 @@ class TMatrixPSD(Angles, object):
                     return self.__Z
 
         except AttributeError:
-
             self.init_scatter_table()
-            self.__S, self.__Z = self.__call_SZ()
+            self.__S, self.__Z = self.call_SZ()
 
             if len(self.__Z) == 1:
                 return self.__Z[0]
@@ -233,21 +249,6 @@ class TMatrixPSD(Angles, object):
     @property
     def SZ(self):
         return self.S, self.Z
-
-    @property
-    def norm(self):
-        if self.normalize:
-            try:
-                return self.__Z[-1]
-
-            except AttributeError:
-
-                self.init_scatter_table()
-                self.__S, self.__Z = self.__call_SZ()
-
-                return self.__Z[-1]
-        else:
-            return None
 
     def __get_pdf(self, pdf):
         if callable(pdf):
@@ -451,7 +452,7 @@ class TMatrixPSD(Angles, object):
                     self._angular_table["asym_VV"][geom][i] = asym_xsect_VV
                     self._angular_table["asym_HH"][geom][i] = asym_xsect_HH
 
-    def __call_SZ(self):
+    def call_SZ(self):
         """
         Compute the scattering matrices for the given PSD and geometries.
 

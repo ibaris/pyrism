@@ -110,7 +110,7 @@ class TMatrixSingle(Angles, object):
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
         Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=normalize, nbar=nbar, angle_unit=angle_unit)
+                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
 
         if normalize:
             _, frequency, radius, axis_ratio, alpha, beta = align_all(
@@ -120,6 +120,7 @@ class TMatrixSingle(Angles, object):
         #                                     normalize=False,
         #                                     angle_unit=angle_unit)
 
+        self.normalize = normalize
         self.radius = radius
         self.radius_type = param[radius_type]
         self.frequency = frequency
@@ -147,12 +148,14 @@ class TMatrixSingle(Angles, object):
         try:
             if len(self.__S) == 1:
                 return self.__S[0]
+
             else:
                 if self.normalize:
                     if len(self.__S[0:-1]) == 1:
                         return self.__S[0:-1][0]
+
                     else:
-                        return self.__S[0:-1]
+                        return self.__S[0:-1][0]
 
                 else:
                     return self.__S
@@ -167,11 +170,24 @@ class TMatrixSingle(Angles, object):
                 if self.normalize:
                     if len(self.__S[0:-1]) == 1:
                         return self.__S[0:-1][0]
+
                     else:
-                        return self.__S[0:-1]
+                        return self.__S[0:-1][0]
 
                 else:
                     return self.__S
+
+    @property
+    def norm(self):
+        if self.normalize:
+            try:
+                return self.__Z[-1]
+
+            except AttributeError:
+
+                self.__S, self.__Z = self.__call_SZ()
+
+                return self.__Z[-1]
 
     @property
     def Z(self):
@@ -207,19 +223,6 @@ class TMatrixSingle(Angles, object):
     @property
     def SZ(self):
         return self.S, self.Z
-
-    @property
-    def norm(self):
-        if self.normalize:
-            try:
-                return self.__Z[-1]
-
-            except AttributeError:
-                self.__S, self.__Z = self.__call_SZ()
-
-                return self.__Z[-1]
-        else:
-            return None
 
     def __calc_nmax(self):
         """Initialize the T-matrix.

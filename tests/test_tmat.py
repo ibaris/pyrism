@@ -18,7 +18,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
-                         axis_ratio=1 / 0.6)
+                         axis_ratio=1 / 0.6, normlaize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -52,7 +52,7 @@ class TestTMatrix():
         pdf = pyr.Orientation.gaussian(std=20)
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                         orientation_pdf=pdf, orientation='AA')
+                         orientation_pdf=pdf, orientation='AA', normlaize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -86,7 +86,7 @@ class TestTMatrix():
         pdf = pyr.Orientation.gaussian(std=20)
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                         orientation_pdf=pdf, orientation='AF')
+                         orientation_pdf=pdf, orientation='AF', normlaize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -122,7 +122,8 @@ class TestTMatrix():
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                         psd=psd, num_points=500, max_radius=5, angular_integration=False)
+                         psd=psd, num_points=500, max_radius=5, angular_integration=False,
+                         normlaize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -142,8 +143,30 @@ class TestTMatrix():
              [8.34137617e-26, 1.40048866e-25, -1.38873290e-02,
               -6.89739108e-02]])
 
-        assert allclose(S, S_ref)
-        assert allclose(Z, Z_ref)
+        assert allclose(S[0, 0], S_ref[0, 0])
+        assert allclose(S[0, 1], S_ref[0, 1])
+        assert allclose(S[1, 0], S_ref[1, 0])
+        assert allclose(S[1, 1], S_ref[1, 1])
+
+        assert allclose(Z[0, 0], Z_ref[0, 0])
+        assert allclose(Z[0, 1], Z_ref[0, 1])
+        assert allclose(Z[0, 2], Z_ref[0, 2])
+        assert allclose(Z[0, 3], Z_ref[0, 3])
+
+        assert allclose(Z[1, 0], Z_ref[1, 0])
+        assert allclose(Z[1, 1], Z_ref[1, 1])
+        assert allclose(Z[1, 2], Z_ref[1, 2])
+        assert allclose(Z[1, 3], Z_ref[1, 3])
+
+        assert allclose(Z[2, 0], Z_ref[2, 0])
+        assert allclose(Z[2, 1], Z_ref[2, 1])
+        assert allclose(Z[2, 2], Z_ref[2, 2])
+        assert allclose(Z[2, 3], Z_ref[2, 3])
+
+        assert allclose(Z[3, 0], Z_ref[3, 0])
+        assert allclose(Z[3, 1], Z_ref[3, 1])
+        assert allclose(Z[3, 2], Z_ref[3, 2])
+        assert allclose(Z[3, 3], Z_ref[3, 3])
 
     def test_rayleigh(self):
         """Test match with Rayleigh scattering for small spheres
@@ -154,7 +177,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                         radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1)
+                         radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1, normlaize=False)
 
         S = tm.S
 
@@ -200,7 +223,7 @@ class TestTMatrix():
 
         tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0)
+                          axis_ratio=1.0, normlaize=False)
 
         av1, ah1 = tm1.asx
 
@@ -211,7 +234,7 @@ class TestTMatrix():
 
         tm2 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0)
+                          axis_ratio=1.0, normlaize=False)
 
         av2, ah2 = tm2.asx
 
@@ -225,7 +248,7 @@ class TestTMatrix():
 
         tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4e-4, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0)
+                          axis_ratio=1.0, normlaize=False)
 
         av1, ah1 = tm1.asx
         # Is the asymmetry parameter zero for small particles?
@@ -243,7 +266,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                         radius=1, frequency=29.9792458, eps=complex(3, 0.5))
+                         radius=1, frequency=29.9792458, eps=complex(3, 0.5), normlaize=False)
 
         ksVV, ksHH = tm.ksx
         keVV, keHH = tm.kex
@@ -286,6 +309,25 @@ class TestTMatrix():
     #
     #     assert less(abs(1 - ksxH / sca_xsect_ref), 1e-3)
 
+
+class TestNormalize:
+    def norma(self):
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 180
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
+                         axis_ratio=1 / 0.6, normlaize=True)
+
+        tm_ref = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538,
+                             eps=complex(1.5, 0.5),
+                             axis_ratio=1 / 0.6, normlaize=False)
+
+        S, Z = tm.S, tm.Z
+        S_ref, Z_ref = tm_ref.S, tm_ref.Z
+
+        assert np.allclose(Z + tm.norm, Z_ref)
 
 class TestOriantation:
     def testuniform(self):
