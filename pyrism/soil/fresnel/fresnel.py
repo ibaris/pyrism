@@ -29,8 +29,8 @@ class Fresnel(Angles):
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
         frequency : int or float
             Frequency (GHz).
-        n1, n2 : complex
-            Complex refractive indices of incident (n1) and underlying (n2) medium.
+        eps : complex
+            Dielectric constant of the object.
         sigma : int or float
             RMS Height (cm)
         x : list
@@ -126,6 +126,24 @@ class Fresnel(Angles):
 
         return matrix
 
+    def quad(self, xza, eps):
+        """
+        Function that returns the reflectivity matrix to use it with scipy.integrate.quad.
+
+        Parameters
+        ----------
+        xza : int or float
+            Angle at which the function will be integrated.
+        eps : complex
+            Dielectric constant of the object.
+
+        Returns
+        -------
+        reflectivity matrix : array_like
+            Reflectivity matrix.
+        """
+        return reflectivity_wrapper(xza, eps)
+
     def __store(self, VV, HH, VH, HV):
 
         I = SoilResult(array=np.array([VV, HH, VH, HV]),
@@ -184,8 +202,8 @@ class Fresnel(Angles):
                 * 'RAD': All input angles (iza, vza, raa) are in [RAD].
             frequency : int or float
                 Frequency (GHz).
-            n1, n2 : complex
-                Complex refractive indices of incident (n1) and underlying (n2) medium.
+            eps : complex
+                Dielectric constant of the object.
             sigma : int or float
                 RMS Height (cm)
             x : list
