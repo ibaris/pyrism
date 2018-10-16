@@ -79,7 +79,6 @@ cdef calc_nmax(float radius, int radius_type, float wavelength, double complex e
 cdef calc_SZ_single(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, float alpha, float beta):
     return tmatrix.calcampl(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
 
-
 cdef orient_averaged_adaptive(float nmax, float wavelength, float iza, float vza, float iaa, float vaa, or_pdf):
     """Compute the T-matrix using variable orientation scatterers.
 
@@ -155,12 +154,39 @@ cdef orient_averaged_fixed(float nmax, float wavelength, float iza, float vza, f
     return S, Z
 
 # ----------------------------------------------------------------------------------------------------------------------
+# Integrate S and Z
+# ----------------------------------------------------------------------------------------------------------------------
+cdef dblquad_SZ(float nmax, float wavelength, float vza, float vaa, float alpha, float beta, int n_alpha, int n_beta,
+                or_pdf, orientation, pol):
+    Z = dblquad(dblquad_oriented_SZ, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(nmax, wavelength, vza, vaa, alpha,
+                                                                                     beta, n_alpha, n_beta, or_pdf,
+                                                                                     orientation, pol))[0]
+
+    return Z
+
+cdef dblquad_oriented_SZ(float iza, float iaa, float nmax, float wavelength, float vza, float vaa,
+                         float alpha, float beta, int n_alpha, int n_beta, or_pdf, orientation, pol):
+    if orientation is 'S':
+        S, Z = calc_SZ_single(nmax, wavelength, iza, vza, iaa, vaa, alpha, beta)
+
+    elif orientation is 'AA':
+        S, Z = orient_averaged_adaptive(nmax, wavelength, iza, vza, iaa, vaa, or_pdf)
+
+    elif orientation is 'AF':
+        S, Z = orient_averaged_fixed(nmax, wavelength, iza, vza, iaa, vaa, n_alpha, n_beta, or_pdf)
+
+    else:
+        return -99999
+
+    return Z[pol, pol]
+
+# ----------------------------------------------------------------------------------------------------------------------
 # Scattering and Extinction Cross Section
 # ----------------------------------------------------------------------------------------------------------------------
 # ---- Auxiliary integration functions ----
 # Scattering
 cdef ifunc_ks_xsec(float vza, float vaa, float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
-                     float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
+                   float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
     """Get the S and Z matrices for a single orientation.
     """
 
@@ -175,8 +201,8 @@ cdef ifunc_ks_xsec(float vza, float vaa, float nmax, float wavelength, float iza
 
 #Asymmetry factor
 cdef ifunc_asym(float vza, float vaa, float cos_t0, float sin_t0, float nmax, float wavelength, float izaDeg,
-               float iaaDeg, float alphaDeg,
-               float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
+                float iaaDeg, float alphaDeg,
+                float betaDeg, int n_alpha, int n_beta, or_pdf, orient, int pol):
     """Get the S and Z matrices for a single orientation.
     """
 
@@ -287,7 +313,7 @@ def sca_intensity_wrapper(np.ndarray Z, int pol):
     return sca_intensity(Z, pol)
 
 def asym_wrapper(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
-                float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
+                 float betaDeg, int n_alpha, int n_beta, or_pdf, orient):
     return asym(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, n_alpha, n_beta, or_pdf, orient)
 
 def sca_xsect_wrapper(float nmax, float wavelength, float izaDeg, float iaaDeg, float alphaDeg,
@@ -311,3 +337,12 @@ def calc_nmax_wrapper(float radius, int radius_type, float wavelength, double co
     test = calc_nmax(radius, radius_type, wavelength, eps, axis_ratio, shape)
 
     return test
+
+def dblquad_SZ_wrapper(float nmax, float wavelength, float vza, float vaa, float alpha, float beta, int n_alpha,
+                       int n_beta, or_pdf, orientation, pol):
+    return dblquad_SZ(nmax, wavelength, vza, vaa, alpha, beta, n_alpha, n_beta, or_pdf, orientation, pol)
+
+def dblquad_oriented_SZ_wrapper(float iza, float iaa, float nmax, float wavelength, float vza, float vaa,
+                                float alpha, float beta, int n_alpha, int n_beta, or_pdf, orientation, pol):
+    return dblquad_oriented_SZ(iza, iaa, nmax, wavelength, vza, vaa,
+                               alpha, beta, n_alpha, n_beta, or_pdf, orientation, pol)

@@ -1,7 +1,8 @@
-from .tm_single import TMatrixSingle
-from .tm_psd import TMatrixPSD
 import numpy as np
 from radarpy import Angles, asarrays, align_all
+
+from .tm_psd import TMatrixPSD
+from .tm_single import TMatrixSingle
 
 PI = 3.14159265359
 
@@ -12,7 +13,7 @@ class TMatrix(Angles):
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
                  n_beta=10,
                  angle_unit='DEG', psd=None, max_radius=10, num_points=1024, angular_integration=True,
-                 N=1, normlaize=False, nbar=0.0):
+                 N=1, normalize=False, nbar=0.0):
         """T-Matrix scattering from nonspherical particles.
 
         Class for simulating scattering from nonspherical particles with the
@@ -104,13 +105,14 @@ class TMatrix(Angles):
 
         """
 
+        # ---- Select single or psd T-Matrix approach ----
         if psd is None:
             self.TM = TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, frequency=frequency, radius=radius,
                                     eps=eps,
                                     alpha=alpha, beta=beta, radius_type=radius_type, shape=shape,
                                     orientation=orientation, axis_ratio=axis_ratio, orientation_pdf=orientation_pdf,
                                     n_alpha=n_alpha,
-                                    n_beta=n_beta, angle_unit=angle_unit, normalize=normlaize, nbar=nbar)
+                                    n_beta=n_beta, angle_unit=angle_unit, normalize=normalize, nbar=nbar)
             self.psd = None
             self.__NAME = 'SINGLE'
 
@@ -123,11 +125,11 @@ class TMatrix(Angles):
                                  n_beta=n_beta, angle_unit=angle_unit,
 
                                  psd=psd, num_points=num_points, angular_integration=angular_integration,
-                                 max_radius=max_radius, normalize=normlaize, nbar=nbar)
+                                 max_radius=max_radius, normalize=normalize, nbar=nbar)
 
             self.__NAME = 'PSD'
-            self.normalize = normlaize
 
+            # Access data from the specific parent class.
             self.psd = self.TM.psd
             self.num_points = self.TM.num_points
             self.D_max = self.TM.D_max
@@ -139,13 +141,20 @@ class TMatrix(Angles):
 
             self._psd_D = self.TM._psd_D
 
-        iza, vza, iaa, vaa = asarrays((iza, vza, iaa, vaa))
+        # ---- Define angles and align data ----
+        iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = asarrays(
+            (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
-        iza, vza, iaa, vaa = align_all((iza, vza, iaa, vaa))
+        eps = np.asarray(eps).flatten()
+
+        iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = align_all(
+            (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
         Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=False, angle_unit=angle_unit)
+                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
 
+        # ---- Access data from parent class ----
+        self.normalize = normalize
         self.radius = self.TM.radius
         self.radius_type = self.TM.radius_type
 
@@ -158,40 +167,85 @@ class TMatrix(Angles):
         self.alpha = self.TM.alpha
         self.beta = self.TM.beta
         self.orient = self.TM.orient
+        self.frequency = frequency
 
         self.or_pdf = self.TM.or_pdf
         self.n_alpha = self.TM.n_alpha
         self.n_beta = self.TM.n_beta
-
+        self.orientation_pdf = orientation_pdf
         self.N = N
-        self.k0 = 2 * np.pi * frequency / 30
+
+        # ---- Pre-calculation for extinction matrix ----
+        self.k0 = 2 * np.pi * self.frequency / 30
         self.a = self.k0 * radius
         self.factor = complex(0, 2 * PI * self.N) / self.k0
+
+        try:
+            self.nmax = self.TM.nmax
+        except AttributeError:
+            self.nmax = None
 
         self.__kex = None
         self.__ksx = None
         self.__asx = None
         self.__ksi = None
+        self.__ks = None
 
+    # ---- Property calls ----
     @property
     def norm(self):
+        """
+        Normalization matrix. The values for iza = nbar, vza = 0.
+
+        Returns
+        -------
+        Norm : list or array_like
+        """
         return self.TM.norm
 
     @property
     def S(self):
+        """
+        Scattering matrix.
+
+        Returns
+        -------
+        S : list or array_like
+        """
         return self.TM.S
 
     @property
     def Z(self):
+        """
+        Phase matrix.
 
+        Returns
+        -------
+        Z : list or array_like
+        """
         return self.TM.Z
 
     @property
     def SZ(self):
+        """
+        Scattering and phase matrices.
+
+        Returns
+        -------
+        S, Z : list or array_like
+        """
         return self.TM.SZ
 
     @property
     def ke(self):
+        """
+        Extinction matrix for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
         try:
             if len(self.__ke) == 1:
                 return self.__ke[0]
@@ -208,28 +262,81 @@ class TMatrix(Angles):
                 return self.__ke
 
     @property
+    def ks(self):
+        """
+        Scattering matrix for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__ks) == 1:
+                return self.__ks[0]
+            else:
+                return self.__ks
+
+        except (AttributeError, TypeError):
+
+            self.__ks = self.__get_ks()
+
+            if len(self.__ks) == 1:
+                return self.__ks[0]
+            else:
+                return self.__ks
+
+    @property
     def kex(self):
+        """
+        Extinction cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
         if self.__kex is None:
             V, H = self.__get_kex()
 
             if len(V) == 1:
                 return V[0], H[0]
+            else:
+                return V, H
         else:
             return self.__kex
 
     @property
     def ksx(self):
-        if self.__ksx is None:
+        """
+        Scattering cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        if self.__ksx == None:
             V, H = self.__get_ksx()
 
             if len(V) == 1:
                 return V[0], H[0]
+            else:
+                return V, H
 
         else:
             return self.__ksx
 
     @property
     def ksi(self):
+        """
+        Scattering intensity (phase function) for the current setup.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
         if self.__ksi is None:
             try:
                 V, H = self.__get_ksi()
@@ -244,6 +351,14 @@ class TMatrix(Angles):
 
     @property
     def asx(self):
+        """
+        Asymetry factor cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
         if self.__asx is None:
             V, H = self.__get_asx()
 
@@ -252,8 +367,112 @@ class TMatrix(Angles):
         else:
             return self.__asx
 
+    @property
+    def dblquad(self):
+        """
+        Half space integration of the phase matrices.
+
+        Returns
+        -------
+        dbl : list or array_like
+        """
+        if self.__NAME is 'SINGLE':
+            return self.TM.dblquad
+        else:
+            return None
+
+    # ---- User callable methods ----
+    def ifunc_SZ(self, izaDeg, iaaDeg, pol):
+        """
+        Function to integrate the phase matrix which is compatible with scipy.integrate.dblquad.
+
+        Parameters
+        ----------
+        izaDeg : float
+            x value of integration (0, 180) in [DEG].
+        iaaDeg : float
+            y value of integration (0, 360) in [DEG]
+        pol : bool
+            Which polarization should be integrated?
+                * 0 : VV
+                * 1 : HH
+
+        Examples
+        --------
+        scipy.integrate.dblquad(TMatrix.ifunc_SZ, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(0, ))
+
+        Returns
+        -------
+        Z : float
+
+        """
+
+        if self.__NAME is 'SINGLE':
+            return self.TM.ifunc_SZ(izaDeg, iaaDeg, pol)
+        else:
+            return None
+
     def Mpq(self, factor, S):
+        """
+        Mpq parameter to calculate the extinction matrix.
+
+        Parameters
+        ----------
+        factor : float
+            The factor (i*2*pi)/k0
+        S : float
+            Element of the scattering matrix.
+
+        Returns
+        -------
+        Mpq : array_like
+        """
         return factor * S
+
+    def init_SZ(self, verbose=False):
+        """Initialize the scattering and phase lookup tables.
+
+        Initialize the scattering lookup tables for the different geometries.
+
+        Parameters
+        ----------
+        verbose : bool
+            Print calculation steps.
+
+        Returns
+        -------
+        None
+        """
+        if self.__NAME is 'PSD':
+            self.TM.init_SZ(verbose)
+        else:
+            return None
+
+    # ---- Auxiliary functions and private methods ----
+    def __get_ks(self):
+        self.__ks = list()
+
+        V, H = self.ksx
+
+        if isinstance(self.TM.S, list):
+
+            for i in range(len(self.TM.S)):
+                ksm = np.zeros((4, 4))
+
+                ksm[0, 0] = self.N * V[i]
+                ksm[1, 1] = self.N * H[i]
+
+                self.__ks.append(ksm)
+
+        else:
+            ksm = np.zeros((4, 4))
+
+            ksm[0, 0] = self.N * V
+            ksm[1, 1] = self.N * H
+
+            self.__ks.append(ksm)
+
+        return self.__ks
 
     def __get_ke(self):
         self.__ke = list()
@@ -340,7 +559,7 @@ class TMatrix(Angles):
 
             except AttributeError:
                 print("Initialising angular-integrated quantities first.")
-                self.TM.init_scatter_table()
+                self.TM.init_SZ()
 
                 if isinstance(self.geometriesDeg[0], tuple):
                     VV, HH = list(), list()
@@ -378,7 +597,7 @@ class TMatrix(Angles):
 
             except AttributeError:
                 print("Initialising angular-integrated quantities first.")
-                self.TM.init_scatter_table()
+                self.TM.init_SZ()
 
                 if isinstance(self.geometriesDeg[0], tuple):
                     VV, HH = list(), list()
@@ -416,7 +635,7 @@ class TMatrix(Angles):
 
             except AttributeError:
                 print("Initialising angular-integrated quantities first.")
-                self.TM.init_scatter_table()
+                self.TM.init_SZ()
 
                 if isinstance(self.geometriesDeg[0], tuple):
                     VV, HH = list(), list()
@@ -439,31 +658,31 @@ class TMatrix(Angles):
         else:
             return None
 
-    @classmethod
-    def load_scatter_table(cls, fn=None):
-        """Load the scattering lookup tables.
-
-        Load the scattering lookup tables saved with save_scatter_table.
-
-        Args:
-            fn: The name of the scattering table file.
-        """
-        if fn is None:
-            fn = Files.select_newest()
-            data = pickle.load(open(os.path.join(Files.path, fn)))
-        else:
-            data = pickle.load(open(fn))
-
-        if ("version" not in data) or (data["version"] != get_version()):
-            warnings.warn("Loading data saved with another version.", Warning)
-
-        (cls.num_points, cls.D_max, cls._psd_D, cls._S_table, cls._Z_table, cls._angular_table, cls._m_table,
-         cls.geometriesDeg) = data["psd_scatter"]
-
-        (cls.izaDeg, cls.vzaDeg, cls.iaaDeg, cls.vaaDeg, cls.angular_integration, cls.radius, cls.radius_type,
-         cls.wavelength, cls.eps, cls.axis_ratio, cls.shape, cls.ddelt, cls.ndgs, cls.alpha, cls.beta, cls.orient,
-         cls.or_pdf, cls.n_alpha, cls.n_beta, cls.psd) = data["parameter"]
-
-        print("File {0} load successfully.".format(str(fn)))
-
-        return (data["time"], data["description"])
+    # @classmethod
+    # def load_scatter_table(cls, fn=None):
+    #     """Load the scattering lookup tables.
+    #
+    #     Load the scattering lookup tables saved with save_scatter_table.
+    #
+    #     Args:
+    #         fn: The name of the scattering table file.
+    #     """
+    #     if fn is None:
+    #         fn = Files.select_newest()
+    #         data = pickle.load(open(os.path.join(Files.path, fn)))
+    #     else:
+    #         data = pickle.load(open(fn))
+    #
+    #     if ("version" not in data) or (data["version"] != get_version()):
+    #         warnings.warn("Loading data saved with another version.", Warning)
+    #
+    #     (cls.num_points, cls.D_max, cls._psd_D, cls._S_table, cls._Z_table, cls._angular_table, cls._m_table,
+    #      cls.geometriesDeg) = data["psd_scatter"]
+    #
+    #     (cls.izaDeg, cls.vzaDeg, cls.iaaDeg, cls.vaaDeg, cls.angular_integration, cls.radius, cls.radius_type,
+    #      cls.wavelength, cls.eps, cls.axis_ratio, cls.shape, cls.ddelt, cls.ndgs, cls.alpha, cls.beta, cls.orient,
+    #      cls.or_pdf, cls.n_alpha, cls.n_beta, cls.psd) = data["parameter"]
+    #
+    #     print("File {0} load successfully.".format(str(fn)))
+    #
+    #     return (data["time"], data["description"])

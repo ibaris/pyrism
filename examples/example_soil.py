@@ -28,6 +28,3 @@ i2em = pyr.I2EM(iza, vza, raa, frequency=frequency, eps=eps, corrlength=corrleng
 
 # Now an optical model
 lsm = pyr.LSM(0.01, 0.25)
-
-plt.plot(fresnel.I.HH)
-plt.show()

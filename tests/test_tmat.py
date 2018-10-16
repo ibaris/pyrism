@@ -18,7 +18,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
-                         axis_ratio=1 / 0.6, normlaize=False)
+                         axis_ratio=1 / 0.6, normalize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -52,7 +52,7 @@ class TestTMatrix():
         pdf = pyr.Orientation.gaussian(std=20)
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                         orientation_pdf=pdf, orientation='AA', normlaize=False)
+                         orientation_pdf=pdf, orientation='AA', normalize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -86,7 +86,7 @@ class TestTMatrix():
         pdf = pyr.Orientation.gaussian(std=20)
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-                         orientation_pdf=pdf, orientation='AF', normlaize=False)
+                         orientation_pdf=pdf, orientation='AF', normalize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -123,7 +123,7 @@ class TestTMatrix():
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
                          radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
                          psd=psd, num_points=500, max_radius=5, angular_integration=False,
-                         normlaize=False)
+                         normalize=False)
 
         S, Z = tm.S, tm.Z
 
@@ -177,7 +177,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                         radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1, normlaize=False)
+                         radius=1, frequency=0.299792458, eps=complex(1.5, 0.5), axis_ratio=1, normalize=False)
 
         S = tm.S
 
@@ -223,7 +223,7 @@ class TestTMatrix():
 
         tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0, normlaize=False)
+                          axis_ratio=1.0, normalize=False)
 
         av1, ah1 = tm1.asx
 
@@ -234,7 +234,7 @@ class TestTMatrix():
 
         tm2 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0, normlaize=False)
+                          axis_ratio=1.0, normalize=False)
 
         av2, ah2 = tm2.asx
 
@@ -248,7 +248,7 @@ class TestTMatrix():
 
         tm1 = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4e-4, frequency=4.612191661538,
                           eps=complex(1.5, 0.5),
-                          axis_ratio=1.0, normlaize=False)
+                          axis_ratio=1.0, normalize=False)
 
         av1, ah1 = tm1.asx
         # Is the asymmetry parameter zero for small particles?
@@ -266,7 +266,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-                         radius=1, frequency=29.9792458, eps=complex(3, 0.5), normlaize=False)
+                         radius=1, frequency=29.9792458, eps=complex(3, 0.5), normalize=False)
 
         ksVV, ksHH = tm.ksx
         keVV, keHH = tm.kex
@@ -318,16 +318,17 @@ class TestNormalize:
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
-                         axis_ratio=1 / 0.6, normlaize=True)
+                         axis_ratio=1 / 0.6, normalize=True)
 
         tm_ref = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538,
                              eps=complex(1.5, 0.5),
-                             axis_ratio=1 / 0.6, normlaize=False)
+                             axis_ratio=1 / 0.6, normalize=False)
 
         S, Z = tm.S, tm.Z
         S_ref, Z_ref = tm_ref.S, tm_ref.Z
 
         assert np.allclose(Z + tm.norm, Z_ref)
+
 
 class TestOriantation:
     def testuniform(self):
@@ -337,3 +338,51 @@ class TestOriantation:
         pdf = pdf(x)
 
         assert (allclose(pdf, ref))
+
+
+class TestTMATCLASS:
+    def test_single(self):
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 180
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
+                         axis_ratio=1 / 0.6, normalize=False)
+
+        tm_ref = pyr.scattering.tmat.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2,
+                                                   frequency=4.612191661538,
+                                                   eps=complex(1.5, 0.5),
+                                                   axis_ratio=1 / 0.6, normalize=False)
+
+        assert allclose(tm.ksx, (tm_ref.ksx()[0][0], tm_ref.ksx()[1][0]))
+        assert allclose(tm.kex, (tm_ref.kex()[0][0], tm_ref.kex()[1][0]))
+        assert allclose(tm.asx, (tm_ref.asx()[0][0], tm_ref.asx()[1][0]))
+        assert allclose(tm.dblquad, tm_ref.dblquad)
+        assert allclose(tm.ifunc_SZ(iza, iaa, 0), tm_ref.ifunc_SZ(iza, iaa, 0))
+        assert allclose(tm.ifunc_SZ(iza, iaa, 1), tm_ref.ifunc_SZ(iza, iaa, 1))
+
+    def test_single(self):
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 180
+        PSD = pyr.PSD(r0=0.5, mu=4, n0=1e3, rmax=5)
+        psd = PSD.gamma
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                         radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
+                         psd=psd, num_points=100, max_radius=2, angular_integration=True,
+                         normalize=False)
+
+        tm_ref = pyr.scattering.tmat.TMatrixPSD(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
+                                                radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5),
+                                                axis_ratio=1 / 0.6,
+                                                psd=psd, num_points=100, max_radius=2, angular_integration=True,
+                                                normalize=False)
+
+        assert allclose(tm.ksx, tm_ref.ksx(tm_ref.geometriesDeg[0]))
+        assert allclose(tm.kex, tm_ref.kex(tm_ref.geometriesDeg[0]))
+        assert allclose(tm.asx, tm_ref.asx(tm_ref.geometriesDeg[0]))
+        assert tm.dblquad == None
+        assert tm.ifunc_SZ(iza, iaa, 0) == None

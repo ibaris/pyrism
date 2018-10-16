@@ -3,3 +3,4 @@ from .tm_single import TMatrixSingle
 from .psd import PSD
 from .orientation import Orientation
 from .tmatrix import TMatrix
+import tm_auxiliary

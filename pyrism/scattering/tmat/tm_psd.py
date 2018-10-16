@@ -14,9 +14,12 @@ import os
 from pyrism.auxil import get_version, Files
 
 import warnings
+
+warnings.simplefilter('default')
 import numpy as np
 from scipy.integrate import trapz
 from .orientation import Orientation
+from .tm_auxiliary import param
 
 
 class TMatrixPSD(Angles, object):
@@ -113,19 +116,21 @@ class TMatrixPSD(Angles, object):
         pyrism.PSD
 
         """
-        iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta, n_alpha, n_beta, max_radius = asarrays(
-            (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta, n_alpha, n_beta, max_radius))
+        # ---- Define angles and align data ----
 
-        eps = np.asarray(eps).flatten()
+        n_alpha, n_beta, max_radius = asarrays((n_alpha, n_beta, max_radius))
 
         iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = align_all(
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
-        param = {'REV': 1.0,
-                 'REA': 0.0,
-                 'M': 2.0,
-                 'SPH': -1,
-                 'CYL': -2}
+        _, eps = align_all((iza, eps))
+
+        Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
+                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
+
+        if normalize:
+            _, frequency, radius, axis_ratio, alpha, beta = align_all(
+                (self.iza, frequency, radius, axis_ratio, alpha, beta))
 
         self.angular_integration = angular_integration
         self.radius = radius
@@ -147,13 +152,6 @@ class TMatrixPSD(Angles, object):
 
         self.psd = psd
 
-        Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
-
-        if normalize:
-            _, frequency, radius, axis_ratio, alpha, beta = align_all(
-                (self.iza, frequency, radius, axis_ratio, alpha, beta))
-
         self.normalize = normalize
 
         self.num_points = num_points
@@ -165,10 +163,18 @@ class TMatrixPSD(Angles, object):
 
         self._psd_D = np.linspace(self.D_max / self.num_points, self.D_max, self.num_points)
 
-        # self.init_scatter_table()
+        # self.init_SZ()
 
+    # ---- Property calls ----
     @property
     def S(self):
+        """
+        Scattering matrix.
+
+        Returns
+        -------
+        S : list or array_like
+        """
         try:
             if len(self.__S) == 1:
                 return self.__S[0]
@@ -185,8 +191,8 @@ class TMatrixPSD(Angles, object):
                     return self.__S
 
         except AttributeError:
-            self.init_scatter_table()
-            self.__S, self.__Z = self.call_SZ()
+            self.init_SZ()
+            self.__S, self.__Z = self.__call_SZ()
 
             if len(self.__S) == 1:
                 return self.__S[0]
@@ -203,13 +209,20 @@ class TMatrixPSD(Angles, object):
 
     @property
     def norm(self):
+        """
+        Normalization matrix. The values for iza = nbar, vza = 0.
+
+        Returns
+        -------
+        Norm : list or array_like
+        """
         if self.normalize:
             try:
                 return self.__Z[-1]
 
             except AttributeError:
-                self.init_scatter_table()
-                self.__S, self.__Z = self.call_SZ()
+                self.init_SZ()
+                self.__S, self.__Z = self.__call_SZ()
 
                 return self.__Z[-1]
         else:
@@ -217,6 +230,13 @@ class TMatrixPSD(Angles, object):
 
     @property
     def Z(self):
+        """
+        Phase matrix.
+
+        Returns
+        -------
+        Z : list or array_like
+        """
         try:
             if len(self.__Z) == 1:
                 return self.__Z[0]
@@ -231,8 +251,8 @@ class TMatrixPSD(Angles, object):
                     return self.__Z
 
         except AttributeError:
-            self.init_scatter_table()
-            self.__S, self.__Z = self.call_SZ()
+            self.init_SZ()
+            self.__S, self.__Z = self.__call_SZ()
 
             if len(self.__Z) == 1:
                 return self.__Z[0]
@@ -248,132 +268,29 @@ class TMatrixPSD(Angles, object):
 
     @property
     def SZ(self):
+        """
+        Scattering and phase matrices.
+
+        Returns
+        -------
+        S, Z : list or array_like
+        """
         return self.S, self.Z
 
-    def __get_pdf(self, pdf):
-        if callable(pdf):
-            return pdf
-        elif pdf is None:
-            return Orientation.gaussian()
-        else:
-            raise AssertionError(
-                "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
-
-    def __trapz_sca_xsect(self, geom, pol):
-        psd_w = self.psd(self._psd_D / 2)
-
-        if pol == 1:
-            return trapz(self._angular_table["sca_xsect_VV"][geom] * psd_w, self._psd_D)
-        if pol == 2:
-            return trapz(self._angular_table["sca_xsect_HH"][geom] * psd_w, self._psd_D)
-
-    def ksx(self, geometries):
-        """Scattering cross section for the current setup, with polarization.
-
-        Args:
-            scatterer: a Scatterer instance.
-            h_pol: If True (default), use horizontal polarization.
-            If False, use vertical polarization.
-
-        Returns:
-            The scattering cross section.
-        """
-        if self._angular_table is None:
-            raise AttributeError(
-                "Initialize or load the table of angular-integrated " +
-                "quantities first."
-            )
-
-        ksVV = self.__trapz_sca_xsect(geometries, 1)
-        ksHH = self.__trapz_sca_xsect(geometries, 2)
-
-        return ksVV, ksHH
-
-    def kex(self, geometries):
-        """Extinction cross section for the current setup, with polarization.
-
-        Args:
-            scatterer: a Scatterer instance.
-            h_pol: If True (default), use horizontal polarization.
-            If False, use vertical polarization.
-
-        Returns:
-            The extinction cross section.
-        """
-        if self._angular_table is None:
-            raise AttributeError(
-                "Initialize or load the table of angular-integrated " +
-                "quantities first."
-            )
-
-        psd_w = self.psd(self._psd_D / 2)
-
-        keVV = trapz(self._angular_table["ext_xsect_VV"][geometries] * psd_w, self._psd_D)
-        keHH = trapz(self._angular_table["ext_xsect_HH"][geometries] * psd_w, self._psd_D)
-
-        return keVV, keHH
-
-    def asx(self, geometries):
-        """Asymmetry parameter for the current setup, with polarization.
-
-        Args:
-            scatterer: a Scatterer instance.
-            h_pol: If True (default), use horizontal polarization.
-            If False, use vertical polarization.
-
-        Returns:
-            The asymmetry parameter.
-        """
-        if self._angular_table is None:
-            raise AttributeError(
-                "Initialize or load the table of angular-integrated " +
-                "quantities first."
-            )
-
-        psd_w = self.psd(self._psd_D / 2)
-
-        ksVV = self.__trapz_sca_xsect(geometries, 1)
-        ksHH = self.__trapz_sca_xsect(geometries, 2)
-
-        if ksVV > 0:
-            asym_VV = trapz(
-                self._angular_table["asym_VV"][geometries] * self._angular_table["sca_xsect_VV"][geometries] * psd_w,
-                self._psd_D)
-
-            asym_VV /= ksVV
-        else:
-            asym_VV = 0.0
-
-        if ksHH > 0:
-            asym_HH = trapz(
-                self._angular_table["asym_HH"][geometries] * self._angular_table["sca_xsect_HH"][geometries] * psd_w,
-                self._psd_D)
-
-            asym_HH /= ksHH
-        else:
-            asym_HH = 0.0
-
-        return asym_VV, asym_HH
-
-    def init_scatter_table(self, verbose=False):
-        """Initialize the scattering lookup tables.
+    # ---- User callable methods ----
+    def init_SZ(self, verbose=False):
+        """Initialize the scattering and phase lookup tables.
 
         Initialize the scattering lookup tables for the different geometries.
-        Before calling this, the following attributes must be set:
-           num_points, m_func, axis_ratio_func, D_max, geometries
-        and additionally, all the desired attributes of the Scatterer class
-        (e.g. wavelength, aspect ratio).
 
-        Args:
-            tm: a Scatterer instance.
-            angular_integration: If True, also calculate the
-                angle-integrated quantities (scattering cross section,
-                extinction cross section, asymmetry parameter). These are
-                needed to call the corresponding functions in the scatter
-                module when PSD integration is active. The default is False.
-            verbose: if True, print information about the progress of the
-                calculation (which may take a while). If False (default),
-                run silently.
+        Parameters
+        ----------
+        verbose : bool
+            Print calculation steps.
+
+        Returns
+        -------
+        None
         """
 
         self._S_table = {}
@@ -452,7 +369,156 @@ class TMatrixPSD(Angles, object):
                     self._angular_table["asym_VV"][geom][i] = asym_xsect_VV
                     self._angular_table["asym_HH"][geom][i] = asym_xsect_HH
 
-    def call_SZ(self):
+    def ksx(self, geometries):
+        """
+        Scattering cross section for the current setup, with polarization.
+
+        Parameters
+        ----------
+        geometries : tuple
+            A tuple with (iza, vza, raa, alpha, beta) in [DEG]
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        if self._angular_table is None:
+            warnings.warn("No scattering table is initialized. Try to initialize scattering table.")
+            if self.angular_integration:
+                self.init_SZ()
+            else:
+                raise AssertionError("Angular integration must be True for cross section calculation.")
+
+        ksVV = self.__trapz_sca_xsect(geometries, 1)
+        ksHH = self.__trapz_sca_xsect(geometries, 2)
+
+        return ksVV, ksHH
+
+    def kex(self, geometries):
+        """
+        Extinction cross section for the current setup, with polarization.
+
+        Parameters
+        ----------
+        geometries : tuple
+            A tuple with (iza, vza, raa, alpha, beta) in [DEG]
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        if self._angular_table is None:
+            warnings.warn("No scattering table is initialized. Try to initialize scattering table.")
+            if self.angular_integration:
+                self.init_SZ()
+            else:
+                raise AssertionError("Angular integration must be True for cross section calculation.")
+
+        psd_w = self.psd(self._psd_D / 2)
+
+        keVV = trapz(self._angular_table["ext_xsect_VV"][geometries] * psd_w, self._psd_D)
+        keHH = trapz(self._angular_table["ext_xsect_HH"][geometries] * psd_w, self._psd_D)
+
+        return keVV, keHH
+
+    def asx(self, geometries):
+        """
+        Asymetry factor cross section for the current setup, with polarization.
+
+        Parameters
+        ----------
+        geometries : tuple
+            A tuple with (iza, vza, raa, alpha, beta) in [DEG]
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        if self._angular_table is None:
+            warnings.warn("No scattering table is initialized. Try to initialize scattering table.")
+            if self.angular_integration:
+                self.init_SZ()
+            else:
+                raise AssertionError("Angular integration must be True for cross section calculation.")
+
+        psd_w = self.psd(self._psd_D / 2)
+
+        ksVV = self.__trapz_sca_xsect(geometries, 1)
+        ksHH = self.__trapz_sca_xsect(geometries, 2)
+
+        if ksVV > 0:
+            asym_VV = trapz(
+                self._angular_table["asym_VV"][geometries] * self._angular_table["sca_xsect_VV"][geometries] * psd_w,
+                self._psd_D)
+
+            asym_VV /= ksVV
+        else:
+            asym_VV = 0.0
+
+        if ksHH > 0:
+            asym_HH = trapz(
+                self._angular_table["asym_HH"][geometries] * self._angular_table["sca_xsect_HH"][geometries] * psd_w,
+                self._psd_D)
+
+            asym_HH /= ksHH
+        else:
+            asym_HH = 0.0
+
+        return asym_VV, asym_HH
+
+    # ---- Auxiliary functions and private methods ----
+    def __get_pdf(self, pdf):
+        """
+        Auxiliary function to determine the PDF function.
+
+        Parameters
+        ----------
+        pdf : {'gauss', 'uniform'}
+            Particle orientation Probability Density Function (PDF) for orientational averaging:
+                * 'gauss': Use a Gaussian PDF (default).
+                * 'uniform': Use a uniform PDR.
+
+        Returns
+        -------
+        function : callable
+
+        """
+        if callable(pdf):
+            return pdf
+        elif pdf is None:
+            return Orientation.gaussian()
+        else:
+            raise AssertionError(
+                "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
+
+    def __trapz_sca_xsect(self, geom, pol):
+        """
+        Trapz integration fpr cross section.
+
+        Parameters
+        ----------
+        geom : tuple
+            A tuple with (iza, vza, raa, alpha, beta) in [DEG]
+        pol : bool
+            Polarization.
+                * 0 : VV
+                * 1 : HH
+
+        Returns
+        -------
+        Integrated cross section.
+        """
+        psd_w = self.psd(self._psd_D / 2)
+
+        if pol == 1:
+            return trapz(self._angular_table["sca_xsect_VV"][geom] * psd_w, self._psd_D)
+        if pol == 2:
+            return trapz(self._angular_table["sca_xsect_HH"][geom] * psd_w, self._psd_D)
+
+    def __call_SZ(self):
         """
         Compute the scattering matrices for the given PSD and geometries.
 
@@ -534,6 +600,7 @@ class TMatrixPSD(Angles, object):
                           self.n_beta,
 
                           self.psd),
+
             "version": get_version()
         }
         pickle.dump(data, open(files, 'w'), pickle.HIGHEST_PROTOCOL)
