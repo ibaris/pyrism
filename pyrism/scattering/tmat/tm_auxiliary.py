@@ -1,3 +1,4 @@
+# Dict to convert str into int.
 param = {'REV': 1.0,
          'REA': 0.0,
          'M': 2.0,
