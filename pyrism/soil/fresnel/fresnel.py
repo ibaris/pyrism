@@ -146,21 +146,17 @@ class Fresnel(Angles):
 
     def __store(self, VV, HH, VH, HV):
 
-        I = SoilResult(array=np.array([VV, HH, VH, HV]),
+        I = SoilResult(array=np.array([VV, HH]),
                        VV=VV,
                        HH=HH,
                        VH=VH,
                        HV=HV)
 
         BSC_ = SoilResult(array=np.array([[BSC(VV, self.vza)],
-                                          [BSC(HH, self.vza)],
-                                          [BSC(VH, self.vza)],
-                                          [BSC(HV, self.vza)]]),
+                                          [BSC(HH, self.vza)]]),
 
                           arraydB=np.array([[dB(BSC(VV, self.vza))],
-                                            [dB(BSC(HH, self.vza))],
-                                            [dB(BSC(VH, self.vza))],
-                                            [dB(BSC(HV, self.vza))]]),
+                                            [dB(BSC(HH, self.vza))]]),
 
                           VV=BSC(VV, self.vza),
                           HH=BSC(HH, self.vza),
@@ -172,9 +168,7 @@ class Fresnel(Angles):
                           HVdB=dB(BSC(HV, self.vza)))
 
         BRF_ = SoilResult(array=np.array([[BRF(I.VV)],
-                                          [BRF(I.HH)],
-                                          [BRF(I.VH)],
-                                          [BRF(I.HV)]]),
+                                          [BRF(I.HH)]]),
 
                           VV=BRF(I.VV),
                           HH=BRF(I.HH),
