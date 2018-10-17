@@ -78,7 +78,8 @@ class VolScatt(Angles):
 
     def __init__(self, iza, vza, raa, angle_unit='DEG'):
 
-        super(VolScatt, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit, align=True)
+        super(VolScatt, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0, angle_unit=angle_unit,
+                                       align=True)
 
     def coef(self, lidf_type='verhoef', n_elements=18, **kwargs):
         """
@@ -206,55 +207,121 @@ class VolScatt(Angles):
         co = clza * cto
         ss = slza * sts
         so = slza * sto
-        cosbts = 5.
-        if np.abs(ss) > 1e-6:
-            cosbts = -cs / ss
-        cosbto = 5.
-        if np.abs(so) > 1e-6:
-            cosbto = -co / so
-        if np.abs(cosbts) < 1.0:
-            bts = np.arccos(cosbts)
-            ds = ss
-        else:
-            bts = np.pi
-            ds = cs
+        cosbts = np.zeros_like(ss) + 5.
+        cosbto = np.zeros_like(so) + 5.
+        bts = np.zeros_like(cosbts)
+        ds = np.zeros_like(ss)
+        bto = np.zeros_like(ss)
+        do_ = np.zeros_like(ss)
+
+        for i in range(len(ss)):
+            if np.abs(ss[i]) > 1e-6:
+                cosbts[i] = -cs[i] / ss[i]
+
+                if np.abs(cosbts[i]) < 1.0:
+                    bts[i] = np.arccos(cosbts[i])
+                    ds[i] = ss[i]
+
+                else:
+                    bts[i] = np.pi
+                    ds[i] = cs[i]
+
+        # if np.abs(ss) > 1e-6:
+        #     cosbts = -cs / ss
+
+        if i in range(len(so)):
+            if np.abs(so[i]) > 1e-6:
+                cosbto[i] = -co[i] / so[i]
+
+                if np.abs(cosbto[i]) < 1:
+                    bto[i] = np.arccos(cosbto[i])
+                    do_[i] = so[i]
+
+                else:
+                    if self.vza[i] < rad(90.0):
+                        bto[i] = np.pi
+                        do_[i] = co[i]
+                    else:
+                        bto[i] = 0
+                        do_[i] = -co[i]
+
+        # cosbto = 5.
+        # if np.abs(so) > 1e-6:
+        #     cosbto = -co / so
+
+        # if np.abs(cosbts) < 1.0:
+        #     bts = np.arccos(cosbts)
+        #     ds = ss
+        #
+        # else:
+        #     bts = np.pi
+        #     ds = cs
+
         chi_s = 2. / np.pi * ((bts - np.pi * 0.5) * cs + np.sin(bts) * ss)
-        if abs(cosbto) < 1.0:
-            bto = np.arccos(cosbto)
-            do_ = so
-        else:
-            if self.vza < rad(90.):
-                bto = np.pi
-                do_ = co
-            else:
-                bto = 0.0
-                do_ = -co
+
+        # if abs(cosbto) < 1.0:
+        #     bto = np.arccos(cosbto)
+        #     do_ = so
+        #
+        # else:
+        #     if self.vza < rad(90.):
+        #         bto = np.pi
+        #         do_ = co
+        #     else:
+        #         bto = 0.0
+        #         do_ = -co
+
         chi_o = 2.0 / np.pi * ((bto - np.pi * 0.5) * co + np.sin(bto) * so)
         btran1 = np.abs(bts - bto)
         btran2 = np.pi - np.abs(bts + bto - np.pi)
-        if psir <= btran1:
-            bt1 = psir
-            bt2 = btran1
-            bt3 = btran2
-        else:
-            bt1 = btran1
-            if psir <= btran2:
-                bt2 = psir
-                bt3 = btran2
+        bt1 = np.zeros_like(btran1)
+        bt2 = np.zeros_like(btran1)
+        bt3 = np.zeros_like(btran1)
+
+        for i in range(len(btran1)):
+            if psir[i] <= btran1[i]:
+                bt1[i] = psir[i]
+                bt2[i] = btran1[i]
+                bt3[i] = btran2[i]
             else:
-                bt2 = btran2
-                bt3 = psir
+                bt1[i] = btran1[i]
+
+                if psir[i] <= btran2[i]:
+                    bt2[i] = psir[i]
+                    bt3[i] = btran2[i]
+
+                else:
+                    bt2[i] = btran2[i]
+                    bt3[i] = psir[i]
+        #
+        # if psir <= btran1:
+        #     bt1 = psir
+        #     bt2 = btran1
+        #     bt3 = btran2
+        # else:
+        #     bt1 = btran1
+        #     if psir <= btran2:
+        #         bt2 = psir
+        #         bt3 = btran2
+        #     else:
+        #         bt2 = btran2
+        #         bt3 = psir
+
         t1 = 2. * cs * co + ss * so * cospsi
-        t2 = 0.
-        if bt2 > 0.:
-            t2 = np.sin(bt2) * (2. * ds * do_ + ss * so * np.cos(bt1) * np.cos(bt3))
+        # t2 = 0.
+        t2 = np.zeros_like(bt2)
+        for i in range(len(bt2)):
+            if bt2[i] > 0.:
+                t2[i] = np.sin(bt2[i]) * (2. * ds[i] * do_[i] + ss[i] * so[i] * np.cos(bt1[i]) * np.cos(bt3[i]))
+
+        # if bt2 > 0.:
+        #     t2 = np.sin(bt2) * (2. * ds * do_ + ss * so * np.cos(bt1) * np.cos(bt3))
+
         denom = 2. * np.pi ** 2
         frho = ((np.pi - bt2) * t1 + t2) / denom
         ftau = (-bt2 * t1 + t2) / denom
-        if frho < 0.:
-            frho = 0.
-        if ftau < 0.:
-            ftau = 0.
+        frho[frho < 0.] = 0
+        ftau[ftau < 0.] = 0
 
         return chi_s, chi_o, frho, ftau
 
