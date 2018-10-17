@@ -3,7 +3,7 @@ from __future__ import division
 from datetime import datetime
 
 from pyrism.core.tma import calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, ext_xsect, asym_wrapper
-from radarpy import Angles, asarrays, align_all
+from radarpy import Angles, asarrays, align_all, wavelength
 
 try:
     import cPickle as pickle
@@ -26,7 +26,8 @@ class TMatrixPSD(Angles, object):
 
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, max_radius=10,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, psd=None,
-                 n_alpha=5, n_beta=10, num_points=1024, angle_unit='DEG', angular_integration=True,
+                 n_alpha=5, n_beta=10, num_points=1024, angle_unit='DEG', frequency_unit='GHz',
+                 angular_integration=True,
                  normalize=False, nbar=0.0):
         """T-Matrix scattering from an arrangement of nonspherical particles.
 
@@ -39,7 +40,7 @@ class TMatrixPSD(Angles, object):
             Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
             azimuth angle (ira, vra) in [DEG] or [RAD] (see parameter angle_unit).
         frequency : int float or array_like
-            The frequency of incident EM Wave in [GHz].
+            The frequency of incident EM Wave in {'Hz', 'MHz', 'GHz', 'THz'} (see parameter frequency_unit).
         radius : int float or array_like
             Equivalent particle radius in [cm].
         radius_type : {'EV', 'M', 'REA'}
@@ -73,6 +74,8 @@ class TMatrixPSD(Angles, object):
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency_unit : {'Hz', 'MHz', 'GHz', 'THz'}
+            Unit of entered frequency. Default is 'GHz'.
         psd : callable
             Particle Size Distribution Function (PSD). See pyrism.PSD.
         num_points : int
@@ -135,8 +138,9 @@ class TMatrixPSD(Angles, object):
         self.angular_integration = angular_integration
         self.radius = radius
         self.radius_type = param[radius_type]
+        self.frequency = frequency
 
-        self.wavelength = 29.9792458 / frequency
+        self.wavelength = wavelength(self.frequency, unit=frequency_unit, output='cm')
         self.eps = eps
         self.axis_ratio = axis_ratio
         self.shape = param[shape]

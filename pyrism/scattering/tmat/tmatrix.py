@@ -1,5 +1,5 @@
 import numpy as np
-from radarpy import Angles, asarrays, align_all
+from radarpy import Angles, asarrays, align_all, wavelength, wavenumber
 
 from .tm_psd import TMatrixPSD
 from .tm_single import TMatrixSingle
@@ -12,7 +12,8 @@ class TMatrix(Angles):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
                  n_beta=10,
-                 angle_unit='DEG', psd=None, max_radius=10, num_points=1024, angular_integration=True,
+                 angle_unit='DEG', frequency_unit='GHz', psd=None, max_radius=10, num_points=1024,
+                 angular_integration=True,
                  N=1, normalize=False, nbar=0.0):
         """T-Matrix scattering from nonspherical particles.
 
@@ -25,7 +26,7 @@ class TMatrix(Angles):
             Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
             azimuth angle (ira, vra) in [DEG] or [RAD] (see parameter angle_unit).
         frequency : int float or array_like
-            The frequency of incident EM Wave in [GHz].
+            The frequency of incident EM Wave in {'Hz', 'MHz', 'GHz', 'THz'} (see parameter frequency_unit).
         radius : int float or array_like
             Equivalent particle radius in [cm].
         radius_type : {'EV', 'M', 'REA'}
@@ -59,6 +60,8 @@ class TMatrix(Angles):
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency_unit : {'Hz', 'MHz', 'GHz', 'THz'}
+            Unit of entered frequency. Default is 'GHz'.
         psd : callable or None
             Particle Size Distribution Function (PSD). See pyrism.PSD. If None (default) a particle distribution
         num_points : int
@@ -112,7 +115,8 @@ class TMatrix(Angles):
                                     alpha=alpha, beta=beta, radius_type=radius_type, shape=shape,
                                     orientation=orientation, axis_ratio=axis_ratio, orientation_pdf=orientation_pdf,
                                     n_alpha=n_alpha,
-                                    n_beta=n_beta, angle_unit=angle_unit, normalize=normalize, nbar=nbar)
+                                    n_beta=n_beta, angle_unit=angle_unit, frequency_unit=frequency_unit,
+                                    normalize=normalize, nbar=nbar)
             self.psd = None
             self.__NAME = 'SINGLE'
 
@@ -122,7 +126,7 @@ class TMatrix(Angles):
                                  alpha=alpha, beta=beta, radius_type=radius_type, shape=shape,
                                  orientation=orientation, axis_ratio=axis_ratio, orientation_pdf=orientation_pdf,
                                  n_alpha=n_alpha,
-                                 n_beta=n_beta, angle_unit=angle_unit,
+                                 n_beta=n_beta, angle_unit=angle_unit, frequency_unit=frequency_unit,
 
                                  psd=psd, num_points=num_points, angular_integration=angular_integration,
                                  max_radius=max_radius, normalize=normalize, nbar=nbar)
@@ -145,8 +149,6 @@ class TMatrix(Angles):
         iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = asarrays(
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
-        eps = np.asarray(eps).flatten()
-
         iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta = align_all(
             (iza, vza, iaa, vaa, frequency, radius, axis_ratio, alpha, beta))
 
@@ -158,6 +160,7 @@ class TMatrix(Angles):
         self.radius = self.TM.radius
         self.radius_type = self.TM.radius_type
 
+        self.frequency = self.TM.frequency
         self.wavelength = self.TM.wavelength
         self.eps = self.TM.eps
         self.axis_ratio = self.TM.axis_ratio
@@ -167,7 +170,6 @@ class TMatrix(Angles):
         self.alpha = self.TM.alpha
         self.beta = self.TM.beta
         self.orient = self.TM.orient
-        self.frequency = frequency
 
         self.or_pdf = self.TM.or_pdf
         self.n_alpha = self.TM.n_alpha
@@ -176,7 +178,7 @@ class TMatrix(Angles):
         self.N = N
 
         # ---- Pre-calculation for extinction matrix ----
-        self.k0 = 2 * np.pi * self.frequency / 30
+        self.k0 = wavenumber(self.frequency, unit=frequency_unit, output='cm')
         self.a = self.k0 * radius
         self.factor = complex(0, 2 * PI * self.N) / self.k0
 

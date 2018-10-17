@@ -8,7 +8,7 @@ warnings.simplefilter('default')
 import numpy as np
 from pyrism.core.tma import (calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asym_wrapper, ext_xsect,
                              sca_intensity_wrapper, dblquad_SZ_wrapper, dblquad_oriented_SZ_wrapper)
-from radarpy import Angles, align_all
+from radarpy import Angles, align_all, wavelength
 
 from .orientation import Orientation
 from .tm_auxiliary import param
@@ -23,7 +23,7 @@ else:
 class TMatrixSingle(Angles, object):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
-                 n_beta=10, angle_unit='DEG', normalize=False, nbar=0.0):
+                 n_beta=10, angle_unit='DEG', frequency_unit='GHz', normalize=False, nbar=0.0):
 
         """T-Matrix scattering from single nonspherical particles.
 
@@ -36,7 +36,7 @@ class TMatrixSingle(Angles, object):
             Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
             azimuth angle (ira, vra) in [DEG] or [RAD] (see parameter angle_unit).
         frequency : int float or array_like
-            The frequency of incident EM Wave in [GHz].
+            The frequency of incident EM Wave in {'Hz', 'MHz', 'GHz', 'THz'} (see parameter frequency_unit).
         radius : int float or array_like
             Equivalent particle radius in [cm].
         radius_type : {'EV', 'M', 'REA'}
@@ -70,6 +70,8 @@ class TMatrixSingle(Angles, object):
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency_unit : {'Hz', 'MHz', 'GHz', 'THz'}
+            Unit of entered frequency. Default is 'GHz'.
         normalize : boolean, optional
             Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
             the default value is False.
@@ -117,7 +119,7 @@ class TMatrixSingle(Angles, object):
         self.radius_type = param[radius_type]
         self.frequency = frequency
 
-        self.wavelength = 29.9792458 / frequency
+        self.wavelength = wavelength(self.frequency, unit=frequency_unit, output='cm')
         self.axis_ratio = axis_ratio
         self.shape = param[shape]
         self.ddelt = 1e-3
