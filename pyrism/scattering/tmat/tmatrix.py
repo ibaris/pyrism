@@ -1,5 +1,5 @@
 import numpy as np
-from radarpy import Angles, asarrays, align_all, wavelength, wavenumber
+from radarpy import Angles, asarrays, align_all, wavenumber
 
 from .tm_psd import TMatrixPSD
 from .tm_single import TMatrixSingle

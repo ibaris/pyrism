@@ -15,11 +15,12 @@ from pyrism.auxil import get_version, Files
 
 import warnings
 
-warnings.simplefilter('default')
 import numpy as np
 from scipy.integrate import trapz
 from .orientation import Orientation
 from .tm_auxiliary import param
+
+warnings.simplefilter('default')
 
 
 class TMatrixPSD(Angles, object):

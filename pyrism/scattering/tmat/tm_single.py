@@ -3,8 +3,6 @@ from __future__ import division
 import sys
 import warnings
 
-warnings.simplefilter('default')
-
 import numpy as np
 from pyrism.core.tma import (calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asym_wrapper, ext_xsect,
                              sca_intensity_wrapper, dblquad_SZ_wrapper, dblquad_oriented_SZ_wrapper)
@@ -18,6 +16,8 @@ if sys.version_info < (3, 0):
     srange = xrange
 else:
     srange = range
+
+warnings.simplefilter('default')
 
 
 class TMatrixSingle(Angles, object):
