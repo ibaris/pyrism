@@ -194,23 +194,22 @@ class TestTMatrix():
         assert less(abs(S[0, 1]), 1e-25)
         assert less(abs(S[1, 0]), 1e-25)
 
-    # todo: Not working because the values are wrong!
-    # def test_optical_theorem(self):
-    #     """Optical theorem: test that for a lossless particle, Csca=Cext
-    #     """
-    #     iza = 90
-    #     vza = 90
-    #     iaa = 0
-    #     vaa = 0
-    #
-    #     tm = pyr.TMatrixSingle(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
-    #                            eps=complex(1.5, 0.0),
-    #                            axis_ratio=1.0 / 0.6)
-    #
-    #     ksVV, kaVV, keVV, omegaVV, ksHH, kaHH, keHH, omegaHH = tm.calc_xsec()
-    #
-    #     assert less(abs(1.0 - omegaHH), 1e-6)
-    #     assert less(abs(1.0 - omegaVV), 1e-6)
+    def test_optical_theorem(self):
+        """Optical theorem: test that for a lossless particle, Csca=Cext
+        """
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 0
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=4.0, frequency=4.612191661538,
+                         eps=complex(1.5, 0.0), axis_ratio=1.0 / 0.6)
+
+        ksVV, ksHH = tm.ksx
+        keVV, keHH = tm.kex
+
+        assert less(abs(1.0 - ksVV / keVV), 1e-6)
+        assert less(abs(1.0 - ksHH / keHH), 1e-6)
 
     def test_asymmetry(self):
         """Test calculation of the asymmetry parameter
@@ -238,8 +237,8 @@ class TestTMatrix():
 
         av2, ah2 = tm2.asx
 
-        assert less(abs(1 - av1 / av2), 1e-6)
-        assert less(abs(1 - ah1 / ah2), 1e-6)
+        assert less(abs(1 - av1 / av2), epsilon)
+        assert less(abs(1 - ah1 / ah2), epsilon)
 
         iza = 90
         vza = 90
@@ -253,8 +252,8 @@ class TestTMatrix():
         av1, ah1 = tm1.asx
         # Is the asymmetry parameter zero for small particles?
 
-        assert less(av1, 1e-8)
-        assert less(ah1, 1e-8)
+        assert less(av1, epsilon)
+        assert less(ah1, epsilon)
 
     def test_against_mie(self):
         """Test scattering parameters against Mie results
@@ -281,33 +280,33 @@ class TestTMatrix():
         assert less(abs(1 - keHH / ext_xsect_ref), 1e-6)
         assert less(abs(1 - ah1 / asym_ref), 1e-6)
 
-    # def test_integrated_x_sca(self):
-    #     """Test Rayleigh scattering cross section integrated over sizes.
-    #     """
-    #
-    #     iza = 90
-    #     vza = 90
-    #     iaa = 0
-    #     vaa = 180
-    #
-    #     m = complex(3.0, 0.5)
-    #     K = (m ** 2 - 1) / (m ** 2 + 2)
-    #     N0 = 10
-    #     Lambda = 1e4
-    #
-    #     PSD = pyr.PSD(ilambda=Lambda, n0=N0, rmax=0.002/2)
-    #     psd = PSD.exponential
-    #
-    #     tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002/2,
-    #                         frequency=1, eps=m, psd=psd, num_points=256,
-    #                         angular_integration=True)
-    #
-    #     ksxV, ksxH = tm.ksx
-    #     # This size-integrated scattering cross section has an analytical value.
-    #     # Check that we can reproduce it.
-    #     sca_xsect_ref = 480 * N0 * np.pi ** 5 * abs(K) ** 2 / Lambda ** 7
-    #
-    #     assert less(abs(1 - ksxH / sca_xsect_ref), 1e-3)
+    def test_integrated_x_sca(self):
+        """Test Rayleigh scattering cross section integrated over sizes.
+        """
+
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 180
+
+        m = complex(3.0, 0.5)
+        K = (m ** 2 - 1) / (m ** 2 + 2)
+        N0 = 10
+        Lambda = 1e4
+
+        PSD = pyr.PSD(ilambda=Lambda, n0=N0, rmax=0.002 / 2)
+        psd = PSD.exponential
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, max_radius=0.002 / 2,
+                         frequency=29.9792458, eps=m, psd=psd, num_points=256,
+                         angular_integration=True)
+
+        ksxV, ksxH = tm.ksx
+        # This size-integrated scattering cross section has an analytical value.
+        # Check that we can reproduce it.
+        sca_xsect_ref = 480 * N0 * np.pi ** 5 * abs(K) ** 2 / Lambda ** 7
+
+        assert less(abs(1 - ksxH / sca_xsect_ref), 1e-3)
 
 
 class TestNormalize:
@@ -355,12 +354,15 @@ class TestTMATCLASS:
                                                    eps=complex(1.5, 0.5),
                                                    axis_ratio=1 / 0.6, normalize=False)
 
-        assert allclose(tm.ksx, (tm_ref.ksx()[0][0], tm_ref.ksx()[1][0]))
-        assert allclose(tm.kex, (tm_ref.kex()[0][0], tm_ref.kex()[1][0]))
-        assert allclose(tm.asx, (tm_ref.asx()[0][0], tm_ref.asx()[1][0]))
+        assert allclose(tm.ksx, tm_ref.ksx)
+        assert allclose(tm.kex, tm_ref.kex)
+        assert allclose(tm.asx, tm_ref.asx)
         assert allclose(tm.dblquad, tm_ref.dblquad)
-        assert allclose(tm.ifunc_SZ(iza, iaa, 0), tm_ref.ifunc_SZ(iza, iaa, 0))
-        assert allclose(tm.ifunc_SZ(iza, iaa, 1), tm_ref.ifunc_SZ(iza, iaa, 1))
+        assert allclose(tm.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 0),
+                        tm_ref.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 0))
+        assert allclose(tm.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 1),
+                        tm_ref.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 1))
+
 
     def test_single(self):
         iza = 90
@@ -381,8 +383,7 @@ class TestTMATCLASS:
                                                 psd=psd, num_points=100, max_radius=2, angular_integration=True,
                                                 normalize=False)
 
-        assert allclose(tm.ksx, tm_ref.ksx(tm_ref.geometriesDeg[0]))
-        assert allclose(tm.kex, tm_ref.kex(tm_ref.geometriesDeg[0]))
-        assert allclose(tm.asx, tm_ref.asx(tm_ref.geometriesDeg[0]))
+        assert allclose(tm.ksx, tm_ref.ksx)
+        assert allclose(tm.kex, tm_ref.kex)
+        assert allclose(tm.asx, tm_ref.asx)
         assert tm.dblquad == None
-        assert tm.ifunc_SZ(iza, iaa, 0) == None

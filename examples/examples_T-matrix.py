@@ -27,13 +27,13 @@ vza = 20
 iaa = 150
 vaa = 100
 
-tm = pyr.TMatrix(iza=100, vza=vza, iaa=100, vaa=vaa,
-                 radius=1, frequency=[1.26, 2], eps=complex(15, 0.5), axis_ratio=1 / 0.6)
+tm = pyr.TMatrix(iza=iza, vza=vza, iaa=100, vaa=vaa,
+                 radius=5, frequency=1.26, eps=complex(15, 0.5), axis_ratio=1 / 0.6)
 
 tm.get_ksx()
 
 tm.ksx
-dblquad(tm.TM.ifunc_SZ, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(1,))
+dblquad(tm.TM.ifunc_SZ, 0, 2 * np.pi, lambda x: 0.0, lambda x: np.pi, args=(1,))
 
 print tm.TM.dblquad()
 

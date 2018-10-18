@@ -187,11 +187,11 @@ class TMatrix(Angles):
         except AttributeError:
             self.nmax = None
 
-        self.__kex = None
-        self.__ksx = None
-        self.__asx = None
-        self.__ksi = None
-        self.__ks = None
+        # self.__kex = None
+        # self.__ksx = None
+        # self.__asx = None
+        # self.__ksi = None
+        # self.__ks = None
 
     # ---- Property calls ----
     @property
@@ -289,6 +289,31 @@ class TMatrix(Angles):
                 return self.__ks
 
     @property
+    def kt(self):
+        """
+        Transmission matrix for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__kt) == 1:
+                return self.__kt[0]
+            else:
+                return self.__kt
+
+        except AttributeError:
+
+            self.__kt = self.__get_kt()
+
+            if len(self.__kt) == 1:
+                return self.__kt[0]
+            else:
+                return self.__kt
+
+    @property
     def kex(self):
         """
         Extinction cross section for the current setup, with polarization.
@@ -298,15 +323,7 @@ class TMatrix(Angles):
         VV, HH : list or array_like
 
         """
-        if self.__kex is None:
-            V, H = self.__get_kex()
-
-            if len(V) == 1:
-                return V[0], H[0]
-            else:
-                return V, H
-        else:
-            return self.__kex
+        return self.TM.kex
 
     @property
     def ksx(self):
@@ -318,16 +335,7 @@ class TMatrix(Angles):
         VV, HH : list or array_like
 
         """
-        if self.__ksx == None:
-            V, H = self.__get_ksx()
-
-            if len(V) == 1:
-                return V[0], H[0]
-            else:
-                return V, H
-
-        else:
-            return self.__ksx
+        return self.TM.ksx
 
     @property
     def ksi(self):
@@ -339,17 +347,10 @@ class TMatrix(Angles):
         VV, HH : list or array_like
 
         """
-        if self.__ksi is None:
-            try:
-                V, H = self.__get_ksi()
-
-                if len(V) == 1:
-                    return V[0], H[0]
-
-            except TypeError:
-                return None
+        if self.__NAME is 'SINGLE':
+            return self.TM.ksi
         else:
-            return self.__ksi
+            return None
 
     @property
     def asx(self):
@@ -361,13 +362,7 @@ class TMatrix(Angles):
         VV, HH : list or array_like
 
         """
-        if self.__asx is None:
-            V, H = self.__get_asx()
-
-            if len(V) == 1:
-                return V[0], H[0]
-        else:
-            return self.__asx
+        return self.TM.asx
 
     @property
     def dblquad(self):
@@ -384,24 +379,26 @@ class TMatrix(Angles):
             return None
 
     # ---- User callable methods ----
-    def ifunc_SZ(self, izaDeg, iaaDeg, pol):
+    def ifunc_Z(self, iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol=None):
         """
         Function to integrate the phase matrix which is compatible with scipy.integrate.dblquad.
 
         Parameters
         ----------
-        izaDeg : float
-            x value of integration (0, 180) in [DEG].
-        iaaDeg : float
-            y value of integration (0, 360) in [DEG]
-        pol : bool
-            Which polarization should be integrated?
+        iza, iaa : float
+            x and y value of integration (0, pi) and (0, 2*pi) in [RAD], respectively.
+        vzaDeg, vaaDeg, alphaDeg, betaDeg: int, float or array_like
+            Scattering (vza) zenith angle and viewing azimuth angle (vaa) in [DEG]. Parameter alphaDeg and betaDeg
+            are the Euler angles of the particle orientation in [DEG].
+        pol : int or None
+            Polarization:
                 * 0 : VV
                 * 1 : HH
+                * None (default) : Both.
 
         Examples
         --------
-        scipy.integrate.dblquad(TMatrix.ifunc_SZ, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(0, ))
+        scipy.integrate.dblquad(TMatrix.ifunc_Z, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(*args ))
 
         Returns
         -------
@@ -409,10 +406,7 @@ class TMatrix(Angles):
 
         """
 
-        if self.__NAME is 'SINGLE':
-            return self.TM.ifunc_SZ(izaDeg, iaaDeg, pol)
-        else:
-            return None
+        return self.TM.ifunc_Z(iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol)
 
     def Mpq(self, factor, S):
         """
@@ -451,6 +445,16 @@ class TMatrix(Angles):
             return None
 
     # ---- Auxiliary functions and private methods ----
+    def __get_kt(self):
+        self.__kt = list()
+
+        ke = self.__get_ke
+
+        for item in ke:
+            self.__kt.append(1 - item)
+
+        return self.__kt
+
     def __get_ks(self):
         self.__ks = list()
 
@@ -541,7 +545,7 @@ class TMatrix(Angles):
     def __get_asx(self):
 
         if self.__NAME is 'SINGLE':
-            return self.TM.asx()
+            return self.TM.asx
 
         else:
             try:
@@ -579,7 +583,7 @@ class TMatrix(Angles):
 
     def __get_ksx(self):
         if self.__NAME is 'SINGLE':
-            return self.TM.ksx()
+            return self.TM.ksx
 
         else:
             try:
@@ -617,7 +621,7 @@ class TMatrix(Angles):
 
     def __get_kex(self):
         if self.__NAME is 'SINGLE':
-            return self.TM.kex()
+            return self.TM.kex
 
         else:
             try:
@@ -655,7 +659,7 @@ class TMatrix(Angles):
 
     def __get_ksi(self):
         if self.__NAME is 'SINGLE':
-            return self.TM.ksi()
+            return self.TM.ksi
 
         else:
             return None

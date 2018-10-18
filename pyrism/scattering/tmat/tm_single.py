@@ -4,8 +4,10 @@ import sys
 import warnings
 
 import numpy as np
-from pyrism.core.tma import (calc_nmax_wrapper, get_oriented_SZ, sca_xsect_wrapper, asym_wrapper, ext_xsect,
-                             sca_intensity_wrapper, dblquad_SZ_wrapper, dblquad_oriented_SZ_wrapper)
+from pyrism.core.tma import (calc_nmax_wrapper,
+                             sca_intensity_wrapper, calc_single_wrapper,
+                             orient_averaged_adaptive_wrapper, orient_averaged_fixed_wrapper,
+                             equal_volume_from_maximum_wrapper)
 from radarpy import Angles, align_all, wavelength
 
 from .orientation import Orientation
@@ -18,6 +20,11 @@ else:
     srange = range
 
 warnings.simplefilter('default')
+from scipy.integrate import dblquad
+
+PI = 3.14159265359
+RAD_TO_DEG = 180.0 / PI
+DEG_TO_RAD = PI / 180.0
 
 
 class TMatrixSingle(Angles, object):
@@ -138,7 +145,10 @@ class TMatrixSingle(Angles, object):
         self.nmax = nmax.astype(np.float)
         # self.__S, self.__Z = self.call_SZ()
 
-    # ---- Property calls ----
+    # ----------------------------------------------------------------------------------------------------------------------
+    # Property Calls
+    # ----------------------------------------------------------------------------------------------------------------------
+    # ---- Scattering and Phase Matrices ----
     @property
     def S(self):
         """
@@ -179,63 +189,6 @@ class TMatrixSingle(Angles, object):
 
                 else:
                     return self.__S
-
-    @property
-    def norm(self):
-        """
-        Normalization matrix. The values for iza = nbar, vza = 0.
-
-        Returns
-        -------
-        Norm : list or array_like
-        """
-        if self.normalize:
-            try:
-                return self.__Z[-1]
-
-            except AttributeError:
-
-                self.__S, self.__Z = self.__call_SZ()
-
-                return self.__Z[-1]
-
-    @property
-    def dblquad(self):
-        """
-        Half space integration of the phase matrices.
-
-        Returns
-        -------
-        dbl : list or array_like
-        """
-        try:
-            if len(self.__dblquadZ) == 1:
-                return self.__dblquadZ[0]
-            else:
-                if self.normalize:
-                    if len(self.__dblquadZ[0:-1]) == 1:
-                        return self.__dblquadZ[0:-1][0] - self.__dblquadZ[-1]
-                    else:
-                        return self.__dblquadZ[0:-1] - self.__dblquadZ[-1]
-
-                else:
-                    return self.__dblquadZ
-
-        except AttributeError:
-
-            self.__dblquadZ = self.__dblquad()
-
-            if len(self.__dblquadZ) == 1:
-                return self.__dblquadZ[0]
-            else:
-                if self.normalize:
-                    if len(self.__dblquadZ[0:-1]) == 1:
-                        return self.__dblquadZ[0:-1][0] - self.__dblquadZ[-1]
-                    else:
-                        return self.__dblquadZ[0:-1] - self.__dblquadZ[-1]
-
-                else:
-                    return self.__dblquadZ
 
     @property
     def Z(self):
@@ -286,41 +239,445 @@ class TMatrixSingle(Angles, object):
         """
         return self.S, self.Z
 
-    # ---- User callable methods ----
-    def ifunc_SZ(self, izaDeg, iaaDeg, pol):
+    @property
+    def norm(self):
+        """
+        Normalization matrix. The values for iza = nbar, vza = 0.
+
+        Returns
+        -------
+        Norm : list or array_like
+        """
+        if self.normalize:
+            try:
+                return self.__Z[-1]
+
+            except AttributeError:
+
+                self.__S, self.__Z = self.__call_SZ()
+
+                return self.__Z[-1]
+
+    # ---- Integrated Scattering and Phase Matrices ----
+    @property
+    def dblquad(self):
+        """
+        Half space integration of the phase matrices.
+
+        Returns
+        -------
+        dbl : list or array_like
+        """
+        try:
+            if len(self.__quadZ) == 1:
+                return self.__quadZ[0]
+            else:
+                if self.normalize:
+                    if len(self.__quadZ[0:-1]) == 1:
+                        return self.__quadZ[0:-1][0] - self.__quadZ[-1]
+                    else:
+                        return self.__quadZ[0:-1] - self.__quadZ[-1]
+
+                else:
+                    return self.__quadZ
+
+        except AttributeError:
+
+            self.__quadZ = self.__dblquad()
+
+            if len(self.__quadZ) == 1:
+                return self.__quadZ[0]
+            else:
+                if self.normalize:
+                    if len(self.__quadZ[0:-1]) == 1:
+                        return self.__quadZ[0:-1][0] - self.__quadZ[-1]
+                    else:
+                        return self.__quadZ[0:-1] - self.__quadZ[-1]
+
+                else:
+                    return self.__quadZ
+
+    # ---- Cross Section Calls ----
+    @property
+    def ksx(self):
+        """
+        Scattering cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__ksxVV) == 1:
+                return self.__ksxVV[0], self.__ksxHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__ksxVV[0:-1]) == 1:
+                        return self.__ksxVV[0:-1][0], self.__ksxHH[0:-1][0]
+                    else:
+                        return self.__ksxVV[0:-1][0], self.__ksxHH[0:-1][0]
+
+                else:
+                    return self.__ksxVV, self.__ksxHH
+
+        except AttributeError:
+
+            self.__ksxVV, self.__ksxHH = self.__calc_ksx()
+
+            if len(self.__ksxVV) == 1:
+                return self.__ksxVV[0], self.__ksxHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__ksxVV[0:-1]) == 1:
+                        return self.__ksxVV[0:-1][0], self.__ksxHH[0:-1][0]
+                    else:
+                        return self.__ksxVV[0:-1][0], self.__ksxHH[0:-1][0]
+
+                else:
+                    return self.__ksxVV, self.__ksxHH
+
+    @property
+    def kex(self):
+        """
+        Extinction cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__kexVV) == 1:
+                return self.__kexVV[0], self.__kexHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__kexVV[0:-1]) == 1:
+                        return self.__kexVV[0:-1][0], self.__kexHH[0:-1][0]
+                    else:
+                        return self.__kexVV[0:-1][0], self.__kexHH[0:-1][0]
+
+                else:
+                    return self.__kexVV, self.__kexHH
+
+        except AttributeError:
+
+            self.__kexVV, self.__kexHH = self.__calc_kex()
+
+            if len(self.__kexVV) == 1:
+                return self.__kexVV[0], self.__kexHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__kexVV[0:-1]) == 1:
+                        return self.__kexVV[0:-1][0], self.__kexHH[0:-1][0]
+                    else:
+                        return self.__kexVV[0:-1][0], self.__kexHH[0:-1][0]
+
+                else:
+                    return self.__kexVV, self.__kexHH
+
+    @property
+    def asx(self):
+        """
+        Asymetry cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__asxVV) == 1:
+                return self.__asxVV[0], self.__asxHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__asxVV[0:-1]) == 1:
+                        return self.__asxVV[0:-1][0], self.__asxHH[0:-1][0]
+                    else:
+                        return self.__asxVV[0:-1][0], self.__asxHH[0:-1][0]
+
+                else:
+                    return self.__asxVV, self.__asxHH
+
+        except AttributeError:
+
+            self.__asxVV, self.__asxHH = self.__calc_asx()
+
+            if len(self.__asxVV) == 1:
+                return self.__asxVV[0], self.__asxHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__asxVV[0:-1]) == 1:
+                        return self.__asxVV[0:-1][0], self.__asxHH[0:-1][0]
+                    else:
+                        return self.__asxVV[0:-1][0], self.__asxHH[0:-1][0]
+
+                else:
+                    return self.__asxVV, self.__asxHH
+
+    @property
+    def ksi(self):
+        """
+        Scattering intensity.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__ksiVV) == 1:
+                return self.__ksiVV[0], self.__ksiHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__ksiVV[0:-1]) == 1:
+                        return self.__ksiVV[0:-1][0], self.__ksiHH[0:-1][0]
+                    else:
+                        return self.__ksiVV[0:-1][0], self.__ksiHH[0:-1][0]
+
+                else:
+                    return self.__ksiVV, self.__ksiHH
+
+        except AttributeError:
+
+            self.__ksiVV, self.__ksiHH = self.__calc_kex()
+
+            if len(self.__ksiVV) == 1:
+                return self.__ksiVV[0], self.__ksiHH[0]
+            else:
+                if self.normalize:
+                    if len(self.__ksiVV[0:-1]) == 1:
+                        return self.__ksiVV[0:-1][0], self.__ksiHH[0:-1][0]
+                    else:
+                        return self.__ksiVV[0:-1][0], self.__ksiHH[0:-1][0]
+
+                else:
+                    return self.__ksiVV, self.__ksiHH
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # User callable methods
+    # -----------------------------------------------------------------------------------------------------------------
+    def ifunc_Z(self, iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol=None):
         """
         Function to integrate the phase matrix which is compatible with scipy.integrate.dblquad.
 
         Parameters
         ----------
-        izaDeg : float
-            x value of integration (0, 180) in [DEG].
-        iaaDeg : float
-            y value of integration (0, 360) in [DEG]
-        pol : bool
-            Which polarization should be integrated?
+        iza, iaa : float
+            x and y value of integration (0, pi) and (0, 2*pi) in [RAD], respectively.
+        vzaDeg, vaaDeg, alphaDeg, betaDeg: int, float or array_like
+            Scattering (vza) zenith angle and viewing azimuth angle (vaa) in [DEG]. Parameter alphaDeg and betaDeg
+            are the Euler angles of the particle orientation in [DEG].
+        pol : int or None
+            Polarization:
                 * 0 : VV
                 * 1 : HH
+                * None (default) : Both.
 
         Examples
         --------
-        scipy.integrate.dblquad(TMatrix.ifunc_SZ, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(0, ))
+        scipy.integrate.dblquad(TMatrix.ifunc_Z, 0, 360.0, lambda x: 0.0, lambda x: 180.0, args=(*args ))
 
         Returns
         -------
         Z : float
 
         """
-        if len(self.izaDeg) > 1:
-            warnings.warn(
-                "The length of the input parameter are greater than 1. The first element will be used for the integration.")
-        Z = dblquad_oriented_SZ_wrapper(izaDeg, iaaDeg, self.nmax[0], self.wavelength[0], self.vzaDeg[0],
-                                        self.vaaDeg[0], self.alphaDeg[0], self.betaDeg[0], self.n_alpha,
-                                        self.n_beta, self.or_pdf, self.orient, pol)
+        izaDeg, iaaDeg = iza * RAD_TO_DEG, iaa * RAD_TO_DEG
 
-        return Z
+        Z = self.__calc_SZ_ifunc(izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength)[1]
 
-    def ksi(self):
+        if pol is None:
+            return Z
+        elif pol == 0:
+            return Z[0, 0]
+        elif pol == 1:
+            return Z[1, 1]
+
+    # ------------------------------------------------------------------------------------------------------------------
+    #  Auxiliary functions and private methods
+    # ------------------------------------------------------------------------------------------------------------------
+    # ---- Scattering and Phase Matrix Calculation ----
+    def __calc_nmax(self):
+        """Initialize the T-matrix and calculate nmax parameter.
+        """
+        if self.radius_type == 2:
+            # Maximum radius is not directly supported in the original
+            # so we convert it to equal volume radius
+            radius_type = 1
+            radius = equal_volume_from_maximum_wrapper(self.radius, self.axis_ratio, self.shape)
+        else:
+            radius_type = self.radius_type
+            radius = self.radius
+
+        nmax = list()
+        for i in srange(len(self.izaDeg)):
+            temp = calc_nmax_wrapper(radius[i], radius_type, self.wavelength[i], self.eps[i],
+                                     self.axis_ratio[i], self.shape)
+
+            nmax.append(temp)
+
+        return np.asarray(nmax).flatten()
+
+    def __call_SZ(self, izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None):
+        """Get the S and Z matrices for a orientated SZ.
+        """
+
+        izaDeg = self.izaDeg if izaDeg is None else izaDeg
+        vzaDeg = self.vzaDeg if vzaDeg is None else vzaDeg
+        iaaDeg = self.iaaDeg if iaaDeg is None else iaaDeg
+        vaaDeg = self.vaaDeg if vaaDeg is None else vaaDeg
+        alphaDeg = self.alphaDeg if alphaDeg is None else alphaDeg
+        betaDeg = self.betaDeg if betaDeg is None else betaDeg
+
+        S_list = list()
+        Z_list = list()
+        if self.orient is 'S':
+            for i in srange(len(self.izaDeg)):
+                S, Z = calc_single_wrapper(self.nmax[i], self.wavelength[i], izaDeg[i], vzaDeg[i],
+                                           iaaDeg[i], vaaDeg[i], alphaDeg[i],
+                                           betaDeg[i])
+
+                S_list.append(S)
+                Z_list.append(Z)
+
+        elif self.orient is 'AA':
+            for i in srange(len(self.izaDeg)):
+                S, Z = orient_averaged_adaptive_wrapper(self.nmax[i], self.wavelength[i], izaDeg[i],
+                                                        vzaDeg[i],
+                                                        iaaDeg[i], vaaDeg[i], self.or_pdf)
+
+                S_list.append(S)
+                Z_list.append(Z)
+
+
+        elif self.orient is 'AF':
+            for i in srange(len(self.izaDeg)):
+                S, Z = orient_averaged_fixed_wrapper(self.nmax[i], self.wavelength[i], izaDeg[i], vzaDeg[i],
+                                                     iaaDeg[i], vaaDeg[i], self.n_alpha, self.n_beta,
+                                                     self.or_pdf)
+
+                S_list.append(S)
+                Z_list.append(Z)
+
+        else:
+            raise ValueError("Orientation must be S, AA or AF.")
+
+        return S_list, Z_list
+
+    def __calc_SZ_ifunc(self, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength):
+
+        if self.orient is 'S':
+            S, Z = calc_single_wrapper(nmax, wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+
+        elif self.orient is 'AA':
+            S, Z = orient_averaged_adaptive_wrapper(nmax, wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, self.or_pdf)
+
+
+        elif self.orient is 'AF':
+            S, Z = orient_averaged_fixed_wrapper(nmax, wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, self.n_alpha,
+                                                 self.n_beta, self.or_pdf)
+
+        else:
+            raise ValueError("Orientation must be S, AA or AF.")
+
+        return S, Z
+
+    # ---- Double Integration of Phase Matrix ----
+    def __dblquad(self):
+        quadZ_list = list()
+
+        for i, geom in enumerate(self.geometriesDeg):
+            izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg = geom
+
+            quadZ = np.zeros((2, 2))
+
+            quadZ[0, 0] = dblquad(self.ifunc_Z, 0.0, 2 * PI, lambda x: 0.0, lambda x: PI,
+                                  args=(vzaDeg, vaaDeg, alphaDeg,
+                                        betaDeg, self.nmax[i],
+                                        self.wavelength[i],
+                                        0))[0]
+
+            quadZ[1, 1] = dblquad(self.ifunc_Z, 0.0, 2 * PI, lambda x: 0.0, lambda x: PI,
+                                  args=(vzaDeg, vaaDeg, alphaDeg,
+                                        betaDeg, self.nmax[i],
+                                        self.wavelength[i],
+                                        1))[0]
+
+            quadZ_list.append(quadZ)
+
+        return quadZ_list
+
+    # ---- Cross Section Calculation ----
+    def __calc_ksx(self):
+        """
+        Scattering cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+        """
+
+        xsectVV_list = list()
+        xsectHH_list = list()
+
+        def scax_SZ(vza, vaa, func, izaDeg, iaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol):
+            vzaDeg = vza * RAD_TO_DEG
+            vaaDeg = vaa * RAD_TO_DEG
+
+            S, Z = func(vzaDeg=vzaDeg, vaaDeg=vaaDeg, izaDeg=izaDeg, iaaDeg=iaaDeg, alphaDeg=alphaDeg,
+                        betaDeg=betaDeg, nmax=nmax, wavelength=wavelength)
+
+            if pol == 0:
+                I = Z[0, 0] + Z[0, 1]
+            if pol == 1:
+                I = Z[0, 0] - Z[0, 1]
+
+            return I * np.sin(vza)
+
+        for i in srange(len(self.iza)):
+            xsectVV = \
+                dblquad(scax_SZ, 0, 2 * PI, lambda x: 0.0, lambda x: PI, args=(self.__calc_SZ_ifunc, self.izaDeg[i],
+                                                                               self.iaaDeg[i], self.alphaDeg[i],
+                                                                               self.betaDeg[i], self.nmax[i],
+                                                                               self.wavelength[i], 0))[0]
+
+            xsectHH = \
+                dblquad(scax_SZ, 0, 2 * PI, lambda x: 0.0, lambda x: PI, args=(self.__calc_SZ_ifunc, self.izaDeg[i],
+                                                                               self.iaaDeg[i], self.alphaDeg[i],
+                                                                               self.betaDeg[i], self.nmax[i],
+                                                                               self.wavelength[i], 1))[0]
+
+            xsectVV_list.append(xsectVV)
+            xsectHH_list.append(xsectHH)
+
+        return np.asarray(xsectVV_list).flatten(), np.asarray(xsectHH_list).flatten()
+
+    def __calc_kex(self):
+        """
+        Extinction cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+
+        VV_list = list()
+        HH_list = list()
+
+        S, Z = self.__call_SZ(vzaDeg=self.izaDeg, vaaDeg=self.iaaDeg)
+
+        for i in srange(len(self.iza)):
+            VV = 2 * self.wavelength * S[i][0, 0].imag
+            HH = 2 * self.wavelength * S[i][1, 1].imag
+
+            VV_list.append(VV)
+            HH_list.append(HH)
+
+        return np.asarray(VV_list).flatten(), np.asarray(HH_list).flatten()
+
+    def __calc_ksi(self):
         """
         Scattering intensity (phase function) for the current setup.
 
@@ -340,53 +697,7 @@ class TMatrixSingle(Angles, object):
 
         return np.asarray(VV_list).flatten(), np.asarray(HH_list).flatten()
 
-    def ksx(self):
-        """
-        Scattering cross section for the current setup, with polarization.
-
-        Returns
-        -------
-        VV, HH : list or array_like
-
-        """
-
-        xsectVV_list = list()
-        xsectHH_list = list()
-        for i in srange(len(self.iza)):
-            xsectVV, xsectHH = sca_xsect_wrapper(self.nmax[i],
-                                                 self.wavelength[i], self.izaDeg[i],
-                                                 self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
-                                                 self.n_alpha, self.n_beta,
-                                                 self.or_pdf, self.orient)
-
-            xsectVV_list.append(xsectVV)
-            xsectHH_list.append(xsectHH)
-
-        return np.asarray(xsectVV_list).flatten(), np.asarray(xsectHH_list).flatten()
-
-    def kex(self):
-        """
-        Extinction cross section for the current setup, with polarization.
-
-        Returns
-        -------
-        VV, HH : list or array_like
-
-        """
-        VV_list = list()
-        HH_list = list()
-        for i in srange(len(self.iza)):
-            VV, HH = ext_xsect(self.nmax[i], self.wavelength[i], self.izaDeg[i], self.vzaDeg[i],
-                               self.iaaDeg[i], self.vaaDeg[i], self.alphaDeg[i],
-                               self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
-                               self.orient)
-
-            VV_list.append(VV)
-            HH_list.append(HH)
-
-        return np.asarray(VV_list).flatten(), np.asarray(HH_list).flatten()
-
-    def asx(self):
+    def __calc_asx(self):
         """
         Asymetry factor cross section for the current setup, with polarization.
 
@@ -397,78 +708,54 @@ class TMatrixSingle(Angles, object):
         """
         xsectVV_list = list()
         xsectHH_list = list()
-        for i in srange(len(self.iza)):
-            xsectVV, xsectHH = asym_wrapper(self.nmax[i],
-                                            self.wavelength[i], self.izaDeg[i],
-                                            self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
-                                            self.n_alpha, self.n_beta,
-                                            self.or_pdf, self.orient)
 
-            xsectVV_list.append(xsectVV)
-            xsectHH_list.append(xsectHH)
+        ksxVV, ksxHH = self.ksx
+
+        if isinstance(ksxVV, list):
+            pass
+        else:
+            ksxVV = [ksxVV]
+            ksxHH = [ksxHH]
+
+        def asyx_SZ(vza, vaa, func, izaDeg, iaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol):
+            vzaDeg = vza * RAD_TO_DEG
+            vaaDeg = vaa * RAD_TO_DEG
+
+            cos_t0 = np.cos(izaDeg * DEG_TO_RAD)
+            sin_t0 = np.sin(izaDeg * DEG_TO_RAD)
+
+            S, Z = func(vzaDeg=vzaDeg, vaaDeg=vaaDeg, izaDeg=izaDeg, iaaDeg=iaaDeg, alphaDeg=alphaDeg,
+                        betaDeg=betaDeg, nmax=nmax, wavelength=wavelength)
+
+            if pol == 0:
+                I = Z[0, 0] + Z[0, 1]
+            if pol == 1:
+                I = Z[0, 0] - Z[0, 1]
+
+            cos_T_sin_t = 0.5 * (
+                    np.sin(2 * vza) * cos_t0 + (1 - np.cos(2 * vza)) * sin_t0 * np.cos((iaaDeg * DEG_TO_RAD) - vaa))
+
+            return I * cos_T_sin_t
+
+        for i in srange(len(self.iza)):
+            xsectVV = \
+                dblquad(asyx_SZ, 0, 2 * PI, lambda x: 0.0, lambda x: PI, args=(self.__calc_SZ_ifunc, self.izaDeg[i],
+                                                                               self.iaaDeg[i], self.alphaDeg[i],
+                                                                               self.betaDeg[i], self.nmax[i],
+                                                                               self.wavelength[i], 0))[0]
+
+            xsectHH = \
+                dblquad(asyx_SZ, 0, 2 * PI, lambda x: 0.0, lambda x: PI, args=(self.__calc_SZ_ifunc, self.izaDeg[i],
+                                                                               self.iaaDeg[i], self.alphaDeg[i],
+                                                                               self.betaDeg[i], self.nmax[i],
+                                                                               self.wavelength[i], 1))[0]
+
+            xsectVV_list.append(xsectVV / ksxVV[i])
+            xsectHH_list.append(xsectHH / ksxHH[i])
 
         return np.asarray(xsectVV_list).flatten(), np.asarray(xsectHH_list).flatten()
 
-    # ---- Auxiliary functions and private methods ----
-    def __calc_nmax(self):
-        """Initialize the T-matrix and calculate nmax parameter.
-        """
-
-        nmax = list()
-        for i in srange(len(self.izaDeg)):
-            temp = calc_nmax_wrapper(self.radius[i], self.radius_type, self.wavelength[i], self.eps[i],
-                                     self.axis_ratio[i], self.shape)
-
-            nmax.append(temp)
-
-        return np.asarray(nmax).flatten()
-
-    def __call_SZ(self):
-        """Get the S and Z matrices for a orientated SZ.
-        """
-        S_list = list()
-        Z_list = list()
-
-        for i in srange(len(self.izaDeg)):
-            S, Z = get_oriented_SZ(self.nmax[i], self.wavelength[i], self.izaDeg[i], self.vzaDeg[i],
-                                   self.iaaDeg[i], self.vaaDeg[i], self.alphaDeg[i],
-                                   self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
-                                   self.orient)
-
-            S_list.append(S)
-            Z_list.append(Z)
-
-        return S_list, Z_list
-
-    def __dblquad(self):
-        """Call the integrate function for half space integration.
-
-        Returns
-        -------
-        Z : array_like
-            Integrated Phase matrix.
-        """
-        Z_list = list()
-
-        for i in srange(len(self.izaDeg)):
-            Z = np.zeros((2, 2))
-            Z[0, 0] = dblquad_SZ_wrapper(self.nmax[i], self.wavelength[i], self.vzaDeg[i],
-                                         self.vaaDeg[i], self.alphaDeg[i],
-                                         self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
-                                         self.orient, 0)
-
-            Z[1, 1] = dblquad_SZ_wrapper(self.nmax[i], self.wavelength[i], self.vzaDeg[i],
-                                         self.vaaDeg[i], self.alphaDeg[i],
-                                         self.betaDeg[i], self.n_alpha, self.n_beta, self.or_pdf,
-                                         self.orient, 1)
-
-            # S_list.append(S)
-            Z_list.append(Z)
-
-        self.__dblquadZ = Z_list
-
-        return self.__dblquadZ
-
+    # ---- Other Functions ----
     def __get_pdf(self, pdf):
         """
         Auxiliary function to determine the PDF function.
