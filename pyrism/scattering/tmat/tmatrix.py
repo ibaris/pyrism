@@ -448,10 +448,13 @@ class TMatrix(Angles):
     def __get_kt(self):
         self.__kt = list()
 
-        ke = self.__get_ke
+        ke = self.ke
 
-        for item in ke:
-            self.__kt.append(1 - item)
+        if isinstance(ke, list):
+            for item in ke:
+                self.__kt.append(1 - item)
+        else:
+            self.__kt.append(1 - ke)
 
         return self.__kt
 
