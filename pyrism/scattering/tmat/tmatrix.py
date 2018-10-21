@@ -73,8 +73,6 @@ class TMatrix(Angles):
             extinction cross section, asymmetry parameter). The default is True.
          max_radius : int, float or None:
             Maximum diameter to consider. If None (default) max_radius will be approximated by the PSD functions.
-        N : int
-            Amount of scatterer. Default is 1.
         normalize : boolean, optional
             Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
             the default value is False.
