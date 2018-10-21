@@ -440,7 +440,7 @@ class TMatrixSingle(Angles, object):
 
         except AttributeError:
 
-            self.__ksiVV, self.__ksiHH = self.__calc_kex()
+            self.__ksiVV, self.__ksiHH = self.__calc_ksi()
 
             if len(self.__ksiVV) == 1:
                 return self.__ksiVV[0], self.__ksiHH[0]
@@ -669,8 +669,8 @@ class TMatrixSingle(Angles, object):
         S, Z = self.__call_SZ(vzaDeg=self.izaDeg, vaaDeg=self.iaaDeg)
 
         for i in srange(len(self.iza)):
-            VV = 2 * self.wavelength * S[i][0, 0].imag
-            HH = 2 * self.wavelength * S[i][1, 1].imag
+            VV = 2 * self.wavelength[i] * S[i][0, 0].imag
+            HH = 2 * self.wavelength[i] * S[i][1, 1].imag
 
             VV_list.append(VV)
             HH_list.append(HH)

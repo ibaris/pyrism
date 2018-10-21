@@ -9,7 +9,7 @@ DTYPE = np.float
 from libc.math cimport sin
 
 ctypedef np.float_t DTYPE_t
-from scipy.integrate import dblquad
+from scipy.integrate import dblquad, quad
 from pyrism.fortran_tm import fotm as tmatrix
 
 PI = 3.14159265359
@@ -155,6 +155,56 @@ cdef sca_intensity(np.ndarray Z, int pol):
         return HH
 
 # ----------------------------------------------------------------------------------------------------------------------
+# Orientation Function
+# ----------------------------------------------------------------------------------------------------------------------
+cdef gaussian(float std, float mean):
+    """Gaussian probability distribution function (PDF) for orientation averaging.
+
+    Parameters
+    ----------
+    std: int or float
+        The standard deviation in degrees of the Gaussian PDF
+    mean: int or float
+        The mean in degrees of the Gaussian PDF.  This should be a number in the interval [0, 180)
+
+    Returns
+    -------
+    pdf(x): callable
+        A function that returns the value of the spherical Jacobian-normalized Gaussian PDF with the given STD at x
+        (degrees). It is normalized for the interval [0, 180].
+    """
+    cdef float norm_const = 1.0
+
+    def pdf(x):
+        return norm_const * np.exp(-0.5 * ((x - mean) / std) ** 2) * \
+               np.sin(np.pi / 180.0 * x)
+
+    cdef float norm_dev = quad(pdf, 0.0, 180.0)[0]
+    # ensure that the integral over the distribution equals 1
+    norm_const /= norm_dev
+
+    return pdf
+
+def uniform():
+    """Uniform probability distribution function (PDF) for orientation averaging.
+
+    Returns
+    -------
+    pdf(x): callable
+        A function that returns the value of the spherical Jacobian-normalized uniform PDF. It is normalized for
+        the interval [0, 180].
+    """
+    cdef float norm_const = 1.0
+
+    def pdf(x):
+        return norm_const * np.sin(np.pi / 180.0 * x)
+
+    cdef float norm_dev = quad(pdf, 0.0, 180.0)[0]
+    # ensure that the integral over the distribution equals 1
+    norm_const /= norm_dev
+    return pdf
+
+# ----------------------------------------------------------------------------------------------------------------------
 # Other Auxiliary Functions
 # ----------------------------------------------------------------------------------------------------------------------
 cdef equal_volume_from_maximum(float radius, float axis_ratio, int shape):
@@ -180,6 +230,15 @@ cdef equal_volume_from_maximum(float radius, float axis_ratio, int shape):
 # ----------------------------------------------------------------------------------------------------------------------
 def sca_intensity_wrapper(np.ndarray Z, int pol):
     return sca_intensity(Z, pol)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Orientation Function Call Wrapper
+# ----------------------------------------------------------------------------------------------------------------------
+def gaussian_wrapper(float std, float mean):
+    return gaussian(std, mean)
+
+def uniform_wrapper():
+    return uniform()
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Auxiliary Function Call Wrapper

@@ -13,8 +13,8 @@ class TMatrix(Angles):
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
                  n_beta=10,
                  angle_unit='DEG', frequency_unit='GHz', psd=None, max_radius=10, num_points=1024,
-                 angular_integration=True,
-                 N=1, normalize=False, nbar=0.0):
+                 angular_integration=True, normalize=False, nbar=0.0):
+
         """T-Matrix scattering from nonspherical particles.
 
         Class for simulating scattering from nonspherical particles with the
@@ -175,23 +175,14 @@ class TMatrix(Angles):
         self.n_alpha = self.TM.n_alpha
         self.n_beta = self.TM.n_beta
         self.orientation_pdf = orientation_pdf
-        self.N = N
 
         # ---- Pre-calculation for extinction matrix ----
         self.k0 = wavenumber(self.frequency, unit=frequency_unit, output='cm')
         self.a = self.k0 * radius
-        self.factor = complex(0, 2 * PI * self.N) / self.k0
 
-        try:
-            self.nmax = self.TM.nmax
-        except AttributeError:
-            self.nmax = None
+        self.nmax = self.TM.nmax
+        self.factor = complex(0, 2 * PI * self.nmax.mean()) / self.k0
 
-        # self.__kex = None
-        # self.__ksx = None
-        # self.__asx = None
-        # self.__ksi = None
-        # self.__ks = None
 
     # ---- Property calls ----
     @property
@@ -287,6 +278,56 @@ class TMatrix(Angles):
                 return self.__ks[0]
             else:
                 return self.__ks
+
+    @property
+    def ka(self):
+        """
+        Absorption matrix for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__ka) == 1:
+                return self.__ka[0]
+            else:
+                return self.__ka
+
+        except (AttributeError, TypeError):
+
+            self.__ka = self.__get_ka()
+
+            if len(self.__ka) == 1:
+                return self.__ka[0]
+            else:
+                return self.__ka
+
+    @property
+    def omega(self):
+        """
+        Single scattering albedo matrix for the current setup, with polarization.
+
+        Returns
+        -------
+        VV, HH : list or array_like
+
+        """
+        try:
+            if len(self.__omega) == 1:
+                return self.__omega[0]
+            else:
+                return self.__omega
+
+        except (AttributeError, TypeError):
+
+            self.__omega = self.__get_omega()
+
+            if len(self.__omega) == 1:
+                return self.__omega[0]
+            else:
+                return self.__omega
 
     @property
     def kt(self):
@@ -459,29 +500,53 @@ class TMatrix(Angles):
         return self.__kt
 
     def __get_ks(self):
-        self.__ks = list()
+        ks_list = list()
+        ke = self.ke
+        omega = self.omega
+        if isinstance(omega, list):
 
-        V, H = self.ksx
-
-        if isinstance(self.TM.S, list):
-
-            for i in range(len(self.TM.S)):
+            for i in range(len(omega)):
                 ksm = np.zeros((4, 4))
 
-                ksm[0, 0] = self.N * V[i]
-                ksm[1, 1] = self.N * H[i]
+                ksm[0, 0] = self.omega[i][0, 0] * ke[i][0, 0]
+                ksm[1, 1] = self.omega[i][1, 1] * ke[i][1, 1]
 
-                self.__ks.append(ksm)
+                ks_list.append(ksm)
 
         else:
             ksm = np.zeros((4, 4))
 
-            ksm[0, 0] = self.N * V
-            ksm[1, 1] = self.N * H
+            ksm[0, 0] = omega[0, 0] * ke[0, 0]
+            ksm[1, 1] = omega[1, 1] * ke[1, 1]
 
-            self.__ks.append(ksm)
+            ks_list.append(ksm)
 
-        return self.__ks
+        return ks_list
+
+    def __get_ka(self):
+        ka_list = list()
+        ks = self.ks
+        omega = self.omega
+
+        if isinstance(omega, list):
+
+            for i in range(len(omega)):
+                kam = np.zeros((4, 4))
+
+                kam[0, 0] = (ks[i][0, 0] - omega[i][0, 0] * ks[i][0, 0]) / omega[i][0, 0]
+                kam[1, 1] = (ks[i][1, 1] - omega[i][1, 1] * ks[i][1, 1]) / omega[i][1, 1]
+
+                ka_list.append(kam)
+
+        else:
+            kam = np.zeros((4, 4))
+
+            kam[0, 0] = (ks[0, 0] - omega[0, 0] * ks[0, 0]) / omega[0, 0]
+            kam[1, 1] = (ks[1, 1] - omega[1, 1] * ks[1, 1]) / omega[1, 1]
+
+            ka_list.append(kam)
+
+        return ka_list
 
     def __get_ke(self):
         self.__ke = list()
@@ -659,6 +724,36 @@ class TMatrix(Angles):
 
                 else:
                     return self.TM.kex(self.geometriesDeg)
+
+    def __get_omega(self):
+        ksVV, ksHH = self.ksx
+        keVV, keHH = self.kex
+        omega_list = list()
+
+        try:
+            slen = len(ksVV)
+        except TypeError:
+            slen = 0
+
+        if slen > 1:
+
+            for i in range(len(ksVV)):
+                omega = np.zeros((4, 4))
+
+                omega[0, 0] = ksVV[i] / keVV[i]
+                omega[1, 1] = ksHH[i] / keHH[i]
+
+                omega_list.append(omega)
+
+        else:
+            ksm = np.zeros((4, 4))
+
+            ksm[0, 0] = ksVV / keVV
+            ksm[1, 1] = ksHH / keHH
+
+            omega_list.append(ksm)
+
+        return omega_list
 
     def __get_ksi(self):
         if self.__NAME is 'SINGLE':

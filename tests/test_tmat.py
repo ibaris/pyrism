@@ -20,7 +20,7 @@ class TestTMatrix():
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
                          axis_ratio=1 / 0.6, normalize=False)
 
-        S, Z = tm.S, tm.Z
+        S, Z = tm.SZ
 
         S_ref = np.array(
             [[complex(3.89338755e-02, -2.43467777e-01),
@@ -54,7 +54,7 @@ class TestTMatrix():
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
                          orientation_pdf=pdf, orientation='AA', normalize=False)
 
-        S, Z = tm.S, tm.Z
+        S, Z = tm.SZ
 
         S_ref = np.array(
             [[complex(6.49005717e-02, -2.42488000e-01),
@@ -88,7 +88,7 @@ class TestTMatrix():
                          radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
                          orientation_pdf=pdf, orientation='AF', normalize=False)
 
-        S, Z = tm.S, tm.Z
+        S, Z = tm.SZ
 
         S_ref = np.array(
             [[complex(6.49006090e-02, -2.42487917e-01),
@@ -125,7 +125,7 @@ class TestTMatrix():
                          psd=psd, num_points=500, max_radius=5, angular_integration=False,
                          normalize=False)
 
-        S, Z = tm.S, tm.Z
+        S, Z = tm.SZ
 
         S_ref = np.array(
             [[complex(1.02521928e+00, 6.76066598e-01),
@@ -363,7 +363,6 @@ class TestTMATCLASS:
         assert allclose(tm.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 1),
                         tm_ref.ifunc_Z(0.25, 0.10, vza, vaa, 0., 0., tm.nmax, tm.wavelength, 1))
 
-
     def test_single(self):
         iza = 90
         vza = 90
@@ -387,3 +386,25 @@ class TestTMATCLASS:
         assert allclose(tm.kex, tm_ref.kex)
         assert allclose(tm.asx, tm_ref.asx)
         assert tm.dblquad == None
+
+
+class TestXSEC:
+    def test_coef(self):
+        iza = 90
+        vza = 90
+        iaa = 0
+        vaa = 180
+
+        tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=2, frequency=4.612191661538, eps=complex(1.5, 0.5),
+                         axis_ratio=1 / 0.6, normalize=False)
+
+        ks = tm.ks
+        ka = tm.ka
+        kt = tm.kt
+        ke = tm.ke
+
+        assert allclose(ks[0, 0] + ka[0, 0], ke[0, 0])
+        assert allclose(ks[1, 1] + ka[1, 1], ke[1, 1])
+
+        assert allclose(ks[0, 0] + ka[0, 0] + kt[0, 0], 1)
+        assert allclose(ks[1, 1] + ka[1, 1] + kt[1, 1], 1)

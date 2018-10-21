@@ -1,28 +1,26 @@
 from __future__ import division
 
+import os
+import sys
+import warnings
 from datetime import datetime
 
+import numpy as np
 from pyrism.core.tma import (calc_nmax_wrapper, calc_single_wrapper, orient_averaged_adaptive_wrapper,
-                             orient_averaged_fixed_wrapper)
+                             orient_averaged_fixed_wrapper, equal_volume_from_maximum_wrapper)
 from radarpy import Angles, asarrays, align_all
 from radarpy import wavelength as cwavelength
+from scipy.integrate import dblquad
+from scipy.integrate import trapz
+
+from pyrism.auxil import get_version, Files
+from .orientation import Orientation
+from .tm_auxiliary import param
 
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
-import os
-
-from pyrism.auxil import get_version, Files
-
-import warnings
-
-import numpy as np
-from scipy.integrate import trapz
-from .orientation import Orientation
-from .tm_auxiliary import param
-import sys
-from scipy.integrate import dblquad
 
 warnings.simplefilter('default')
 # python 3.6 comparability
@@ -181,6 +179,7 @@ class TMatrixPSD(Angles, object):
         self._angular_table = None
 
         self._psd_D = np.linspace(self.D_max / self.num_points, self.D_max, self.num_points)
+        self.nmax = self.__calc_nmax()
 
         # self.init_SZ()
 
@@ -491,9 +490,6 @@ class TMatrixPSD(Angles, object):
 
         self._S_table = {}
         self._Z_table = {}
-        self.nmax = list()
-
-        self._m_table = np.empty(self.num_points, dtype=complex)
 
         if self.angular_integration:
             self._angular_table = {"sca_xsect_VV": {}, "ext_xsect_VV": {}, "asym_VV": {}, "sca_xsect_HH": {},
@@ -509,6 +505,10 @@ class TMatrixPSD(Angles, object):
                 for int_var in ["sca_xsect_VV", "ext_xsect_VV", "asym_VV", "sca_xsect_HH", "ext_xsect_HH", "asym_HH"]:
                     self._angular_table[int_var][geom] = np.empty(self.num_points)
 
+        self.nmax = np.zeros_like(self._psd_D)
+
+        self._m_table = np.empty(self.num_points, dtype=complex)
+
         for (i, D) in enumerate(self._psd_D):
 
             if verbose:
@@ -521,9 +521,15 @@ class TMatrixPSD(Angles, object):
             radius = D / 2.0
             nmax = calc_nmax_wrapper(radius, self.radius_type, self.wavelength, m, axis_ratio, self.shape)
 
-            self.nmax.append(nmax)
+            self.nmax[i] = nmax
+            # self.nmax = np.asarray(self.nmax).flatten()
 
+            # TODO 21.10.18 ibaris: This is anoying. If I try to calculate nmax out of the loop, the unit tests fails.
+            # But all the inputs are the same.
+
+            # for (i, nmax) in enumerate(self.nmax):
             for j, geom in enumerate(self.geometriesDeg):
+
                 izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg = geom
 
                 S, Z = self.__calc_SZ_ifunc(izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg, nmax, self.wavelength[j])
@@ -551,6 +557,34 @@ class TMatrixPSD(Angles, object):
 
                     self._angular_table["asym_VV"][geom][i] = asym_xsect_VV
                     self._angular_table["asym_HH"][geom][i] = asym_xsect_HH
+
+    def __calc_nmax(self):
+        """Initialize the T-matrix and calculate nmax parameter.
+        """
+        self._m_table = np.empty(self.num_points, dtype=complex)
+        nmax = list()
+
+        for (i, D) in enumerate(self._psd_D):
+
+            m = self.eps(D) if callable(self.eps) else self.eps
+            axis_ratio = self.axis_ratio(D) if callable(self.axis_ratio) else self.axis_ratio
+
+            self._m_table[i] = m
+            radius = D / 2.0
+
+            if self.radius_type == 2:
+                # Maximum radius is not directly supported in the original
+                # so we convert it to equal volume radius
+                radius_type = 1
+                radius = equal_volume_from_maximum_wrapper(radius, axis_ratio, self.shape)
+            else:
+                radius_type = self.radius_type
+
+            nmax_temp = calc_nmax_wrapper(radius, radius_type, self.wavelength, m, axis_ratio, self.shape)
+
+            nmax.append(nmax_temp)
+
+        return np.asarray(nmax).flatten()
 
     def ifunc_Z(self, iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol=None):
         """
