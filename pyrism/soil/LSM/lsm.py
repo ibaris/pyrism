@@ -60,22 +60,17 @@ class LSM:
         self.__calc()
         self.__store()
 
+    @property
+    def I(self):
+        return self.I
+
     def __calc(self):
         self.I = self.sRef * (self.moisture * lib.soil.rsoil1 + (1 - self.moisture) * lib.soil.rsoil2)
         self.int = [self.l, self.I]
         self.int = np.asarray(self.int, dtype=np.float32)
         self.int = self.int.transpose()
 
-        self.I = SoilResult(ISO=self.I,
-                            VV=np.zeros_like(self.I),
-                            HH=np.zeros_like(self.I),
-                            VH=np.zeros_like(self.I),
-                            HV=np.zeros_like(self.I),
-                            )
-
-        self.I['array'] = stacks((self.I.ISO, self.I.VV, self.I.HH, self.I.VH, self.I.HV))
-    #        self.surface = ReflectanceResult(ref=self.ref,
-    #       l=self.l)
+        self.I = SoilResult(array=self.I)
 
     def __store(self):
         # <Help and Info Section> -----------------------------------------
