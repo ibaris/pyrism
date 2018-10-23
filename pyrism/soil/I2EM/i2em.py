@@ -3,16 +3,16 @@ from __future__ import division
 
 import numpy as np
 from pyrism.core.iemauxil import calc_i2em_auxil, calc_iem_ems_wrapper
-from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays
+from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays, wavenumber, convert_frequency
 
 from .core import (exponential, gaussian, xpower, mixed)
 from ...auxil import SoilResult, EmissivityResult
-
+import warnings
 
 class I2EM(Angles):
 
     def __init__(self, iza, vza, raa, frequency, eps, corrlength, sigma, n=10, corrfunc='exponential', emissivity=False,
-                 angle_unit='DEG'):
+                 angle_unit='DEG', frequency_unit='GHz'):
 
         """
         RADAR Surface Scatter Based Kernel (I2EM). Compute BSC VV and
@@ -71,8 +71,22 @@ class I2EM(Angles):
         super(I2EM, self).__init__(iza=iza.real, vza=vza.real, raa=raa.real, normalize=False, nbar=0.0,
                                    angle_unit=angle_unit)
 
+        # Check validity
+        sl = sigma/corrlength
+        frequency = convert_frequency(frequency.real, unit=frequency_unit, output="GHz")
+        frequency = np.asarray(frequency).flatten()
+
+        if any(sl.real > 0.25):
+            warnings.warn("I2EM is valid for sigma/corrlength < 0.25. The actual ratio is: {0}".format(str(sl)))
+        if any(frequency.real > 4.5):
+            warnings.warn("I2EM is valid for frequency < 4.5. The actual frequency is: {0}".format(str(frequency.real)))
+
         # Setup variables
-        k = 2 * np.pi * frequency / 30
+        k = wavenumber(frequency, unit=frequency_unit, output='cm')
+        k = np.asarray(k).flatten()
+        # kz_iza = k * np.cos(self.izaDeg + 0.01)
+        # kz_vza = k * np.cos(self.vzaDeg)
+
         kz_iza = k * np.cos(self.iza + 0.01)
         kz_vza = k * np.cos(self.vza)
         phi = 0. + 0.j
@@ -144,7 +158,8 @@ class I2EM(Angles):
 
     class Emissivity(Angles):
 
-        def __init__(self, iza, frequency, eps, corrlength, sigma, corrfunc='exponential', angle_unit='DEG'):
+        def __init__(self, iza, frequency, eps, corrlength, sigma, corrfunc='exponential', angle_unit='DEG',
+                     frequency_unit='GHz'):
             """
             This Class calculates the emission from rough surfaces using the
             I2EM Model.
@@ -188,8 +203,9 @@ class I2EM(Angles):
 
             super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit)
 
-            fr = frequency / 1e9
-            k = 2 * np.pi * fr / 30
+            frequency /= 1e9
+
+            k = wavenumber(frequency, unit=frequency_unit, output='cm')
             corrfunc = self.__set_corrfunc(corrfunc)
 
             # calculate I2EM BSC
