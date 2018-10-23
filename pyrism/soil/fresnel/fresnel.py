@@ -3,7 +3,7 @@ from __future__ import division, print_function, absolute_import
 import sys
 
 import numpy as np
-from radarpy import Angles, align_all, asarrays, BSC, BRF, dB, stacks, BRDF
+from radarpy import Angles, align_all, asarrays, BSC, BRF, dB, stacks, BRDF, wavenumber
 from pyrism.core.fauxil import reflectivity_wrapper, quad_wrapper, snell_wrapper
 
 from ...auxil import SoilResult
@@ -12,7 +12,7 @@ EPSILON = sys.float_info.epsilon  # typical floating-point calculation error
 
 
 class Fresnel(Angles):
-    def __init__(self, xza, frequency, eps, sigma, normalize=False, nbar=0.0, angle_unit='DEG'):
+    def __init__(self, xza, frequency, eps, sigma, normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz'):
         """
         Parameters
         ----------
@@ -56,7 +56,7 @@ class Fresnel(Angles):
         self.eps = eps
         self.sigma = sigma
 
-        self.k0 = 2 * np.pi * frequency / 30
+        self.k0 = wavenumber(frequency, unit=frequency_unit, output='cm')
         self.h = 4 * self.sigma ** 2 * self.k0 ** 2
         self.loss = np.exp(-self.h * np.cos(self.xza) ** 2)
 
