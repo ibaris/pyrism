@@ -1142,9 +1142,9 @@ class PROSPECT:
         self.ks = self.Ra + self.Ta * Rsub * self.t / denom
         self.ka = 1 - self.ks - self.kt
         self.ke = self.ks + self.ka
-        self.om = self.ks / self.ke
+        self.omega = self.ks / self.ke
 
-        self.int = [self.l, self.ks, self.kt, self.ka, self.ke, self.om]
+        self.int = [self.l, self.ks, self.kt, self.ka, self.ke, self.omega]
         RT = np.asarray(self.int, dtype=np.float32)
         self.int = RT.transpose()
 
