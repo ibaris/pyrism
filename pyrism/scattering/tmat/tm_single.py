@@ -8,6 +8,7 @@ from pyrism.core.tma import (calc_nmax_wrapper,
                              sca_intensity_wrapper, calc_single_wrapper,
                              orient_averaged_adaptive_wrapper, orient_averaged_fixed_wrapper,
                              equal_volume_from_maximum_wrapper)
+
 from radarpy import Angles, align_all, wavelength
 
 from .orientation import Orientation
@@ -457,6 +458,9 @@ class TMatrixSingle(Angles, object):
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
     # -----------------------------------------------------------------------------------------------------------------
+    def call_SZ(self, izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None):
+        return self.__call_SZ(izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+
     def ifunc_Z(self, iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol=None):
         """
         Function to integrate the phase matrix which is compatible with scipy.integrate.dblquad.
@@ -505,17 +509,24 @@ class TMatrixSingle(Angles, object):
             # Maximum radius is not directly supported in the original
             # so we convert it to equal volume radius
             radius_type = 1
-            radius = equal_volume_from_maximum_wrapper(self.radius, self.axis_ratio, self.shape)
+            radius = np.zeros_like(self.iza)
+
+            for i, item in enumerate(self.radius):
+                radius[i] = equal_volume_from_maximum_wrapper(item, self.axis_ratio[i], self.shape)
+
         else:
             radius_type = self.radius_type
             radius = self.radius
 
         nmax = list()
+
         for i in srange(len(self.izaDeg)):
             temp = calc_nmax_wrapper(radius[i], radius_type, self.wavelength[i], self.eps[i],
                                      self.axis_ratio[i], self.shape)
 
             nmax.append(temp)
+
+        self.radius = radius
 
         return np.asarray(nmax).flatten()
 

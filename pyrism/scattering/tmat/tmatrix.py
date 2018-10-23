@@ -10,10 +10,9 @@ PI = 3.14159265359
 class TMatrix(Angles):
 
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
-                 radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
-                 n_beta=10,
-                 angle_unit='DEG', frequency_unit='GHz', psd=None, max_radius=10, num_points=1024,
-                 angular_integration=True, normalize=False, nbar=0.0):
+                 radius_type='REV', shape='SPH', orientation='S', orientation_pdf=None, psd=None, axis_ratio=1.0,
+                 n_alpha=5, n_beta=10, max_radius=10, num_points=1024, angular_integration=False,
+                 normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz'):
 
         """T-Matrix scattering from nonspherical particles.
 
@@ -29,21 +28,19 @@ class TMatrix(Angles):
             The frequency of incident EM Wave in {'Hz', 'MHz', 'GHz', 'THz'} (see parameter frequency_unit).
         radius : int float or array_like
             Equivalent particle radius in [cm].
+        eps : complex
+            The complex refractive index.
+        alpha, beta: int, float or array_like
+            The Euler angles of the particle orientation in [DEG] or [RAD] (see parameter angle_unit). Default is 0.0.
         radius_type : {'EV', 'M', 'REA'}
             Specification of particle radius:
                 * 'REV': radius is the equivalent volume radius (default).
                 * 'M': radius is the maximum radius.
                 * 'REA': radius is the equivalent area radius.
-        eps : complex
-            The complex refractive index.
-        axis_ratio : int or float
-            The horizontal-to-rotational axis ratio.
         shape : {'SPH', 'CYL'}
             Shape of the particle:
                 * 'SPH' : spheroid,
                 * 'CYL' : cylinders.
-        alpha, beta: int, float or array_like
-            The Euler angles of the particle orientation in [DEG] or [RAD] (see parameter angle_unit).
         orientation : {'S', 'AA', 'AF'}
             The function to use to compute the orientational scattering properties:
                 * 'S': Single (default).
@@ -53,32 +50,34 @@ class TMatrix(Angles):
             Particle orientation Probability Density Function (PDF) for orientational averaging:
                 * 'gauss': Use a Gaussian PDF (default).
                 * 'uniform': Use a uniform PDR.
+        psd : callable or None
+            Particle Size Distribution Function (PSD). See pyrism.PSD. If None (default) a particle distribution
+        axis_ratio : int or float
+            The horizontal-to-rotational axis ratio.
         n_alpha : int
             Number of integration points in the alpha Euler angle. Default is 5.
         n_beta : int
             Umber of integration points in the beta Euler angle. Default is 10.
-        angle_unit : {'DEG', 'RAD'}, optional
-            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-        frequency_unit : {'Hz', 'MHz', 'GHz', 'THz'}
-            Unit of entered frequency. Default is 'GHz'.
-        psd : callable or None
-            Particle Size Distribution Function (PSD). See pyrism.PSD. If None (default) a particle distribution
+        max_radius : int, float or None:
+            Maximum diameter to consider. If None (default) max_radius will be approximated by the PSD functions.
         num_points : int
             The number of points for which to sample the PSD and
             scattering properties for; default num_points=1024 should be good
-            for most purposes
+            for most purposes.
         angular_integration : bool
             If True, also calculate the angle-integrated quantities (scattering cross section,
-            extinction cross section, asymmetry parameter). The default is True.
-         max_radius : int, float or None:
-            Maximum diameter to consider. If None (default) max_radius will be approximated by the PSD functions.
+            extinction cross section, asymmetry parameter). The default is False.
         normalize : boolean, optional
             Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
             the default value is False.
         nbar : float, optional
             The sun or incidence zenith angle at which the isotropic term is set
             to if normalize is True. The default value is 0.0.
+        angle_unit : {'DEG', 'RAD'}, optional
+            * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+            * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+        frequency_unit : {'Hz', 'MHz', 'GHz', 'THz'}
+            Unit of entered frequency. Default is 'GHz'.
 
         Returns
         -------
@@ -86,18 +85,31 @@ class TMatrix(Angles):
             Complex Scattering Matrix.
         TMatrix.Z : array_like
             Phase Matrix.
-        TMatrix.SZ : tuple
+        TMatrix.SZ : list or array_like
              Complex Scattering Matrix and Phase Matrix.
-        TMatrix.ksi : tuple
+
+        TMatrix.ks : list or array_like
+            Scattering coefficient matrix in [1/cm] for VV and HH polarization.
+        TMatrix.ka : list or array_like
+            Absorption coefficient matrix in [1/cm] for VV and HH polarization.
+        TMatrix.ke : list or array_like
+            Extinction coefficient matrix in [1/cm] for VV and HH polarization.
+        TMatrix.kt : list or array_like
+            Transmittance coefficient matrix in [1/cm] for VV and HH polarization.
+        TMatrix.omega : list or array_like
+            Single scattering albedo coefficient matrix in [1/cm] for VV and HH polarization.
+
+        TMatrix.ksx : list or array_like
+            Scattering Cross Section in [cm^2] for VV and HH polarization.
+        TMatrix.kex : list or array_like
+            Extinction Cross Section in [cm^2] for VV and HH polarization.
+        TMatrix.asx : list or array_like
+            Asymetry Factor in [cm^2] for VV and HH polarization.
+        TMatrix.ksi : list or array_like
             Scattering intensity for VV and HH polarization.
-        TMatrix.ksx : tuple
-            Scattering Cross Section for VV and HH polarization.
-        TMatrix.kex : tuple
-            Extinction Cross Section for VV and HH polarization.
-        TMatrix.asx : tuple
-            Asymetry Factor for VV and HH polarization.
+
         TMatrix.save_scatter_table : None
-            Save all results to a file. This only works if psd is defined.
+            Save all results to a file. This only works if psd is defined. Nor ready yet.
 
         See Also
         --------
@@ -418,6 +430,10 @@ class TMatrix(Angles):
             return None
 
     # ---- User callable methods ----
+    def call_SZ(self, izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None):
+        if self.__NAME is 'SINGLE':
+            return self.TM.call_SZ(izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+
     def ifunc_Z(self, iza, iaa, vzaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength, pol=None):
         """
         Function to integrate the phase matrix which is compatible with scipy.integrate.dblquad.
