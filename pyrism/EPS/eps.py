@@ -223,9 +223,9 @@ def vegetation(frequency, mg):
     return np.asarray(epsl, dtype=np.complex)
 
 
-def topp(mv, eps=None):
+def sm_to_eps(mv):
     """
-    Calculate the conplex dielectric constant from soil moisture with Topps model.
+    Calculate the complex dielectric constant from soil moisture with Topps model.
 
     Parameters
     ----------
@@ -243,3 +243,21 @@ def topp(mv, eps=None):
                   1 / 3.)
 
     return eps
+
+
+def eps_to_sm(eps):
+    """
+    Calculate soil moisture from the complex dielectric constant with Topps model.
+
+    Parameters
+    ----------
+    eps : complex
+        Dielectrix constant of soil.
+
+    Returns
+    -------
+
+    """
+    mv = -0.053 + 0.0292 * eps - 5.5e-4 * eps ** 2 + 4.3e-6 * eps ** 3
+
+    return mv.real
