@@ -28,7 +28,8 @@ iaa = 150
 vaa = 100
 
 tm = pyr.TMatrix(iza=iza, vza=vza, iaa=100, vaa=vaa,
-                 radius=5, frequency=1.26, eps=complex(15, 0.5), axis_ratio=1 / 0.6)
+                 radius=5, frequency=119, eps=complex(15, 0.5), axis_ratio=1 / 0.6,
+                 frequency_unit='THz')
 
 tm.get_ksx()
 

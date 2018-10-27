@@ -1,11 +1,13 @@
 from __future__ import division
-from pyrism.core.rscat import rayleigh_scattering_wrapper
-from pyrism.core.rphs import (pmatrix_wrapper, dblquad_c_wrapper, quad_c_wrapper,
-                                    dblquad_pcalc_c_wrapper, quad_pcalc_c_wrapper)
-import warnings
-import numpy as np
-from radarpy import Angles, align_all, asarrays, zeros_likes
+
 import sys
+import warnings
+
+import numpy as np
+from pyrism.core.rphs import (pmatrix_wrapper, dblquad_c_wrapper, quad_c_wrapper,
+                              dblquad_pcalc_c_wrapper, quad_pcalc_c_wrapper)
+from pyrism.core.rscat import rayleigh_scattering_wrapper
+from radarpy import Angles, wavelength, wavenumber, align_all, zeros_likes
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -45,23 +47,26 @@ class Rayleigh(object):
         Backscatter coefficient sigma 0.
     """
 
-    def __init__(self, frequency, radius, eps_p, eps_b=(1 + 1j)):
+    def __init__(self, frequency, radius, eps_p, eps_b=(1 + 1j), frequency_unit='GHz', radius_unit='m'):
+
+        if radius_unit is 'cm':
+            pass
+        elif radius_unit is 'm':
+            radius /= 100
+        elif radius_unit is 'nm':
+            radius *= 1e-7
 
         # Check validity
-        lm = 299792458 / (frequency * 1e9)  # Wavelength in meter
-        self.condition = (2 * np.pi * radius) / lm
+        self.k0 = wavenumber(frequency=frequency, unit=frequency_unit, output='cm')
+        self.condition = self.k0 * radius
 
         if np.any(self.condition >= 0.5):
             warnings.warn("Rayleigh condition not holds. You should use Mie scattering.", Warning)
         else:
             pass
 
-        radius /= 100
-
-        frequency, radius = asarrays((frequency, radius))
-        eps_p, eps_b = asarrays((eps_p, eps_b))
-
-        frequency, radius, eps_p, eps_b = align_all((frequency, radius, eps_p, eps_b))
+        frequency, radius = align_all((frequency, radius))
+        _, eps_p, eps_b = align_all((frequency, eps_p, eps_b))
 
         self.ke, self.ks, self.ka, self.kt, self.omega, self.BSC = zeros_likes(frequency, rep=6, dtype=np.float)
 

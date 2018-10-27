@@ -1,4 +1,4 @@
-from .scattering import Rayleigh, Mie, PSD, Orientation, TMatrix
+from .scattering import Rayleigh, Mie, Orientation, TMatrix
 from .soil import I2EM, LSM, Fresnel
 import EPS
 from .volume import VolScatt, LIDF, PROSPECT, SAIL
