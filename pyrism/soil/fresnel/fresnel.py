@@ -58,7 +58,7 @@ class Fresnel(Angles):
 
         self.k0 = wavenumber(frequency, unit=frequency_unit, output='cm')
         self.h = 4 * self.sigma ** 2 * self.k0 ** 2
-        self.loss = np.exp(-self.h * np.cos(self.xza) ** 2)
+        self.loss = 1 - np.exp(-self.h * np.cos(self.xza) ** 2)
 
         self.__rmatrix = self.__rcalc()
         self.I, self.BSC, self.BRF = self.__store(self.VV, self.HH, self.VH, self.HV)
