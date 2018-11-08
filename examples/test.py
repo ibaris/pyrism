@@ -51,7 +51,7 @@ Qs = XSEC_QS_AF_WRAPPER(nmax, wavelength, vzaDeg, vaaDeg, n_alpha, n_beta, or_pd
 
 
 
-from pyrism.scattering import TMatrixSingle, TMatrix
+from pyrism.scattering import TMatrix
 import numpy as np
 
 izaDeg = np.linspace(10, 30, 5)

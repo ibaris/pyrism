@@ -9,6 +9,7 @@ from libc.math cimport sin
 
 from scipy.integrate import dblquad, quad
 from pyrism.fortran_tm.fotm import calctmat, calcampl
+import sys
 
 DTYPE = np.complex
 ctypedef np.complex_t DTYPE_t
@@ -36,7 +37,7 @@ cdef :
 # ----------------------------------------------------------------------------------------------------------------------
 # Vectorized -----------------------------------------------------------------------------------------------------------
 cdef int[:] NMAX_VEC(double[:] radius, int radius_type, double[:] wavelength, double[:] eps_real, double[:] eps_imag,
-                     double[:] axis_ratio, int shape):
+                     double[:] axis_ratio, int shape, int verbose):
     """
     Calculate NMAX in a vectorized function. 
     
@@ -74,8 +75,14 @@ cdef int[:] NMAX_VEC(double[:] radius, int radius_type, double[:] wavelength, do
     cdef int[:] result_view = result
 
     for x in range(xmax):
+        if verbose == 1:
+            sys.stdout.write("\r" + "Computing NMAX: {0} of {1}".format(str(x+1), str(xmax)))
+            sys.stdout.flush()
+
         result_view[x] = calctmat(radius[x], radius_type, wavelength[x], eps_real[x], eps_imag[x], axis_ratio[x],
                                   shape, ddelt, ndgs)
+    if verbose == 1:
+        sys.stdout.write("\n")
 
     return result
 
@@ -741,7 +748,7 @@ cdef double IFUNC_XSEC_QS_S(double vza, double vaa, int nmax, double wavelength,
 
 # Scattering and Asymmetry for Single Orientation ----------------------------------------------------------------------
 cdef double[:,:] XSEC_QS_S(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, double[:] alphaDeg,
-                           double[:] betaDeg):
+                           double[:] betaDeg, int verbose):
     """Scattering Cross Section for single orientation.
     
     Parameters
@@ -771,15 +778,22 @@ cdef double[:,:] XSEC_QS_S(int[:] nmax, double[:] wavelength, double[:] izaDeg, 
     cdef double[:,:] QS_view = QS
 
     for x in range(xmax):
+        if verbose == 1:
+            sys.stdout.write("\r" + "Computing Scattering Cross Section for Single Orientation: {0} of {1}".format(str(x+1), str(xmax)))
+            sys.stdout.flush()
+
         for i in range(2):
             QS_view[x, i] = dblquad(IFUNC_XSEC_QS_S, 0, 2 * PI, lambda x: 0, lambda x: PI,
                                            args=(nmax[x], wavelength[x], izaDeg[x], iaaDeg[x], alphaDeg[x], betaDeg[x],
                                                  i, 0))[0]
 
+    if verbose == 1:
+        sys.stdout.write("\n")
+
     return QS_view
 
 cdef double[:,:] XSEC_ASY_S(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, double[:] alphaDeg,
-                            double[:] betaDeg):
+                            double[:] betaDeg, int verbose):
     """Asymetry Cross Section for single orientation.
     
     Parameters
@@ -813,10 +827,17 @@ cdef double[:,:] XSEC_ASY_S(int[:] nmax, double[:] wavelength, double[:] izaDeg,
     cdef double[:,:] QS_view = QS
 
     for x in range(xmax):
+        if verbose == 1:
+            sys.stdout.write("\r" + "Computing Asymmetry Cross Section for Single Orientation: {0} of {1}".format(str(x+1), str(xmax)))
+            sys.stdout.flush()
+
         for i in range(2):
             QS_view[x, i] = dblquad(IFUNC_XSEC_QS_S, 0, 2 * PI, lambda x: 0, lambda x: PI,
                                            args=(nmax[x], wavelength[x], izaDeg[x], iaaDeg[x], alphaDeg[x], betaDeg[x],
                                                  i, 1))[0]
+
+    if verbose == 1:
+        sys.stdout.write("\n")
 
     return QS_view
 
@@ -886,7 +907,7 @@ cdef double IFUNC_XSEC_QS_AF(double vza, double vaa, int nmax, double wavelength
 
 # Scattering and Asymmetry for Averaged Fixed Orientation --------------------------------------------------------------
 cdef double[:,:] XSEC_QS_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int n_alpha,
-                            int n_beta, or_pdf):
+                            int n_beta, or_pdf, int verbose):
     """Scattering Cross Section for Averaged Fixed Orientation.
 
     Parameters
@@ -918,15 +939,22 @@ cdef double[:,:] XSEC_QS_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg,
     cdef double[:,:] QS_view = QS
 
     for x in range(xmax):
+        if verbose == 1:
+            sys.stdout.write("\r" + "Computing Scattering Cross Section for Averaged Fixed Orientation: {0} of {1}".format(str(x+1), str(xmax)))
+            sys.stdout.flush()
+
         for i in range(2):
             QS_view[x, i] = dblquad(IFUNC_XSEC_QS_AF, 0, 2 * PI, lambda x: 0, lambda x: PI,
                                            args=(nmax[x], wavelength[x], izaDeg[x], iaaDeg[x], n_alpha, n_beta, or_pdf,
                                                  i, 0))[0]
 
+    if verbose == 1:
+        sys.stdout.write("\n")
+
     return QS_view
 
 cdef double[:,:] XSEC_ASY_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int n_alpha,
-                             int n_beta, or_pdf):
+                             int n_beta, or_pdf, int verbose):
     """Scattering Cross Section for Averaged Fixed Orientation.
 
     Parameters
@@ -958,10 +986,17 @@ cdef double[:,:] XSEC_ASY_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg
     cdef double[:,:] QS_view = QS
 
     for x in range(xmax):
+        if verbose == 1:
+            sys.stdout.write("\r" + "Computing Asymmetry Cross Section for Averaged Fixed Orientation: {0} of {1}".format(str(x+1), str(xmax)))
+            sys.stdout.flush()
+
         for i in range(2):
             QS_view[x, i] = dblquad(IFUNC_XSEC_QS_AF, 0, 2 * PI, lambda x: 0, lambda x: PI,
                                            args=(nmax[x], wavelength[x], izaDeg[x], iaaDeg[x], n_alpha, n_beta, or_pdf,
                                                  i, 1))[0]
+
+    if verbose == 1:
+        sys.stdout.write("\n")
 
     return QS_view
 
@@ -1305,7 +1340,7 @@ def equal_volume_from_maximum_wrapper(double[:] radius, double[:] axis_ratio, in
 # ----------------------------------------------------------------------------------------------------------------------
 # NMAX -----------------------------------------------------------------------------------------------------------------
 def NMAX_VEC_WRAPPER(double[:] radius, int radius_type, double[:] wavelength, double[:] eps_real, double[:] eps_imag,
-                   double[:] axis_ratio, int shape):
+                   double[:] axis_ratio, int shape, int verbose):
     """
     Calculate NMAX in a vectorized function.
 
@@ -1336,7 +1371,7 @@ def NMAX_VEC_WRAPPER(double[:] radius, int radius_type, double[:] wavelength, do
     """
 
     return NMAX_VEC(radius=radius, radius_type=radius_type, wavelength=wavelength, eps_real=eps_real, eps_imag=eps_imag,
-                    axis_ratio=axis_ratio, shape=shape)
+                    axis_ratio=axis_ratio, shape=shape, verbose=verbose)
 
 def NMAX_WRAPPER(double radius, int radius_type, double wavelength, double eps_real, double eps_imag,
                  double axis_ratio, int shape):
@@ -1565,7 +1600,7 @@ def DBLQUAD_Z_AF_WRAPPER(int[:] nmax, double[:] wavelength, double[:] xzaDeg, do
 # ----------------------------------------------------------------------------------------------------------------------
 # Single Orientation ---------------------------------------------------------------------------------------------------
 def XSEC_QS_S_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, double[:] alphaDeg,
-                      double[:] betaDeg):
+                      double[:] betaDeg, int verbose):
     """Scattering Cross Section for single orientation.
 
     Parameters
@@ -1586,10 +1621,10 @@ def XSEC_QS_S_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, doubl
         Two dimensional scattering cross section.
     """
 
-    return XSEC_QS_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,betaDeg)
+    return XSEC_QS_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, verbose)
 
 def XSEC_ASY_S_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, double[:] alphaDeg,
-                       double[:] betaDeg):
+                       double[:] betaDeg, int verbose):
     """Asymetry Cross Section for single orientation.
 
     Parameters
@@ -1614,11 +1649,11 @@ def XSEC_ASY_S_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, doub
     To obtain the asymetry factor the output of this function must be divided through the scattering cross section.
     """
 
-    return XSEC_ASY_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg)
+    return XSEC_ASY_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, verbose)
 
 # Averaged Fixed Orientation -------------------------------------------------------------------------------------------
 def XSEC_QS_AF_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int n_alpha, int n_beta,
-                         or_pdf):
+                         or_pdf, int verbose):
     """Scattering Cross Section for Averaged Fixed Orientation.
 
     Parameters
@@ -1641,10 +1676,10 @@ def XSEC_QS_AF_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, doub
         Two dimensional scattering cross section.
     """
 
-    return XSEC_QS_AF(nmax, wavelength, izaDeg, iaaDeg, n_alpha, n_beta, or_pdf)
+    return XSEC_QS_AF(nmax, wavelength, izaDeg, iaaDeg, n_alpha, n_beta, or_pdf, verbose)
 
 def XSEC_ASY_AF_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int n_alpha, int n_beta,
-                         or_pdf):
+                         or_pdf, int verbose):
     """Scattering Cross Section for Averaged Fixed Orientation.
 
     Parameters
@@ -1667,7 +1702,7 @@ def XSEC_ASY_AF_WRAPPER(int[:] nmax, double[:] wavelength, double[:] izaDeg, dou
         Two dimensional asymmetry cross section.
     """
 
-    return XSEC_ASY_AF(nmax, wavelength, izaDeg, iaaDeg, n_alpha, n_beta, or_pdf)
+    return XSEC_ASY_AF(nmax, wavelength, izaDeg, iaaDeg, n_alpha, n_beta, or_pdf, verbose)
 
 # Extinction and Intensity ---------------------------------------------------------------------------------------------
 def XSEC_QE_WRAPPER(double complex[:,:,:] S, double[:] wavelength):

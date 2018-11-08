@@ -29,7 +29,8 @@ DEG_TO_RAD = PI / 180.0
 class TMatrixSingle(Angles, object):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
-                 n_beta=10, normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz', radius_unit='m'):
+                 n_beta=10, normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz', radius_unit='m',
+                 verbose=False):
 
         """T-Matrix scattering from single nonspherical particles.
 
@@ -124,6 +125,7 @@ class TMatrixSingle(Angles, object):
         # --------------------------------------------------------------------------------------------------------------
         # Self Definitions
         # --------------------------------------------------------------------------------------------------------------
+        self.verbose = verbose
         self.normalize = normalize
         self.radius = radius
         self.radius_type = param[radius_type]
@@ -168,12 +170,12 @@ class TMatrixSingle(Angles, object):
         S : array_like
         """
         try:
-            return self.__property_return(self.__S)
+            return self.__property_return(self.__S, normalize=False)
 
         except AttributeError:
             self.__S, self.__Z = self.compute_SZ()
 
-            return self.__property_return(self.__S)
+            return self.__property_return(self.__S, normalize=False)
 
     @property
     def Z(self):
@@ -202,12 +204,12 @@ class TMatrixSingle(Angles, object):
         S, Z : tuple
         """
         try:
-            return self.__property_return(self.__S), self.__property_return(self.__Z)
+            return self.__property_return(self.__S, normalize=False), self.__property_return(self.__Z)
 
         except AttributeError:
             self.__S, self.__Z = self.compute_SZ()
 
-            return self.__property_return(self.__S), self.__property_return(self.__Z)
+            return self.__property_return(self.__S, normalize=False), self.__property_return(self.__Z)
 
     @property
     def Znorm(self):
@@ -299,12 +301,12 @@ class TMatrixSingle(Angles, object):
         """
 
         try:
-            return self.__property_return(self.__XS)
+            return self.__property_return(self.__XS, normalize=False)
 
         except AttributeError:
             self.__XS = self.__QS()
 
-            return self.__property_return(self.__XS)
+            return self.__property_return(self.__XS, normalize=False)
 
     @property
     def QAS(self):
@@ -328,7 +330,7 @@ class TMatrixSingle(Angles, object):
             self.__XAS = self.__QAS()
             XAS = self.__XAS
 
-        return self.__property_return(XAS.base / XS.base)
+        return self.__property_return(XAS.base / XS.base, normalize=False)
 
     @property
     def QE(self):
@@ -341,12 +343,12 @@ class TMatrixSingle(Angles, object):
         """
 
         try:
-            return self.__property_return(self.__XE)
+            return self.__property_return(self.__XE, normalize=False)
 
         except AttributeError:
             self.__XE = self.__QE()
 
-            return self.__property_return(self.__XE)
+            return self.__property_return(self.__XE, normalize=False)
 
     @property
     def I(self):
@@ -359,12 +361,12 @@ class TMatrixSingle(Angles, object):
         """
 
         try:
-            return self.__property_return(self.__XI)
+            return self.__property_return(self.__XI, normalize=False)
 
         except AttributeError:
             self.__XI = self.__I()
 
-            return self.__property_return(self.__XI)
+            return self.__property_return(self.__XI, normalize=False)
 
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
@@ -497,7 +499,7 @@ class TMatrixSingle(Angles, object):
 
         nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type, wavelength=self.wavelength,
                                 eps_real=self.epsr, eps_imag=self.epsi,
-                                axis_ratio=self.axis_ratio, shape=self.shape)
+                                axis_ratio=self.axis_ratio, shape=self.shape, verbose=self.verbose)
 
         self.radius = radius
 
@@ -530,10 +532,11 @@ class TMatrixSingle(Angles, object):
         """
 
         if self.orient is 'S':
-            QS = XSEC_QS_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg)
+            QS = XSEC_QS_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg,
+                                   verbose=self.verbose)
         elif self.orient is 'AF':
             QS = XSEC_QS_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.n_alpha, self.n_beta,
-                                   self.or_pdf)
+                                   self.or_pdf, verbose=self.verbose)
         else:
             raise ValueError("Orientation must be S or AF.")
 
@@ -545,10 +548,11 @@ class TMatrixSingle(Angles, object):
         """
 
         if self.orient is 'S':
-            QAS = XSEC_ASY_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg)
+            QAS = XSEC_ASY_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg,
+                                     verbose=self.verbose)
         elif self.orient is 'AF':
             QAS = XSEC_ASY_AF_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.n_alpha, self.n_beta,
-                                      self.or_pdf)
+                                      self.or_pdf, verbose=self.verbose)
         else:
             raise ValueError("Orientation must be S or AF.")
 
@@ -598,11 +602,19 @@ class TMatrixSingle(Angles, object):
             raise AssertionError(
                 "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
 
-    def __property_return(self, X):
-        if self.normalize:
-            return X[0:-1] - X[-1]
+    def __property_return(self, X, normalize=True):
+        if normalize:
+            if self.normalize:
+                # return X[0:-1] - X[-1]
+                return X
+            else:
+                return X
         else:
-            return X
+            if self.normalize:
+                # return X[0:-1]
+                return X
+            else:
+                return X
 
     # SubSection 2 -----------------------------------------------------------------------------------------------------
     # def __calc_SZ_ifunc(self, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg, nmax, wavelength):

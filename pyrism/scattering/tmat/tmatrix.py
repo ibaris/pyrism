@@ -12,7 +12,7 @@ class TMatrix(TMatrixSingle):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, N=1,
                  radius_type='REV', shape='SPH', orientation='S', orientation_pdf=None, axis_ratio=1.0,
                  n_alpha=5, n_beta=10, normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz',
-                 radius_unit='m'):
+                 radius_unit='m', verbose=False):
 
         """T-Matrix scattering from nonspherical particles.
 
@@ -119,7 +119,7 @@ class TMatrix(TMatrixSingle):
                                       orientation=orientation, axis_ratio=axis_ratio, orientation_pdf=orientation_pdf,
                                       n_alpha=n_alpha,
                                       n_beta=n_beta, angle_unit=angle_unit, frequency_unit=frequency_unit,
-                                      normalize=normalize, nbar=nbar, radius_unit=radius_unit)
+                                      normalize=normalize, nbar=nbar, radius_unit=radius_unit, verbose=verbose)
 
         # --------------------------------------------------------------------------------------------------------------
         # Calculation
@@ -145,12 +145,12 @@ class TMatrix(TMatrixSingle):
             MemoryView of type array([[VV, HH]])
         """
         try:
-            return self.__property_return(self.__ke)
+            return self.__property_return(self.__ke, normalize=False)
 
         except AttributeError:
             self.__ke = self.__KE()
 
-            return self.__property_return(self.__ke)
+            return self.__property_return(self.__ke, normalize=False)
 
     @property
     def ks(self):
@@ -163,12 +163,12 @@ class TMatrix(TMatrixSingle):
             MemoryView of type array([[VV, HH]])
         """
         try:
-            return self.__property_return(self.__ks)
+            return self.__property_return(self.__ks, normalize=False)
 
         except AttributeError:
             self.__ks = self.__KS()
 
-            return self.__property_return(self.__ks)
+            return self.__property_return(self.__ks, normalize=False)
 
     @property
     def ka(self):
@@ -181,12 +181,12 @@ class TMatrix(TMatrixSingle):
             MemoryView of type array([[VV, HH]])
         """
         try:
-            return self.__property_return(self.__ka)
+            return self.__property_return(self.__ka, normalize=False)
 
         except AttributeError:
             self.__ka = self.__KA()
 
-            return self.__property_return(self.__ka)
+            return self.__property_return(self.__ka, normalize=False)
 
     @property
     def omega(self):
@@ -199,12 +199,12 @@ class TMatrix(TMatrixSingle):
             MemoryView of type array([[VV, HH]])
         """
         try:
-            return self.__property_return(self.__omega)
+            return self.__property_return(self.__omega, normalize=False)
 
         except AttributeError:
             self.__omega = self.__OMEGA()
 
-            return self.__property_return(self.__omega)
+            return self.__property_return(self.__omega, normalize=False)
 
     @property
     def kt(self):
@@ -217,12 +217,12 @@ class TMatrix(TMatrixSingle):
             MemoryView of type array([[VV, HH]])
         """
         try:
-            return self.__property_return(self.__kt)
+            return self.__property_return(self.__kt, normalize=False)
 
         except AttributeError:
             self.__kt = self.__KT()
 
-            return self.__property_return(self.__kt)
+            return self.__property_return(self.__kt, normalize=False)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Auxiliary functions and private methods
@@ -256,8 +256,15 @@ class TMatrix(TMatrixSingle):
 
         return QS.base / QE.base
 
-    def __property_return(self, X):
-        if self.normalize:
-            return X[0:-1]
+    def __property_return(self, X, normalize=True):
+        if normalize:
+            if self.normalize:
+                # return X[0:-1] - X[-1]
+                return X
+            else:
+                return X
         else:
-            return X
+            if self.normalize:
+                return X
+            else:
+                return X
