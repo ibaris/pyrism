@@ -33,10 +33,8 @@ def denormalized_decorator(func):
     def denormalized(self):
         if self.normalized_flag:
             result = func(self)
-            if isinstance(result, ndarray):
-                return result[0:-1]
-            else:
-                return result.base[0:-1]
+
+            return result[0:-1]
         else:
             return func(self)
 

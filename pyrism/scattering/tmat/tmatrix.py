@@ -428,24 +428,20 @@ class TMatrix(Angles, object):
         return self.__or_pdf
 
     @property
-    @denormalized_decorator
     def n_alpha(self):
         return self.__n_alpha
 
     @n_alpha.setter
-    @denormalized_decorator
     def n_alpha(self, value):
         self.__n_alpha = int(value)
 
         self.__add_update_to_results()
 
     @property
-    @denormalized_decorator
     def n_beta(self):
         return self.__n_beta
 
     @n_beta.setter
-    @denormalized_decorator
     def n_beta(self, value):
         self.__n_beta = int(value)
 
@@ -1142,9 +1138,12 @@ class TMatrix(Angles, object):
         """
         if self.normalized_flag:
             izaDeg = np.append(self.izaDeg, 0)
-            vaaDeg = np.append(self.vaaDeg, 0)
+            iaaDeg = np.append(self.iaaDeg, 0)
+        else:
+            izaDeg = self.izaDeg
+            iaaDeg = self.iaaDeg
 
-        S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=vaaDeg)
+        S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=iaaDeg)
 
         if self.normalized_flag:
             S = S[0:-1]
