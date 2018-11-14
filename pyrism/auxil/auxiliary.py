@@ -2,9 +2,11 @@
 from __future__ import division
 
 import os
+import sys
 from datetime import datetime
 from os.path import expanduser
 
+EPSILON = sys.float_info.epsilon  # typical floating-point calculation error
 try:
     import cPickle as pickle
 except ImportError:
@@ -42,6 +44,58 @@ class Memorize(dict):
 
     def __dir__(self):
         return list(self.keys())
+
+
+class PyrismResultPol(dict):
+    """ Represents the reflectance result.
+
+    Returns
+    -------
+    All returns are attributes!
+    BSC.ISO, BSC.VV, BSC.HH, BSC.ISOdB, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
+        Radar Backscatter values. BSC.array contains the results as an array like array([[BSC.VV], [BSC.HH]]).
+    I.ISO, I.VV, I.HH, I.ISOdB, I.VVdB, I.HHdB, I.array, I,arraydB : array_like
+        Intensity (BRDF) values. BRDF.array contains the results as an array like array([[BRDF.VV], [BRDF.HH]]).
+    BRF.ISO, BRF.VV, BRF.HH, BRF.ISOdB, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
+        BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([[BRF.VV], [BRF.HH]]).
+    E.ISO, E.VV, E.HH, E.ISOdB, E.VVdB, E.HHdB, E.array, E,arraydB : array_like
+        Emissivity values. E.array contains the results as an array like array([[E.VV], [E.HH]]).
+
+    Notes
+    -----
+    There may be additional attributes not listed above depending of the
+    specific solver. Since this class is essentially a subclass of dict
+    with attribute accessors, one can see which attributes are available
+    using the `keys()` method. adar Backscatter values of multi scattering contribution of surface and volume
+    """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    __delattr__ = dict.__delitem__
+
+    KEYLIST = ['array', 'U', 'BSC', 'BSCdB',
+               'VV', 'HH', 'VH', 'HV',
+               'VVdB', 'HHdB', 'VHdB', 'HVdB']
+
+    def __repr__(self):
+        if self.keys():
+            m = max(map(len, list(self.keys()))) + 1
+            return '\n'.join([k.rjust(m) + ': ' + repr(v)
+                              for k, v in sorted(self.items())])
+        else:
+            return self.__class__.__name__ + "()"
+
+    def __dir__(self):
+        return list(self.keys())
+
+    def __setattr__(self, key, value):
+        if key not in PyrismResultPol.KEYLIST:
+            raise KeyError("{} is not a legal key of this PyrismResultPol".format(repr(key)))
+        dict.__setitem__(self, key, value)
 
 
 class SoilResult(dict):
