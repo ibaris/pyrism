@@ -6,7 +6,6 @@ import numpy as np
 
 from ...volume.library import get_data_one, get_data_two
 from ...auxil import SoilResult
-from radarpy import stacks
 
 try:
     lib = get_data_two()

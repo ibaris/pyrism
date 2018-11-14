@@ -3,7 +3,8 @@ from __future__ import division
 
 import numpy as np
 from pyrism.core.iemauxil import calc_i2em_auxil, calc_iem_ems_wrapper
-from radarpy import Angles, dB, BRDF, BRF, align_all, asarrays, wavenumber, convert_frequency
+from respy import Angles, dB, BRDF, BRF, align_all, asarrays, convert_frequency
+from respy import compute_wavenumber as wavenumber
 
 from .core import (exponential, gaussian, xpower, mixed)
 from ...auxil import SoilResult, EmissivityResult
