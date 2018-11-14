@@ -4,14 +4,14 @@ import sys
 import warnings
 
 import numpy as np
+from pyrism.auxil.auxiliary import denormalized_decorator, normalized_decorator
 from pyrism.core.tma import (NMAX_VEC_WRAPPER, SZ_S_VEC_WRAPPER, SZ_AF_VEC_WRAPPER, DBLQUAD_Z_S_WRAPPER,
                              XSEC_QS_S_WRAPPER, XSEC_ASY_S_WRAPPER, XSEC_ASY_AF_WRAPPER, XSEC_QE_WRAPPER,
                              XSEC_QSI_WRAPPER, KE_WRAPPER, KS_WRAPPER, KA_WRAPPER, KT_WRAPPER,
                              equal_volume_from_maximum_wrapper)
-from respy import Angles, EMW, align_all, PI
-
 from pyrism.scattering.tmat.orientation import Orientation
 from pyrism.scattering.tmat.tm_auxiliary import param_radius_type, param_shape, param_orientation
+from respy import Angles, EMW, align_all, PI
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -167,16 +167,21 @@ class TMatrix(Angles, object):
                         normalize=normalize, angle_unit=angle_unit, nbar=nbar)
 
         if normalize:
-            data = (frequency, radius, axis_ratio, alpha, beta, eps.real, eps.imag)
-            frequency, radius, axis_ratio, alpha, beta, eps_real, eps_imag = self.align_with(data)
+            data = (frequency, radius, axis_ratio, alpha, beta, eps.real, eps.imag, N)
+            frequency, radius, axis_ratio, alpha, beta, eps_real, eps_imag, N = self.align_with(data)
 
-        self.normalize = normalize
+        self.normalized_flag = normalize
+
         # Define Frequency -----------------------------------------------------------------------------------------
         self.EMW = EMW(input=frequency, unit=frequency_unit, output=radius_unit)
 
         self.frequency_unit = self.EMW.frequency_unit
         self.wavelength_unit = self.EMW.wavelength_unit
         self.radius_unit = self.EMW.wavelength_unit
+
+        self.__frequence = self.EMW.frequency
+        self.__wavelength = self.EMW.wavelength
+        self.__k0 = self.EMW.k0
 
         # Self Definitions -----------------------------------------------------------------------------------------
         self.__pol = 4
@@ -201,6 +206,9 @@ class TMatrix(Angles, object):
         self.__epsr = eps_real
 
         self.__N = N
+
+        self.__factor = (2 * PI * self.__N * 1j) / self.__k0
+        self.__chi = self.__k0 * self.__radius
 
         # Calculations ---------------------------------------------------------------------------------------------
         self.__nmax = self.__NMAX()
@@ -337,7 +345,7 @@ class TMatrix(Angles, object):
         -------
         len : int
         """
-        return self.__nmax.shape[0]
+        return self.nmax.shape[0]
 
     @property
     def shape(self):
@@ -352,32 +360,44 @@ class TMatrix(Angles, object):
 
     # Auxiliary Properties- --------------------------------------------------------------------------------------------
     @property
+    @denormalized_decorator
     def chi(self):
-        return self.k0 * self.radius
+        self.__chi = self.__k0 * self.__radius
+        return self.__chi
 
     @property
+    @denormalized_decorator
     def factor(self):
-        return (2 * PI * self.__N * 1j) / self.k0
+        self.__factor = (2 * PI * self.__N * 1j) / self.__k0
+        return self.__factor
 
     @property
+    @denormalized_decorator
     def nmax(self):
-        return self.__nmax
+        return self.__nmax.base
 
     # Frequency Calls ----------------------------------------------------------------------------------------------
     @property
+    @denormalized_decorator
     def frequency(self):
-        return self.EMW.frequency
+        self.__frequence = self.EMW.frequency
+        return self.__frequence
 
     @property
+    @denormalized_decorator
     def wavelength(self):
+        self.__wavelength = self.EMW.wavelength
         return self.EMW.wavelength
 
     @property
+    @denormalized_decorator
     def k0(self):
+        self.__k0 = self.EMW.k0
         return self.EMW.k0
 
     # Parameter Calls ----------------------------------------------------------------------------------------------
     @property
+    @denormalized_decorator
     def radius(self):
         return self.__radius
 
@@ -386,6 +406,7 @@ class TMatrix(Angles, object):
         return self.__radius_type
 
     @property
+    @denormalized_decorator
     def axis_ratio(self):
         return self.__axis_ratio
 
@@ -394,6 +415,7 @@ class TMatrix(Angles, object):
         return self.__shape_volume
 
     @property
+    @denormalized_decorator
     def eps(self):
         return self.__epsr + self.__epsi * 1j
 
@@ -406,26 +428,31 @@ class TMatrix(Angles, object):
         return self.__or_pdf
 
     @property
+    @denormalized_decorator
     def n_alpha(self):
         return self.__n_alpha
 
     @n_alpha.setter
+    @denormalized_decorator
     def n_alpha(self, value):
         self.__n_alpha = int(value)
 
         self.__add_update_to_results()
 
     @property
+    @denormalized_decorator
     def n_beta(self):
         return self.__n_beta
 
     @n_beta.setter
+    @denormalized_decorator
     def n_beta(self, value):
         self.__n_beta = int(value)
 
         self.__add_update_to_results()
 
     @property
+    @denormalized_decorator
     def N(self):
         return self.__N
 
@@ -459,6 +486,7 @@ class TMatrix(Angles, object):
 
     # Scattering and Phase Matrices ------------------------------------------------------------------------------------
     @property
+    @denormalized_decorator
     def S(self):
         """
         Scattering matrix.
@@ -474,6 +502,7 @@ class TMatrix(Angles, object):
         return self.__S
 
     @property
+    @normalized_decorator
     def Z(self):
         """
         Phase matrix.
@@ -564,10 +593,22 @@ class TMatrix(Angles, object):
 
     @property
     def array(self):
+        """
+        Return Z as a 4xn array.
+
+        Returns
+        -------
+        array_like
+        """
+        if self.__array is None:
+            self.__S, self.__Z = self.compute_SZ()
+            self.__array = self.__compute_array()
+
         return self.__array
 
     # Integration of S and Z -------------------------------------------------------------------------------------------
     @property
+    @normalized_decorator
     def dblquad(self):
         """
         Half space integration of the phase matrix in incidence direction.
@@ -871,6 +912,9 @@ class TMatrix(Angles, object):
         If the angles are NOT NONE, the new values will NOT be affect the property calls S, Z and SZ!
 
         """
+        if self.normalized_flag:
+            self.normalize = True
+
         if izaDeg is not None:
             _, izaDeg = align_all((self.izaDeg, izaDeg), dtype=np.double)
         else:
@@ -902,12 +946,14 @@ class TMatrix(Angles, object):
             betaDeg = self.betaDeg
 
         if self.__orient is 'S':
-            S, Z = SZ_S_VEC_WRAPPER(self.nmax, self.wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+            S, Z = SZ_S_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
         elif self.__orient is 'AF':
-            S, Z = SZ_AF_VEC_WRAPPER(self.nmax, self.wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, self.n_alpha,
-                                     self.n_beta, self.__or_pdf)
+            S, Z = SZ_AF_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
+                                     self.__n_alpha, self.__n_beta, self.__or_pdf)
         else:
             raise ValueError("Orientation must be S or AF.")
+
+        self.normalize = False
 
         return S, Z
 
@@ -960,7 +1006,7 @@ class TMatrix(Angles, object):
 
     # NMAX, S and Z ----------------------------------------------------------------------------------------------------
     def __compute_array(self):
-        array = np.zeros((self.__pol, self.len))
+        array = np.zeros((self.__pol, len(self.nmax)))
 
         for i in range(self.__pol):
             array[i] = self.Z[:, i].sum(axis=1)
@@ -984,11 +1030,16 @@ class TMatrix(Angles, object):
             radius_type = self.__radius_type
             radius = self.__radius
 
-        nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type, wavelength=self.wavelength,
+        if self.normalized_flag:
+            self.normalize = True
+
+        nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type, wavelength=self.__wavelength,
                                 eps_real=self.__epsr, eps_imag=self.__epsi,
                                 axis_ratio=self.__axis_ratio, shape=self.__shape_volume, verbose=self.verbose)
 
         self.__radius = radius
+
+        self.normalize = False
 
         return nmax
 
@@ -1003,9 +1054,10 @@ class TMatrix(Angles, object):
             xaaDeg = self.iaaDeg
 
         if self.__orient is 'S':
-            Z = DBLQUAD_Z_S_WRAPPER(self.nmax, self.wavelength, xzaDeg, xaaDeg, self.alphaDeg, self.betaDeg, iza_flag)
+            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength, xzaDeg, xaaDeg, self.alphaDeg,
+                                    self.betaDeg, iza_flag)
         elif self.__orient is 'AF':
-            Z = DBLQUAD_Z_S_WRAPPER(self.nmax, self.wavelength, xzaDeg, xaaDeg, self.n_alpha, self.n_beta,
+            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength, xzaDeg, xaaDeg, self.n_alpha, self.n_beta,
                                     self.__or_pdf,
                                     iza_flag)
         else:
@@ -1019,28 +1071,38 @@ class TMatrix(Angles, object):
         return KE_WRAPPER(self.factor, S)
 
     def __KT(self):
-        ke = self.ke
+        if self.__ke is None:
+            self.__ke = self.__KE()
 
-        return KT_WRAPPER(ke)
+        return KT_WRAPPER(self.__ke)
 
     def __OMEGA(self):
-        QS = self.QS
-        QE = self.QE
+        if self.__XS is None:
+            self.__XS = self.__QS()
 
-        return QS.base / QE.base
+        if self.__XE is None:
+            self.__XE = self.__QE()
+
+        return self.__XS.base / self.__XE.base
 
     def __KS(self):
 
-        ke = self.ke
-        omega = self.omega
+        if self.__ke is None:
+            self.__ke = self.__KE()
 
-        return KS_WRAPPER(ke, omega)
+        if self.__omega is None:
+            self.__omega = self.__OMEGA()
+
+        return KS_WRAPPER(self.__ke, self.__omega)
 
     def __KA(self):
-        ks = self.ks
-        omega = self.omega
+        if self.__ks is None:
+            self.__ks = self.__KS()
 
-        return KA_WRAPPER(ks, omega)
+        if self.__omega is None:
+            self.__omega = self.__OMEGA()
+
+        return KA_WRAPPER(self.__ks, self.__omega)
 
     def __QS(self):
         """
@@ -1078,8 +1140,14 @@ class TMatrix(Angles, object):
         """
         Extinction cross section for the current setup, with polarization.
         """
+        if self.normalized_flag:
+            izaDeg = np.append(self.izaDeg, 0)
+            vaaDeg = np.append(self.vaaDeg, 0)
 
-        S, Z = self.compute_SZ(vzaDeg=self.izaDeg, vaaDeg=self.iaaDeg)
+        S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=vaaDeg)
+
+        if self.normalized_flag:
+            S = S[0:-1]
 
         return XSEC_QE_WRAPPER(S, self.wavelength)
 
@@ -1117,17 +1185,3 @@ class TMatrix(Angles, object):
         else:
             raise AssertionError(
                 "The Particle size distribution (psd) must be callable or 'None' to get the default gaussian psd.")
-
-    def __property_return(self, X, normalize=True):
-        if normalize:
-            if self.normalize:
-                # return X[0:-1] - X[-1]
-                return X
-            else:
-                return X
-        else:
-            if self.normalize:
-                # return X[0:-1]
-                return X
-            else:
-                return X
