@@ -109,65 +109,6 @@ class TestTMatrix():
         assert allclose(S, S_ref)
         assert allclose(Z, Z_ref)
 
-    # def test_psd(self):
-    #     """Test a case that integrates over a particle size distribution
-    #     """
-    #     iza = 90
-    #     vza = 90
-    #     iaa = 0
-    #     vaa = 180
-    #
-    #     PSD = pyr.PSD(r0=0.5, mu=4, n0=1e3, rmax=5)
-    #     psd = PSD.gamma
-    #
-    #     tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa,
-    #                      radius=1, frequency=4.612191661538, eps=complex(1.5, 0.5), axis_ratio=1 / 0.6,
-    #                      psd=psd, num_points=500, max_radius=5, angular_integration=False,
-    #                      normalize=False)
-    #
-    #     S, Z = tm.SZ
-    #
-    #     S_ref = np.array(
-    #         [[complex(1.02521928e+00, 6.76066598e-01),
-    #           complex(6.71933838e-24, 6.83819665e-24)],
-    #          [complex(-6.71933678e-24, -6.83813546e-24),
-    #           complex(-1.10464413e+00, -1.05571494e+00)]])
-    #
-    #     Z_ref = np.array(
-    #         [[7.20540295e-02, -1.54020475e-02, -9.96222107e-25,
-    #           8.34246458e-26],
-    #          [-1.54020475e-02, 7.20540295e-02, 1.23279391e-25,
-    #           1.40049088e-25],
-    #          [9.96224596e-25, -1.23291269e-25, -6.89739108e-02,
-    #           1.38873290e-02],
-    #          [8.34137617e-26, 1.40048866e-25, -1.38873290e-02,
-    #           -6.89739108e-02]])
-    #
-    #     assert allclose(S[0, 0], S_ref[0, 0])
-    #     assert allclose(S[0, 1], S_ref[0, 1])
-    #     assert allclose(S[1, 0], S_ref[1, 0])
-    #     assert allclose(S[1, 1], S_ref[1, 1])
-    #
-    #     assert allclose(Z[0, 0], Z_ref[0, 0])
-    #     assert allclose(Z[0, 1], Z_ref[0, 1])
-    #     assert allclose(Z[0, 2], Z_ref[0, 2])
-    #     assert allclose(Z[0, 3], Z_ref[0, 3])
-    #
-    #     assert allclose(Z[1, 0], Z_ref[1, 0])
-    #     assert allclose(Z[1, 1], Z_ref[1, 1])
-    #     assert allclose(Z[1, 2], Z_ref[1, 2])
-    #     assert allclose(Z[1, 3], Z_ref[1, 3])
-    #
-    #     assert allclose(Z[2, 0], Z_ref[2, 0])
-    #     assert allclose(Z[2, 1], Z_ref[2, 1])
-    #     assert allclose(Z[2, 2], Z_ref[2, 2])
-    #     assert allclose(Z[2, 3], Z_ref[2, 3])
-    #
-    #     assert allclose(Z[3, 0], Z_ref[3, 0])
-    #     assert allclose(Z[3, 1], Z_ref[3, 1])
-    #     assert allclose(Z[3, 2], Z_ref[3, 2])
-    #     assert allclose(Z[3, 3], Z_ref[3, 3])
-
     def test_rayleigh(self):
         """Test match with Rayleigh scattering for small spheres
         """
