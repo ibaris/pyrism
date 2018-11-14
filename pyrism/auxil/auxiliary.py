@@ -13,7 +13,59 @@ except ImportError:
     import pickle
 
 import warnings
+from numpy import ndarray
 
+
+def denormalized_decorator(func):
+    """ Denormalize arrays with ndim 1 or 3
+    A property decorator to deal with normalization in class instances.
+    This decorator cuts the last element of the output if the class parameter `normalize` is set to True.
+
+    Parameters
+    ----------
+    func : callable
+
+    Returns
+    -------
+    callable
+    """
+
+    def denormalized(self):
+        if self.normalized_flag:
+            result = func(self)
+            if isinstance(result, ndarray):
+                return result[0:-1]
+            else:
+                return result.base[0:-1]
+        else:
+            return func(self)
+
+    return denormalized
+
+
+def normalized_decorator(func):
+    """ Normalize arrays with ndim 3
+    A property decorator to deal with normalization in class instances.
+    This decorator cuts the last element of the output and substract it with the other elements if the class
+    parameter `normalize` is set to True.
+
+    Parameters
+    ----------
+    func : callable
+
+    Returns
+    -------
+    callable
+    """
+
+    def denormalized(self):
+        if self.normalized_flag:
+            result = func(self)
+            return result[0:-1] - result[-1]
+        else:
+            return func(self)
+
+    return denormalized
 
 def get_version():
     version = dict()
