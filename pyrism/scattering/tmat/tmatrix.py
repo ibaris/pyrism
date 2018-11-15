@@ -88,6 +88,14 @@ class TMatrix(Angles, object):
 
         Attributes
         ----------
+        len : int
+            Length of elements.
+        shape : tuple
+            Shape of elements.
+        chi : array_like
+            Free space wave number times the radius.
+        factor : array_like
+            Pre-factor to calculate the extinction matrix: (2 * PI * N * 1j) / k0
         nmax : array_like
             NMAX parameter.
         frequency : array_like
@@ -102,6 +110,28 @@ class TMatrix(Angles, object):
             Wavelength unit. This is the same as radius unit. Access with respy.EMW.
         radius_unit : str
             Radius unit.
+        radius : array_like
+            Particle radius.
+        radius_type : str
+            Radius type.
+        axis_ratio : array_like
+            Axis ratio.
+        shape_volume : str
+            Shape of volume.
+        eps : array_like
+            The complex refractive index.
+        orientation : str
+            The function to use to compute the orientational scattering properties.
+        orientation_pdf: callable
+            Particle orientation Probability Density Function (PDF) for orientational averaging.
+        n_alpha : int
+            Number of integration points in the alpha Euler angle. Default is 5.
+        n_beta : int
+            Umber of integration points in the beta Euler angle. Default is 10.
+        N : array_like
+            Number of scatterer in unit volume
+        verbose : bool
+            Verbose.
 
         S : array_like
             Complex Scattering Matrix.
