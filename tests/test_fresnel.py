@@ -1,7 +1,6 @@
 import pyrism as pyr
 import numpy as np
 
-
 class TestFresnel:
     def test_rmatrix(self):
         iza = np.arange(0, 90, 1)  # Incidence zenith angle
@@ -20,10 +19,15 @@ class TestFresnel:
         assert len(fresnel.I.VH) == len(iza)
         assert len(fresnel.I.HV) == len(iza)
 
-        assert len(fresnel.VV) == len(iza)
-        assert len(fresnel.HH) == len(iza)
-        assert len(fresnel.VH) == len(iza)
-        assert len(fresnel.HV) == len(iza)
+        assert len(fresnel.BSC.VV) == len(iza)
+        assert len(fresnel.BSC.HH) == len(iza)
+        assert len(fresnel.BSC.VH) == len(iza)
+        assert len(fresnel.BSC.HV) == len(iza)
+
+        assert len(fresnel.BSCdB.VV) == len(iza)
+        assert len(fresnel.BSCdB.HH) == len(iza)
+        assert len(fresnel.BSCdB.VH) == len(iza)
+        assert len(fresnel.BSCdB.HV) == len(iza)
 
     def test_ematrix(self):
         iza = np.arange(0, 90, 10)  # Incidence zenith angle
@@ -37,12 +41,7 @@ class TestFresnel:
 
         fresnel = pyr.Fresnel.Emissivity(xza=iza, frequency=frequency, eps=eps, sigma=sigma)
 
-        assert len(fresnel.EMS.VV) == len(iza)
-        assert len(fresnel.EMS.HH) == len(iza)
-        assert len(fresnel.EMS.VH) == len(iza)
-        assert len(fresnel.EMS.HV) == len(iza)
-
-        assert len(fresnel.VV) == len(iza)
-        assert len(fresnel.HH) == len(iza)
-        assert len(fresnel.VH) == len(iza)
-        assert len(fresnel.HV) == len(iza)
+        assert len(fresnel.Bv.VV) == len(iza)
+        assert len(fresnel.Bv.HH) == len(iza)
+        assert len(fresnel.Bv.VH) == len(iza)
+        assert len(fresnel.Bv.HV) == len(iza)
