@@ -102,21 +102,24 @@ class PyrismResultPol(dict):
     Returns
     -------
     All returns are attributes!
-    BSC.ISO, BSC.VV, BSC.HH, BSC.ISOdB, BSC.VVdB, BSC.HHdB, BSC.array, BSC,arraydB : array_like
-        Radar Backscatter values. BSC.array contains the results as an array like array([[BSC.VV], [BSC.HH]]).
-    I.ISO, I.VV, I.HH, I.ISOdB, I.VVdB, I.HHdB, I.array, I,arraydB : array_like
-        Intensity (BRDF) values. BRDF.array contains the results as an array like array([[BRDF.VV], [BRDF.HH]]).
-    BRF.ISO, BRF.VV, BRF.HH, BRF.ISOdB, BRF.VVdB, BRF.HHdB, BRF.array, BRF,arraydB : array_like
-        BRF reflectance values (polarization-dependent). BRF.array contains the results as an array like array([[BRF.VV], [BRF.HH]]).
-    E.ISO, E.VV, E.HH, E.ISOdB, E.VVdB, E.HHdB, E.array, E,arraydB : array_like
-        Emissivity values. E.array contains the results as an array like array([[E.VV], [E.HH]]).
+    BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV, BSC.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV]).
+    BSCdB.U, BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV, BSCdB.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV]).
+    I.U, I.VV, I.HH, I.VH, I.HV, I.array : array_like
+        Intensity (BRDF) values. I.array contains the results as an array like array([I.U, I.VV, I.HH, I.VH, I.HV]).
+    Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV, Bv.array : array_like
+        Emissivity values (if available). Bv.array contains the results as an array
+        like array([Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV]).
 
     Notes
     -----
     There may be additional attributes not listed above depending of the
     specific solver. Since this class is essentially a subclass of dict
     with attribute accessors, one can see which attributes are available
-    using the `keys()` method. adar Backscatter values of multi scattering contribution of surface and volume
+    using the `keys()` method.
     """
 
     def __getattr__(self, name):
@@ -127,9 +130,8 @@ class PyrismResultPol(dict):
 
     __delattr__ = dict.__delitem__
 
-    KEYLIST = ['array', 'U', 'BSC', 'BSCdB',
-               'VV', 'HH', 'VH', 'HV',
-               'VVdB', 'HHdB', 'VHdB', 'HVdB']
+    KEYLIST = ['array', 'U', 'BSC', 'BSCdB', 'Bv',
+               'VV', 'HH', 'VH', 'HV']
 
     def __repr__(self):
         if self.keys():
