@@ -88,16 +88,32 @@ class TMatrix(Angles, object):
 
         Attributes
         ----------
-        len : int
-            Length of elements.
-        shape : tuple
-            Shape of elements.
-        chi : array_like
-            Free space wave number times the radius.
-        factor : array_like
-            Pre-factor to calculate the extinction matrix: (2 * PI * N * 1j) / k0
-        nmax : array_like
-            NMAX parameter.
+        iza, vza, raa, iaa, vaa, alpha, beta: array_like
+            Incidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
+            azimuth angle (ira, vra) in [RAD].
+        izaDeg, vzaDeg, raaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg: array_like
+            SIncidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
+            azimuth angle (ira, vra) in [DEG].
+        phi : array_like
+            Relative azimuth angle in a range between 0 and 2pi.
+        B, BDeg : array_like
+            The result of (1/cos(vza)+1/cos(iza)).
+        mui, muv : array_like
+            Cosine of iza and vza in [RAD].
+        geometries : tuple
+            If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [RAD]. If iaa and vaa is defined
+            the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [RAD]
+        geometriesDeg : tuple
+            If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [DEG]. If iaa and vaa is defined
+            the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [DEG]
+        nbar : float
+            The sun or incidence zenith angle at which the isotropic term is set
+            to if normalize is True. You can change this attribute within the class.
+        normlaize : bool
+            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+            the default value is False.
+        dtype : numpy.dtype
+            Desired data type of all values. This attribute is changeable.
         frequency : array_like
             Frequency. Access with respy.EMW.
         wavelength : array_like
@@ -108,6 +124,16 @@ class TMatrix(Angles, object):
             Frequency unit. Access with respy.EMW.
         wavelength_unit : str
             Wavelength unit. This is the same as radius unit. Access with respy.EMW.
+        len : int
+            Length of elements.
+        shape : tuple
+            Shape of elements.
+        chi : array_like
+            Free space wave number times the radius.
+        factor : array_like
+            Pre-factor to calculate the extinction matrix: (2 * PI * N * 1j) / k0
+        nmax : array_like
+            NMAX parameter.
         radius_unit : str
             Radius unit.
         radius : array_like
@@ -145,6 +171,8 @@ class TMatrix(Angles, object):
             Z at iza and vza == 0.
         dblquad : array_like
             Half space integrated Z.
+        array : array_like
+            Parameter Z as a 4xn array where the rows of the array are the row sums of the Z matrix.
 
         ks : list or array_like
             Scattering coefficient matrix in [1/cm] for VV and HH polarization.
