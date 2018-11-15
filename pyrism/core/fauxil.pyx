@@ -151,6 +151,13 @@ cdef r44c(float xza, double complex eps, _):
 
     return np.real(V * np.conjugate(H))
 
+def pol_reflection(xza, eps):
+    V, H = reflection_coefficients(xza, eps)
+    VV = V * V
+    HH = H * H
+
+    return pow(abs(VV), 2), pow(abs(HH), 2)
+
 cdef reflectivity_c(float xza, double complex eps):
     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
@@ -163,26 +170,6 @@ cdef reflectivity_c(float xza, double complex eps):
     mat[3, 3] = r44c(xza, eps, 0)
 
     return mat
-
-# cdef transmissivity_c(DTYPE_t xza, DTYPEC_t n1, DTYPEC_t n2):
-#     V, H = transmission_c(xza, n1, n2)
-#
-#     cdef np.ndarray[DTYPE_t, ndim=2] mat = np.zeros((4, 4), dtype=np.float)
-#     cdef np.ndarray[DTYPE_t, ndim=2] mat2 = np.zeros((5, 5), dtype=np.float)
-#
-#     cdef DTYPEC_t rza = snell_c(xza, n1, n2)
-#
-#     factor = ((n1 * cmath.cos(rza)).real / (n2 * cos(xza)).real)
-#
-#
-#     mat[0, 0] = r11c(xza, n1, n2)
-#     mat[1, 1] = r22c(xza, n1, n2)
-#     mat[2, 2] = r33c(xza, n1, n2)
-#     mat[2, 3] = r34c(xza, n1, n2)
-#     mat[3, 2] = r43c(xza, n1, n2)
-#     mat[3, 3] = r44c(xza, n1, n2)
-#
-#     return mat * factor
 
 
 cdef quad(float a, float b, double complex eps):
