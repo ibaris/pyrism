@@ -4976,7 +4976,7 @@ static PyObject *__pyx_f_6pyrism_4core_6fauxil_r44c(float __pyx_v_xza, __pyx_t_d
  * 
  * def pol_reflection(xza, eps):             # <<<<<<<<<<<<<<
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V
+ *     VV = V * V
  */
 
 /* Python wrapper */
@@ -5061,8 +5061,8 @@ static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4pol_reflection(CYTHON_UNUSED Py
  * 
  * def pol_reflection(xza, eps):
  *     V, H = reflection_coefficients(xza, eps)             # <<<<<<<<<<<<<<
- *     VV = V*V
- *     HH = H*H
+ *     VV = V * V
+ *     HH = H * H
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_reflection_coefficients); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -5165,8 +5165,8 @@ static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4pol_reflection(CYTHON_UNUSED Py
   /* "pyrism/core/fauxil.pyx":156
  * def pol_reflection(xza, eps):
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V             # <<<<<<<<<<<<<<
- *     HH = H*H
+ *     VV = V * V             # <<<<<<<<<<<<<<
+ *     HH = H * H
  * 
  */
   __pyx_t_1 = PyNumber_Multiply(__pyx_v_V, __pyx_v_V); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
@@ -5176,8 +5176,8 @@ static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4pol_reflection(CYTHON_UNUSED Py
 
   /* "pyrism/core/fauxil.pyx":157
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V
- *     HH = H*H             # <<<<<<<<<<<<<<
+ *     VV = V * V
+ *     HH = H * H             # <<<<<<<<<<<<<<
  * 
  *     return pow(abs(VV), 2), pow(abs(HH), 2)
  */
@@ -5187,7 +5187,7 @@ static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4pol_reflection(CYTHON_UNUSED Py
   __pyx_t_1 = 0;
 
   /* "pyrism/core/fauxil.pyx":159
- *     HH = H*H
+ *     HH = H * H
  * 
  *     return pow(abs(VV), 2), pow(abs(HH), 2)             # <<<<<<<<<<<<<<
  * 
@@ -5223,7 +5223,7 @@ static PyObject *__pyx_pf_6pyrism_4core_6fauxil_4pol_reflection(CYTHON_UNUSED Py
  * 
  * def pol_reflection(xza, eps):             # <<<<<<<<<<<<<<
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V
+ *     VV = V * V
  */
 
   /* function exit code */
@@ -10322,7 +10322,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * def pol_reflection(xza, eps):             # <<<<<<<<<<<<<<
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V
+ *     VV = V * V
  */
   __pyx_tuple__19 = PyTuple_Pack(6, __pyx_n_s_xza, __pyx_n_s_eps, __pyx_n_s_V, __pyx_n_s_H, __pyx_n_s_VV, __pyx_n_s_HH); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
@@ -10864,7 +10864,7 @@ if (!__Pyx_RefNanny) {
  * 
  * def pol_reflection(xza, eps):             # <<<<<<<<<<<<<<
  *     V, H = reflection_coefficients(xza, eps)
- *     VV = V*V
+ *     VV = V * V
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_6pyrism_4core_6fauxil_5pol_reflection, NULL, __pyx_n_s_pyrism_core_fauxil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

@@ -1,5 +1,38 @@
-
 import numpy as np
+
+
+def norm_wrap(func):
+    def norm_return_wrapper(norm):
+        if norm:
+            return func(norm)[0:-1]
+        else:
+            return func(norm)
+
+    return norm_return_wrapper
+
+
+@norm_wrap
+def S(norm):
+    if norm:
+        n = 10
+    else:
+        n = 9
+
+    return np.zeros((n, 2, 2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import pyrism as pyr
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -28,14 +61,16 @@ n_beta = 10
 import numpy as np
 from pyrism import TMatrix
 
-izaDeg = 20 #np.linspace(10, 30, 5)
+izaDeg = np.linspace(10, 30, 5)
 vzaDeg = 30
 iaaDeg = 150
 vaaDeg = 100
 radius = 0.03
 eps = (10 + 5j)
 
-tmat = TMatrix(iza=izaDeg, vza=vzaDeg, iaa=iaaDeg, vaa=vaaDeg, frequency=1.26, radius=radius, eps=eps)
+tmat = TMatrix(iza=izaDeg, vza=vzaDeg, iaa=iaaDeg, vaa=vaaDeg, frequency=1.26, radius=radius, eps=eps, normalize=True)
+
+
 tmat.N=[1,2]
 # tmat = TMatrixSingle(iza=izaDeg, vza=vzaDeg, iaa=iaaDeg, vaa=vaaDeg, frequency=1.26, radius=radius, eps=eps)
 
@@ -48,7 +83,16 @@ omega = qs.base / qe.base
 
 qas = tmat.QAS
 
+import numpy as np
 
+iza = 0.25
+vza = 0.10
+Rv0 = (0.4 + 0.9j)
+eps = (4 + 2j)
 
+sin_iza = np.sin(iza)
+sin_vza = np.sin(vza)
+cos_iza = np.cos(iza)
+Rv02 = pow(Rv0, 2)
 
-
+8 * Rv02 * sin_vza * (cos_iza + np.sqrt(eps - pow(sin_iza, 2))) / (cos_iza * np.sqrt(eps - pow(sin_iza, 2)))

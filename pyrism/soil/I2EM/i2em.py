@@ -2,7 +2,7 @@
 from __future__ import division
 
 import numpy as np
-from pyrism.core.iemauxil import calc_i2em_auxil, calc_iem_ems_wrapper
+from pyrism.core.iemauxil import i2em_wrapper, wvnb_wrapper, TS_wrapper  # , calc_iem_ems_wrapper
 from respy import Angles, dB, BRDF, BRF, align_all, asarrays, convert_frequency
 from respy import compute_wavenumber as wavenumber
 
@@ -65,16 +65,17 @@ class I2EM(Angles):
         """
 
         eps = np.asarray(eps).flatten()
-        iza, vza, raa, frequency, corrlength, sigma = asarrays((iza, vza, raa, frequency, corrlength, sigma))
+        iza, vza, raa, frequency, corrlength, sigma = asarrays((iza, vza, raa, frequency, corrlength, sigma),
+                                                               dtype=np.double)
 
-        iza, vza, raa, frequency, corrlength, sigma, eps = align_all((iza, vza, raa, frequency, corrlength, sigma, eps))
+        _, eps = align_all((iza, eps), dtype=np.complex)
 
-        super(I2EM, self).__init__(iza=iza.real, vza=vza.real, raa=raa.real, normalize=False, nbar=0.0,
+        super(I2EM, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0,
                                    angle_unit=angle_unit)
 
         # Check validity
         sl = sigma/corrlength
-        frequency = convert_frequency(frequency.real, unit=frequency_unit, output="GHz")
+        frequency = convert_frequency(frequency, unit=frequency_unit, output="GHz")
         frequency = np.asarray(frequency).flatten()
 
         if any(sl.real > 0.25):
@@ -85,38 +86,37 @@ class I2EM(Angles):
         # Setup variables
         k = wavenumber(frequency, unit=frequency_unit, output='cm')
         k = np.asarray(k).flatten()
-        # kz_iza = k * np.cos(self.izaDeg + 0.01)
-        # kz_vza = k * np.cos(self.vzaDeg)
 
         kz_iza = k * np.cos(self.iza + 0.01)
         kz_vza = k * np.cos(self.vza)
         phi = 0. + 0.j
-        corrfunc_ = self.__set_corrfunc(corrfunc)
+        corrfunc = self.__set_corrfunc(corrfunc)
 
-        # Setup temporal complex variables. This is due to a incompatibility with complex numbers and cython.
-        izac = self.iza.astype(np.complex)
-        vzac = self.vza.astype(np.complex)
-        raac = self.raa.astype(np.complex)
-        sigmac = sigma + 0.j
-        corrlengthc = corrlength + 0.j
+        wvnb = wvnb_wrapper(iza, vza, raa, phi, k)
+        Ts = TS_wrapper(iza, vza, sigma, k)
+        Wn, rss = corrfunc(sigma, corrlength, wvnb, Ts, n=n)
 
-        # calculate I2EM BSC
-        VV_list, HH_list = list(), list()
-        for i in range(len(self.iza)):
-            VV, HH = calc_i2em_auxil(k[i], kz_iza[i], kz_vza[i], izac[i], vzac[i], raac[i], phi, eps[i], corrlengthc[i],
-                                     sigmac[i], corrfunc_, n)
+        VV, HH = i2em_wrapper(k=k, kz_iza=kz_iza, kz_vza=kz_vza, iza=iza, vza=vza, raa=raa, phi=phi, eps=eps,
+                              corrlength=corrlength, sigma=sigma, Wn=Wn, rss=rss)
 
-            VV_list.append(VV)
-            HH_list.append(HH)
-
-        VV, HH = asarrays((VV_list, HH_list))
+        # # calculate I2EM BSC
+        # VV_list, HH_list = list(), list()
+        # for i in range(len(self.iza)):
+        #     VV, HH = calc_i2em_auxil(k[i], kz_iza[i], kz_vza[i], izac[i], vzac[i], raac[i], phi, eps[i], corrlengthc[i],
+        #                              sigmac[i], corrfunc_, n)
+        #
+        #     VV_list.append(VV)
+        #     HH_list.append(HH)
+        #
+        # VV, HH = asarrays((VV_list, HH_list))
 
         # Store data
         self.I, self.BRF, self.BSC = self.__store(VV, HH)
 
         if emissivity:
-            ems = I2EM.Emissivity(iza, frequency, eps, corrlength, sigma, corrfunc=corrfunc, angle_unit=angle_unit)
-            self.EMS = ems.EMS
+            pass
+            # ems = I2EM.Emissivity(iza, frequency, eps, corrlength, sigma, corrfunc=corrfunc, angle_unit=angle_unit)
+            #self.EMS = ems.EMS
 
     def __set_corrfunc(self, corrfunc):
         if corrfunc is 'exponential':
@@ -157,89 +157,89 @@ class I2EM(Angles):
 
         return I, BRF_, BSC
 
-    class Emissivity(Angles):
-
-        def __init__(self, iza, frequency, eps, corrlength, sigma, corrfunc='exponential', angle_unit='DEG',
-                     frequency_unit='GHz'):
-            """
-            This Class calculates the emission from rough surfaces using the
-            I2EM Model.
-
-            Parameters
-            ----------
-            iza : int, float or ndarray
-                Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
-            angle_unit : {'DEG', 'RAD'}, optional
-                * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
-                * 'RAD': All input angles (iza, vza, raa) are in [RAD].
-            frequency : int, float or ndarray
-                RADAR Frequency (GHz).
-            eps : int, float or ndarray
-                Complex dielectric constant of soil.
-            corrlength : int, float or ndarray
-                Correlation length (cm).
-            sigma : int, float or ndarray
-                RMS Height (cm)
-            corrfunc : {'exponential', 'gaussian', 'mixed'}, optional
-                Correlation distribution functions. The `mixed` correlation function is the result of the division of
-                gaussian correlation function with exponential correlation function. Default is 'exponential'.
-
-            Returns
-            -------
-            For attributes see also core.Kernel and core.EmissivityResult.
-
-            See Also
-            --------
-            pyrism.core.EmissivityResult
-            """
-
-            vza = np.zeros_like(iza)
-            raa = vza
-
-            eps = np.asarray(eps).flatten()
-            iza, vza, raa, frequency, corrlength, sigma = asarrays((iza, vza, raa, frequency, corrlength, sigma))
-
-            iza, vza, raa, frequency, corrlength, sigma, eps = align_all(
-                (iza, vza, raa, frequency, corrlength, sigma, eps))
-
-            super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit)
-
-            frequency /= 1e9
-
-            k = wavenumber(frequency, unit=frequency_unit, output='cm')
-            corrfunc = self.__set_corrfunc(corrfunc)
-
-            # calculate I2EM BSC
-            V_list, H_list = list(), list()
-            for i in range(len(self.iza)):
-                V, H = calc_iem_ems_wrapper(self.iza[i], k[i], sigma[i], corrlength[i], eps[i], corrfunc)
-
-                V_list.append(V)
-                H_list.append(H)
-
-            V, H = asarrays((V_list, H_list))
-
-            self.EMS = self.__store(V, H)
-
-        def __set_corrfunc(self, corrfunc):
-            if corrfunc is 'exponential':
-                corrfunc = 1
-            elif corrfunc is 'gaussian':
-                corrfunc = 2
-            elif corrfunc is 'mixed':
-                corrfunc = 3
-            else:
-                raise ValueError("The parameter corrfunc must be 'exponential', 'gaussian' or 'mixed'")
-
-            return corrfunc
-
-        def __store(self, V, H):
-
-            EMS = EmissivityResult(array=np.array([[V], [H]]),
-                                   arraydB=np.array([[dB(V)], [dB(H)]]),
-                                   V=V,
-                                   H=H,
-                                   VdB=dB(V),
-                                   HdB=dB(H))
-
-            return EMS
+    # class Emissivity(Angles):
+    #
+    #     def __init__(self, iza, frequency, eps, corrlength, sigma, corrfunc='exponential', angle_unit='DEG',
+    #                  frequency_unit='GHz'):
+    #         """
+    #         This Class calculates the emission from rough surfaces using the
+    #         I2EM Model.
+    #
+    #         Parameters
+    #         ----------
+    #         iza : int, float or ndarray
+    #             Incidence (iza) and scattering (vza) zenith angle, as well as relative azimuth (raa) angle.
+    #         angle_unit : {'DEG', 'RAD'}, optional
+    #             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
+    #             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
+    #         frequency : int, float or ndarray
+    #             RADAR Frequency (GHz).
+    #         eps : int, float or ndarray
+    #             Complex dielectric constant of soil.
+    #         corrlength : int, float or ndarray
+    #             Correlation length (cm).
+    #         sigma : int, float or ndarray
+    #             RMS Height (cm)
+    #         corrfunc : {'exponential', 'gaussian', 'mixed'}, optional
+    #             Correlation distribution functions. The `mixed` correlation function is the result of the division of
+    #             gaussian correlation function with exponential correlation function. Default is 'exponential'.
+    #
+    #         Returns
+    #         -------
+    #         For attributes see also core.Kernel and core.EmissivityResult.
+    #
+    #         See Also
+    #         --------
+    #         pyrism.core.EmissivityResult
+    #         """
+    #
+    #         vza = np.zeros_like(iza)
+    #         raa = vza
+    #
+    #         eps = np.asarray(eps).flatten()
+    #         iza, vza, raa, frequency, corrlength, sigma = asarrays((iza, vza, raa, frequency, corrlength, sigma))
+    #
+    #         iza, vza, raa, frequency, corrlength, sigma, eps = align_all(
+    #             (iza, vza, raa, frequency, corrlength, sigma, eps))
+    #
+    #         super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit)
+    #
+    #         frequency /= 1e9
+    #
+    #         k = wavenumber(frequency, unit=frequency_unit, output='cm')
+    #         corrfunc = self.__set_corrfunc(corrfunc)
+    #
+    #         # calculate I2EM BSC
+    #         V_list, H_list = list(), list()
+    #         for i in range(len(self.iza)):
+    #             V, H = calc_iem_ems_wrapper(self.iza[i], k[i], sigma[i], corrlength[i], eps[i], corrfunc)
+    #
+    #             V_list.append(V)
+    #             H_list.append(H)
+    #
+    #         V, H = asarrays((V_list, H_list))
+    #
+    #         self.EMS = self.__store(V, H)
+    #
+    #     def __set_corrfunc(self, corrfunc):
+    #         if corrfunc is 'exponential':
+    #             corrfunc = 1
+    #         elif corrfunc is 'gaussian':
+    #             corrfunc = 2
+    #         elif corrfunc is 'mixed':
+    #             corrfunc = 3
+    #         else:
+    #             raise ValueError("The parameter corrfunc must be 'exponential', 'gaussian' or 'mixed'")
+    #
+    #         return corrfunc
+    #
+    #     def __store(self, V, H):
+    #
+    #         EMS = EmissivityResult(array=np.array([[V], [H]]),
+    #                                arraydB=np.array([[dB(V)], [dB(H)]]),
+    #                                V=V,
+    #                                H=H,
+    #                                VdB=dB(V),
+    #                                HdB=dB(H))
+    #
+    #         return EMS
