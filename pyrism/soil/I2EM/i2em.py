@@ -5,10 +5,11 @@ import numpy as np
 from pyrism.core.iemauxil import i2em_wrapper, wvnb_wrapper, TS_wrapper  # , calc_iem_ems_wrapper
 from respy import Angles, dB, BRDF, BRF, align_all, asarrays, convert_frequency
 from respy import compute_wavenumber as wavenumber
-
+from respy import EMW
 from .core import (exponential, gaussian, xpower, mixed)
 from ...auxil import SoilResult, EmissivityResult
 import warnings
+
 
 class I2EM(Angles):
 
@@ -63,41 +64,45 @@ class I2EM(Angles):
         Hot spot direction is vza == iza and raa = 0.0
 
         """
-
-        eps = np.asarray(eps).flatten()
-        iza, vza, raa, frequency, corrlength, sigma = asarrays((iza, vza, raa, frequency, corrlength, sigma),
-                                                               dtype=np.double)
-
+        # Align Input Parameter ----------------------------------------------------------------------------------------
+        iza, vza, raa, frequency, corrlength, sigma = align_all((iza, vza, raa, frequency, corrlength, sigma),
+                                                                dtype=np.double)
         _, eps = align_all((iza, eps), dtype=np.complex)
+        _, n = align_all((iza, n), dtype=np.intc)
+
+        if angle_unit == 'DEG':  # This is the same procedure as in the Ulaby codes.
+            iza += 0.5729577951308232
+        else:
+            iza += 0.01
 
         super(I2EM, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0,
                                    angle_unit=angle_unit)
 
-        # Check validity
-        sl = sigma/corrlength
-        frequency = convert_frequency(frequency, unit=frequency_unit, output="GHz")
-        frequency = np.asarray(frequency).flatten()
+        # Assign Frequency and Roughness -------------------------------------------------------------------------------
+        sl = sigma / corrlength  # Roughness Parameter
 
+        self.EMW = EMW(input=frequency, unit=frequency_unit, output='cm')
+        frequency = self.EMW.frequency
+        k = self.EMW.k0
+
+        # < Check Validity of I2EM > ------------
         if any(sl.real > 0.25):
             warnings.warn("I2EM is valid for sigma/corrlength < 0.25. The actual ratio is: {0}".format(str(sl)))
         if any(frequency.real > 4.5):
             warnings.warn("I2EM is valid for frequency < 4.5. The actual frequency is: {0}".format(str(frequency.real)))
 
-        # Setup variables
-        k = wavenumber(frequency, unit=frequency_unit, output='cm')
-        k = np.asarray(k).flatten()
-
-        kz_iza = k * np.cos(self.iza + 0.01)
+        # Define Angle Parameter ---------------------------------------------------------------------------------------
+        kz_iza = k * np.cos(self.iza)
         kz_vza = k * np.cos(self.vza)
-        phi = 0. + 0.j
+        phi = np.zeros_like(iza)
+
+        # Calculations -------------------------------------------------------------------------------------------------
+        # < Correlation Function > ------------
         corrfunc = self.__set_corrfunc(corrfunc)
 
-        wvnb = wvnb_wrapper(iza, vza, raa, phi, k)
-        Ts = TS_wrapper(iza, vza, sigma, k)
-        Wn, rss = corrfunc(sigma, corrlength, wvnb, Ts, n=n)
-
-        VV, HH = i2em_wrapper(k=k, kz_iza=kz_iza, kz_vza=kz_vza, iza=iza, vza=vza, raa=raa, phi=phi, eps=eps,
-                              corrlength=corrlength, sigma=sigma, Wn=Wn, rss=rss)
+        # < I2EM > ------------
+        VV, HH = i2em_wrapper(k=k, kz_iza=kz_iza, kz_vza=kz_vza, iza=self.iza, vza=self.vza, raa=self.raa, phi=phi,
+                              eps=eps, corrlength=corrlength, sigma=sigma, corrfunc=corrfunc, n=n)
 
         # # calculate I2EM BSC
         # VV_list, HH_list = list(), list()
@@ -111,12 +116,12 @@ class I2EM(Angles):
         # VV, HH = asarrays((VV_list, HH_list))
 
         # Store data
-        self.I, self.BRF, self.BSC = self.__store(VV, HH)
+        self.I, self.BRF, self.BSC = self.__store(VV.base, HH.base)
 
         if emissivity:
             pass
             # ems = I2EM.Emissivity(iza, frequency, eps, corrlength, sigma, corrfunc=corrfunc, angle_unit=angle_unit)
-            #self.EMS = ems.EMS
+            # self.EMS = ems.EMS
 
     def __set_corrfunc(self, corrfunc):
         if corrfunc is 'exponential':

@@ -34,12 +34,12 @@ def exponential(sigma, corrlength, wvnb, Ts, n=None):
     """
 
     Wn = []
-    for i in srange(Ts):
-        i += 1
-        wn = corrlength ** 2 / i ** 2 * (1 + (wvnb * corrlength / i) ** 2) ** (-1.5)
+    for i in srange(1, Ts + 1):
+        # i += 1
+        wn = (corrlength ** 2 / i ** 2) * (1 + (wvnb * corrlength / i) ** 2) ** (-1.5)
         Wn.append(wn)
 
-    Wn = np.asarray(Wn, dtype=np.float)
+    Wn = np.asarray(Wn, dtype=np.double)
     rss = sigma / corrlength
 
     return Wn, rss

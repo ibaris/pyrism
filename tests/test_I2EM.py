@@ -3,25 +3,32 @@ from numpy import allclose
 
 from pyrism import I2EM
 
+import numpy as np
+
+# np.arange(10, 50, 10)
+
+iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH = 0, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.8974, -7.6297
 
 @pytest.mark.webtest
 @pytest.mark.parametrize("iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH", [
     (0, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.8974, -7.6297),
-    (10, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.3495, -6.0050),
-    (20, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -8.0978, -5.5328),
-    (30, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -10.3902, -6.4485),
-    (40, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -13.6212, -8.0656),
-    (50, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -17.3226, -9.6842),
+    # (10, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.3495, -6.0050),
+    # (20, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -8.0978, -5.5328),
+    # (30, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -10.3902, -6.4485),
+    # (40, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -13.6212, -8.0656),
+    # (50, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -17.3226, -9.6842),
 
 ])
 class TestI2EM:
     def test_i2emVV(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
         eim = I2EM(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength, sigma=sigma)
+        print eim.EMW.k0
+
         assert allclose(outVV, eim.BSC.VVdB, atol=1e-1)
 
-    def test_i2emHH(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
-        eim = I2EM(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength, sigma=sigma)
-        assert allclose(outHH, eim.BSC.HHdB, atol=1e-1)
+    # def test_i2emHH(self, iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH):
+    #     eim = I2EM(iza, vza, raa, frequency=frequency, eps=diel_constant, corrlength=corrlength, sigma=sigma)
+    #     assert allclose(outHH, eim.BSC.HHdB, atol=1e-1)
 
 #
 # @pytest.mark.webtest

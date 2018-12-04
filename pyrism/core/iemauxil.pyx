@@ -4,10 +4,12 @@ from __future__ import division
 cimport numpy as np
 import numpy as np
 import cmath
+import scipy
 from scipy.integrate import dblquad
 import cython
 from scipy.special import erf
 from libc.math cimport sin, cos, pow, sqrt, exp
+import sys
 
 DTYPE = np.float
 
@@ -33,6 +35,36 @@ cdef int factorial(int x):
             m = m * i
         return m
 
+cdef tuple compute_Wn_rss(corrfunc, double[:] iza, double[:] vza, double[:] raa, double[:] phi, double[:] k,
+                          double[:] sigma, double[:] corrlength, int[:] n):
+    cdef:
+        Py_ssize_t xmax = iza.shape[0]
+        Py_ssize_t i, j
+
+        double rss_temp
+        double[:, :] Wn_view
+        double[:] rss_view, wvnb, Wn_temp
+        int[:] Ts
+
+    wvnb = compute_wvnb(iza=iza, vza=vza, raa=raa, phi=phi, k=k)
+    Ts = compute_TS(iza=iza, vza=vza, sigma=sigma, k=k)
+
+    Wn = np.zeros((xmax, max(Ts.base)))
+    rss = np.zeros_like(iza)
+
+    Wn_view = Wn
+    rss_view = rss
+
+    for i in range(xmax):
+        Wn_temp, rss_temp = corrfunc(sigma[i], corrlength[i], wvnb[i], Ts[i], n=n[i])
+
+        for j in range(Wn_temp.shape[0]):
+            Wn_view[i, j] = Wn_temp[j]
+
+        rss_view[i] = rss_temp
+
+    return Wn, rss
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Computation of Rx0 and Rxi
 # ----------------------------------------------------------------------------------------------------------------------
@@ -53,7 +85,7 @@ cdef tuple compute_Rx0(double complex[:] eps):
 
     return Rv0, Rh0
 
-cdef tuple compute_Rxi(double[:] iza, complex[:] eps, double complex[:] rt):
+cdef tuple compute_Rxi(double[:] iza, double complex[:] eps, double complex[:] rt):
     cdef:
         Py_ssize_t xmax = iza.shape[0]
         Py_ssize_t i
@@ -66,7 +98,7 @@ cdef tuple compute_Rxi(double[:] iza, complex[:] eps, double complex[:] rt):
     Rhi_view = Rhi
 
     for i in range(xmax):
-        mui = complex(cos(iza[i]), 0)
+        mui = cos(iza[i])
         Rvi_view[i] = (eps[i] * mui - rt[i]) / (eps[i] * mui + rt[i])
         Rhi_view[i] = (mui - rt[i]) / (mui + rt[i])
 
@@ -152,29 +184,30 @@ cdef double complex[:] compute_Ft(double[:] iza, double[:] vza, double complex[:
     cdef:
         Py_ssize_t xmax = iza.shape[0]
         Py_ssize_t i
-        double complex[:] Rv0, Ft_view
-        double sin_iza, sin_vza, cos_iza, Rv02
+        double complex[:] Rv0, Rh0, Ft_view
+        double sin_iza, sin_vza, cos_iza
+        double complex Rv02
 
-    Rv0 = compute_Rx0(eps)
+    Rv0, Rh0 = compute_Rx0(eps)
 
-    Ft = np.zeros_like(iza, dtype=np.double)
+    Ft = np.zeros_like(iza, dtype=np.complex)
     Ft_view = Ft
 
     for i in range(xmax):
         sin_iza = sin(iza[i])
         sin_vza = sin(vza[i])
         cos_iza = cos(iza[i])
-        Rv02 = cmath.pow(Rv0[i], 2)
+        Rv02 = Rv0[i] * Rv0[i]
 
         Ft_view[i] = 8 * Rv02 * sin_vza * (cos_iza + cmath.sqrt(eps[i] - pow(sin_iza, 2))) / (cos_iza * cmath.sqrt(eps[i] - pow(sin_iza, 2)))
 
     return Ft
 
 cdef double[:] compute_Tf(double[:] iza, double[:] k, double[:] sigma, double complex[:] Rv0, double complex[:] Ft,
-                          int[:] Wn):
+                          double[:, :] Wn, int[:] Ts):
     cdef:
         Py_ssize_t xmax = iza.shape[0]
-        Py_ssize_t x, i
+        Py_ssize_t x, i, index
         double a0, a1, b1, temp, St, St0
         double[:] Tf_view
 
@@ -184,12 +217,14 @@ cdef double[:] compute_Tf(double[:] iza, double[:] k, double[:] sigma, double co
     a1, b1 = 0.0, 0.0
 
     for i in range(xmax):
-        x += 1
-        cos_iza = cos(iza[i])
-        a0 = pow(k[i] * sigma[i] * cos_iza, 2*x) / factorial(x)
-        a1 += a0 * Wn[i]
-        temp = abs(Ft[i] / 2 + pow(2, x) * Rv0[i] / cos_iza * exp(- pow((k[i] * sigma[i]) * cos_iza, 2)))
-        b1 += a0 * a0 * pow(temp, 2) * Wn[i]
+        for x in range(1, Ts[i] + 1):
+            index = x - 1
+
+            cos_iza = cos(iza[i])
+            a0 = pow(k[i] * sigma[i] * cos_iza, 2*x) / factorial(x)
+            a1 += a0 * Wn[i, index]
+            temp = abs(Ft[i] / 2 + pow(2, x) * Rv0[i] / cos_iza * exp(- pow((k[i] * sigma[i]) * cos_iza, 2)))
+            b1 += pow(a0, 2) * pow(temp, 2) * Wn[i, index]
 
         St = 0.25 * (abs(Ft[i]) ** 2) * a1 / b1
         St0 = 1 / (abs(1 + 8 * Rv0[i] / (cos_iza * Ft[i]))) ** 2
@@ -207,6 +242,9 @@ cdef tuple compute_ABCC(double Zy, double Zx, double iza, double complex eps):
         double A, CC, cos_iza, sin_iza, pd
         double complex B
 
+    cos_iza = cos(iza)
+    sin_iza = sin(iza)
+
     A = cos_iza + Zx * sin_iza
     B = (1 + pow(Zx, 2) + pow(Zy, 2)) * eps
     CC = pow(sin_iza, 2) - 2 * Zx * sin_iza * cos_iza + pow(Zx, 2) * pow(cos_iza, 2) + pow(Zy, 2)
@@ -214,7 +252,7 @@ cdef tuple compute_ABCC(double Zy, double Zx, double iza, double complex eps):
     return A, B, CC
 
 # Callable Integration Functions -----------------------------------------------------------------------------------
-cdef double RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+cdef double complex RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
     cdef:
         double A, CC, pd
         double complex B, Rv, Rav
@@ -225,9 +263,9 @@ cdef double RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx,
     Rv = (eps * A - cmath.sqrt(B - CC)) / (eps * A + cmath.sqrt(B - CC))
     Rav = Rv * pd
 
-    return Rav.real
+    return Rav#.real
 
-cdef double RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+cdef double complex RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
     cdef:
         double A, CC, pd
         double complex B, Rh, Rah
@@ -238,7 +276,19 @@ cdef double RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx,
     Rh = (A - cmath.sqrt(B - CC)) / (A + cmath.sqrt(B - CC))
     RaH = Rh * pd
 
-    return RaH.real
+    return RaH#.real
+
+cdef real_RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+    return scipy.real(RaV_integration_ifunc(Zy, Zx, iza, sigx, sigy, eps))
+
+cdef imag_RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+    return scipy.imag(RaV_integration_ifunc(Zy, Zx, iza, sigx, sigy, eps))
+
+cdef real_RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+    return scipy.real(RaH_integration_ifunc(Zy, Zx, iza, sigx, sigy, eps))
+
+cdef imag_RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps):
+    return scipy.imag(RaH_integration_ifunc(Zy, Zx, iza, sigx, sigy, eps))
 
 # Integration with SciPy -------------------------------------------------------------------------------------------
 cdef tuple Rax_integration(double[:] iza, double[:] sigma, double[:] corrlength, double complex[:] eps):
@@ -246,11 +296,12 @@ cdef tuple Rax_integration(double[:] iza, double[:] sigma, double[:] corrlength,
         Py_ssize_t xmax = iza.shape[0]
         Py_ssize_t i
         double bound, ravv, rahh
-        double[:] Rav_view, Rah_view
+        double complex[:] Rav_view, Rah_view
         double sigy, sigx
 
-    Rav = np.zeros_like(iza, dtype=np.double)
-    Rah = np.zeros_like(iza, dtype=np.double)
+    Rav = np.zeros_like(iza, dtype=np.complex)
+    Rah = np.zeros_like(iza, dtype=np.complex)
+
     Rav_view = Rav
     Rah_view = Rah
 
@@ -260,14 +311,27 @@ cdef tuple Rax_integration(double[:] iza, double[:] sigma, double[:] corrlength,
 
         bound = 3 * sigx
 
-        ravv = dblquad(RaV_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+        ravv_real = dblquad(real_RaV_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
                    args=(iza[i], sigx, sigy, eps[i]))[0]
 
-        rahh = dblquad(RaH_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+        rahh_real = dblquad(real_RaH_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
                    args=(iza[i], sigx, sigy, eps[i]))[0]
 
-        Rav_view[i] = ravv / (2 * PI * sigx * sigy)
-        Rah_view[i] = rahh / (2 * PI * sigx * sigy)
+        ravv_imag = dblquad(imag_RaV_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+                   args=(iza[i], sigx, sigy, eps[i]))[0]
+
+        rahh_imag = dblquad(imag_RaH_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+                   args=(iza[i], sigx, sigy, eps[i]))[0]
+
+
+        # ravv = dblquad(RaV_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+        #            args=(iza[i], sigx, sigy, eps[i]))[0]
+        #
+        # rahh = dblquad(RaH_integration_ifunc, -bound, bound, lambda x: -bound, lambda x: bound,
+        #            args=(iza[i], sigx, sigy, eps[i]))[0]
+
+        Rav_view[i] = complex(ravv_real, ravv_imag) / (2 * PI * sigx * sigy)
+        Rah_view[i] = complex(rahh_real, rahh_imag) / (2 * PI * sigx * sigy)
 
     return Rav, Rah
 
@@ -280,10 +344,10 @@ cdef tuple compute_Rxt(double[:] iza, double[:] vza, double[:] raa, double[:] si
     cdef:
         Py_ssize_t xmax = iza.shape[0]
         Py_ssize_t i
-        double[:] RaV, RaH
+        double complex[:] RaV, RaH
         double complex[:] Rvt_view, Rht_view, rt, Rv0, Rh0, Rvi, Rhi
 
-    rt = compute_rt(iza, eps.real, eps.imag)
+    rt = compute_rt(iza, eps.base.real, eps.base.imag)
 
     Rv0, Rh0 = compute_Rx0(eps)
     Rvi, Rhi = compute_Rxi(iza, eps, rt)
@@ -302,8 +366,8 @@ cdef tuple compute_Rxt(double[:] iza, double[:] vza, double[:] raa, double[:] si
             Rht_view[i] = Rhi[i] + (Rh0[i] - Rhi[i]) * Tf[i]
 
         else:
-            Rvt_view[i] = complex(RaV[i], 0)
-            Rht_view[i] = complex(RaH[i], 0)
+            Rvt_view[i] = RaV[i]
+            Rht_view[i] = RaH[i]
 
     return Rvt, Rht
 
@@ -342,7 +406,7 @@ cdef tuple compute_Cm1(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
     cdef:
         Py_ssize_t xmax = iza.shape[0]
         Py_ssize_t i
-        
+
         # < Temporaly Variable Definitions > ------------
         double Gqi
         double complex Gqti, qt
@@ -367,7 +431,7 @@ cdef tuple compute_Cm1(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
     for i in range(xmax):
         Rvii = Rvi[i]
         Rhii = Rhi[i]
-        
+
         sin_iza = sin(iza[i])
         sin_vza = sin(vza[i])
         sin_raa = sin(raa[i])
@@ -379,7 +443,7 @@ cdef tuple compute_Cm1(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
         cos_phi = cos(phi[i])
 
         ki = k[i]
-        k2 = pow(k[i], 2)
+        k2 = pow(ki, 2)
 
         Gqi = ud * kz_iza[i]
         Gqti = ud * ki * cmath.sqrt(eps[i] - pow(sin_iza, 2))
@@ -415,20 +479,20 @@ cdef tuple compute_Cm1(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
                               ki * sin_vza * (sin_vza * cos_raa - sin_iza * cos_phi))
 
 
-        qt = k * cmath.sqrt(eps[i] - pow(sin_iza, 2))
-    
+        qt = ki * cmath.sqrt(eps[i] - pow(sin_iza, 2))
+
         Fvv_view[i] = (1 + Rvii) * (-(1 - Rvii) * c11 / kz_iza[i] + (1 + Rvii) * c12 / qt) + \
                       (1 - Rvii) * ((1 - Rvii) * c21 / kz_iza[i] - (1 + Rvii) * c22 / qt) + \
                       (1 + Rvii) * ((1 - Rvii) * c31 / kz_iza[i] - (1 + Rvii) * c32 / eps[i] / qt) + \
                       (1 - Rvii) * ((1 + Rvii) * c41 / kz_iza[i] - eps[i] * (1 - Rvii) * c42 / qt) + \
                       (1 + Rvii) * ((1 + Rvii) * c51 / kz_iza[i] - (1 - Rvii) * c52 / qt)
-    
+
         Fhh_view[i] = (1 + Rhii) * ((1 - Rhii) * c11 / kz_iza[i] - eps[i] * (1 + Rhii) * c12 / qt) - \
                       (1 - Rhii) * ((1 - Rhii) * c21 / kz_iza[i] - (1 + Rhii) * c22 / qt) - \
                       (1 + Rhii) * ((1 - Rhii) * c31 / kz_iza[i] - (1 + Rhii) * c32 / qt) - \
                       (1 - Rhii) * ((1 + Rhii) * c41 / kz_iza[i] - (1 - Rhii) * c42 / qt) - \
                       (1 + Rhii) * ((1 + Rhii) * c51 / kz_iza[i] - (1 - Rhii) * c52 / qt)
-    
+
     return Fvv, Fhh
 
 # Compute Fxx with Method Two --------------------------------------------------------------------------------------
@@ -464,7 +528,7 @@ cdef tuple compute_Cm2(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
     for i in range(xmax):
         Rvii = Rvi[i]
         Rhii = Rhi[i]
-        
+
         sin_iza = sin(iza[i])
         sin_vza = sin(vza[i])
         sin_raa = sin(raa[i])
@@ -476,7 +540,7 @@ cdef tuple compute_Cm2(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
         cos_phi = cos(phi[i])
 
         ki = k[i]
-        k2 = pow(k[i], 2)
+        k2 = pow(ki, 2)
 
         Gqs = ud * kz_vza[i]
         Gqts = ud * ki * cmath.sqrt(eps[i] - pow(sin_iza, 2))
@@ -488,26 +552,26 @@ cdef tuple compute_Cm2(int ud, double complex[:] Rvi, double complex[:] Rhi, dou
         c21 = Gqs * (cos_raa * (cos_iza * (ki * cos_iza + Gqs) -
                                 ki * sin_iza * (sin_vza * cos_raa - sin_iza * cos_phi)) -
                      ki * sin_iza * sin_vza * sin_phi ** 2)
-        c22 = Gqts * (cos_raa * (cos_iza * (kz_iza + Gqs) -
+        c22 = Gqts * (cos_raa * (cos_iza * (kz_iza[i] + Gqs) -
                                  ki * sin_iza * (sin_vza * cos_raa - sin_iza * cos_phi)) -
                       ki * sin_iza * sin_vza * sin_phi ** 2)
 
         c31 = ki * sin_vza * (ki * cos_iza * (sin_vza * cos_raa - sin_iza * cos_phi) +
-                              sin_iza * (kz_iza + Gqs))
+                              sin_iza * (kz_iza[i] + Gqs))
         c32 = c31
 
-        c41 = ki * cos_vza * (cos_raa * (cos_iza * (kz_iza + Gqs) - ki * sin_iza *
+        c41 = ki * cos_vza * (cos_raa * (cos_iza * (kz_iza[i] + Gqs) - ki * sin_iza *
                                          (sin_vza * cos_raa - sin_iza * cos_phi)) -
                               ki * sin_iza * sin_vza * sin_phi ** 2)
         c42 = c41
 
         c51 = -cos_vza * (k2 * sin_vza * (sin_vza * cos_raa - sin_iza * cos_phi) +
-                          Gqs * cos_raa * (kz_iza + Gqs))
+                          Gqs * cos_raa * (kz_iza[i] + Gqs))
         c52 = -cos_vza * (k2 * sin_vza * (sin_vza * cos_raa - sin_iza * cos_phi) +
-                          Gqts * cos_raa * (kz_iza + Gqs))
+                          Gqts * cos_raa * (kz_iza[i] + Gqs))
 
 
-        qt = k * cmath.sqrt(eps[i] - pow(sin_iza, 2))
+        qt = ki * cmath.sqrt(eps[i] - pow(sin_iza, 2))
 
         Fvv_view[i] = (1 + Rvii) * (-(1 - Rvii) * c11 / kz_iza[i] + (1 + Rvii) * c12 / qt) + \
                       (1 - Rvii) * ((1 - Rvii) * c21 / kz_iza[i] - (1 + Rvii) * c22 / qt) + \
@@ -554,16 +618,16 @@ cdef double complex compute_Ixx(double qi, double qs, double kz_iza, double kz_v
     cdef:
         double complex Ixx
         double qi2, qs2, dkz, sigma2
-    
+
     dkz = (kz_vza - kz_iza)
     qi2 = pow(qi, 2)
     qs2 = pow(qs, 2)
     sigma2 = pow(sigma, 2)
-    
+
     Ixx = pow((kz_iza + kz_vza), i) * fvv * exp(-sigma2 * kz_iza * kz_vza) + 0.25 * \
-          (Fxxupi * pow((kz_vza - qi), (i - 1)) * exp(-sigma2 * (qi2 - qi * dkz)) + 
-           Fxxdni * pow((kz_vza + qi), (i - 1)) * exp(-sigma2 * (qi2 + qi * dkz)) + 
-           Fxxups * pow((kz_iza + qs), (i - 1)) * exp(-sigma2 * (qs2 - qs * dkz)) + 
+          (Fxxupi * pow((kz_vza - qi), (i - 1)) * exp(-sigma2 * (qi2 - qi * dkz)) +
+           Fxxdni * pow((kz_vza + qi), (i - 1)) * exp(-sigma2 * (qi2 + qi * dkz)) +
+           Fxxups * pow((kz_iza + qs), (i - 1)) * exp(-sigma2 * (qs2 - qs * dkz)) +
            Fxxdns * pow((kz_iza - qs), (i - 1)) * exp(-sigma2 * (qs2 + qs * dkz)))
 
     return Ixx
@@ -576,7 +640,7 @@ cdef tuple compute_IPP(double[:] iza, double[:] vza, double[:] k, double[:] kz_i
                        double complex[:] Fhhdns):
     cdef:
         Py_ssize_t xmax = iza.shape[0]
-        Py_ssize_t tmax = Ts.shape[0]
+        Py_ssize_t tmax = max(Ts.base)
         Py_ssize_t i, index
 
         # < Temporaly Variable Definitions > ------------
@@ -621,12 +685,11 @@ cdef tuple compute_IPP(double[:] iza, double[:] vza, double[:] k, double[:] kz_i
         qi = k[index] * cos(iza[index])
         qs = k[index] * cos(vza[index])
 
-        for i in range(1, tmax+1):
-
-            Ivv_view[index, i] = compute_Ixx(qi, qs, kz_izai, kz_vzai, sigmai, fvvi, fhhi, i, Fvvupii, Fvvupsi, Fvvdnii,
+        for i in range(1, Ts[index] + 1):
+            Ivv_view[index, i-1] = compute_Ixx(qi, qs, kz_izai, kz_vzai, sigmai, fvvi, fhhi, i, Fvvupii, Fvvupsi, Fvvdnii,
                                              Fvvdnsi)
 
-            Ihh_view[index, i] = compute_Ixx(qi, qs, kz_izai, kz_vzai, sigmai, fhhi, fhhi, i, Fhhupii, Fhhupsi, Fhhdnii,
+            Ihh_view[index, i-1] = compute_Ixx(qi, qs, kz_izai, kz_vzai, sigmai, fhhi, fhhi, i, Fhhupii, Fhhupsi, Fhhdnii,
                                               Fhhdnsi)
 
     return Ivv, Ihh
@@ -634,14 +697,13 @@ cdef tuple compute_IPP(double[:] iza, double[:] vza, double[:] k, double[:] kz_i
 # ----------------------------------------------------------------------------------------------------------------------
 # Computation of Sigma Nought
 # ----------------------------------------------------------------------------------------------------------------------
-cdef tuple compute_sigma_nought(int[:] Ts, int[:] Wn, double complex[:, :] Ivv, double complex[:, :] Ihh,
+cdef tuple compute_sigma_nought(int[:] Ts, double[:, :] Wn, double complex[:, :] Ivv, double complex[:, :] Ihh,
                                 double[:] ShdwS, double[:] k, double[:] kz_iza, double[:] kz_vza, double[:] sigma):
     cdef:
         Py_ssize_t xmax = kz_iza.shape[0]
-        Py_ssize_t tmax = Ts.shape[0]
-        Py_ssize_t i, index
+        Py_ssize_t i, index, i_index
 
-        double sigmavv, sigmahh, a0, sigma2i, kz_xzai2
+        double sigmavv, sigmahh, a0, sigma2i, kz_xzai2, fact
         double[:] VV_view, HH_view
 
     VV = np.zeros(xmax, dtype=np.double)
@@ -652,19 +714,20 @@ cdef tuple compute_sigma_nought(int[:] Ts, int[:] Wn, double complex[:, :] Ivv, 
 
     sigmavv, sigmahh = 0.0, 0.0
 
-    for index in range(xmax):
-        sigma2i = pow(sigma[index], 2)
-        kz_xzai2 = pow(kz_iza[index], 2) + pow(kz_vza[index], 2)
+    for i in range(xmax):
+        sigma2i = pow(sigma[i], 2)
+        kz_xzai2 = pow(kz_iza[i], 2) + pow(kz_vza[i], 2)
 
-        for i in range(1, tmax + 1):
+        for j in range(1, Ts[i] + 1):
+            index = j - 1
 
-            a0 = Wn[index] / factorial(i) * pow(sigma[index], (2 * i))
+            a0 = Wn[i, index] / factorial(j) * pow(sigma[i], (2 * j))
 
-            sigmavv += pow(abs(Ivv[index, i - 1]), 2) * a0
-            sigmahh += pow(abs(Ihh[index, i - 1]), 2) * a0
+            sigmavv += pow(abs(Ivv[i, index]), 2) * a0
+            sigmahh += pow(abs(Ihh[i, index]), 2) * a0
 
-        VV_view[index] = sigmavv * ShdwS[index] * pow(k[index], 2) / 2 * np.exp(-sigma2i * kz_xzai2)
-        HH_view[index] = sigmahh * ShdwS[index] * pow(k[index], 2) / 2 * np.exp(-sigma2i * kz_xzai2)
+        VV_view[i] = sigmavv * ShdwS[i] * pow(k[i], 2) / 2 * np.exp(-sigma2i * kz_xzai2)
+        HH_view[i] = sigmahh * ShdwS[i] * pow(k[i], 2) / 2 * np.exp(-sigma2i * kz_xzai2)
 
     return VV, HH
 
@@ -692,7 +755,7 @@ cdef double[:] compute_ShdwS(double[:] iza, double[:] vza, double[:] raa, double
             ctsorslp = cts / sqrt(2) / rslp
             shadf = 0.5 * (exp(-ctorslp ** 2) / sqrt(PI) / ctorslp - erf(ctorslp))
             shadfs = 0.5 * (exp(-ctsorslp ** 2) / sqrt(PI) / ctsorslp - erf(ctsorslp))
-            
+
             ShdwS_view[i] = 1 / (1 + shadf + shadfs)
         else:
             ShdwS_view[i] = 1.0
@@ -704,22 +767,27 @@ cdef double[:] compute_ShdwS(double[:] iza, double[:] vza, double[:] raa, double
 # Computation if I2EM
 # ----------------------------------------------------------------------------------------------------------------------
 cdef tuple compute_i2em(double[:] k, double[:] kz_iza, double[:] kz_vza, double[:] iza, double[:] vza, double[:] raa,
-                        double[:] phi, double complex[:] eps, double[:] corrlength, double[:] sigma, int[:] Wn,
-                        double[:] rss):
+                        double[:] phi, double complex[:] eps, double[:] corrlength, double[:] sigma,
+                        int[:] n, corrfunc):
 
     cdef:
         tuple Fxxyxx
         double complex[:] rt, Rvi, Rhi, Rv0, Rh0, Ft, Fvvupi, Fhhupi, Fvvups, Fhhups, Fvvdni, Fhhdni, Fvvdns, Fhhdns
-        double complex[:] RaV, RaH, Rvt, Rht, fvv, fhh
+        double complex[:] Rvt, Rht, fvv, fhh, RaV, RaH
         double complex[:, :] Ivv, Ihh
         double[:] wvnb, ShdwS, VV, HH, Tf
         int[:] Ts
-        
+
+    # Subsection3 --------------------------------------------------------------------------------------------------
+    Wn, rss = compute_Wn_rss(corrfunc=corrfunc, iza=iza, vza=vza, raa=raa, phi=phi, k=k, sigma=sigma,
+                             corrlength=corrlength, n=n)
+
+    Ts = compute_TS(iza=iza, vza=vza, sigma=sigma, k=k)
+
     # Reflection Coefficients --------------------------------------------------------------------------------------
-    rt = compute_rt(iza=iza, epsr=eps.real, epsi=eps.imag)
+    rt = compute_rt(iza=iza, epsr=eps.base.real, epsi=eps.base.imag)
     Rvi, Rhi = compute_Rxi(iza=iza, eps=eps, rt=rt)
     wvnb = compute_wvnb(iza=iza, vza=vza, raa=raa, phi=phi, k=k)
-    Ts = compute_TS(iza=iza, vza=vza, sigma=sigma, k=k)
 
     # Shadowing Function -------------------------------------------------------------------------------------------
     ShdwS = compute_ShdwS(iza=iza, vza=vza, raa=raa, rss=rss)
@@ -727,7 +795,7 @@ cdef tuple compute_i2em(double[:] k, double[:] kz_iza, double[:] kz_vza, double[
     # R-Transition -------------------------------------------------------------------------------------------------
     Rv0, Rh0 = compute_Rx0(eps)
     Ft = compute_Ft(iza=iza, vza=vza, eps=eps)
-    Tf = compute_Tf(iza=iza, k=k, sigma=sigma, Rv0=Rv0, Ft=Ft, Wn=Wn)
+    Tf = compute_Tf(iza=iza, k=k, sigma=sigma, Rv0=Rv0, Ft=Ft, Wn=Wn, Ts=Ts)
 
     # RaX Integration ----------------------------------------------------------------------------------------------
     RaV, RaH = Rax_integration(iza=iza, sigma=sigma, corrlength=corrlength, eps=eps)
@@ -749,14 +817,22 @@ cdef tuple compute_i2em(double[:] k, double[:] kz_iza, double[:] kz_vza, double[
     VV, HH = compute_sigma_nought(Ts=Ts, Wn=Wn, Ivv=Ivv, Ihh=Ihh,
                                   ShdwS=ShdwS, k=k, kz_iza=kz_iza, kz_vza=kz_vza, sigma=sigma)
 
+    __PAR__ = ['wn', 'rt', 'Rvi', 'Rhi', 'Ft', 'Tf', 'RaV', 'RaH', 'Rvt', 'Rht', 'fvv', 'fhh', 'Fvvupi', 'Fhhupi',
+               'Fvvups', 'Fhhups', 'Fvvdni', 'Fhhdni', 'Fvvdns', 'Fhhdns', 'Ivv', 'Ihh', 'VV', 'HH']
+    
+    __VAL__ = [Wn, rt.base, Rvi.base, Rhi.base, Ft.base, Tf.base, RaV.base, RaH.base, Rvt.base, Rht.base, fvv.base, fhh.base, Fvvupi.base, Fhhupi.base,
+               Fvvups.base, Fhhups.base, Fvvdni.base, Fhhdni.base, Fvvdns.base, Fhhdns.base, Ivv.base, Ihh.base, VV.base, HH.base]
+
+    for i, item in enumerate(__PAR__):
+        sys.stdout.write(item + ' = {0}{1}'.format(str(__VAL__[i]), str('\n')))
+
     return VV, HH
 
 def i2em_wrapper(double[:] k, double[:] kz_iza, double[:] kz_vza, double[:] iza, double[:] vza, double[:] raa,
-                 double[:] phi, double complex[:] eps, double[:] corrlength, double[:] sigma, int[:] Wn,
-                 double[:] rss):
-    
+                 double[:] phi, double complex[:] eps, double[:] corrlength, double[:] sigma, corrfunc, int[:] n):
+
     return compute_i2em(k=k, kz_iza=kz_iza, kz_vza=kz_vza, iza=iza, vza=vza, raa=raa, phi=phi, eps=eps,
-                        corrlength=corrlength, sigma=sigma, Wn=Wn, rss=rss)
+                        corrlength=corrlength, sigma=sigma, corrfunc=corrfunc, n=n)
 
 
 # Subsection1 ----------------------------------------------------------------------------------------------------------
