@@ -109,7 +109,7 @@ class TMatrix(Angles, object):
         nbar : float
             The sun or incidence zenith angle at which the isotropic term is set
             to if normalize is True. You can change this attribute within the class.
-        normlaize : bool
+        normalize : bool
             Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
             the default value is False.
         dtype : numpy.dtype
@@ -196,7 +196,8 @@ class TMatrix(Angles, object):
 
         Methods
         -------
-        compute_SZ(...) : Function to recalculate SZ for different angles.
+        compute_SZ(izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None)
+            Function to calculate SZ for different angles.
 
         See Also
         --------
@@ -960,7 +961,7 @@ class TMatrix(Angles, object):
 
         Note
         ----
-        If xzaDeg, xaaDeg, alpha pr beta is None, the inputed angles in __init__ will be choose.
+        If xzaDeg, xaaDeg, alpha or beta is None, the inputed angles in __init__ will be choose.
 
         !!! IMPORTANT !!!
         If the angles are NOT NONE, the new values will NOT be affect the property calls S, Z and SZ!
