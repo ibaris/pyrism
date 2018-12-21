@@ -4,7 +4,7 @@ from __future__ import division
 import sys
 
 import numpy as np
-from radarpy import asarrays, align_all
+from radarpy import asarrays, align_all, same_len
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -104,7 +104,7 @@ def saline_water(frequency, temp, salinity):
     return eps
 
 
-def soil(frequency, temp, S, C, mv, rho_b=1.7):
+def soil(frequency, temp, S, C, mv, rho_b=None):
     # <Help and Info Section> -----------------------------------------
     """
     Relative Dielectric Constant of soil.
@@ -133,40 +133,54 @@ def soil(frequency, temp, S, C, mv, rho_b=1.7):
     Dielectric Constant:    complex
 
     """
-    frequency = np.asarray(frequency).flatten()
-    epsl = []
+    if rho_b is None:
+        rho_b = 1.7
+
+        if len(frequency) > 1:
+            rho_b = np.zeros_like(frequency) + rho_b
+
+    else:
+        pass
+
+    frequency, temp, S, C, mv, rho_b = asarrays((frequency, temp, S, C, mv, rho_b))
+
+    if same_len((frequency, temp, S, C, mv, rho_b)):
+        pass
+    else:
+        raise ValueError("The input dimension must be the same")
+
+    eps = np.zeros_like(frequency, dtype=np.complex)
     for i in srange(len(frequency)):
         f_hz = frequency[i] * 1.0e9
 
-        beta1 = 1.27 - 0.519 * S - 0.152 * C
-        beta2 = 2.06 - 0.928 * S - 0.255 * C
+        beta1 = 1.27 - 0.519 * S[i] - 0.152 * C[i]
+        beta2 = 2.06 - 0.928 * S[i] - 0.255 * C[i]
         alpha = 0.65
 
         eps_0 = 8.854e-12
 
         sigma_s = 0
         if frequency[i] > 1.3:
-            sigma_s = -1.645 + 1.939 * rho_b - 2.256 * S + 1.594 * C
+            sigma_s = -1.645 + 1.939 * rho_b[i] - 2.256 * S[i] + 1.594 * C[i]
 
         if frequency[i] >= 0.3 and frequency[i] <= 1.3:
-            sigma_s = 0.0467 + 0.22 * rho_b - 0.411 * S + 0.661 * C
+            sigma_s = 0.0467 + 0.22 * rho_b[i] - 0.411 * S[i] + 0.661 * C[i]
 
         ew_inf = 4.9
-        ew_0 = 88.045 - 0.4147 * temp + 6.295e-4 * temp ** 2 + 1.075e-5 * temp ** 3
-        tau_w = (1.1109e-10 - 3.824e-12 * temp + 6.938e-14 * temp ** 2 - 5.096e-16 * temp ** 3) / 2 / np.pi
+        ew_0 = 88.045 - 0.4147 * temp[i] + 6.295e-4 * temp[i] ** 2 + 1.075e-5 * temp[i] ** 3
+        tau_w = (1.1109e-10 - 3.824e-12 * temp[i] + 6.938e-14 * temp[i] ** 2 - 5.096e-16 * temp[i] ** 3) / 2 / np.pi
 
         epsrW = ew_inf + (ew_0 - ew_inf) / (1 + (2 * np.pi * f_hz * tau_w) ** 2)
 
         epsiW = 2 * np.pi * tau_w * f_hz * (ew_0 - ew_inf) / (1 + (2 * np.pi * f_hz * tau_w) ** 2) + (
-                2.65 - rho_b) / 2.65 / mv * sigma_s / (2 * np.pi * eps_0 * f_hz)
+                2.65 - rho_b[i]) / 2.65 / mv[i] * sigma_s / (2 * np.pi * eps_0 * f_hz)
 
-        epsr = (1 + 0.66 * rho_b + mv ** beta1 * epsrW ** alpha - mv) ** (1 / alpha)
-        epsi = mv ** beta2 * epsiW
+        epsr = (1 + 0.66 * rho_b[i] + mv[i] ** beta1 * epsrW ** alpha - mv[i]) ** (1 / alpha)
+        epsi = mv[i] ** beta2 * epsiW
 
-        eps = np.complex(epsr, epsi)
-        epsl.append(eps)
+        eps[i] = epsr + epsi * 1j
 
-    return np.asarray(epsl, dtype=np.complex)
+    return eps  # np.asarray(epsl, dtype=np.complex)
 
 
 def vegetation(frequency, mg):
