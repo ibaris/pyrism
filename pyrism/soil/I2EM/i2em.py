@@ -157,7 +157,10 @@ class I2EM(Angles):
         self.__vals['betaDeg'] = self.betaDeg.mean()
 
         # Calculations ---------------------------------------------------------------------------------------------
-        self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+        # self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+        self.__I = None
+        self.__BRF = None
+        self.__BSC = None
 
     # ------------------------------------------------------------------------------------------------------------------
     # Magic Methods
@@ -244,14 +247,23 @@ class I2EM(Angles):
 
     @property
     def I(self):
+        if self.__I is None:
+            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+
         return self.__I
 
     @property
     def BRF(self):
+        if self.__BRF is None:
+            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+
         return self.__BRF
 
     @property
     def BSC(self):
+        if self.__BSC is None:
+            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+
         return self.__BSC
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -418,7 +430,9 @@ class I2EM(Angles):
                               sigma=self.__sigma, corrfunc=self.__corrfunc, n=self.__n)
 
         # Store data
-        return self.__store(VV.base, HH.base)
+        self.__I, self.__BRF, self.__BSC = self.__store(VV, HH)
+
+        return self.__I, self.__BRF, self.__BSC
 
     # ------------------------------------------------------------------------------------------------------------------
     #  Auxiliary functions and private methods
