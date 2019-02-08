@@ -1,17 +1,23 @@
+"""
+T-Matrix scattering from non-spherical particles.
+"""
+
 from __future__ import division
 
 import sys
 import warnings
 
 import numpy as np
-from pyrism.auxil.auxiliary import denormalized_decorator, normalized_decorator
 from pyrism.core.tma import (NMAX_VEC_WRAPPER, SZ_S_VEC_WRAPPER, SZ_AF_VEC_WRAPPER, DBLQUAD_Z_S_WRAPPER,
                              XSEC_QS_S_WRAPPER, XSEC_ASY_S_WRAPPER, XSEC_ASY_AF_WRAPPER, XSEC_QE_WRAPPER,
-                             XSEC_QSI_WRAPPER, KE_WRAPPER, KS_WRAPPER, KA_WRAPPER, KT_WRAPPER,
-                             equal_volume_from_maximum_wrapper)
+                             XSEC_QSI_WRAPPER, equal_volume_from_maximum_wrapper)
+from respy import Angles, EM
+from respy.constants import pi as PI
+from respy.units import Quantity
+from respy.util import align_all
+
 from pyrism.scattering.tmat.orientation import Orientation
 from pyrism.scattering.tmat.tm_auxiliary import param_radius_type, param_shape, param_orientation
-from respy import Angles, EMW, align_all, PI
 
 # python 3.6 comparability
 if sys.version_info < (3, 0):
@@ -23,12 +29,137 @@ warnings.simplefilter('default')
 
 
 class TMatrix(Angles, object):
+    """T-Matrix scattering from non-spherical particles.
+    Class for simulating scattering from non-spherical particles with the
+    T-Matrix method. Uses a wrapper to the Fortran code by M. Mishchenko.
+
+    Attributes
+    ----------
+    TMatrix.iza, TMatrix.vza, TMatrix.raa, TMatrix.iaa, TMatrix.vaa, TMatrix.alpha, TMatrix.beta: array_like
+        Incidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
+        azimuth angle (ira, vra) in [RAD].
+    TMatrix.izaDeg, TMatrix.vzaDeg, TMatrix.raaDeg, TMatrix.iaaDeg, TMatrix.vaaDeg, TMatrix.alphaDeg, TMatrix.betaDeg: array_like
+        SIncidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
+        azimuth angle (ira, vra) in [DEG].
+    TMatrix.phi : array_like
+        Relative azimuth angle in a range between 0 and 2pi.
+    TMatrix.B, TMatrix.BDeg : array_like
+        The result of (1/cos(vza)+1/cos(iza)).
+    TMatrix.mui, TMatrix.muv : array_like
+        Cosine of iza and vza in [RAD].
+    TMatrix.geometries : tuple
+        If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [RAD]. If iaa and vaa is defined
+        the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [RAD]
+    TMatrix.geometriesDeg : tuple
+        If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [DEG]. If iaa and vaa is defined
+        the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [DEG]
+    TMatrix.nbar : float
+        The sun or incidence zenith angle at which the isotropic term is set
+        to if normalize is True. You can change this attribute within the class.
+    TMatrix.normalize : bool
+        Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
+        the default value is False.
+    TMatrix.dtype : numpy.dtype
+        Desired data type of all values. This attribute is changeable.
+    TMatrix.frequency : array_like
+        Frequency. Access with respy.EMW.
+    TMatrix.wavelength : array_like
+        Wavelength. Access with respy.EMW.
+    TMatrix.wavenumber : array_like
+        Free space wavenumber in unit of wavelength_unit.
+    TMatrix.frequency_unit : str
+        Frequency unit. Access with respy.EMW.
+    TMatrix.wavelength_unit : str
+        Wavelength unit. This is the same as radius unit. Access with respy.EMW.
+    TMatrix.len : int
+        Length of elements.
+    TMatrix.shape : tuple
+        Shape of elements.
+    TMatrix.chi : array_like
+        Free space wave number times the radius.
+    TMatrix.factor : array_like
+        Pre-factor to calculate the extinction matrix: (2 * PI * N * 1j) / wavenumber
+    TMatrix.nmax : array_like
+        NMAX parameter.
+    TMatrix.radius_unit : str
+        Radius unit.
+    TMatrix.radius : array_like
+        Particle radius.
+    TMatrix.radius_type : str
+        Radius type.
+    TMatrix.axis_ratio : array_like
+        Axis ratio.
+    TMatrix.shape_volume : str
+        Shape of volume.
+    TMatrix.eps : array_like
+        The complex refractive index.
+    TMatrix.orientation : str
+        The function to use to compute the orientational scattering properties.
+    TMatrix.orientation_pdf: callable
+        Particle orientation Probability Density Function (PDF) for orientational averaging.
+    TMatrix.n_alpha : int
+        Number of integration points in the alpha Euler angle. Default is 5.
+    TMatrix.n_beta : int
+        Umber of integration points in the beta Euler angle. Default is 10.
+    TMatrix.N : array_like
+        Number of scatterer in unit volume
+    TMatrix.verbose : bool
+        Verbose.
+
+    TMatrix.S : array_like
+        Complex Scattering Matrix.
+    TMatrix.Z : array_like
+        Phase Matrix.
+    TMatrix.SZ : list or array_like
+         Complex Scattering Matrix and Phase Matrix.
+    TMatrix.Snorm : array_like
+        S at iza and vza == 0.
+    TMatrix.Znorm : array_like
+        Z at iza and vza == 0.
+    TMatrix.dblquad : array_like
+        Half space integrated Z.
+    TMatrix.array : array_like
+        Parameter Z as a 4xn array where the rows of the array are the row sums of the Z matrix.
+
+    TMatrix.ks : list or array_like
+        Scattering coefficient matrix in [1/cm] for VV and HH polarization.
+    TMatrix.ka : list or array_like
+        Absorption coefficient matrix in [1/cm] for VV and HH polarization.
+    TMatrix.ke : list or array_like
+        Extinction coefficient matrix in [1/cm] for VV and HH polarization.
+    TMatrix.kt : list or array_like
+        Transmittance coefficient matrix in [1/cm] for VV and HH polarization.
+    TMatrix.omega : list or array_like
+        Single scattering albedo coefficient matrix in [1/cm] for VV and HH polarization.
+
+    TMatrix.xs : list or array_like
+        Scattering Cross Section in [cm^2] for VV and HH polarization.
+    TMatrix.xe : list or array_like
+        Extinction Cross Section in [cm^2] for VV and HH polarization.
+    TMatrix.asy : list or array_like
+        Asymetry Factor in [cm^2] for VV and HH polarization.
+    TMatrix.I : list or array_like
+        Scattering intensity for VV and HH polarization.
+
+    Methods
+    -------
+    compute_SZ(izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None)
+        Function to calculate SZ for different angles.
+
+    See Also
+    --------
+    respy.Angles
+    respy.EMW
+    pyrism.Orientation
+
+    """
+
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, N=1,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
-                 n_beta=10, normalize=False, nbar=0.0, angle_unit='DEG', frequency_unit='GHz', radius_unit='m',
+                 n_beta=10, angle_unit='DEG', frequency_unit='GHz', length_unit='m',
                  verbose=False):
 
-        """T-Matrix scattering from nonspherical particles.
+        """T-Matrix scattering from non-spherical particles.
 
         Class for simulating scattering from nonspherical particles with the
         T-Matrix method. Uses a wrapper to the Fortran code by M. Mishchenko.
@@ -72,138 +203,13 @@ class TMatrix(Angles, object):
             Number of integration points in the alpha Euler angle. Default is 5.
         n_beta : int
             Umber of integration points in the beta Euler angle. Default is 10.
-        normalize : boolean, optional
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        nbar : float, optional
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. The default value is 0.0.
         angle_unit : {'DEG', 'RAD'}, optional
             * 'DEG': All input angles (iza, vza, raa) are in [DEG] (default).
             * 'RAD': All input angles (iza, vza, raa) are in [RAD].
         frequency_unit : {'Hz', 'PHz', 'kHz', 'daHz', 'MHz', 'THz', 'hHz', 'GHz'}
             Unit of entered frequency. Default is 'GHz'.
-        radius_unit : {'dm', 'nm', 'cm', 'mm', 'm', 'km', 'um'}
+        length_unit : {'dm', 'nm', 'cm', 'mm', 'm', 'km', 'um'}
             Unit of the radius in meter (m), centimeter (cm) or nanometer (nm).
-
-        Attributes
-        ----------
-        iza, vza, raa, iaa, vaa, alpha, beta: array_like
-            Incidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
-            azimuth angle (ira, vra) in [RAD].
-        izaDeg, vzaDeg, raaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg: array_like
-            SIncidence (iza) and scattering (vza) zenith angle, relative azimuth (raa) angle, incidence and viewing
-            azimuth angle (ira, vra) in [DEG].
-        phi : array_like
-            Relative azimuth angle in a range between 0 and 2pi.
-        B, BDeg : array_like
-            The result of (1/cos(vza)+1/cos(iza)).
-        mui, muv : array_like
-            Cosine of iza and vza in [RAD].
-        geometries : tuple
-            If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [RAD]. If iaa and vaa is defined
-            the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [RAD]
-        geometriesDeg : tuple
-            If raa is defined it shows a tuple with (iza, vza, raa, alpha, beta) in [DEG]. If iaa and vaa is defined
-            the tuple will be (iza, vza, iaa, vaa, alpha, beta) in [DEG]
-        nbar : float
-            The sun or incidence zenith angle at which the isotropic term is set
-            to if normalize is True. You can change this attribute within the class.
-        normalize : bool
-            Set to 'True' to make kernels 0 at nadir view illumination. Since all implemented kernels are normalized
-            the default value is False.
-        dtype : numpy.dtype
-            Desired data type of all values. This attribute is changeable.
-        frequency : array_like
-            Frequency. Access with respy.EMW.
-        wavelength : array_like
-            Wavelength. Access with respy.EMW.
-        k0 : array_like
-            Free space wavenumber in unit of wavelength_unit.
-        frequency_unit : str
-            Frequency unit. Access with respy.EMW.
-        wavelength_unit : str
-            Wavelength unit. This is the same as radius unit. Access with respy.EMW.
-        len : int
-            Length of elements.
-        shape : tuple
-            Shape of elements.
-        chi : array_like
-            Free space wave number times the radius.
-        factor : array_like
-            Pre-factor to calculate the extinction matrix: (2 * PI * N * 1j) / k0
-        nmax : array_like
-            NMAX parameter.
-        radius_unit : str
-            Radius unit.
-        radius : array_like
-            Particle radius.
-        radius_type : str
-            Radius type.
-        axis_ratio : array_like
-            Axis ratio.
-        shape_volume : str
-            Shape of volume.
-        eps : array_like
-            The complex refractive index.
-        orientation : str
-            The function to use to compute the orientational scattering properties.
-        orientation_pdf: callable
-            Particle orientation Probability Density Function (PDF) for orientational averaging.
-        n_alpha : int
-            Number of integration points in the alpha Euler angle. Default is 5.
-        n_beta : int
-            Umber of integration points in the beta Euler angle. Default is 10.
-        N : array_like
-            Number of scatterer in unit volume
-        verbose : bool
-            Verbose.
-
-        S : array_like
-            Complex Scattering Matrix.
-        Z : array_like
-            Phase Matrix.
-        SZ : list or array_like
-             Complex Scattering Matrix and Phase Matrix.
-        Snorm : array_like
-            S at iza and vza == 0.
-        Znorm : array_like
-            Z at iza and vza == 0.
-        dblquad : array_like
-            Half space integrated Z.
-        array : array_like
-            Parameter Z as a 4xn array where the rows of the array are the row sums of the Z matrix.
-
-        ks : list or array_like
-            Scattering coefficient matrix in [1/cm] for VV and HH polarization.
-        ka : list or array_like
-            Absorption coefficient matrix in [1/cm] for VV and HH polarization.
-        ke : list or array_like
-            Extinction coefficient matrix in [1/cm] for VV and HH polarization.
-        kt : list or array_like
-            Transmittance coefficient matrix in [1/cm] for VV and HH polarization.
-        omega : list or array_like
-            Single scattering albedo coefficient matrix in [1/cm] for VV and HH polarization.
-
-        QS : list or array_like
-            Scattering Cross Section in [cm^2] for VV and HH polarization.
-        QE : list or array_like
-            Extinction Cross Section in [cm^2] for VV and HH polarization.
-        QAS : list or array_like
-            Asymetry Factor in [cm^2] for VV and HH polarization.
-        I : list or array_like
-            Scattering intensity for VV and HH polarization.
-
-        Methods
-        -------
-        compute_SZ(izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None)
-            Function to calculate SZ for different angles.
-
-        See Also
-        --------
-        respy.Angles
-        respy.EMW
-        pyrism.Orientation
 
         """
         # Check input parameter ------------------------------------------------------------------------------------
@@ -223,29 +229,23 @@ class TMatrix(Angles, object):
          eps_imag, N) = align_all(input_data, dtype=np.double)
 
         Angles.__init__(self, iza=iza, vza=vza, raa=None, iaa=iaa, vaa=vaa, alpha=alpha, beta=beta,
-                        normalize=normalize, angle_unit=angle_unit, nbar=nbar)
+                        normalize=False, angle_unit=angle_unit, nbar=0.0)
 
-        if normalize:
-            data = (frequency, radius, axis_ratio, alpha, beta, eps.real, eps.imag, N)
-            frequency, radius, axis_ratio, alpha, beta, eps_real, eps_imag, N = self.align_with(data)
-
-        self.normalized_flag = normalize
+        self.normalized_flag = False
 
         # Define Frequency -----------------------------------------------------------------------------------------
-        self.EMW = EMW(input=frequency, unit=frequency_unit, output=radius_unit)
+        self.__length_unit = length_unit
 
-        self.frequency_unit = self.EMW.frequency_unit
-        self.wavelength_unit = self.EMW.wavelength_unit
-        self.radius_unit = self.EMW.wavelength_unit
+        self.EMW = EM(input=frequency, unit=frequency_unit, output=self.__length_unit)
 
-        self.__frequence = self.EMW.frequency
-        self.__wavelength = self.EMW.wavelength
-        self.__k0 = self.EMW.k0
+        self.__frequency, self.__wavelength, self.__wavenumber = self.EMW.frequency, self.EMW.wavelength, self.EMW.wavenumber
 
         # Self Definitions -----------------------------------------------------------------------------------------
         self.__pol = 4
+
+        self.__radius = Quantity(radius, unit=self.__length_unit)
+
         self.__verbose = verbose
-        self.__radius = radius
         self.__radius_type = param_radius_type[radius_type]
 
         self.__axis_ratio = axis_ratio
@@ -264,10 +264,12 @@ class TMatrix(Angles, object):
         self.__epsi = eps_imag
         self.__epsr = eps_real
 
-        self.__N = N
+        self.__N_unit = '1' + ' ' + '/' + ' ' + self.__length_unit + ' ' + '**' + ' ' + '3'
 
-        self.__factor = (2 * PI * self.__N * 1j) / self.__k0
-        self.__chi = self.__k0 * self.__radius
+        self.__N = Quantity(N, unit=self.__N_unit)
+
+        self.__factor = (2 * PI * self.__N * 1j) / self.__wavenumber
+        self.__chi = self.__wavenumber * self.__radius
 
         # Calculations ---------------------------------------------------------------------------------------------
         self.__nmax = self.__NMAX()
@@ -278,115 +280,24 @@ class TMatrix(Angles, object):
         self.__Snorm = None
         self.__Znorm = None
         self.__dblZi = None
-        self.__XS = None
-        self.__XAS = None
-        self.__XE = None
+        self.__xs = None
+        self.__xas = None
+        self.__xe = None
         self.__XI = None
         self.__ke = None
         self.__ks = None
         self.__ka = None
         self.__omega = None
         self.__kt = None
-        self.__array = None
-
-        # Define Static Variables for repr and str Methods ---------------------------------------------------------
-        self.__vals = dict()
-
-        if self.normalize is False:
-            self.__vals['izaDeg'] = self.izaDeg.mean()
-            self.__vals['vzaDeg'] = self.vzaDeg.mean()
-            self.__vals['raaDeg'] = self.raaDeg.mean()
-            self.__vals['iaaDeg'] = self.iaaDeg.mean()
-            self.__vals['vaaDeg'] = self.vaaDeg.mean()
-            self.__vals['alphaDeg'] = self.alphaDeg.mean()
-            self.__vals['betaDeg'] = self.betaDeg.mean()
-
-        else:
-            self.__vals['izaDeg'] = self.izaDeg[0:-1].mean()
-            self.__vals['vzaDeg'] = self.vzaDeg[0:-1].mean()
-            self.__vals['raaDeg'] = self.raaDeg[0:-1].mean()
-            self.__vals['iaaDeg'] = self.iaaDeg[0:-1].mean()
-            self.__vals['vaaDeg'] = self.vaaDeg[0:-1].mean()
-            self.__vals['alphaDeg'] = self.alphaDeg[0:-1].mean()
-            self.__vals['betaDeg'] = self.betaDeg[0:-1].mean()
 
     # ------------------------------------------------------------------------------------------------------------------
     # Magic Methods
     # ------------------------------------------------------------------------------------------------------------------
-    def __str__(self):
-        self.__vals['eps'] = self.eps
-        self.__vals['N'] = self.N
-        self.__vals['radius_type'] = self.radius_type
-        self.__vals['shape_volume'] = self.shape_volume
-        self.__vals['orientation'] = self.orientation
-        self.__vals['axis_ratio'] = self.axis_ratio
-
-        if callable(self.orientation_pdf):
-            self.__vals['orientation_pdf'] = 'Callable'
-        else:
-            self.__vals['orientation_pdf'] = self.__or_pdf_str
-
-        self.__vals['n_alpha'] = self.n_alpha
-        self.__vals['n_beta'] = self.n_beta
-        self.__vals['normalize'] = self.normalize
-        self.__vals['nbar'] = self.nbar
-        self.__vals['angle_unit'] = self.angle_unit
-        self.__vals['verbose'] = self.verbose
-
-        self.__vals['nmax'] = self.nmax.base.mean()
-        self.__vals['radius'] = self.radius.mean()
-        self.__vals['radius_unit'] = self.radius_unit
-        self.__vals['frequency_unit'] = self.EMW.frequency_unit
-        self.__vals['wavelength_unit'] = self.EMW.wavelength_unit
-        self.__vals['frequency'] = self.EMW.frequency.mean()
-        self.__vals['wavelength'] = self.EMW.wavelength.mean()
-        self.__vals['ratio'] = self.axis_ratio.mean()
-
-        info = 'Class                                                      : TMatrix\n' \
-               'Mean incidence and viewing zenith angle [DEG]              : {izaDeg}, {vzaDeg}\n' \
-               'Mean relative, incidence and viewing azimuth angle [DEG]   : {raaDeg}, {iaaDeg}, {vaaDeg}\n' \
-               'Mean alpha andbeta angle [DEG]                             : {alphaDeg}, {betaDeg}\n' \
-               'Mean NMAX                                                  : {nmax}\n' \
-               'Mean radius                                                : {radius} {radius_unit}\n' \
-               'Mean ratio                                                 : {ratio}\n' \
-               'Mean frequency                                             : {frequency} {frequency_unit}\n' \
-               'Mean wavelength                                            : {wavelength} {wavelength_unit}'.format(
-            **self.__vals)
-
-        return info
-
     def __repr__(self):
-        self.__vals['eps'] = self.eps
-        self.__vals['N'] = self.N
-        self.__vals['radius_type'] = self.radius_type
-        self.__vals['shape_volume'] = self.shape_volume
-        self.__vals['orientation'] = self.orientation
-        self.__vals['axis_ratio'] = self.axis_ratio
 
-        if callable(self.orientation_pdf):
-            self.__vals['orientation_pdf'] = 'Callable'
-        else:
-            self.__vals['orientation_pdf'] = self.__or_pdf_str
+        prefix = '<{0}>'.format(self.__class__.__name__)
 
-        self.__vals['n_alpha'] = self.n_alpha
-        self.__vals['n_beta'] = self.n_beta
-        self.__vals['normalize'] = self.normalize
-        self.__vals['nbar'] = self.nbar
-        self.__vals['angle_unit'] = self.angle_unit
-        self.__vals['verbose'] = self.verbose
-
-        self.__vals['nmax'] = self.nmax.base.mean()
-        self.__vals['radius'] = self.radius.mean()
-        self.__vals['radius_unit'] = self.radius_unit
-        self.__vals['frequency_unit'] = self.EMW.frequency_unit
-        self.__vals['wavelength_unit'] = self.EMW.wavelength_unit
-        self.__vals['frequency'] = self.EMW.frequency
-        self.__vals['wavelength'] = self.EMW.wavelength
-        self.__vals['ratio'] = self.axis_ratio.mean()
-
-        m = max(map(len, list(self.__vals.keys()))) + 1
-        return '\n'.join([k.rjust(m) + ': ' + repr(v)
-                          for k, v in sorted(self.__vals.items())])
+        return prefix
 
     def __len__(self):
         return len(self.nmax)
@@ -419,44 +330,62 @@ class TMatrix(Angles, object):
 
     # Auxiliary Properties- --------------------------------------------------------------------------------------------
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def chi(self):
-        self.__chi = self.__k0 * self.__radius
+        """
+        Chi parameter: wavelength * radius
+
+        Returns
+        -------
+        chi : respy.units.quantity.Quantity
+
+        """
+        self.__chi = self.wavenumber * self.radius
+
         return self.__chi
 
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def factor(self):
-        self.__factor = (2 * PI * self.__N * 1j) / self.__k0
+        """
+        Factor to calculate the extinction matrix: (2*pi*N*1j)/wavenumber
+        Returns
+        -------
+
+        """
+        factor = (2 * PI * self.N) / self.wavenumber
+
+        self.__factor = complex(0, factor)
+
         return self.__factor
 
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def nmax(self):
         return self.__nmax.base
 
     # Frequency Calls ----------------------------------------------------------------------------------------------
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def frequency(self):
-        self.__frequence = self.EMW.frequency
-        return self.__frequence
+        self.__frequency = self.EMW.frequency
+        return self.__frequency
 
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def wavelength(self):
         self.__wavelength = self.EMW.wavelength
         return self.EMW.wavelength
 
     @property
-    @denormalized_decorator
-    def k0(self):
-        self.__k0 = self.EMW.k0
-        return self.EMW.k0
+    # @denormalized_decorator
+    def wavenumber(self):
+        self.__wavenumber = self.EMW.wavenumber
+        return self.__wavenumber
 
     # Parameter Calls ----------------------------------------------------------------------------------------------
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def radius(self):
         return self.__radius
 
@@ -465,7 +394,7 @@ class TMatrix(Angles, object):
         return self.__radius_type
 
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def axis_ratio(self):
         return self.__axis_ratio
 
@@ -474,9 +403,10 @@ class TMatrix(Angles, object):
         return self.__shape_volume
 
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def eps(self):
-        return self.__epsr + self.__epsi * 1j
+        eps = self.__epsr + self.__epsi * 1j
+        return Quantity(eps, name='Relative Permittivity of Medium', constant=True)
 
     @property
     def orientation(self):
@@ -490,43 +420,14 @@ class TMatrix(Angles, object):
     def n_alpha(self):
         return self.__n_alpha
 
-    @n_alpha.setter
-    def n_alpha(self, value):
-        self.__n_alpha = int(value)
-
-        self.__add_update_to_results()
-
     @property
     def n_beta(self):
         return self.__n_beta
 
-    @n_beta.setter
-    def n_beta(self, value):
-        self.__n_beta = int(value)
-
-        self.__add_update_to_results()
-
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def N(self):
         return self.__N
-
-    @N.setter
-    def N(self, value):
-        value = np.asarray(value, dtype=np.int).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__N = value
-
-        self.__add_update_to_results()
 
     @property
     def verbose(self):
@@ -541,23 +442,23 @@ class TMatrix(Angles, object):
 
     # Scattering and Phase Matrices ------------------------------------------------------------------------------------
     @property
-    @denormalized_decorator
+    # @denormalized_decorator
     def S(self):
         """
         Scattering matrix.
 
         Returns
         -------
-        S : array_like
+        S : respy.units.quantity.Quantity
         """
         if self.__S is None:
             self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
 
-        return self.__S
+        return Quantity(self.__S, unit=self.EMW.wavelength.unit,
+                        name="Scattering Matrix", constant=True)
 
     @property
-    @normalized_decorator
+    # @normalized_decorator
     def Z(self):
         """
         Phase matrix.
@@ -568,9 +469,9 @@ class TMatrix(Angles, object):
         """
         if self.__Z is None:
             self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
 
-        return self.__Z
+        return Quantity(self.__Z, unit=self.EMW.wavelength.unit ** 2,
+                        name="Phase Matrix", constant=True)
 
     @property
     def SZ(self):
@@ -583,87 +484,21 @@ class TMatrix(Angles, object):
         """
         if self.__S is None:
             self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
 
         elif self.__Z is None:
             self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
-
-        return self.__S, self.__Z
-
-    @property
-    def Znorm(self):
-        """
-        Normalization matrices of the phase matrix.
-        Normalization adds an extra column with S and Z values for iza = nbar and vza = 0.
-
-        Returns
-        -------
-        Z : list or array_like
-        """
-        # ! Test
-        if self.normalize:
-            if self.__Z is None:
-                self.__S, self.__Z = self.compute_SZ()
-                self.__array = self.__compute_array()
-
-            if self.__Znorm is None:
-                self.__Znorm = np.zeros((4, 4))
-
-                for i in srange(4):
-                    for j in srange(4):
-                        self.__Znorm[i, j] = self.__Z[-1, i, j]
-
-            return self.__Znorm
 
         else:
-            return None
+            pass
 
-    @property
-    def Snorm(self):
-        """
-        Normalization matrices of the scattering matrix.
-        Normalization adds an extra column with S and Z values for iza = nbar and vza = 0.
-
-        Returns
-        -------
-        S, Z : list or array_like
-        """
-        if self.normalize:
-            if self.__S is None:
-                self.__S, self.__Z = self.compute_SZ()
-                self.__array = self.__compute_array()
-
-            if self.__Snorm is None:
-                self.__Snorm = np.zeros((4, 4))
-
-                for i in srange(4):
-                    for j in srange(4):
-                        self.__Snorm[i, j] = self.__S[-1, i, j]
-
-            return self.__Snorm
-
-        else:
-            return None
-
-    @property
-    def array(self):
-        """
-        Return Z as a 4xn array.
-
-        Returns
-        -------
-        array_like
-        """
-        if self.__array is None:
-            self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
-
-        return self.__array
+        return (Quantity(self.__S, unit=self.EMW.wavelength.unit,
+                         name="Scattering Matrix", constant=True),
+                Quantity(self.__Z, unit=self.EMW.wavelength.unit ** 2,
+                         name="Phase Matrix", constant=True))
 
     # Integration of S and Z -------------------------------------------------------------------------------------------
     @property
-    @normalized_decorator
+    # @normalized_decorator
     def dblquad(self):
         """
         Half space integration of the phase matrix in incidence direction.
@@ -675,7 +510,8 @@ class TMatrix(Angles, object):
         if self.__dblZi is None:
             self.__dblZi = self.__dblquad()
 
-        return self.__dblZi
+        return Quantity(self.__dblZi, name="Half Space Integrated Phase Matrix",
+                        constant=True)
 
     # Extinction and Scattering Matrices -------------------------------------------------------------------------------
     @property
@@ -689,7 +525,10 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ke is None:
-            self.__ke = self.__KE()
+            self.__ke = self.__N * self.xe
+
+        self.__ke.set_name('Attenuation Coefficient (VV, HH)')
+        self.__ke.set_constant(True)
 
         return self.__ke
 
@@ -704,7 +543,10 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ks is None:
-            self.__ks = self.__KS()
+            self.__ks = self.xs * self.__N
+
+        self.__ks.set_name('Scattering Coefficient (VV, HH)')
+        self.__ks.set_constant(True)
 
         return self.__ks
 
@@ -719,7 +561,10 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ka is None:
-            self.__ka = self.__KA()
+            self.__ka = self.ke - self.ks
+
+        self.__ka.set_name('Absorption Coefficient (VV, HH)')
+        self.__ka.set_constant(True)
 
         return self.__ka
 
@@ -734,7 +579,10 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__omega is None:
-            self.__omega = self.__OMEGA()
+            self.__omega = self.ks / self.ke
+
+        self.__omega.set_name('Single Scattering Albedo (VV, HH)')
+        self.__omega.set_constant(True)
 
         return self.__omega
 
@@ -749,13 +597,16 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__kt is None:
-            self.__kt = self.__KT()
+            self.__kt = 1 - self.ke
+
+        self.__kt.set_name('Transmission Coefficient (VV, HH)')
+        self.__kt.set_constant(True)
 
         return self.__kt
 
     # Cross Section ----------------------------------------------------------------------------------------------------
     @property
-    def QS(self):
+    def xs(self):
         """
         Scattering cross section for the current setup, with polarization.
 
@@ -764,30 +615,32 @@ class TMatrix(Angles, object):
         QS : array_like
         """
 
-        if self.__XS is None:
-            self.__XS = self.__QS()
+        if self.__xs is None:
+            self.__xs = self.__QS()
 
-        return self.__XS
+        return Quantity(self.__xs, unit=self.EMW.wavelength.unit ** 2, name='Scattering Cross Section (VV, HH)',
+                        constant=True)
 
     @property
-    def QAS(self):
+    def asy(self):
         """
-        Asymmetry cross section for the current setup, with polarization.
+        Asymmetry parameter for the current setup, with polarization.
 
         Returns
         -------
         QAS : array_like
         """
-        if self.__XS is None:
-            self.__XS = self.__QS()
+        if self.__xs is None:
+            self.__xs = self.__QS()
 
-        if self.__XAS is None:
-            self.__XAS = self.__QAS()
+        if self.__xas is None:
+            self.__xas = self.__QAS()
 
-        return self.__XAS.base / self.__XS.base
+        return Quantity(self.__xas.base / self.__xs.base, unit=None, name='Asymmetry Parameter (VV, HH)',
+                        constant=True)
 
     @property
-    def QE(self):
+    def xe(self):
         """
         Extinction cross section for the current setup, with polarization.
 
@@ -796,146 +649,28 @@ class TMatrix(Angles, object):
         QE : array_like
         """
 
-        if self.__XE is None:
-            self.__XE = self.__QE()
+        if self.__xe is None:
+            self.__xe = self.__QE()
 
-        return self.__XE
+        return Quantity(self.__xe, unit=self.EMW.wavelength.unit ** 2, name='Extinction Cross Section (VV, HH)',
+                        constant=True)
 
     @property
-    def I(self):
+    def xi(self):
         """
-        Extinction cross section for the current setup, with polarization.
+        Differential Scattering Cross Section.
 
         Returns
         -------
-        QE : array_like
+        I : array_like
         """
 
         if self.__XI is None:
             self.__XI = self.__I()
 
-        return self.__XI
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # Property Setter
-    # ------------------------------------------------------------------------------------------------------------------
-    @frequency.setter
-    def frequency(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.frequency = value
-
-        self.__add_update_to_results()
-
-    @wavelength.setter
-    def wavelength(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.wavelength = value
-
-        self.__add_update_to_results()
-
-    @radius.setter
-    def radius(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__radius = value
-
-        self.__add_update_to_results()
-
-    @radius_type.setter
-    def radius_type(self, value):
-        if value not in param_radius_type.keys():
-            raise ValueError("Radius type must be {0}".format(param_radius_type.keys()))
-
-        self.__radius_type = param_radius_type[value]
-
-        self.__add_update_to_results()
-
-    @axis_ratio.setter
-    def axis_ratio(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        value, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__axis_ratio = value
-
-        self.__add_update_to_results()
-
-    @shape_volume.setter
-    def shape_volume(self, value):
-        if value not in param_shape.keys():
-            raise ValueError("Shape must be {0}".format(param_shape.keys()))
-
-        self.__shape_volume = param_shape[value]
-        self.__add_update_to_results()
-
-    @eps.setter
-    def eps(self, value):
-        epsr = value.real
-        epsi = value.imag
-
-        epsr = np.asarray(epsr, dtype=np.double).flatten()
-        epsi = np.asarray(epsi, dtype=np.double).flatten()
-
-        if len(epsr) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (epsr, epsi, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi)
-        epsr, epsi, self.__radius, self.__axis_ratio, self.__epsr, self.__epsi = self.align_with(data)
-
-        epsr, epsi = self.EMW.align_with((epsr, epsi))
-
-        self.__epsr, self.__epsi = epsr, epsi
-
-        self.__add_update_to_results()
-
-    @orientation.setter
-    def orientation(self, value):
-        if value not in param_orientation:
-            raise ValueError("Orientation must be {0}".format(param_orientation))
-
-        self.__orient = value
-
-        self.__add_update_to_results()
-
-    @orientation_pdf.setter
-    def orientation_pdf(self, value):
-        self.__or_pdf = self.__get_pdf(value)
-        self.__or_pdf_str = value
-
-        self.__add_update_to_results()
+        return Quantity(self.__XI, unit=self.EMW.wavelength.unit ** 2,
+                        name='Differential Scattering Cross Section (VV, HH)',
+                        constant=True)
 
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
@@ -951,8 +686,6 @@ class TMatrix(Angles, object):
         izaDeg, vzaDeg, iaaDeg, vaaDeg : None, int, float or array_like
             Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
             azimuth angle (ira, vra) in [DEG].
-        alpha, beta: None, int, float or array_like
-            The Euler angles of the particle orientation in [DEG].
 
         Returns
         -------
@@ -967,8 +700,8 @@ class TMatrix(Angles, object):
         If the angles are NOT NONE, the new values will NOT be affect the property calls S, Z and SZ!
 
         """
-        if self.normalized_flag:
-            self.normalize = True
+        # if self.normalized_flag:
+        #     self.normalize = True
 
         if izaDeg is not None:
             _, izaDeg = align_all((self.izaDeg, izaDeg), dtype=np.double)
@@ -1002,72 +735,21 @@ class TMatrix(Angles, object):
 
         if self.__orient is 'S':
             S, Z = SZ_S_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+
         elif self.__orient is 'AF':
             S, Z = SZ_AF_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
                                      self.__n_alpha, self.__n_beta, self.__or_pdf)
         else:
             raise ValueError("Orientation must be S or AF.")
 
-        self.normalize = False
+        # self.normalize = False
 
         return S, Z
 
     # ------------------------------------------------------------------------------------------------------------------
     #  Auxiliary functions and private methods
     # ------------------------------------------------------------------------------------------------------------------
-    def __add_update_to_results(self):
-
-        self.__nmax = self.__NMAX()
-        # Update first S and Z. Because almost all the other parameters are depending on this both matrices.
-        if self.__S is not None or self.__Z is not None:
-            self.__S, self.__Z = self.compute_SZ()
-            self.__array = self.__compute_array()
-
-        if self.__Snorm is not None:
-            self.__Snorm = self.Snorm
-
-        if self.__Znorm is not None:
-            self.__Znorm = self.Znorm
-
-        if self.__dblZi is not None:
-            self.__dblZi = self.__dblquad()
-
-        if self.__XS is not None:
-            self.__XS = self.__QS()
-
-        if self.__XAS is not None:
-            self.__XAS = self.__QAS()
-
-        if self.__XE is not None:
-            self.__XE = self.__QE()
-
-        if self.__XI is not None:
-            self.__XI = self.__I()
-
-        if self.__ke is not None:
-            self.__ke = self.__KE()
-
-        if self.__kt is not None:
-            self.__kt = self.__KT()
-
-        if self.__omega is not None:
-            self.__omega = self.__OMEGA()
-
-        if self.__ks is not None:
-            self.__ks = self.__KS()
-
-        if self.__ka is not None:
-            self.__ka = self.__KA()
-
     # NMAX, S and Z ----------------------------------------------------------------------------------------------------
-    def __compute_array(self):
-        array = np.zeros((self.__pol, len(self.nmax)))
-
-        for i in range(self.__pol):
-            array[i] = self.Z[:, i].sum(axis=1)
-
-        return array
-
     def __NMAX(self):
         """
         Calculate NMAX parameter.
@@ -1078,23 +760,24 @@ class TMatrix(Angles, object):
             radius_type = 1
             radius = np.zeros_like(self.iza)
 
-            for i, item in enumerate(self.__radius):
+            for i, item in enumerate(self.__radius.value):
                 radius[i] = equal_volume_from_maximum_wrapper(item, self.__axis_ratio[i], self.__shape_volume)
 
         else:
             radius_type = self.__radius_type
-            radius = self.__radius
+            radius = self.__radius.value
 
-        if self.normalized_flag:
-            self.normalize = True
+        # if self.normalized_flag:
+        #     self.normalize = True
 
-        nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type, wavelength=self.__wavelength,
+        nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type,
+                                wavelength=self.__wavelength.value,
                                 eps_real=self.__epsr, eps_imag=self.__epsi,
                                 axis_ratio=self.__axis_ratio, shape=self.__shape_volume, verbose=self.verbose)
 
-        self.__radius = radius
+        self.__radius = Quantity(radius, unit=self.__length_unit)
 
-        self.normalize = False
+        # self.normalize = False
 
         return nmax
 
@@ -1109,10 +792,10 @@ class TMatrix(Angles, object):
             xaaDeg = self.iaaDeg
 
         if self.__orient is 'S':
-            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength, xzaDeg, xaaDeg, self.alphaDeg,
+            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength.value, xzaDeg, xaaDeg, self.alphaDeg,
                                     self.betaDeg, iza_flag)
         elif self.__orient is 'AF':
-            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength, xzaDeg, xaaDeg, self.n_alpha, self.n_beta,
+            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength.value, xzaDeg, xaaDeg, self.n_alpha, self.n_beta,
                                     self.__or_pdf,
                                     iza_flag)
         else:
@@ -1121,44 +804,6 @@ class TMatrix(Angles, object):
         return Z.base.reshape((self.len, 4, 4))
 
     # Cross Section ----------------------------------------------------------------------------------------------------
-    def __KE(self):
-        S = self.S
-        return KE_WRAPPER(self.factor, S)
-
-    def __KT(self):
-        if self.__ke is None:
-            self.__ke = self.__KE()
-
-        return KT_WRAPPER(self.__ke)
-
-    def __OMEGA(self):
-        if self.__XS is None:
-            self.__XS = self.__QS()
-
-        if self.__XE is None:
-            self.__XE = self.__QE()
-
-        return self.__XS.base / self.__XE.base
-
-    def __KS(self):
-
-        if self.__ke is None:
-            self.__ke = self.__KE()
-
-        if self.__omega is None:
-            self.__omega = self.__OMEGA()
-
-        return KS_WRAPPER(self.__ke, self.__omega)
-
-    def __KA(self):
-        if self.__ks is None:
-            self.__ks = self.__KS()
-
-        if self.__omega is None:
-            self.__omega = self.__OMEGA()
-
-        return KA_WRAPPER(self.__ks, self.__omega)
-
     def __QS(self):
         """
         Scattering cross section for the current setup, with polarization.
@@ -1195,12 +840,15 @@ class TMatrix(Angles, object):
         """
         Extinction cross section for the current setup, with polarization.
         """
-        if self.normalized_flag:
-            izaDeg = np.append(self.izaDeg, 0)
-            iaaDeg = np.append(self.iaaDeg, 0)
-        else:
-            izaDeg = self.izaDeg
-            iaaDeg = self.iaaDeg
+        # if self.normalized_flag:
+        #     izaDeg = np.append(self.izaDeg, 0)
+        #     iaaDeg = np.append(self.iaaDeg, 0)
+        # else:
+        #     izaDeg = self.izaDeg
+        #     iaaDeg = self.iaaDeg
+
+        izaDeg = self.izaDeg
+        iaaDeg = self.iaaDeg
 
         S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=iaaDeg)
 
