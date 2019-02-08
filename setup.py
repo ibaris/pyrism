@@ -169,8 +169,11 @@ flib = Extension(name='pyrism.fortran_tm.fotm',
                           'pyrism/fortran_tm/lpd.f'],
                  )
 
-setup(
-    ext_modules=[flib]
-)
+setup(name='pyrism_ftm',
+
+      version=get_version(),
+
+      description='Python bindings for Remote Sensing Models and T-Matrix version',
+      ext_modules=[flib])
 
 print ('******** Installation completed ********')

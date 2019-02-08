@@ -4,15 +4,16 @@ from __future__ import division
 import sys
 import warnings
 from collections import namedtuple
+from respy import Angles, Quantity, Conversion, units
 
 import numpy as np
-from scipy.integrate import (quad, dblquad)
-from scipy.misc import factorial
+from pyrism.auxil import (SailResult, OPTICAL_RANGE,
+                          Satellite, OpticalResult)
+from respy.constants import deg_to_rad
+from scipy.integrate import (quad)
 from scipy.special import expi
 
-from .library import get_data_one, get_data_two
-from ..auxil import ReflectanceResult, EmissivityResult, SailResult
-from radarpy import Angles, cot, rad, dB, BRF, BRDF
+from pyrism.volume.library import get_data_one, get_data_two
 
 try:
     lib = get_data_two()
@@ -226,9 +227,6 @@ class VolScatt(Angles):
                     bts[i] = np.pi
                     ds[i] = cs[i]
 
-        # if np.abs(ss) > 1e-6:
-        #     cosbts = -cs / ss
-
         if i in range(len(so)):
             if np.abs(so[i]) > 1e-6:
                 cosbto[i] = -co[i] / so[i]
@@ -238,38 +236,14 @@ class VolScatt(Angles):
                     do_[i] = so[i]
 
                 else:
-                    if self.vza[i] < rad(90.0):
+                    if self.vza[i] < (deg_to_rad * 90.0):
                         bto[i] = np.pi
                         do_[i] = co[i]
                     else:
                         bto[i] = 0
                         do_[i] = -co[i]
 
-        # cosbto = 5.
-        # if np.abs(so) > 1e-6:
-        #     cosbto = -co / so
-
-        # if np.abs(cosbts) < 1.0:
-        #     bts = np.arccos(cosbts)
-        #     ds = ss
-        #
-        # else:
-        #     bts = np.pi
-        #     ds = cs
-
         chi_s = 2. / np.pi * ((bts - np.pi * 0.5) * cs + np.sin(bts) * ss)
-
-        # if abs(cosbto) < 1.0:
-        #     bto = np.arccos(cosbto)
-        #     do_ = so
-        #
-        # else:
-        #     if self.vza < rad(90.):
-        #         bto = np.pi
-        #         do_ = co
-        #     else:
-        #         bto = 0.0
-        #         do_ = -co
 
         chi_o = 2.0 / np.pi * ((bto - np.pi * 0.5) * co + np.sin(bto) * so)
         btran1 = np.abs(bts - bto)
@@ -293,19 +267,6 @@ class VolScatt(Angles):
                 else:
                     bt2[i] = btran2[i]
                     bt3[i] = psir[i]
-        #
-        # if psir <= btran1:
-        #     bt1 = psir
-        #     bt2 = btran1
-        #     bt3 = btran2
-        # else:
-        #     bt1 = btran1
-        #     if psir <= btran2:
-        #         bt2 = psir
-        #         bt3 = btran2
-        #     else:
-        #         bt2 = btran2
-        #         bt3 = psir
 
         t1 = 2. * cs * co + ss * so * cospsi
         # t2 = 0.
@@ -361,7 +322,7 @@ class LIDF:
 
         Returns
         -------
-        lidf : list
+        lidf : np.ndarray
             Leaf Inclination Distribution Function for 18 equally spaced angles.
 
         """
@@ -371,8 +332,8 @@ class LIDF:
         freq = np.zeros(n_elements)
         step = 90.0 / n_elements
         for i in srange(n_elements):
-            tl1 = rad(i * step)
-            tl2 = rad((i + 1.) * step)
+            tl1 = deg_to_rad * (i * step)
+            tl2 = deg_to_rad * ((i + 1.) * step)
             x1 = excent / (np.sqrt(1. + excent ** 2. * np.tan(tl1) ** 2.))
             x2 = excent / (np.sqrt(1. + excent ** 2. * np.tan(tl2) ** 2.))
             if excent == 1.:
@@ -443,6 +404,7 @@ class LIDF:
             else:
                 eps = 1e-8
                 delx = 1.0
+                y = 1
                 x = 2.0 * tl1
                 p = float(x)
                 while delx >= eps:
@@ -460,7 +422,7 @@ class LIDF:
         return lidf
 
     @staticmethod
-    def nilson(self, lza, mla=None, eccentricity=0.5, scaling_factor=0.5, distribution='random'):
+    def nilson(lza, mla=None, eccentricity=0.5, scaling_factor=0.5, distribution='random'):
         """
         Leaf Angle Distributions (LAD) from Nilson and Kuusk.
 
@@ -603,28 +565,39 @@ class SAIL(Angles):
 
         if len(ks) != 2101:
             raise AssertionError(
-                "ks must contain continuous leaf reflectance values from from 400 until 2500 nm with a length of 2101. The actual length of ks is {0}".format(
-                    str(len(ks))))
+                "ks must contain continuous leaf reflectance values from from 400 until 2500 nm with a length of "
+                "2101. The actual length of ks is {0}".format(str(len(ks))))
 
         elif len(kt) != 2101:
             raise AssertionError(
-                "kt must contain continuous leaf transmitance values from from 400 until 2500 nm with a length of 2101. The actual length of kt is {0}".format(
-                    str(len(kt))))
+                "kt must contain continuous leaf transmittance values from from 400 until 2500 nm with a length of "
+                "2101. The actual length of kt is {0}".format(str(len(kt))))
 
         elif len(rho_surface) != 2101:
             raise AssertionError(
-                "rho_surface must contain continuous surface reflectance values from from 400 until 2500 nm with a length of 2101. The actual length of rho_surface is {0}".format(
-                    str(len(rho_surface))))
+                "rho_surface must contain continuous surface reflectance values from from 400 until 2500 nm with a "
+                "length of 2101. The actual length of rho_surface is {0}".format(str(len(rho_surface))))
 
         else:
             pass
 
-        self.ks = ks
-        self.kt = kt
-        self.lai = lai
-        self.hotspot = hotspot
+        self.ks = ks if hasattr(ks, 'quantity') else Quantity(ks, name="Scattering Coefficient (Leaf Reflectance)")
+        self.kt = kt if hasattr(kt, 'quantity') else Quantity(kt, name="Transmission Coefficient (Transmittance)")
+        self.__ks_value = ks.value
+        self.__kt_value = kt.value
 
-        self.rho_surface = rho_surface
+        self.lai = lai if hasattr(lai, 'quantity') else Quantity(lai, name='Leaf Area Index')
+
+        self.__lai_value = self.lai.value
+
+        self.hotspot = hotspot if hasattr(hotspot, 'quantity') else Quantity(hotspot, name="Hotspot Parameter")
+
+        self.__hotspot_value = self.hotspot.value
+
+        self.rho_surface = rho_surface if hasattr(rho_surface, 'quantity') else Quantity(rho_surface,
+                                                                                         name="Surface Reflectance")
+        self.__rho_surface_value = rho_surface.value
+
         self.VollScat = VolScatt(iza, vza, raa, angle_unit)
 
         if lidf_type is 'verhoef':
@@ -634,25 +607,50 @@ class SAIL(Angles):
         else:
             raise AssertionError("The lidf_type must be 'verhoef' or 'campbell'")
 
-        tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso = self.__calc()
+        (tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt,
+         rsost, rsot, gammasdf, gammasdb, gammaso) = self.__calc()
 
-        self.kt = tsstoo
+        self.__kt_value = tsstoo
         self.kt_iza = tss
         self.kt_vza = too
-        self.canopy = SailResult(BHR=rdd, BHT=tdd, DHR=rsd, DHT=tsd, HDR=rdo, HDT=tdo, BRF=rso)
-        self.l = np.arange(400, 2501)
+
+        # self.canopy = SailResult(BHR=rdd, BHT=tdd, DHR=rsd, DHT=tsd, HDR=rdo, HDT=tdo, BRF=rso)
+
+        self.wavelength = OPTICAL_RANGE.wavelength
+        self.frequency = OPTICAL_RANGE.frequency
+        self.wavenumber = OPTICAL_RANGE.wavenumber
 
         canopy_ref = rdot * skyl + rsot * (1 - skyl)
+        conversion = Conversion(canopy_ref, vza=self.vza, value_unit='BRF', angle_unit=angle_unit)
 
-        self.BRF = SailResult(ref=canopy_ref, refdB=dB(canopy_ref), L8=self.__store_L8(canopy_ref),
-                              ASTER=self.__store_aster(canopy_ref))
-        self.BRDF = SailResult(ref=canopy_ref / np.pi, refdB=dB(canopy_ref / np.pi),
-                               L8=self.__store_L8(canopy_ref / np.pi),
-                               ASTER=self.__store_aster(canopy_ref / np.pi))
+        self.__BRF = conversion.BRF
 
-        self.BHR = SailResult(ref=rddt, refdB=dB(rddt), L8=self.__store_L8(rddt), ASTER=self.__store_aster(rddt))
-        self.DHR = SailResult(ref=rsdt, refdB=dB(rsdt), L8=self.__store_L8(rsdt), ASTER=self.__store_aster(rsdt))
-        self.HDR = SailResult(ref=rdot, refdB=dB(rdot), L8=self.__store_L8(rdot), ASTER=self.__store_aster(rdot))
+        self.__I = conversion.I
+        self.__BSC = conversion.BSC
+
+        # self.BHR = rddt
+        # self.DHR = rsdt
+        # self.HDR = rdot
+
+    @property
+    def I(self):
+        return self.__I
+
+    @property
+    def BRF(self):
+        return self.__BRF
+
+    @property
+    def BSC(self):
+        return self.__BSC
+
+    @property
+    def L8(self):
+        return self.__L8
+
+    @property
+    def ASTER(self):
+        return self.__ASTER
 
     def __calc(self):
         sdb = 0.5 * (self.VollScat.kei + self.VollScat.bf)
@@ -662,8 +660,8 @@ class SAIL(Angles):
         ddb = 0.5 * (1.0 + self.VollScat.bf)
         ddf = 0.5 * (1.0 - self.VollScat.bf)
 
-        sigb = ddb * self.ks + ddf * self.kt
-        sigf = ddf * self.ks + ddb * self.kt
+        sigb = ddb * self.__ks_value + ddf * self.__kt_value
+        sigf = ddf * self.__ks_value + ddb * self.__kt_value
 
         try:
             sigf[sigf == 0.0] = 1.e-36
@@ -677,13 +675,13 @@ class SAIL(Angles):
 
         self.ke = self.VollScat.kei
 
-        sb = sdb * self.ks + sdf * self.kt
-        sf = sdf * self.ks + sdb * self.kt
-        vb = dob * self.ks + dof * self.kt
-        vf = dof * self.ks + dob * self.kt
-        w = self.VollScat.Fs * self.ks + self.VollScat.Ft * self.kt
+        sb = sdb * self.__ks_value + sdf * self.__kt_value
+        sf = sdf * self.__ks_value + sdb * self.__kt_value
+        vb = dob * self.__ks_value + dof * self.__kt_value
+        vf = dof * self.__ks_value + dob * self.__kt_value
+        w = self.VollScat.Fs * self.__ks_value + self.VollScat.Ft * self.__kt_value
 
-        if np.all(self.lai <= 0):
+        if np.all(self.__lai_value <= 0):
             # No canopy...
             tss = 1
             too = 1
@@ -697,12 +695,12 @@ class SAIL(Angles):
             rso = 0
             rsos = 0
             rsod = 0
-            rddt = self.rho_surface
-            rsdt = self.rho_surface
-            rdot = self.rho_surface
+            rddt = self.__rho_surface_value
+            rsdt = self.__rho_surface_value
+            rdot = self.__rho_surface_value
             rsodt = 0
-            rsost = self.rho_surface
-            rsot = self.rho_surface
+            rsost = self.__rho_surface_value
+            rsot = self.__rho_surface_value
             gammasdf = 0
             gammaso = 0
             gammasdb = 0
@@ -711,17 +709,17 @@ class SAIL(Angles):
                     rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso]
 
         else:
-            e1 = np.exp(-m * self.lai)
+            e1 = np.exp(-m * self.__lai_value)
             e2 = e1 ** 2.
             rinf = (att - m) / sigb
             rinf2 = rinf ** 2.
             re = rinf * e1
             denom = 1. - rinf2 * e2
 
-            J1ks = self.__Jfunc1(self.VollScat.kei, m, self.lai)
-            J2ks = self.__Jfunc2(self.VollScat.kei, m, self.lai)
-            J1ko = self.__Jfunc1(self.VollScat.kev, m, self.lai)
-            J2ko = self.__Jfunc2(self.VollScat.kev, m, self.lai)
+            J1ks = self.__Jfunc1(self.VollScat.kei, m, self.__lai_value)
+            J2ks = self.__Jfunc2(self.VollScat.kei, m, self.__lai_value)
+            J1ko = self.__Jfunc1(self.VollScat.kev, m, self.__lai_value)
+            J2ko = self.__Jfunc2(self.VollScat.kev, m, self.__lai_value)
 
             Pss = (sf + sb * rinf) * J1ks
             Qss = (sf * rinf + sb) * J2ks
@@ -738,9 +736,9 @@ class SAIL(Angles):
             gammasdf = (1. + rinf) * (J1ks - re * J2ks) / denom
             gammasdb = (1. + rinf) * (-re * J1ks + J2ks) / denom
 
-            tss = np.exp(-self.VollScat.kei * self.lai)
-            too = np.exp(-self.VollScat.kev * self.lai)
-            z = self.__Jfunc2(self.VollScat.kei, self.VollScat.kev, self.lai)
+            tss = np.exp(-self.VollScat.kei * self.__lai_value)
+            too = np.exp(-self.VollScat.kev * self.__lai_value)
+            z = self.__Jfunc2(self.VollScat.kei, self.VollScat.kev, self.__lai_value)
 
             g1 = (z - J1ks * too) / (self.VollScat.kev + m)
             g2 = (z - J1ko * tss) / (self.VollScat.kei + m)
@@ -767,39 +765,41 @@ class SAIL(Angles):
             cts, cto, ctscto, tants, tanto, cospsi, dso = self.__define_geometric_constants(self.izaDeg, self.vzaDeg,
                                                                                             self.raaDeg)
 
-            if self.hotspot > 0.:
-                alf = (dso / self.hotspot) * 2. / (self.VollScat.kei + self.VollScat.kev)
+            if self.__hotspot_value > 0.:
+                alf = (dso / self.__hotspot_value) * 2. / (self.VollScat.kei + self.VollScat.kev)
 
             if alf == 0.:
                 # The pure hotspot
                 tsstoo = tss
-                sumint = (1. - tss) / (self.VollScat.kei * self.lai)
+                sumint = (1. - tss) / (self.VollScat.kei * self.__lai_value)
             else:
                 # Outside the hotspot
-                tsstoo, sumint = self.__hotspot_calculations(alf, self.lai, self.VollScat.kev, self.VollScat.kei)
+                tsstoo, sumint = self.__hotspot_calculations(alf, self.__lai_value, self.VollScat.kev,
+                                                             self.VollScat.kei)
 
             # Bidirectional reflectance
             # Single scattering contribution
-            rsos = w * self.lai * sumint
-            gammasos = self.VollScat.kev * self.lai * sumint
+            rsos = w * self.__lai_value * sumint
+            gammasos = self.VollScat.kev * self.__lai_value * sumint
 
             # Total canopy contribution
             rso = rsos + rsod
             gammaso = gammasos + gammasod
 
             # Interaction with the soil
-            dn = 1. - self.rho_surface * rdd
+            dn = 1. - self.__rho_surface_value * rdd
 
             try:
                 dn[dn < 1e-36] = 1e-36
             except TypeError:
                 dn = max(1e-36, dn)
 
-            rddt = rdd + tdd * self.rho_surface * tdd / dn
-            rsdt = rsd + (tsd + tss) * self.rho_surface * tdd / dn
-            rdot = rdo + tdd * self.rho_surface * (tdo + too) / dn
-            rsodt = ((tss + tsd) * tdo + (tsd + tss * self.rho_surface * rdd) * too) * self.rho_surface / dn
-            rsost = rso + tsstoo * self.rho_surface
+            rddt = rdd + tdd * self.__rho_surface_value * tdd / dn
+            rsdt = rsd + (tsd + tss) * self.__rho_surface_value * tdd / dn
+            rdot = rdo + tdd * self.__rho_surface_value * (tdo + too) / dn
+            rsodt = ((tss + tsd) * tdo + (
+                    tsd + tss * self.__rho_surface_value * rdd) * too) * self.__rho_surface_value / dn
+            rsost = rso + tsstoo * self.__rho_surface_value
             rsot = rsost + rsodt
 
             return [tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo,
@@ -817,7 +817,9 @@ class SAIL(Angles):
 
     def __hotspot_calculations(self, alf, lai, ko, ks):
         fhot = lai * np.sqrt(ko * ks)
-        # Integrate by exponential Simpson method in 20 steps the steps are arranged according to equal partitioning of the slope of the joint probability function
+        # Integrate by exponential Simpson method in 20 steps the steps are arranged according to equal
+        # partitioning of the slope of the joint probability function
+
         x1 = 0.
         y1 = 0.
         f1 = 1.
@@ -865,67 +867,15 @@ class SAIL(Angles):
         """J2 function."""
         return (1. - np.exp(-(k + l) * t)) / (k + l)
 
-    def __store_aster(self, value):
-        """
-        Store the leaf reflectance for ASTER bands B1 - B9.
-        """
+    def __store(self):
+        sat_I = Satellite(self.I, name='Intensity')
+        sat_BRF = Satellite(self.BRF, name='Bidirectional Reflectance Factor')
+        sat_BSC = Satellite(self.BSC, name='Backscattering Coefficient')
 
-        value = np.array([self.l, value])
-        value = value.transpose()
-
-        ASTER = namedtuple('ASTER', 'B1 B2 B3 B4 B5 B6 B7 B8 B9')
-
-        b1 = (520, 600)
-        b2 = (630, 690)
-        b3 = (760, 860)
-        b4 = (1600, 1700)
-        b5 = (2145, 2185)
-        b6 = (2185, 2225)
-        b7 = (2235, 2285)
-        b8 = (2295, 2365)
-        b9 = (2360, 2430)
-
-        ARefB1 = value[(value[:, 0] >= b1[0]) & (value[:, 0] <= b1[1])]
-        ARefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
-        ARefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
-        ARefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
-        ARefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
-        ARefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
-        ARefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
-        ARefB8 = value[(value[:, 0] >= b8[0]) & (value[:, 0] <= b8[1])]
-        ARefB9 = value[(value[:, 0] >= b9[0]) & (value[:, 0] <= b9[1])]
-
-        return ASTER(ARefB1[:, 1].mean(), ARefB2[:, 1].mean(), ARefB3[:, 1].mean(), ARefB4[:, 1].mean(),
-                     ARefB5[:, 1].mean(), ARefB6[:, 1].mean(), ARefB7[:, 1].mean(), ARefB8[:, 1].mean(),
-                     ARefB9[:, 1].mean())
-
-    def __store_L8(self, value):
-        """
-        Store the leaf reflectance for LANDSAT8 bands
-        B2 - B7.
-        """
-
-        value = np.array([self.l, value])
-        value = value.transpose()
-
-        L8 = namedtuple('L8', 'B2 B3 B4 B5 B6 B7')
-
-        b2 = (452, 452 + 60)
-        b3 = (533, 533 + 57)
-        b4 = (636, 636 + 37)
-        b5 = (851, 851 + 28)
-        b6 = (1566, 1566 + 85)
-        b7 = (2107, 2107 + 187)
-
-        LRefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
-        LRefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
-        LRefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
-        LRefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
-        LRefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
-        LRefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
-
-        return L8(LRefB2[:, 1].mean(), LRefB3[:, 1].mean(), LRefB4[:, 1].mean(), LRefB5[:, 1].mean(),
-                  LRefB6[:, 1].mean(), LRefB7[:, 1].mean())
+        self.__L8 = OpticalResult(I=sat_I.L8, BRF=sat_BRF.L8, BSC=sat_BSC.L8,
+                                  ndvi=sat_I.ndvi(), sr=sat_I.sr())
+        self.__ASTER = OpticalResult(I=sat_I.ASTER, BRF=sat_BRF.ASTER, BSC=sat_BSC.ASTER,
+                                     ndvi=sat_I.ndvi(satellite="ASTER"), sr=sat_I.sr(satellite="ASTER"))
 
 
 class PROSPECT:
@@ -935,19 +885,19 @@ class PROSPECT:
 
     Parameters
     ----------
-    N : int or float
+    N : int, float, object
         Leaf structure parameter.
-    Cab : int or float
+    Cab : int, float, object
         Chlorophyll a+b content.
-    Cxc : int or float
+    Cxc : int, float, object
         Carotenoids content.
-    Cbr : int or float
+    Cbr : int, float, object
         Brown pigments content in arbitrary units.
-    Cw : int or float
+    Cw : int, float, object
         Equivalent water thickness.
-    Cm : int or float
+    Cm : int, float, object
         Dry matter content
-    alpha : int
+    alpha : int, float, object
         Mean leaf angle (degrees) use 57 for a spherical LIDF. Default is 40.
     version : {'5', 'D'}
         PROSPECT version. Default is '5'.
@@ -976,18 +926,19 @@ class PROSPECT:
 
     def __init__(self, N, Cab, Cxc, Cbr, Cw, Cm, Can=0, alpha=40, version='5'):
 
-        self.N = N
-        self.Cab = Cab
-        self.Cxc = Cxc
-        self.Cbr = Cbr
-        self.Cw = Cw
-        self.Cm = Cm
-        self.Can = Can
-        self.alpha = alpha
+        self.__N = N if not hasattr(N, 'quantity') else N.value
+        self.__Cab = Cab if not hasattr(Cab, 'quantity') else Cab.value
+        self.__Cxc = Cxc if not hasattr(Cxc, 'quantity') else Cxc.value
+        self.__Cbr = Cbr if not hasattr(Cbr, 'quantity') else Cbr.value
+        self.__Cw = Cw if not hasattr(Cw, 'quantity') else Cw.value
+        self.__Cm = Cm if not hasattr(Cm, 'quantity') else Cm.value
+        self.__Can = Can if not hasattr(Can, 'quantity') else Can.value
+        self.__alpha = alpha if not hasattr(alpha, 'quantity') else alpha.value
         self.ver = version
 
-        self.l = np.arange(400, 2501)
-        self.n_l = len(self.l)
+        self.wavelength = OPTICAL_RANGE.wavelength
+        self.frequency = OPTICAL_RANGE.frequency
+        self.wavenumber = OPTICAL_RANGE.wavenumber
 
         if self.ver != '5' and self.ver != 'D':
             raise ValueError("version must be '5' for PROSPECT 5 or 'D' for PROSPECT D. "
@@ -997,35 +948,67 @@ class PROSPECT:
         self.__calc()
         self.__store()
 
+    @property
+    def N(self):
+        return Quantity(self.__N, name="Leaf Structure Parameter")
+
+    @property
+    def Cab(self):
+        return Quantity(self.__Cab, unit=units.ug / units.cm ** 2, name="Chlorophyll Content")
+
+    @property
+    def Cxc(self):
+        return Quantity(self.__Cxc, unit=units.ug / units.cm ** 2, name="Carotenoid Content")
+
+    @property
+    def Cbr(self):
+        return Quantity(self.__Cbr, name="Brown Pigments")
+
+    @property
+    def Cw(self):
+        return Quantity(self.__Cw, unit="cm", name="Equivalent Water Thickness")
+
+    @property
+    def Cm(self):
+        return Quantity(self.__Cm, unit=units.g / units.cm ** 2, name="Leaf Mass")
+
+    @property
+    def Can(self):
+        return Quantity(self.__Can, unit=units.ug / units.cm ** 2, name="Anthocyanins")
+
+    @property
+    def alpha(self):
+        return Quantity(self.__alpha, unit='deg', name="")
+
     def __set_coef(self):
 
-        if self.ver == 'D' and self.Can == 0:
+        if self.ver == 'D' and self.__Can == 0:
             raise AssertionError("For PROSPECT version D is the Anthocyanins value mandatory (!=0)")
 
         if self.ver == '5':
-            self.KN = lib.p5.KN
-            self.Kab = lib.p5.Kab
-            self.Kxc = lib.p5.Kxc
-            self.Kbr = lib.p5.Kbr
-            self.Kw = lib.p5.Kw
-            self.Km = lib.p5.Km
-            self.Kan = np.zeros_like(self.Km)
+            self.__KN = lib.p5.KN
+            self.__Kab = lib.p5.Kab
+            self.__Kxc = lib.p5.Kxc
+            self.__Kbr = lib.p5.Kbr
+            self.__Kw = lib.p5.Kw
+            self.__Km = lib.p5.Km
+            self.__Kan = np.zeros_like(self.__Km)
 
         if self.ver == 'D':
-            self.KN = lib.pd.KN
-            self.Kab = lib.pd.Kab
-            self.Kxc = lib.pd.Kxc
-            self.Kbr = lib.pd.Kbr
-            self.Kw = lib.pd.Kw
-            self.Km = lib.pd.Km
-            self.Kan = lib.pd.Kan
+            self.__KN = lib.pd.KN
+            self.__Kab = lib.pd.Kab
+            self.__Kxc = lib.pd.Kxc
+            self.__Kbr = lib.pd.Kbr
+            self.__Kw = lib.pd.Kw
+            self.__Km = lib.pd.Km
+            self.__Kan = lib.pd.Kan
 
         self.n_elems_list = [len(spectrum) for spectrum in
-                             [self.KN, self.Kab, self.Kxc, self.Kbr, self.Kw, self.Km, self.Kan]]
+                             [self.__KN, self.__Kab, self.__Kxc, self.__Kbr, self.__Kw, self.__Km, self.__Kan]]
 
     def __pre_process(self):
-        kall = (self.Cab * self.Kab + self.Cxc * self.Kxc + self.Can * self.Kan + self.Cbr * self.Kbr
-                + self.Cw * self.Kw + self.Cm * self.Km) / self.N
+        kall = (self.__Cab * self.__Kab + self.__Cxc * self.__Kxc + self.__Can * self.__Kan + self.__Cbr * self.__Kbr
+                + self.__Cw * self.__Kw + self.__Cm * self.__Km) / self.__N
 
         j = kall > 0
         t1 = (1 - kall) * np.exp(-kall)
@@ -1033,7 +1016,8 @@ class PROSPECT:
         tau = np.ones_like(t1)
         tau[j] = t1[j] + t2[j]
 
-        self.r, self.t, self.Ra, self.Ta, self.denom = self.__refl_trans_one_layer(self.alpha, self.KN, tau)
+        self.__r, self.__t, self.__ra, self.__ta, self.__denom = self.__refl_trans_one_layer(self.__alpha,
+                                                                                             self.__KN, tau)
 
     def __calctav(self, alpha, KN):
         """
@@ -1085,7 +1069,7 @@ class PROSPECT:
         Interaction of isotropic ligth with a compact plant leaf, J. Opt.
         Soc. Am., 59(10):1376-1379.
         """
-        talf = self.__calctav(self.alpha, KN)
+        talf = self.__calctav(self.__alpha, KN)
         ralf = 1.0 - talf
         t12 = self.__calctav(90, KN)
         r12 = 1. - t12
@@ -1117,13 +1101,14 @@ class PROSPECT:
         11:545-556.
         """
 
-        D = np.sqrt((1 + self.r + self.t) * (1 + self.r - self.t) * (1. - self.r + self.t) * (1. - self.r - self.t))
-        rq = self.r * self.r
-        tq = self.t * self.t
-        a = (1 + rq - tq + D) / (2 * self.r)
-        b = (1 - rq + tq + D) / (2 * self.t)
+        D = np.sqrt((1 + self.__r + self.__t) * (1 + self.__r - self.__t) * (1. - self.__r + self.__t) * (
+                1. - self.__r - self.__t))
+        rq = self.__r * self.__r
+        tq = self.__t * self.__t
+        a = (1 + rq - tq + D) / (2 * self.__r)
+        b = (1 - rq + tq + D) / (2 * self.__t)
 
-        bNm1 = np.power(b, self.N - 1)
+        bNm1 = np.power(b, self.__N - 1)
         bN2 = bNm1 * bNm1
         a2 = a * a
         denom = a2 * bN2 - 1
@@ -1131,186 +1116,60 @@ class PROSPECT:
         Tsub = bNm1 * (a2 - 1) / denom
 
         # Case of zero absorption
-        j = self.r + self.t >= 1.
-        Tsub[j] = self.t[j] / (self.t[j] + (1 - self.t[j]) * (self.N - 1))
+        j = self.__r + self.__t >= 1.
+        Tsub[j] = self.__t[j] / (self.__t[j] + (1 - self.__t[j]) * (self.__N - 1))
         Rsub[j] = 1 - Tsub[j]
 
         # Reflectance and transmittance of the leaf: combine top layer with next N-1 layers
-        denom = 1 - Rsub * self.r
+        denom = 1 - Rsub * self.__r
 
-        self.kt = self.Ta * Tsub / denom
-        self.ks = self.Ra + self.Ta * Rsub * self.t / denom
-        self.ka = 1 - self.ks - self.kt
-        self.ke = self.ks + self.ka
-        self.omega = self.ks / self.ke
+        self.__kt = self.__ta * Tsub / denom
+        self.__ks = self.__ra + self.__ta * Rsub * self.__t / denom
+        self.__ka = 1 - self.__ks - self.__kt
+        self.__ke = self.__ks + self.__ka
+        self.__omega = self.__ks / self.__ke
 
-        self.int = [self.l, self.ks, self.kt, self.ka, self.ke, self.omega]
-        RT = np.asarray(self.int, dtype=np.float32)
-        self.int = RT.transpose()
+        array = np.asarray([self.__ks, self.__kt, self.__ka, self.__ke, self.__omega], dtype=np.double)
+        self.array = array.transpose()
+
+    @property
+    def omega(self):
+        return Quantity(self.__omega, name='Single Scattering Albedo')
+
+    @property
+    def ke(self):
+        return Quantity(self.__ke, name='Attenuation Coefficient')
+
+    @property
+    def ks(self):
+        return Quantity(self.__ks, name='Scattering Coefficient (Leaf Reflectance)')
+
+    @property
+    def ka(self):
+        return Quantity(self.__ka, name='Absorption Coefficient')
+
+    @property
+    def kt(self):
+        return Quantity(self.__kt, name='Transmission Coefficient (Transmittance)')
+
+    @property
+    def L8(self):
+        return self.__L8
+
+    @property
+    def ASTER(self):
+        return self.__ASTER
 
     def __store(self):
-        """
-        Store the leaf reflectance for ASTER bands B1 - B9 or LANDSAT8 bands
-        B2 - B7.
-        """
 
-        ASTER = namedtuple('ASTER', 'B1 B2 B3 B4 B5 B6 B7 B8 B9')
-        B1 = namedtuple('B1', 'ks kt ka ke omega')
-        B2 = namedtuple('B2', 'ks kt ka ke omega')
-        B3 = namedtuple('B3', 'ks kt ka ke omega')
-        B4 = namedtuple('B4', 'ks kt ka ke omega')
-        B5 = namedtuple('B5', 'ks kt ka ke omega')
-        B6 = namedtuple('B6', 'ks kt ka ke omega')
-        B7 = namedtuple('B7', 'ks kt ka ke omega')
-        B8 = namedtuple('B8', 'ks kt ka ke omega')
-        B9 = namedtuple('B9', 'ks kt ka ke omega')
+        sat_ke = Satellite(self.ke, name='Attenuation Coefficient')
+        sat_ks = Satellite(self.ks, name='Scattering Coefficient (Leaf Reflectance)')
+        sat_ka = Satellite(self.ka, name='Absorption Coefficient')
+        sat_kt = Satellite(self.kt, name='Transmission Coefficient (Transmittance)')
+        sat_omega = Satellite(self.omega, name='Single Scattering Albedo')
 
-        b1 = (520, 600)
-        b2 = (630, 690)
-        b3 = (760, 860)
-        b4 = (1600, 1700)
-        b5 = (2145, 2185)
-        b6 = (2185, 2225)
-        b7 = (2235, 2285)
-        b8 = (2295, 2365)
-        b9 = (2360, 2430)
-
-        ARefB1 = self.int[(self.int[:, 0] >= b1[0]) & (self.int[:, 0] <= b1[1])]
-        ARefB1 = [ARefB1[:, 1].mean(), ARefB1[:, 2].mean(), ARefB1[:, 3].mean(), ARefB1[:, 4].mean(),
-                  ARefB1[:, 5].mean()]
-
-        ARefB2 = self.int[(self.int[:, 0] >= b2[0]) & (self.int[:, 0] <= b2[1])]
-        ARefB2 = [ARefB2[:, 1].mean(), ARefB2[:, 2].mean(), ARefB2[:, 3].mean(), ARefB2[:, 4].mean(),
-                  ARefB2[:, 5].mean()]
-
-        ARefB3 = self.int[(self.int[:, 0] >= b3[0]) & (self.int[:, 0] <= b3[1])]
-        ARefB3 = [ARefB3[:, 1].mean(), ARefB3[:, 2].mean(), ARefB3[:, 3].mean(), ARefB3[:, 4].mean(),
-                  ARefB3[:, 5].mean()]
-
-        ARefB4 = self.int[(self.int[:, 0] >= b4[0]) & (self.int[:, 0] <= b4[1])]
-        ARefB4 = [ARefB4[:, 1].mean(), ARefB4[:, 2].mean(), ARefB4[:, 3].mean(), ARefB4[:, 4].mean(),
-                  ARefB4[:, 5].mean()]
-
-        ARefB5 = self.int[(self.int[:, 0] >= b5[0]) & (self.int[:, 0] <= b5[1])]
-        ARefB5 = [ARefB5[:, 1].mean(), ARefB5[:, 2].mean(), ARefB5[:, 3].mean(), ARefB5[:, 4].mean(),
-                  ARefB5[:, 5].mean()]
-
-        ARefB6 = self.int[(self.int[:, 0] >= b6[0]) & (self.int[:, 0] <= b6[1])]
-        ARefB6 = [ARefB6[:, 1].mean(), ARefB6[:, 2].mean(), ARefB6[:, 3].mean(), ARefB6[:, 4].mean(),
-                  ARefB6[:, 5].mean()]
-
-        ARefB7 = self.int[(self.int[:, 0] >= b7[0]) & (self.int[:, 0] <= b7[1])]
-        ARefB7 = [ARefB7[:, 1].mean(), ARefB7[:, 2].mean(), ARefB7[:, 3].mean(), ARefB7[:, 4].mean(),
-                  ARefB7[:, 5].mean()]
-
-        ARefB8 = self.int[(self.int[:, 0] >= b8[0]) & (self.int[:, 0] <= b8[1])]
-        ARefB8 = [ARefB8[:, 1].mean(), ARefB8[:, 2].mean(), ARefB8[:, 3].mean(), ARefB8[:, 4].mean(),
-                  ARefB8[:, 5].mean()]
-
-        ARefB9 = self.int[(self.int[:, 0] >= b9[0]) & (self.int[:, 0] <= b9[1])]
-        ARefB9 = [ARefB9[:, 1].mean(), ARefB9[:, 2].mean(), ARefB9[:, 3].mean(), ARefB9[:, 4].mean(),
-                  ARefB9[:, 5].mean()]
-
-        B1 = B1(ARefB1[0], ARefB1[1], ARefB1[2], ARefB1[3], ARefB1[4])
-        B2 = B2(ARefB2[0], ARefB2[1], ARefB2[2], ARefB2[3], ARefB2[4])
-        B3 = B3(ARefB3[0], ARefB3[1], ARefB3[2], ARefB3[3], ARefB3[4])
-        B4 = B4(ARefB4[0], ARefB4[1], ARefB4[2], ARefB4[3], ARefB4[4])
-        B5 = B5(ARefB5[0], ARefB5[1], ARefB5[2], ARefB5[3], ARefB5[4])
-        B6 = B6(ARefB6[0], ARefB6[1], ARefB6[2], ARefB6[3], ARefB6[4])
-        B7 = B7(ARefB7[0], ARefB7[1], ARefB7[2], ARefB7[3], ARefB7[4])
-        B8 = B8(ARefB8[0], ARefB8[1], ARefB8[2], ARefB8[3], ARefB8[4])
-        B9 = B9(ARefB9[0], ARefB9[1], ARefB9[2], ARefB9[3], ARefB9[4])
-
-        self.ASTER = ASTER(B1, B2, B3, B4, B5, B6, B7, B8, B9)
-
-        L8 = namedtuple('L8', 'B2 B3 B4 B5 B6 B7')
-        B2 = namedtuple('B2', 'ks kt ka ke omega')
-        B3 = namedtuple('B3', 'ks kt ka ke omega')
-        B4 = namedtuple('B4', 'ks kt ka ke omega')
-        B5 = namedtuple('B5', 'ks kt ka ke omega')
-        B6 = namedtuple('B6', 'ks kt ka ke omega')
-        B7 = namedtuple('B7', 'ks kt ka ke omega')
-
-        b2 = (452, 452 + 60)
-        b3 = (533, 533 + 57)
-        b4 = (636, 636 + 37)
-        b5 = (851, 851 + 28)
-        b6 = (1566, 1566 + 85)
-        b7 = (2107, 2107 + 187)
-
-        LRefB2 = self.int[(self.int[:, 0] >= b2[0]) & (self.int[:, 0] <= b2[1])]
-        LRefB2 = [LRefB2[:, 1].mean(), LRefB2[:, 2].mean(), LRefB2[:, 3].mean(), LRefB2[:, 4].mean(),
-                  LRefB2[:, 5].mean()]
-
-        LRefB3 = self.int[(self.int[:, 0] >= b3[0]) & (self.int[:, 0] <= b3[1])]
-        LRefB3 = [LRefB3[:, 1].mean(), LRefB3[:, 2].mean(), LRefB3[:, 3].mean(), LRefB3[:, 4].mean(),
-                  LRefB3[:, 5].mean()]
-
-        LRefB4 = self.int[(self.int[:, 0] >= b4[0]) & (self.int[:, 0] <= b4[1])]
-        LRefB4 = [LRefB4[:, 1].mean(), LRefB4[:, 2].mean(), LRefB4[:, 3].mean(), LRefB4[:, 4].mean(),
-                  LRefB4[:, 5].mean()]
-
-        LRefB5 = self.int[(self.int[:, 0] >= b5[0]) & (self.int[:, 0] <= b5[1])]
-        LRefB5 = [LRefB5[:, 1].mean(), LRefB5[:, 2].mean(), LRefB5[:, 3].mean(), LRefB5[:, 4].mean(),
-                  LRefB5[:, 5].mean()]
-
-        LRefB6 = self.int[(self.int[:, 0] >= b6[0]) & (self.int[:, 0] <= b6[1])]
-        LRefB6 = [LRefB6[:, 1].mean(), LRefB6[:, 2].mean(), LRefB6[:, 3].mean(), LRefB6[:, 4].mean(),
-                  LRefB6[:, 5].mean()]
-
-        LRefB7 = self.int[(self.int[:, 0] >= b7[0]) & (self.int[:, 0] <= b7[1])]
-        LRefB7 = [LRefB7[:, 1].mean(), LRefB7[:, 2].mean(), LRefB7[:, 3].mean(), LRefB7[:, 4].mean(),
-                  LRefB7[:, 5].mean()]
-
-        B2 = B2(LRefB2[0], LRefB2[1], LRefB2[2], LRefB2[3], LRefB2[4])
-        B3 = B3(LRefB3[0], LRefB3[1], LRefB3[2], LRefB3[3], LRefB3[4])
-        B4 = B4(LRefB4[0], LRefB4[1], LRefB4[2], LRefB4[3], LRefB4[4])
-        B5 = B5(LRefB5[0], LRefB5[1], LRefB5[2], LRefB5[3], LRefB5[4])
-        B6 = B6(LRefB6[0], LRefB6[1], LRefB6[2], LRefB6[3], LRefB6[4])
-        B7 = B7(LRefB7[0], LRefB7[1], LRefB7[2], LRefB7[3], LRefB7[4])
-
-        self.L8 = L8(B2, B3, B4, B5, B6, B7)
-
-    def select(self, mins=None, maxs=None, function='mean'):
-        """
-        Returns the means of the coefficients in range between min and max.
-
-        Parameters
-        ----------
-        mins : int
-            Lower bound of the wavelength (400 - 2500)
-        maxs : int
-            Upper bound of the wavelength (400 - 2500)
-
-        function : {'mean'}, optional
-            Specify  how the bands are calculated.
-
-        Returns
-        -------
-        Band : array_like
-            Reflectance in the selected range.
-        """
-        if function == 'mean':
-            ranges = self.int[(self.int[:, 0] >= mins) & (self.int[:, 0] <= maxs)]
-            ks = ranges[:, 1].mean()
-            kt = ranges[:, 2].mean()
-            ka = ranges[:, 3].mean()
-            ke = ranges[:, 4].mean()
-            om = ranges[:, 5].mean()
-
-            ranges = [ks, kt, ka, ke, om]
-            return np.asarray(ranges, dtype=np.float32)
-
-    def indices(self):
-        self.ndvi = (self.select(851, 879)[0] - self.select(636, 673)[0]) / (
-                self.select(851, 879)[0] + self.select(636, 673)[0])
-
-        return self.ndvi
-
-    def cleanup(self, name):
-        """Do cleanup for an attribute"""
-        try:
-            delattr(self, name)
-        except TypeError:
-            for item in name:
-                delattr(self, item)
+        self.__L8 = OpticalResult(ke=sat_ke.L8, ks=sat_ks.L8, ka=sat_ka.L8, kt=sat_kt.L8, omega=sat_omega.L8,
+                                  ndvi=sat_ks.ndvi(), sr=sat_ks.sr())
+        self.__ASTER = OpticalResult(ke=sat_ke.ASTER, ks=sat_ks.ASTER, ka=sat_ka.ASTER, kt=sat_kt.ASTER,
+                                     omega=sat_omega.ASTER, ndvi=sat_ks.ndvi(satellite='ASTER'),
+                                     sr=sat_ks.sr(satellite='ASTER'))
