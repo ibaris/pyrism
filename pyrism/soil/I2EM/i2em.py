@@ -2,14 +2,14 @@
 from __future__ import division
 
 import warnings
+from respy import Angles, EM, Quantity, Units, Conversion
 
 import numpy as np
+from pyrism.auxil import SoilResult, EmissivityResult, PyrismResult
 from pyrism.core.iemauxil import i2em_wrapper, calc_iem_ems_wrapper
-from respy import Angles, dB, BRDF, BRF, align_all, asarrays, RAD_TO_DEG, DEG_TO_RAD
-from respy import EMW
-
-from pyrism.auxil import SoilResult, EmissivityResult
 from pyrism.soil.I2EM.core import (exponential, gaussian, xpower, mixed)
+from respy.constants import deg_to_rad
+from respy.util import align_all, asarrays
 
 
 class I2EM(Angles):
@@ -74,7 +74,7 @@ class I2EM(Angles):
             Frequency. Access with respy.EMW.
         wavelength : array_like
             Wavelength. Access with respy.EMW.
-        k0 : array_like
+        wavenumber : array_like
             Free space wavenumber in unit of wavelength_unit.
         frequency_unit : str
             Frequency unit. Access with respy.EMW.
@@ -115,91 +115,53 @@ class I2EM(Angles):
                                    angle_unit=angle_unit)
 
         # Define Frequency -----------------------------------------------------------------------------------------
-        self.EMW = EMW(input=frequency, unit=frequency_unit, output='cm')
-        self.__wavelength = self.EMW.wavelength
-        self.__frequency = self.EMW.frequency
-        self.__k0 = self.EMW.k0
+        self.EM = EM(input=frequency, unit=frequency_unit, output='cm')
+        self.__wavelength = self.EM.wavelength
+        self.__frequency = self.EM.frequency
+        self.__wavenumber = self.EM.wavenumber
 
         # Define Roughness -----------------------------------------------------------------------------------------
-        self.__roughness_unit = roughness_unit
-        self.__sigma, self.__corrlength = self.__convert_roughnes(sigma, corrlength, self.__roughness_unit)
+        self.__sigma = Quantity(sigma, roughness_unit)
+        self.__corrlength = Quantity(corrlength, roughness_unit)
 
-        sl = sigma / corrlength  # Roughness Parameter
+        if self.__sigma.unit != Units.length.cm:
+            self.__sigma = self.__sigma.convert_to('cm')
+            self.__corrlength = self.__corrlength.convert_to('cm')
+
+        sl = self.__sigma / self.__corrlength  # Roughness Parameter
 
         # Check for validity
         if any(sl > 0.25):
-            warnings.warn("I2EM is valid for sigma/corrlength < 0.25. The actual ratio is: {0}".format(str(sl)))
+            warnings.warn(
+                "I2EM is valid for sigma/corrlength < 0.25. The actual ratio is: {0}".format(str(sl[sl > 0.25])))
+
         if any(self.__frequency.real > 4.5):
             warnings.warn(
-                "I2EM is valid for frequency < 4.5. The actual frequency is: {0}".format(str(self.__frequency.real)))
+                "I2EM is valid for frequency < 4.5. The actual frequency is: "
+                "{0}".format(str(self.__frequency[self.__frequency > 4.5])))
 
         # Self Definitions -----------------------------------------------------------------------------------------
         self.__eps = eps
-        self.__epsr = eps.real
-        self.__epsi = eps.imag
 
         self.__corrfunc = self.__set_corrfunc(corrfunc)
 
         self.__n = n
-        self.__kz_iza = self.__k0 * np.cos(self.iza)
-        self.__kz_vza = self.__k0 * np.cos(self.vza)
+        self.__kz_iza = self.__wavenumber * np.cos(self.iza)
+        self.__kz_vza = self.__wavenumber * np.cos(self.vza)
         self.__phi = np.zeros_like(iza)
-
-        # Define Static Variables for repr and str Methods ---------------------------------------------------------
-        self.__vals = dict()
-
-        self.__vals['izaDeg'] = self.izaDeg.mean()
-        self.__vals['vzaDeg'] = self.vzaDeg.mean()
-        self.__vals['raaDeg'] = self.raaDeg.mean()
-        self.__vals['iaaDeg'] = self.iaaDeg.mean()
-        self.__vals['vaaDeg'] = self.vaaDeg.mean()
-        self.__vals['alphaDeg'] = self.alphaDeg.mean()
-        self.__vals['betaDeg'] = self.betaDeg.mean()
 
         # Calculations ---------------------------------------------------------------------------------------------
         # self.__I, self.__BRF, self.__BSC = self.compute_i2em()
         self.__I = None
         self.__BRF = None
         self.__BSC = None
+        self.__conversion = None
 
     # ------------------------------------------------------------------------------------------------------------------
     # Magic Methods
     # ------------------------------------------------------------------------------------------------------------------
-    def __str__(self):
-        self.__vals['sigma'] = self.sigma.mean()
-        self.__vals['corrlength'] = self.corrlength.mean()
-        self.__vals['eps'] = self.eps.mean()
-        self.__vals['n'] = self.n.mean()
-        self.__vals['corrfunc'] = self.corrfunc.__name__
-        self.__vals['frequency'] = self.EMW.frequency.mean()
-        self.__vals['wavelength'] = self.EMW.wavelength.mean()
-        self.__vals['frequency_unit'] = self.EMW.frequency_unit
-        self.__vals['wavelength_unit'] = self.EMW.wavelength_unit
-
-        info = 'Class                             : I2EM\n' \
-               'Mean iza and vza and raa [DEG]    : {izaDeg}, {vzaDeg}, {raaDeg}\n' \
-               'Mean RMS Height                   : {sigma}\n' \
-               'Mean correlation length           : {corrlength}\n' \
-               'Mean dielectric constant          : {eps}\n' \
-               'Correlation function              : {corrfunc}\n' \
-               'Mean frequency                    : {frequency} {frequency_unit}\n' \
-               'Mean wavelength                   : {wavelength} {wavelength_unit}'.format(**self.__vals)
-
-        return info
-
-    def __repr__(self):
-        self.__vals['sigma'] = self.sigma.mean()
-        self.__vals['corrlength'] = self.corrlength.mean()
-        self.__vals['eps'] = self.eps.mean()
-        self.__vals['n'] = self.n.mean()
-        self.__vals['corrfunc'] = self.corrfunc.__name__
-        self.__vals['frequency'] = self.EMW.frequency.mean()
-        self.__vals['wavelength'] = self.EMW.wavelength.mean()
-        self.__vals['frequency_unit'] = self.EMW.frequency_unit
-
-        m = max(map(len, list(self.__vals.keys()))) + 1
-        return '\n'.join([k.rjust(m) + ': ' + repr(v)
-                          for k, v in sorted(self.__vals.items())])
+    def __len__(self):
+        return len(self.iza)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Property Calls
@@ -223,7 +185,7 @@ class I2EM(Angles):
 
     @property
     def eps(self):
-        return self.__epsr + self.__epsi * 1j
+        return Quantity(self.eps, name="Relative Permittivity of Soil", constant=True)
 
     @property
     def n(self):
@@ -232,151 +194,39 @@ class I2EM(Angles):
     # Frequency Calls ----------------------------------------------------------------------------------------------
     @property
     def frequency(self):
-        self.__frequence = self.EMW.frequency
+        self.__frequence = self.EM.frequency
         return self.__frequence
 
     @property
     def wavelength(self):
-        self.__wavelength = self.EMW.wavelength
-        return self.EMW.wavelength
+        self.__wavelength = self.EM.wavelength
+        return self.EM.wavelength
 
     @property
-    def k0(self):
-        self.__k0 = self.EMW.k0
-        return self.EMW.k0
+    def wavenumber(self):
+        self.__wavenumber = self.EM.wavenumber
+        return self.EM.wavenumber
 
     @property
     def I(self):
         if self.__I is None:
-            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+            self.__convert_BSC()
 
         return self.__I
 
     @property
     def BRF(self):
         if self.__BRF is None:
-            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+            self.__convert_BSC()
 
         return self.__BRF
 
     @property
     def BSC(self):
         if self.__BSC is None:
-            self.__I, self.__BRF, self.__BSC = self.compute_i2em()
+            self.__convert_BSC()
 
         return self.__BSC
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # Property Setter
-    # ------------------------------------------------------------------------------------------------------------------
-    @frequency.setter
-    def frequency(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.frequency = value
-        self.__frequence = self.EMW.frequency
-
-        self.__add_update_to_results()
-
-    @wavelength.setter
-    def wavelength(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.wavelength = value
-        self.__wavelength = self.EMW.wavelength
-
-        self.__add_update_to_results()
-
-    @sigma.setter
-    def sigma(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__sigma = value
-
-        self.__add_update_to_results()
-
-    @corrlength.setter
-    def corrlength(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__corrlength = value
-
-        self.__add_update_to_results()
-
-    @corrfunc.setter
-    def corrfunc(self, value):
-        self.__corrfunc = self.__set_corrfunc(value)
-        self.__add_update_to_results()
-
-    @eps.setter
-    def eps(self, value):
-        epsr = value.real
-        epsi = value.imag
-
-        epsr = np.asarray(epsr, dtype=np.double).flatten()
-        epsi = np.asarray(epsi, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        epsr, epsi = self.EMW.align_with((epsr, epsi))
-
-        self.__epsr, self.__epsi = epsr, epsi
-
-        self.__add_update_to_results()
-
-    @n.setter
-    def n(self, value):
-        value = np.asarray(value, dtype=np.intc).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__corrlength, self.__n, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__n = value
-
-        self.__add_update_to_results()
 
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
@@ -405,48 +255,40 @@ class I2EM(Angles):
         """
 
         if izaDeg is not None:
-            iza = izaDeg * DEG_TO_RAD
+            iza = izaDeg * deg_to_rad
             _, iza = align_all((self.iza, iza), dtype=np.double)
         else:
             iza = self.iza
 
         if vzaDeg is not None:
-            vza = vzaDeg * DEG_TO_RAD
+            vza = vzaDeg * deg_to_rad
             _, vza = align_all((self.vza, vza), dtype=np.double)
         else:
             vza = self.vza
 
         if raaDeg is not None:
-            raa = raaDeg * DEG_TO_RAD
+            raa = raaDeg * deg_to_rad
             _, raa = align_all((self.iaa, raa), dtype=np.double)
         else:
             raa = self.raa
 
-        kz_iza = self.__k0 * np.cos(iza)
-        kz_vza = self.__k0 * np.cos(vza)
+        angles = Angles(iza=iza, vza=vza, raa=raa, angle_unit='RAD')
 
-        VV, HH = i2em_wrapper(k=self.__k0, kz_iza=kz_iza, kz_vza=kz_vza, iza=iza, vza=vza,
-                              raa=raa, phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength,
-                              sigma=self.__sigma, corrfunc=self.__corrfunc, n=self.__n)
+        kz_iza = self.__wavenumber * np.cos(angles.iza)
+        kz_vza = self.__wavenumber * np.cos(angles.vza)
 
-        # Store data
-        self.__I, self.__BRF, self.__BSC = self.__store(VV, HH)
+        VV, HH = i2em_wrapper(k=self.__wavenumber.value, kz_iza=kz_iza.value, kz_vza=kz_vza.value,
+                              iza=angles.iza.value, vza=angles.vza.value, raa=angles.raa.value,
+                              phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength.value,
+                              sigma=self.__sigma.value, corrfunc=self.__corrfunc, n=self.__n)
 
-        return self.__I, self.__BRF, self.__BSC
+        result = np.array([VV, HH])
+
+        return Conversion(result, angles.vza.value, 'BSC')
 
     # ------------------------------------------------------------------------------------------------------------------
     #  Auxiliary functions and private methods
     # ------------------------------------------------------------------------------------------------------------------
-    def __add_update_to_results(self):
-        self.__k0 = self.EMW.k0
-        self.__sigma = self.sigma
-        self.__corrlength = self.corrlength
-        self.__n = self.n
-        self.__epsr = self.eps.real
-        self.__epsi = self.eps.imag
-        self.__corrfunc = self.corrfunc
-
-        self.__I, self.__BRF, self.__BSC = self.compute_i2em()
 
     def __set_corrfunc(self, corrfunc):
         if corrfunc is 'exponential':
@@ -466,41 +308,40 @@ class I2EM(Angles):
 
         return corrfunc
 
-    def __convert_roughnes(self, sigma, corrlength, unit):
-        CONVERT = {'nm': 1e9,
-                   'um': 1e6,
-                   'mm': 1e3,
-                   'cm': 1e2,
-                   'dm': 1e1,
-                   'm': 1,
-                   'km': 1e-3}
+    def __convert_BSC(self):
+        if self.__conversion is None:
+            self.__conversion = self.compute_i2em()
 
-        if unit in CONVERT.keys():
-            sigma_meter = sigma / CONVERT[unit]
-            corrlength_meter = corrlength / CONVERT[unit]
+        self.c = self.__conversion
 
-            return sigma_meter * CONVERT['cm'], corrlength_meter * CONVERT['cm']
+        self.__I = PyrismResult(array=self.__conversion.I.transpose(),
+                                VV=self.__conversion.I[0],
+                                HH=self.__conversion.I[1])
 
-    def __store(self, VV, HH):
+        self.__BRF = PyrismResult(array=self.__conversion.BRF.transpose(),
+                                  VV=self.__conversion.BRF[0],
+                                  HH=self.__conversion.BRF[1])
 
-        BSC = SoilResult(array=np.array([[VV], [HH]]),
-                         arraydB=np.array([[dB(VV)], [dB(HH)]]),
-                         VV=VV,
-                         HH=HH,
-                         VVdB=dB(VV),
-                         HHdB=dB(HH))
+        self.__BSC = PyrismResult(array=self.__conversion.BSC.transpose(),
+                                  arraydB=self.__conversion.BSCdB.transpose(),
+                                  VV=self.__conversion.BSC[0],
+                                  HH=self.__conversion.BSC[1],
+                                  VVdB=self.__conversion.BSCdB[0],
+                                  HHdB=self.__conversion.BSCdB[1])
 
-        I = SoilResult(array=np.array([[BRDF(VV, self.vza)], [BRDF(HH, self.vza)]]),
-                       arraydB=np.array([[dB(BRDF(VV, self.vza))], [dB(BRDF(HH, self.vza))]]),
-                       VV=BRDF(VV, self.vza),
-                       HH=BRDF(HH, self.vza))
+        # self.__I.array.set_name('Intensity [[VV], [HH]]')
+        self.__I.VV.set_name('Intensity (VV)')
+        self.__I.HH.set_name('Intensity (HH)')
 
-        BRF_ = SoilResult(array=np.array([[BRF(I.VV)], [BRF(I.HH)]]),
-                          arraydB=np.array([[dB(BRF(I.VV))], [dB(BRF(I.HH))]]),
-                          VV=BRF(I.VV),
-                          HH=BRF(I.HH))
+        # self.__BRF.array.set_name('Bidirectional Reflectance Factor [[VV], [HH]]')
+        self.__BRF.VV.set_name('Bidirectional Reflectance Factor (VV)')
+        self.__BRF.HH.set_name('Bidirectional Reflectance Factor (HH)')
 
-        return I, BRF_, BSC
+        # self.__BSC.array.set_name('Backscattering Coefficient [[VV], [HH]]')
+        self.__BSC.VV.set_name('Backscattering Coefficient (VV)')
+        self.__BSC.HH.set_name('Backscattering Coefficient (HH)')
+        self.__BSC.VVdB.set_name('Backscattering Coefficient (VV)')
+        self.__BSC.HHdB.set_name('Backscattering Coefficient (HH)')
 
     class Emissivity(Angles):
 
@@ -554,8 +395,8 @@ class I2EM(Angles):
 
             super(I2EM.Emissivity, self).__init__(iza, vza, raa, normalize=False, nbar=0.0, angle_unit=angle_unit)
 
-            self.EMW = EMW(input=frequency, unit=frequency_unit, output='cm')
-            k = self.EMW.k0
+            self.EM = EM(input=frequency, unit=frequency_unit, output='cm')
+            k = self.EM.wavenumber
 
             corrfunc = self.__set_corrfunc(corrfunc)
 
@@ -569,7 +410,7 @@ class I2EM(Angles):
 
             V, H = asarrays((V_list, H_list))
 
-            self.EMS = self.__store(V, H)
+            self.EMS = self.__convert_BSC(V, H)
 
         def __set_corrfunc(self, corrfunc):
             if corrfunc is 'exponential':
@@ -583,7 +424,7 @@ class I2EM(Angles):
 
             return corrfunc
 
-        def __store(self, V, H):
+        def __convert_BSC(self, V, H):
 
             EMS = EmissivityResult(array=np.array([[V], [H]]),
                                    arraydB=np.array([[dB(V)], [dB(H)]]),

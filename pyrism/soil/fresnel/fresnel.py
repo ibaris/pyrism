@@ -2,7 +2,9 @@ from __future__ import division, print_function, absolute_import
 import sys
 
 import numpy as np
-from respy import Angles, align_all, asarrays, BSC, BRF, dB, stacks, BRDF, Conversion, EMW
+from respy import Angles, EM, Conversion
+from respy.util import align_all, asarrays, stacks
+
 from pyrism.core.fauxil import (reflectivity_wrapper, quad_wrapper, snell_wrapper, pol_reflection,
                                 reflection_coefficients)
 
@@ -69,7 +71,7 @@ class Fresnel(Angles):
             Frequency. Access with respy.EMW.
         wavelength : array_like
             Wavelength. Access with respy.EMW.
-        k0 : array_like
+        wavenumber : array_like
             Free space wavenumber in unit of wavelength_unit.
         frequency_unit : str
             Frequency unit. Access with respy.EMW.
@@ -78,7 +80,7 @@ class Fresnel(Angles):
         loss : array_like
             Fresnel loss term: 1 - exp(-h * cos(xza) ** 2).
         h : array_like
-            Rouhness parameter: 4 * sigma ** 2 * k0 ** 2
+            Rouhness parameter: 4 * sigma ** 2 * wavenumber ** 2
         sigma : array_like
             RMS Height.
         eps : array_like
@@ -122,10 +124,10 @@ class Fresnel(Angles):
         super(Fresnel, self).__init__(iza=xza, vza=vza, raa=raa, normalize=False, angle_unit=angle_unit)
 
         # Define Frequency -----------------------------------------------------------------------------------------
-        self.EMW = EMW(frequency, frequency_unit, roughness_unit)
-        self.roughness_unit = self.EMW.wavelength_unit
-        self.wavelength_unit = self.EMW.wavelength_unit
-        self.frequency_unit = self.EMW.frequency_unit
+        self.EMW = EM(frequency, frequency_unit, roughness_unit)
+        self.roughness_unit = self.EMW.wavelength.unit
+        self.wavelength_unit = self.EMW.wavelength.unit
+        self.frequency_unit = self.EMW.frequency.unit
 
         # Self Definitions -----------------------------------------------------------------------------------------
         self.__pol = 4
@@ -139,47 +141,14 @@ class Fresnel(Angles):
         # Calculations ---------------------------------------------------------------------------------------------
         self.__matrix = self.__compute_reflection_matrix()
         self.__array = self.__compute_reflection_array()
+        self.__conversion = None
         self.__I, self.__BSC, self.__BSCdB = self.__add_update_to_results()
 
         # Define Static Variables for repr and str Methods ---------------------------------------------------------
-        self.__vals = dict()
-        self.__vals['xza'] = self.izaDeg.mean()
-        self.__vals['roughness_unit'] = self.roughness_unit
-        self.__vals['frequency_unit'] = self.EMW.frequency_unit
-        self.__vals['wavelength_unit'] = self.EMW.wavelength_unit
-        self.__vals['normalize'] = self.normalize
-        self.__vals['nbar'] = self.nbar
-        self.__vals['angle_unit'] = self.angle_unit
-        self.vals = self.__vals
 
     # ------------------------------------------------------------------------------------------------------------------
     # Magic Methods
     # ------------------------------------------------------------------------------------------------------------------
-    def __str__(self):
-        self.__vals['sigma'] = self.sigma.mean()
-        self.__vals['frequency'] = self.EMW.frequency.mean()
-        self.__vals['wavelength'] = self.EMW.wavelength.mean()
-        self.__vals['eps'] = self.eps
-        self.__vals['loss'] = self.loss.mean()
-
-        info = 'Class                      : Fresnel\n' \
-               'Mean zenith angle [DEG]    : {xza} \n' \
-               'Mean sigma                 : {sigma} {roughness_unit}\n' \
-               'Mean loss                  : {loss}\n' \
-               'Mean frequency             : {frequency} {frequency_unit}\n' \
-               'Mean wavelength            : {wavelength} {wavelength_unit}'.format(**self.__vals)
-
-        return info
-
-    def __repr__(self):
-        self.__vals['sigma'] = self.sigma.mean()
-        self.__vals['frequency'] = self.EMW.frequency.mean()
-        self.__vals['wavelength'] = self.EMW.wavelength.mean()
-        self.__vals['eps'] = self.eps
-
-        m = max(map(len, list(self.__vals.keys()))) + 1
-        return '\n'.join([k.rjust(m) + ': ' + repr(v)
-                          for k, v in sorted(self.__vals.items())])
 
     def __len__(self):
         return self.xmax
@@ -197,8 +166,8 @@ class Fresnel(Angles):
         return self.EMW.wavelength
 
     @property
-    def k0(self):
-        return self.EMW.k0
+    def wavenumber(self):
+        return self.EMW.wavenumber
 
     # Roughness Calls ----------------------------------------------------------------------------------------------
     @property
@@ -207,7 +176,7 @@ class Fresnel(Angles):
 
     @property
     def h(self):
-        return 4 * self.sigma ** 2 * self.k0 ** 2
+        return 4 * self.sigma ** 2 * self.wavenumber ** 2
 
     @property
     def sigma(self):
@@ -238,81 +207,6 @@ class Fresnel(Angles):
     @property
     def BSCdB(self):
         return self.__BSCdB
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # Property Setter
-    # ------------------------------------------------------------------------------------------------------------------
-    # Frequency Setter ---------------------------------------------------------------------------------------------
-    @frequency.setter
-    def frequency(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.frequency = value
-
-        self.__I, self.__BSC, self.__BSCdB = self.__add_update_to_results()
-
-    @wavelength.setter
-    def wavelength(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__epsr, self.__epsi = self.align_with(data)
-
-        self.EMW.wavelength = value
-
-        self.__I, self.__BSC, self.__BSCdB = self.__add_update_to_results()
-
-    # Roughness Setter ---------------------------------------------------------------------------------------------
-    @sigma.setter
-    def sigma(self, value):
-        value = np.asarray(value, dtype=np.double).flatten()
-
-        if len(value) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (value, self.__sigma, self.__epsr, self.__epsi)
-        value, self.__sigma, self.__epsr, self.__epsi = self.align_with(data)
-
-        value = self.EMW.align_with(value)
-
-        self.__sigma = value.flatten()
-
-        self.__I, self.__BSC, self.__BSCdB = self.__add_update_to_results()
-
-    @eps.setter
-    def eps(self, value):
-        value = np.asarray(value).flatten()
-
-        epsr = value.real
-        epsi = value.imag
-
-        epsr = np.asarray(epsr, dtype=np.double).flatten()
-        epsi = np.asarray(epsi, dtype=np.double).flatten()
-
-        if len(epsr) < self.len:
-            warnings.warn("The length of the input is shorter than the other parameters. The input is therefore "
-                          "adjusted to the other parameters. ")
-
-        data = (epsr, epsi, self.__sigma, self.__epsr, self.__epsi)
-        epsr, epsi, self.__sigma, self.__epsr, self.__epsi = self.align_with(data)
-
-        epsr, epsi = self.EMW.align_with((epsr, epsi))
-
-        self.__epsr, self.__epsi = epsr, epsi
-
-        self.__I, self.__BSC, self.__BSCdB = self.__add_update_to_results()
 
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
@@ -345,6 +239,9 @@ class Fresnel(Angles):
             U[i] = array[array[:, i] != 0].mean()
 
         return U
+
+    def __convert_bsc(self):
+        self.__conversion = Conversion(value=self.__array, vza=self.iza, value_unit='BRDF', angle_unit='RAD')
 
     def __add_update_to_results(self):
         self.__matrix = self.__compute_reflection_matrix()
@@ -474,7 +371,7 @@ class Fresnel(Angles):
                 Frequency. Access with respy.EMW.
             wavelength : array_like
                 Wavelength. Access with respy.EMW.
-            k0 : array_like
+            wavenumber : array_like
                 Free space wavenumber in unit of wavelength_unit.
             frequency_unit : str
                 Frequency unit. Access with respy.EMW.
@@ -483,7 +380,7 @@ class Fresnel(Angles):
             loss : array_like
                 Fresnel loss term: 1 - exp(-h * cos(xza) ** 2).
             h : array_like
-                Rouhness parameter: 4 * sigma ** 2 * k0 ** 2
+                Rouhness parameter: 4 * sigma ** 2 * wavenumber ** 2
             sigma : array_like
                 RMS Height.
             eps : array_like
@@ -622,8 +519,8 @@ class Fresnel(Angles):
             return self.EMW.wavelength
 
         @property
-        def k0(self):
-            return self.EMW.k0
+        def wavenumber(self):
+            return self.EMW.wavenumber
 
         # Roughness Calls ------------------------------------------------------------------------------------------
         @property
@@ -632,7 +529,7 @@ class Fresnel(Angles):
 
         @property
         def h(self):
-            return 4 * self.sigma ** 2 * self.k0 ** 2
+            return 4 * self.sigma ** 2 * self.wavenumber ** 2
 
         @property
         def sigma(self):

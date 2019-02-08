@@ -3,9 +3,10 @@ from __future__ import division
 from collections import namedtuple
 
 import numpy as np
-
-from ...volume.library import get_data_one, get_data_two
-from ...auxil import SoilResult
+from respy import Conversion
+from pyrism.volume.library import get_data_one, get_data_two
+from pyrism.auxil import OPTICAL_RANGE, store_ASTER, store_L8, OpticalResult, Satellite
+from respy import Quantity
 
 try:
     lib = get_data_two()
@@ -31,9 +32,9 @@ class LSM:
 
     Parameters
     ----------
-    reflectance : int or float
+    rho_soil : int or float
         Surface (Lambertian) reflectance in optical wavelength.
-    moisture : int or float
+    mv : int or float
         Surface moisture content between 0 and 1.
 
     Returns
@@ -51,137 +52,63 @@ class LSM:
 
     """
 
-    def __init__(self, reflectance, moisture):
+    def __init__(self, rho_soil, mv, vza=None, angle_unit='DEG'):
 
-        self.l = np.arange(400, 2501)
-        self.sRef = reflectance
-        self.moisture = moisture
-        self.__calc()
+        if angle_unit is "rad":
+            angle_unit = "RAD"
+        elif angle_unit is "deg":
+            angle_unit = "DEG"
+
+        self.angle_unit = angle_unit
+
+        self.EM = OPTICAL_RANGE
+        self.wavelength = self.EM.wavelength
+        self.frequency = self.EM.frequency
+        self.wavenumber = self.EM.wavenumber
+
+        self.rho_soil = Quantity(rho_soil, name="Soil Brightness Factor")
+
+        self.mv = Quantity(mv, name="Soil Moisture (Vol. %)")
+
+        result = self.rho_soil * (self.mv * lib.soil.rsoil1 + (1 - self.mv) * lib.soil.rsoil2)
+        self.__conversion = Conversion(result, vza=vza, value_unit='BRDF', angle_unit=angle_unit)
+
+        self.__I = self.__conversion.I
+        self.__BRF = self.__conversion.BRF
+        self.__BSC = self.__conversion.BSC
+
+        array = np.array([self.wavelength, self.I])
+        self.array = array.transpose()
         self.__store()
+
+    def __repr__(self):
+        return self.I.create_arraystr('LSM')
 
     @property
     def I(self):
-        return self.I
+        return self.__I
 
-    def __calc(self):
-        self.I = self.sRef * (self.moisture * lib.soil.rsoil1 + (1 - self.moisture) * lib.soil.rsoil2)
-        self.int = [self.l, self.I]
-        self.int = np.asarray(self.int, dtype=np.float32)
-        self.int = self.int.transpose()
+    @property
+    def BRF(self):
+        return self.__BRF
 
-        self.I = SoilResult(array=self.I)
+    @property
+    def BSC(self):
+        return self.__BSC
+
+    @property
+    def L8(self):
+        return self.__L8
+
+    @property
+    def ASTER(self):
+        return self.__ASTER
 
     def __store(self):
-        # <Help and Info Section> -----------------------------------------
-        """
-        Store the surface reflectance for ASTER bands B1 - B9 or LANDSAT8 bands
-        B2 - B7.
 
-        Access:
-            :self.ASTER.Bx:     (array_like)
-                                Soil reflectance for ASTER Band x.
-            :self.L8.Bx:        (array_like)
-                                Soil reflectance for LANDSAT 8 Band x.
-        """
+        sat_I = Satellite(self.I, name='Intensity')
+        sat_BRF = Satellite(self.BRF, name='Bidirectional Reflectance Factor')
+        sat_BSC = Satellite(self.BSC, name='Backscattering Coefficient')
 
-        ASTER = namedtuple('ASTER', 'B1 B2 B3 B4 B5 B6 B7 B8 B9')
-
-        b1 = (520, 600)
-        b2 = (630, 690)
-        b3 = (760, 860)
-        b4 = (1600, 1700)
-        b5 = (2145, 2185)
-        b6 = (2185, 2225)
-        b7 = (2235, 2285)
-        b8 = (2295, 2365)
-        b9 = (2360, 2430)
-
-        B1 = self.int[(self.int[:, 0] >= b1[0]) & (self.int[:, 0] <= b1[1])]
-        B1 = B1[:, 1].mean()
-
-        B2 = self.int[(self.int[:, 0] >= b2[0]) & (self.int[:, 0] <= b2[1])]
-        B2 = B2[:, 1].mean()
-
-        B3 = self.int[(self.int[:, 0] >= b3[0]) & (self.int[:, 0] <= b3[1])]
-        B3 = B3[:, 1].mean()
-
-        B4 = self.int[(self.int[:, 0] >= b4[0]) & (self.int[:, 0] <= b4[1])]
-        B4 = B4[:, 1].mean()
-
-        B5 = self.int[(self.int[:, 0] >= b5[0]) & (self.int[:, 0] <= b5[1])]
-        B5 = B5[:, 1].mean()
-
-        B6 = self.int[(self.int[:, 0] >= b6[0]) & (self.int[:, 0] <= b6[1])]
-        B6 = B6[:, 1].mean()
-
-        B7 = self.int[(self.int[:, 0] >= b7[0]) & (self.int[:, 0] <= b7[1])]
-        B7 = B7[:, 1].mean()
-
-        B8 = self.int[(self.int[:, 0] >= b8[0]) & (self.int[:, 0] <= b8[1])]
-        B8 = B8[:, 1].mean()
-
-        B9 = self.int[(self.int[:, 0] >= b9[0]) & (self.int[:, 0] <= b9[1])]
-        B9 = B9[:, 1].mean()
-
-        self.ASTER = ASTER(B1, B2, B3, B4, B5, B6, B7, B8, B9)
-
-        L8 = namedtuple('L8', 'B2 B3 B4 B5 B6 B7')
-
-        b2 = (452, 452 + 60)
-        b3 = (533, 533 + 57)
-        b4 = (636, 636 + 37)
-        b5 = (851, 851 + 28)
-        b6 = (1566, 1566 + 85)
-        b7 = (2107, 2107 + 187)
-
-        B2 = self.int[(self.int[:, 0] >= b2[0]) & (self.int[:, 0] <= b2[1])]
-        B2 = B2[:, 1].mean()
-
-        B3 = self.int[(self.int[:, 0] >= b3[0]) & (self.int[:, 0] <= b3[1])]
-        B3 = B3[:, 1].mean()
-
-        B4 = self.int[(self.int[:, 0] >= b4[0]) & (self.int[:, 0] <= b4[1])]
-        B4 = B4[:, 1].mean()
-
-        B5 = self.int[(self.int[:, 0] >= b5[0]) & (self.int[:, 0] <= b5[1])]
-        B5 = B5[:, 1].mean()
-
-        B6 = self.int[(self.int[:, 0] >= b6[0]) & (self.int[:, 0] <= b6[1])]
-        B6 = B6[:, 1].mean()
-
-        B7 = self.int[(self.int[:, 0] >= b7[0]) & (self.int[:, 0] <= b7[1])]
-        B7 = B7[:, 1].mean()
-
-        self.L8 = L8(B2, B3, B4, B5, B6, B7)
-
-    #
-    #        self.int = ReflectanceResult(L8=L8,
-    #   ASTER=ASTER,
-    #   surface=self.surface)
-
-    def select(self, mins, maxs, function='mean'):
-        # <Help and Info Section> -----------------------------------------
-        """
-        Returns the means of the coefficients in range between min and max.
-
-        Args:
-            :min:   (int)
-                                Lower bound of the wavelength (400 - 2500)
-
-            :max:   (int)
-                                Upper bound of the wavelength (400 - 2500)
-
-        """
-        if function == 'mean':
-            ranges = self.int[(self.int[:, 0] >= mins) & (self.int[:, 0] <= maxs)]
-            ref = ranges[:, 1].mean()
-
-            return ref
-
-    def cleanup(self, name):
-        """Do cleanup for an attribute"""
-        try:
-            delattr(self, name)
-        except TypeError:
-            for item in name:
-                delattr(self, item)
+        self.__L8 = OpticalResult(I=sat_I.L8, BRF=sat_BRF.L8, BSC=sat_BSC.L8)
+        self.__ASTER = OpticalResult(I=sat_I.ASTER, BRF=sat_BRF.ASTER, BSC=sat_BSC.ASTER)
