@@ -3,8 +3,12 @@ from __future__ import division
 
 import os
 import sys
+import warnings
 from datetime import datetime
 from os.path import expanduser
+
+import numpy as np
+from respy import Bands, EM
 
 EPSILON = sys.float_info.epsilon  # typical floating-point calculation error
 try:
@@ -12,8 +16,9 @@ try:
 except ImportError:
     import pickle
 
-import warnings
-from numpy import ndarray
+BANDS = Bands('nm')
+
+OPTICAL_RANGE = EM(BANDS.get_region('OPTICS'), 'nm', 'THz')
 
 
 def denormalized_decorator(func):
@@ -65,6 +70,7 @@ def normalized_decorator(func):
 
     return denormalized
 
+
 def get_version():
     version = dict()
 
@@ -72,6 +78,107 @@ def get_version():
         exec (fp.read(), version)
 
     return version['__version__']
+
+
+class OpticalResult(dict):
+    """ Represents the reflectance result.
+
+    Returns
+    -------
+    All returns are attributes!
+    BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV, BSC.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV]).
+    BSCdB.U, BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV, BSCdB.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV]).
+    I.U, I.VV, I.HH, I.VH, I.HV, I.array : array_like
+        Intensity (BRDF) values. I.array contains the results as an array like array([I.U, I.VV, I.HH, I.VH, I.HV]).
+    Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV, Bv.array : array_like
+        Emissivity values (if available). Bv.array contains the results as an array
+        like array([Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV]).
+
+    Notes
+    -----
+    There may be additional attributes not listed above depending of the
+    specific solver. Since this class is essentially a subclass of dict
+    with attribute accessors, one can see which attributes are available
+    using the `keys()` method.
+    """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+    def __repr__(self):
+        if self.keys():
+            m = max(map(len, list(self.keys()))) + 1
+            return '\n'.join([k.rjust(m) + ': ' + repr(v)
+                              for k, v in sorted(self.items())])
+        else:
+            return self.__class__.__name__ + "()"
+
+    def __dir__(self):
+        return list(self.keys())
+
+
+class PyrismResult(dict):
+    """ Represents the reflectance result.
+
+    Returns
+    -------
+    All returns are attributes!
+    BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV, BSC.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSC.U, BSC.VV, BSC.HH, BSC.VH, BSC.HV]).
+    BSCdB.U, BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV, BSCdB.array : array_like
+        Radar backscattering values in [linear]. BSC.array contains the results as an array
+        like array([BSCdB.VV, BSCdB.HH, BSCdB.VH, BSCdB.HV]).
+    I.U, I.VV, I.HH, I.VH, I.HV, I.array : array_like
+        Intensity (BRDF) values. I.array contains the results as an array like array([I.U, I.VV, I.HH, I.VH, I.HV]).
+    Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV, Bv.array : array_like
+        Emissivity values (if available). Bv.array contains the results as an array
+        like array([Bv.U, Bv.VV, Bv.HH, Bv.VH, Bv.HV]).
+
+    Notes
+    -----
+    There may be additional attributes not listed above depending of the
+    specific solver. Since this class is essentially a subclass of dict
+    with attribute accessors, one can see which attributes are available
+    using the `keys()` method.
+    """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    __delattr__ = dict.__delitem__
+
+    KEYLIST = ['array', 'BSC', 'BSCdB', 'Bv',
+               'VV', 'HH', 'VH', 'HV', 'I', 'BRF']
+
+    def __repr__(self):
+        if self.keys():
+            m = max(map(len, list(self.keys()))) + 1
+            return '\n'.join([k.rjust(m) + ': ' + repr(v)
+                              for k, v in sorted(self.items())])
+        else:
+            return self.__class__.__name__ + "()"
+
+    def __dir__(self):
+        return list(self.keys())
+
+    def __setattr__(self, key, value):
+        if key not in PyrismResultPol.KEYLIST:
+            raise KeyError("{} is not a legal key of this PyrismResultPol".format(repr(key)))
+        dict.__setitem__(self, key, value)
 
 
 class Memorize(dict):
@@ -505,3 +612,134 @@ class Files(object):
          self.orient, self.or_pdf, self.n_alpha, self.n_beta, self.psd) = data["parameter"]
 
         return (data["time"], data["description"])
+
+
+def ndvi(red, nir):
+    return (nir - red) / (nir + red)
+
+
+def sr(red, nir):
+    return nir / red
+
+
+def store_ASTER(value):
+    """ Store Aster bands.
+    Store reflectance for Aster bands
+
+    Parameters
+    ----------
+    value : numpy.ndarray
+        The reflectance value in a range from 400 nm - 2500 nm.
+
+    Returns
+    -------
+    Aster bands B1 - B9: numpy.ndarray
+        The mean values of Aster Bands from B1 - B9. See `Notes`.
+
+    Note
+    ----
+    Landsat 8 Bands are in [nm]:
+        * B1 = 520 - 600
+        * B2 = 630 - 690
+        * B3 = 760 - 860
+        * B4 = 1600 - 1700
+        * B5 = 2145 - 2185
+        * B6 = 2185 - 2225
+        * B7 = 2235 - 2285
+        * B8 = 2295 - 2365
+        * B9 = 2360 - 2430
+    """
+
+    wavelength = np.arange(400, 2501)
+
+    if len(wavelength) != len(value):
+        raise AssertionError(
+            "Value must contain continuous reflectance values from from 400 until 2500 nm with a length of "
+            "2101. The actual length of value is {0}".format(str(len(value))))
+
+    value = np.array([wavelength, value])
+    value = value.transpose()
+
+    b1 = (520, 600)
+    b2 = (630, 690)
+    b3 = (760, 860)
+    b4 = (1600, 1700)
+    b5 = (2145, 2185)
+    b6 = (2185, 2225)
+    b7 = (2235, 2285)
+    b8 = (2295, 2365)
+    b9 = (2360, 2430)
+
+    ARefB1 = value[(value[:, 0] >= b1[0]) & (value[:, 0] <= b1[1])]
+    ARefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
+    ARefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
+    ARefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
+    ARefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
+    ARefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
+    ARefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
+    ARefB8 = value[(value[:, 0] >= b8[0]) & (value[:, 0] <= b8[1])]
+    ARefB9 = value[(value[:, 0] >= b9[0]) & (value[:, 0] <= b9[1])]
+
+    bands = np.array([ARefB1[:, 1].mean(), ARefB2[:, 1].mean(), ARefB3[:, 1].mean(), ARefB4[:, 1].mean(),
+                      ARefB5[:, 1].mean(), ARefB6[:, 1].mean(), ARefB7[:, 1].mean(), ARefB8[:, 1].mean(),
+                      ARefB9[:, 1].mean()])
+
+    return bands
+
+
+def store_L8(value):
+    """ Store Landsat 8 bands.
+    Store reflectance for Landsat 8 bands
+
+    Parameters
+    ----------
+    value : numpy.ndarray
+        The reflectance value in a range from 400 nm - 2500 nm.
+
+    Returns
+    -------
+    Landsat bands B2 - B7: numpy.ndarray
+        The mean values of Landsat 8 Bands from numpy.array([B2 - B7]). See `Notes`.
+
+    Note
+    ----
+    Landsat 8 Bands are in [nm]:
+        * B2 = 452 - 512
+        * B3 = 533 - 590
+        * B4 = 636 - 673
+        * B5 = 851 - 879
+        * B6 = 1566 - 1651
+        * B7 = 2107 - 2294
+    """
+    wavelength = OPTICAL_RANGE.wavelength
+
+    if len(wavelength) != len(value):
+        raise AssertionError(
+            "Value must contain continuous reflectance values from from 400 until 2500 nm with a length of "
+            "2101. The actual length of value is {0}".format(str(len(value))))
+
+    value = np.array([wavelength, value])
+    value = value.transpose()
+
+    b2 = (452, 452 + 60)
+    b3 = (533, 533 + 57)
+    b4 = (636, 636 + 37)
+    b5 = (851, 851 + 28)
+    b6 = (1566, 1566 + 85)
+    b7 = (2107, 2107 + 187)
+
+    LRefB2 = value[(value[:, 0] >= b2[0]) & (value[:, 0] <= b2[1])]
+    LRefB3 = value[(value[:, 0] >= b3[0]) & (value[:, 0] <= b3[1])]
+    LRefB4 = value[(value[:, 0] >= b4[0]) & (value[:, 0] <= b4[1])]
+    LRefB5 = value[(value[:, 0] >= b5[0]) & (value[:, 0] <= b5[1])]
+    LRefB6 = value[(value[:, 0] >= b6[0]) & (value[:, 0] <= b6[1])]
+    LRefB7 = value[(value[:, 0] >= b7[0]) & (value[:, 0] <= b7[1])]
+
+    bands = np.array([LRefB2[:, 1].mean(), LRefB3[:, 1].mean(), LRefB4[:, 1].mean(), LRefB5[:, 1].mean(),
+                      LRefB6[:, 1].mean(), LRefB7[:, 1].mean()])
+
+    return bands
+
+
+def convert_L8_to_quantity(I, BRF, BSC):
+    pass
