@@ -1017,6 +1017,7 @@ cdef double[:,:] XSEC_QE(double complex[:,:,:] S, double[:] wavelength):
     Qe : double[:,:]
         Two dimensional extinction cross section.
     """
+    # TODO ibaris 24.01.19: Return as memory view.
     cdef:
         np.ndarray[double, ndim=2]  Qe
         Py_ssize_t x
