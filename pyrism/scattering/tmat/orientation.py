@@ -1,8 +1,7 @@
 from __future__ import division
 
-import numpy as np
-from scipy.integrate import quad
-from pyrism.core.tma import gaussian_wrapper, uniform_wrapper
+from pyrism.core.tma import uniform_wrapper, gaussian_wrapper
+
 
 class Orientation(object):
     def __init__(self):

@@ -260,7 +260,7 @@ C   THE AUTHORS AND THEIR ORGANIZATION DISCLAIM ALL LIABILITY FOR
 C   ANY DAMAGES THAT MAY RESULT FROM THE USE OF THE PROGRAM. 
 
       SUBROUTINE CALCTMAT(AXI,RAT,LAM,MRR,MRI,EPS,NP,DDELT,NDGS,NMAX)
-      IMPLICIT REAL*8 (A-H,O-Z)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
 
 Cf2py intent(in) axi
 Cf2py intent(in) rat
@@ -274,12 +274,12 @@ Cf2py intent(in) ndgs
 Cf2py intent(out) nmax
 
       INCLUDE 'ampld.par.f'
-      REAL*8  LAM,MRR,MRI,X(NPNG2),W(NPNG2),S(NPNG2),SS(NPNG2),
+      REAL(kind=8)  LAM,MRR,MRI,X(NPNG2),W(NPNG2),S(NPNG2),SS(NPNG2),
      *        AN(NPN1),R(NPNG2),DR(NPNG2),
      *        DDR(NPNG2),DRR(NPNG2),DRI(NPNG2),ANN(NPN1,NPN1)
-      REAL*8 TR1(NPN2,NPN2),TI1(NPN2,NPN2)
-      REAL*8 XALPHA(300),XBETA(300),WALPHA(300),WBETA(300)
-      REAL*4
+      REAL(kind=8) TR1(NPN2,NPN2),TI1(NPN2,NPN2)
+      REAL(kind=8) XALPHA(300),XBETA(300),WALPHA(300),WBETA(300)
+      REAL(kind=4)
      &     RT11(NPN6,NPN4,NPN4),RT12(NPN6,NPN4,NPN4),
      &     RT21(NPN6,NPN4,NPN4),RT22(NPN6,NPN4,NPN4),
      &     IT11(NPN6,NPN4,NPN4),IT12(NPN6,NPN4,NPN4),
@@ -307,14 +307,14 @@ C      NDGS=2
 
       P=DACOS(-1D0)
       NCHECK=0
-      IF (NP.EQ.-1.OR.NP.EQ.-2) NCHECK=1
-      IF (NP.GT.0.AND.(-1)**NP.EQ.1) NCHECK=1
+      IF (NP==-1.OR.NP==-2) NCHECK=1
+      IF (NP>0.AND.(-1)**NP==1) NCHECK=1
 C      WRITE (6,5454) NCHECK
 C 5454 FORMAT ('NCHECK=',I1)
-      IF (DABS(RAT-1D0).GT.1D-8.AND.NP.EQ.-1) CALL SAREA (EPS,RAT)
-      IF (DABS(RAT-1D0).GT.1D-8.AND.NP.GE.0) CALL SURFCH(NP,EPS,RAT)
-      IF (DABS(RAT-1D0).GT.1D-8.AND.NP.EQ.-2) CALL SAREAC (EPS,RAT)
-      IF (NP.EQ.-3) CALL DROP (RAT)
+      IF (DABS(RAT-1D0)>1D-8.AND.NP==-1) CALL SAREA (EPS,RAT)
+      IF (DABS(RAT-1D0)>1D-8.AND.NP>=0) CALL SURFCH(NP,EPS,RAT)
+      IF (DABS(RAT-1D0)>1D-8.AND.NP==-2) CALL SAREAC (EPS,RAT)
+      IF (NP==-3) CALL DROP (RAT)
 C     PRINT 8000, RAT
 C 8000 FORMAT ('RAT=',F8.6)
 C      IF(NP.EQ.-1.AND.EPS.GE.1D0) PRINT 7000,EPS
@@ -344,17 +344,17 @@ C 8004 FORMAT('EQUAL-SURFACE-AREA-SPHERE RADIUS=',F8.4)
       IXXX=XEV+4.05D0*XEV**0.333333D0
       INM1=MAX0(4,IXXX)
 C      IF (INM1.GE.NPN1) PRINT 7333, NPN1
-      IF (INM1.GE.NPN1) STOP
+      IF (INM1>=NPN1) STOP
 C 7333 FORMAT('CONVERGENCE IS NOT OBTAINED FOR NPN1=',I3,  
 C     &       '.  EXECUTION TERMINATED')
       QEXT1=0D0
       QSCA1=0D0
-      DO 50 NMA=INM1,NPN1
+      DO NMA=INM1,NPN1
          NMAX=NMA
          MMAX=1
          NGAUSS=NMAX*NDGS
 C         IF (NGAUSS.GT.NPNG1) PRINT 7340, NGAUSS
-         IF (NGAUSS.GT.NPNG1) STOP
+         IF (NGAUSS>NPNG1) STOP
 C 7340    FORMAT('NGAUSS =',I3,' I.E. IS GREATER THAN NPNG1.',
 C     &          '  EXECUTION TERMINATED')
 C 7334    FORMAT(' NMAX =', I3,'  DC2=',D8.2,'   DC1=',D8.2)
@@ -365,7 +365,7 @@ C 7334    FORMAT(' NMAX =', I3,'  DC2=',D8.2,'   DC1=',D8.2)
      &                 DDR,DRR,DRI,NMAX,NCHECK)
          QEXT=0D0
          QSCA=0D0
-         DO 4 N=1,NMAX
+         DO N=1,NMAX
             N1=N+NMAX
             TR1NN=TR1(N,N)
             TI1NN=TI1(N,N)
@@ -375,21 +375,21 @@ C 7334    FORMAT(' NMAX =', I3,'  DC2=',D8.2,'   DC1=',D8.2)
             QSCA=QSCA+DN1*(TR1NN*TR1NN+TI1NN*TI1NN
      &                    +TR1NN1*TR1NN1+TI1NN1*TI1NN1)
             QEXT=QEXT+(TR1NN+TR1NN1)*DN1
-    4    CONTINUE
+      end do
          DSCA=DABS((QSCA1-QSCA)/QSCA)
          DEXT=DABS((QEXT1-QEXT)/QEXT)
          QEXT1=QEXT
          QSCA1=QSCA
 C        PRINT 7334, NMAX,DSCA,DEXT
-         IF(DSCA.LE.DDELT.AND.DEXT.LE.DDELT) GO TO 55
+         IF(DSCA<=DDELT.AND.DEXT<=DDELT) GO TO 55
 C         IF (NMA.EQ.NPN1) PRINT 7333, NPN1
-         IF (NMA.EQ.NPN1) STOP      
-   50 CONTINUE
+         IF (NMA==NPN1) STOP      
+      end do
    55 NNNGGG=NGAUSS+1
       MMAX=NMAX
 C      IF (NGAUSS.EQ.NPNG1) PRINT 7336
-      IF (NGAUSS.EQ.NPNG1) GO TO 155 
-      DO 150 NGAUS=NNNGGG,NPNG1
+      IF (NGAUSS==NPNG1) GO TO 155 
+      DO NGAUS=NNNGGG,NPNG1
          NGAUSS=NGAUS
          NGGG=2*NGAUSS
 C 7336    FORMAT('WARNING: NGAUSS=NPNG1')
@@ -401,7 +401,7 @@ C 7337    FORMAT(' NG=',I3,'  DC2=',D8.2,'   DC1=',D8.2)
      &                 DDR,DRR,DRI,NMAX,NCHECK)
          QEXT=0D0
          QSCA=0D0
-         DO 104 N=1,NMAX
+         DO N=1,NMAX
             N1=N+NMAX
             TR1NN=TR1(N,N)
             TI1NN=TI1(N,N)
@@ -411,25 +411,25 @@ C 7337    FORMAT(' NG=',I3,'  DC2=',D8.2,'   DC1=',D8.2)
             QSCA=QSCA+DN1*(TR1NN*TR1NN+TI1NN*TI1NN
      &                    +TR1NN1*TR1NN1+TI1NN1*TI1NN1)
             QEXT=QEXT+(TR1NN+TR1NN1)*DN1
-  104    CONTINUE
+      end do
          DSCA=DABS((QSCA1-QSCA)/QSCA)
          DEXT=DABS((QEXT1-QEXT)/QEXT)
 C        PRINT 7337, NGGG,DSCA,DEXT
          QEXT1=QEXT
          QSCA1=QSCA
-         IF(DSCA.LE.DDELT.AND.DEXT.LE.DDELT) GO TO 155
+         IF(DSCA<=DDELT.AND.DEXT<=DDELT) GO TO 155
 C         IF (NGAUS.EQ.NPNG1) PRINT 7336
-  150 CONTINUE
+      end do
   155 CONTINUE
       QSCA=0D0
       QEXT=0D0
       NNM=NMAX*2
-      DO 204 N=1,NNM
+      DO N=1,NNM
          QEXT=QEXT+TR1(N,N)
-  204 CONTINUE
-      DO 213 N2=1,NMAX
+      end do
+      DO N2=1,NMAX
          NN2=N2+NMAX
-         DO 213 N1=1,NMAX
+         DO N1=1,NMAX
             NN1=N1+NMAX
             ZZ1=TR1(N1,N2)
             RT11(1,N1,N2)=ZZ1
@@ -449,18 +449,19 @@ C         IF (NGAUS.EQ.NPNG1) PRINT 7336
             IT22(1,N1,N2)=ZZ8
             QSCA=QSCA+ZZ1*ZZ1+ZZ2*ZZ2+ZZ3*ZZ3+ZZ4*ZZ4
      &           +ZZ5*ZZ5+ZZ6*ZZ6+ZZ7*ZZ7+ZZ8*ZZ8
-  213 CONTINUE
+      end do
+      end do
 C     PRINT 7800,0,DABS(QEXT),QSCA,NMAX
-      DO 220 M=1,NMAX
+      DO M=1,NMAX
          CALL TMATR(M,NGAUSS,X,W,AN,ANN,S,SS,PPI,PIR,PII,R,DR,
      &               DDR,DRR,DRI,NMAX,NCHECK)
          NM=NMAX-M+1
          M1=M+1
          QSC=0D0
-         DO 214 N2=1,NM
+         DO N2=1,NM
             NN2=N2+M-1
             N22=N2+NM
-            DO 214 N1=1,NM
+            DO N1=1,NM
                NN1=N1+M-1
                N11=N1+NM
                ZZ1=TR1(N1,N2)
@@ -481,18 +482,19 @@ C     PRINT 7800,0,DABS(QEXT),QSCA,NMAX
                IT22(M1,NN1,NN2)=ZZ8
                QSC=QSC+(ZZ1*ZZ1+ZZ2*ZZ2+ZZ3*ZZ3+ZZ4*ZZ4
      &                 +ZZ5*ZZ5+ZZ6*ZZ6+ZZ7*ZZ7+ZZ8*ZZ8)*2D0
-  214    CONTINUE
+      end do
+      end do
          NNM=2*NM
          QXT=0D0
-         DO 215 N=1,NNM
+         DO N=1,NNM
             QXT=QXT+TR1(N,N)*2D0
-  215    CONTINUE
+      end do
          QSCA=QSCA+QSC
          QEXT=QEXT+QXT
 C        PRINT 7800,M,DABS(QXT),QSC,NMAX
 C 7800    FORMAT(' m=',I3,'  qxt=',D12.6,'  qsc=',D12.6,
 C     &          '  nmax=',I3)
-  220 CONTINUE
+      end do
       WALB=-QSCA/QEXT
 C      IF (WALB.GT.1D0+DDELT) PRINT 9111
 C 9111 FORMAT ('WARNING: W IS GREATER THAN 1')
@@ -509,10 +511,10 @@ C      PHI0=114D0
 C      PHI=128D0
 
       SUBROUTINE CALCAMPL(NMAX,LAM,THET0,THET,PHI0,PHI,ALPHA,BETA,S,Z)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 LAM
-      COMPLEX*16 S(2,2)
-      REAL*8 Z(4,4)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) LAM
+      COMPLEX(kind=8) S(2,2)
+      REAL(kind=8) Z(4,4)
 Cf2py intent(in) nmax
 Cf2py intent(in) lam
 Cf2py intent(in) thet0
@@ -572,25 +574,25 @@ C   CALCULATION OF THE AMPLITUDE MATRIX
       SUBROUTINE AMPL (NMAX,DLAM,TL,TL1,PL,PL1,ALPHA,BETA,
      &                 VV,VH,HV,HH)  
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-B,D-H,O-Z), COMPLEX*16 (C)
-      REAL*8 AL(3,2),AL1(3,2),AP(2,3),AP1(2,3),B(3,3),
+      IMPLICIT REAL(kind=8) (A-B,D-H,O-Z), COMPLEX(kind=8) (C)
+      REAL(kind=8) AL(3,2),AL1(3,2),AP(2,3),AP1(2,3),B(3,3),
      *       R(2,2),R1(2,2),C(3,2),CA,CB,CT,CP,CTP,CPP,CT1,CP1,
      *       CTP1,CPP1
-      REAL*8 DV1(NPN6),DV2(NPN6),DV01(NPN6),DV02(NPN6)
-      REAL*4
+      REAL(kind=8) DV1(NPN6),DV2(NPN6),DV01(NPN6),DV02(NPN6)
+      REAL(kind=4)
      &     TR11(NPN6,NPN4,NPN4),TR12(NPN6,NPN4,NPN4),
      &     TR21(NPN6,NPN4,NPN4),TR22(NPN6,NPN4,NPN4),
      &     TI11(NPN6,NPN4,NPN4),TI12(NPN6,NPN4,NPN4),
      &     TI21(NPN6,NPN4,NPN4),TI22(NPN6,NPN4,NPN4)
-      COMPLEX*16 CAL(NPN4,NPN4),VV,VH,HV,HH
+      COMPLEX(kind=8) CAL(NPN4,NPN4),VV,VH,HV,HH
       COMMON /TMAT/ TR11,TR12,TR21,TR22,TI11,TI12,TI21,TI22
 
-      IF (ALPHA.LT.0D0.OR.ALPHA.GT.360D0.OR.
-     &    BETA.LT.0D0.OR.BETA.GT.180D0.OR.
-     &    TL.LT.0D0.OR.TL.GT.180D0.OR.
-     &    TL1.LT.0D0.OR.TL1.GT.180D0.OR.
-     &    PL.LT.0D0.OR.PL.GT.360D0.OR.
-     &    PL1.LT.0D0.OR.PL1.GT.360D0) THEN 
+      IF (ALPHA<0D0.OR.ALPHA>360D0.OR.
+     &    BETA<0D0.OR.BETA>180D0.OR.
+     &    TL<0D0.OR.TL>180D0.OR.
+     &    TL1<0D0.OR.TL1>180D0.OR.
+     &    PL<0D0.OR.PL>360D0.OR.
+     &    PL1<0D0.OR.PL1>360D0) THEN 
 C          WRITE (6,2000)
           STOP
       ELSE
@@ -609,16 +611,16 @@ C     &        ' ALLOWABLE RANGE')
       PHIL1=PL1*PI
 
       EPS=1D-7
-      IF (THETL.LT.PIN2) THETL=THETL+EPS
-      IF (THETL.GT.PIN2) THETL=THETL-EPS
-      IF (THETL1.LT.PIN2) THETL1=THETL1+EPS
-      IF (THETL1.GT.PIN2) THETL1=THETL1-EPS
-      IF (PHIL.LT.PIN) PHIL=PHIL+EPS
-      IF (PHIL.GT.PIN) PHIL=PHIL-EPS
-      IF (PHIL1.LT.PIN) PHIL1=PHIL1+EPS
-      IF (PHIL1.GT.PIN) PHIL1=PHIL1-EPS
-      IF (BET.LE.PIN2.AND.PIN2-BET.LE.EPS) BET=BET-EPS
-      IF (BET.GT.PIN2.AND.BET-PIN2.LE.EPS) BET=BET+EPS
+      IF (THETL<PIN2) THETL=THETL+EPS
+      IF (THETL>PIN2) THETL=THETL-EPS
+      IF (THETL1<PIN2) THETL1=THETL1+EPS
+      IF (THETL1>PIN2) THETL1=THETL1-EPS
+      IF (PHIL<PIN) PHIL=PHIL+EPS
+      IF (PHIL>PIN) PHIL=PHIL-EPS
+      IF (PHIL1<PIN) PHIL1=PHIL1+EPS
+      IF (PHIL1>PIN) PHIL1=PHIL1-EPS
+      IF (BET<=PIN2.AND.PIN2-BET<=EPS) BET=BET-EPS
+      IF (BET>PIN2.AND.BET-PIN2<=EPS) BET=BET+EPS
       
 C_____________COMPUTE THETP, PHIP, THETP1, AND PHIP1, EQS. (8), (19), AND (20)
 
@@ -633,9 +635,9 @@ C_____________COMPUTE THETP, PHIP, THETP1, AND PHIP1, EQS. (8), (19), AND (20)
       CPP=CB*ST*CP-SB*CT
       SPP=ST*SP
       PHIP=DATAN(SPP/CPP)
-      IF (PHIP.GT.0D0.AND.SP.LT.0D0) PHIP=PHIP+PIN
-      IF (PHIP.LT.0D0.AND.SP.GT.0D0) PHIP=PHIP+PIN
-      IF (PHIP.LT.0D0) PHIP=PHIP+2D0*PIN
+      IF (PHIP>0D0.AND.SP<0D0) PHIP=PHIP+PIN
+      IF (PHIP<0D0.AND.SP>0D0) PHIP=PHIP+PIN
+      IF (PHIP<0D0) PHIP=PHIP+2D0*PIN
 
       CT1=DCOS(THETL1)
       ST1=DSIN(THETL1)
@@ -646,9 +648,9 @@ C_____________COMPUTE THETP, PHIP, THETP1, AND PHIP1, EQS. (8), (19), AND (20)
       CPP1=CB*ST1*CP1-SB*CT1
       SPP1=ST1*SP1
       PHIP1=DATAN(SPP1/CPP1)
-      IF (PHIP1.GT.0D0.AND.SP1.LT.0D0) PHIP1=PHIP1+PIN
-      IF (PHIP1.LT.0D0.AND.SP1.GT.0D0) PHIP1=PHIP1+PIN
-      IF (PHIP1.LT.0D0) PHIP1=PHIP1+2D0*PIN
+      IF (PHIP1>0D0.AND.SP1<0D0) PHIP1=PHIP1+PIN
+      IF (PHIP1<0D0.AND.SP1>0D0) PHIP1=PHIP1+PIN
+      IF (PHIP1<0D0) PHIP1=PHIP1+2D0*PIN
 
 C____________COMPUTE MATRIX BETA, EQ. (21)
 
@@ -751,14 +753,15 @@ C____________COMPUTE MATRICES R AND R^(-1), EQ. (13)
       R1(2,2)=X*D
 
       CI=(0D0,1D0)
-      DO 5 NN=1,NMAX
-         DO 5 N=1,NMAX
+      DO NN=1,NMAX
+         DO N=1,NMAX
             CN=CI**(NN-N-1)
             DNN=DFLOAT((2*N+1)*(2*NN+1)) 
             DNN=DNN/DFLOAT( N*NN*(N+1)*(NN+1) ) 
             RN=DSQRT(DNN)
             CAL(N,NN)=CN*RN
-    5 CONTINUE
+      end do
+      end do
       DCTH0=CTP
       DCTH=CTP1 
       PH=PHIP1-PHIP
@@ -766,24 +769,24 @@ C____________COMPUTE MATRICES R AND R^(-1), EQ. (13)
       VH=(0D0,0D0)
       HV=(0D0,0D0)
       HH=(0D0,0D0)
-      DO 500 M=0,NMAX
+      DO M=0,NMAX
          M1=M+1
          NMIN=MAX(M,1)
          CALL VIGAMPL (DCTH, NMAX, M, DV1, DV2)
          CALL VIGAMPL (DCTH0, NMAX, M, DV01, DV02)
          FC=2D0*DCOS(M*PH)
          FS=2D0*DSIN(M*PH)
-         DO 400 NN=NMIN,NMAX
+         DO NN=NMIN,NMAX
             DV1NN=M*DV01(NN)
             DV2NN=DV02(NN)
-            DO 400 N=NMIN,NMAX
+            DO N=NMIN,NMAX
                DV1N=M*DV1(N)
                DV2N=DV2(N)
 
                CT11=DCMPLX(TR11(M1,N,NN),TI11(M1,N,NN))
                CT22=DCMPLX(TR22(M1,N,NN),TI22(M1,N,NN))
 
-               IF (M.EQ.0) THEN
+               IF (M==0) THEN
 
                   CN=CAL(N,NN)*DV2N*DV2NN
 
@@ -815,8 +818,9 @@ C____________COMPUTE MATRICES R AND R^(-1), EQ. (13)
                   HH=HH+(CT11*D22+CT21*D12
      &                  +CT12*D21+CT22*D11)*CN1      
                ENDIF
-  400    CONTINUE
-  500 CONTINUE
+      end do
+      end do
+      end do
       DK=2D0*PIN/DLAM
       VV=VV/DK
       VH=VH/DK
@@ -858,22 +862,22 @@ C     0.LE.X.LE.1
 
       SUBROUTINE VIGAMPL (X, NMAX, M, DV1, DV2)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 DV1(NPN6), DV2(NPN6)
-      DO 1 N=1,NMAX
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) DV1(NPN6), DV2(NPN6)
+      DO N=1,NMAX
          DV1(N)=0D0
          DV2(N)=0D0
-    1 CONTINUE
+      end do
       DX=DABS(X)
-      IF (DABS(1D0-DX).LE.1D-10) GO TO 100
+      IF (DABS(1D0-DX)<=1D-10) GO TO 100
       A=1D0
       QS=DSQRT(1D0-X*X)
       QS1=1D0/QS
       DSI=QS1
-      IF (M.NE.0) GO TO 20
+      IF (M/=0) GO TO 20
       D1=1D0
       D2=X  
-      DO 5 N=1,NMAX  
+      DO N=1,NMAX  
          QN=DFLOAT(N)
          QN1=DFLOAT(N+1)
          QN2=DFLOAT(2*N+1)
@@ -883,16 +887,16 @@ C     0.LE.X.LE.1
          DV2(N)=DER
          D1=D2
          D2=D3
-    5 CONTINUE
+      end do
       RETURN
    20 QMM=DFLOAT(M*M)
-      DO 25 I=1,M
+      DO I=1,M
          I2=I*2
          A=A*DSQRT(DFLOAT(I2-1)/DFLOAT(I2))*QS
-   25 CONTINUE
+      end do
       D1=0D0
       D2=A 
-      DO 30 N=M,NMAX
+      DO N=M,NMAX
          QN=DFLOAT(N)
          QN2=DFLOAT(2*N+1)
          QN1=DFLOAT(N+1)
@@ -904,42 +908,43 @@ C     0.LE.X.LE.1
          DV2(N)=DER
          D1=D2
          D2=D3
-   30 CONTINUE
+      end do
       RETURN
-  100 IF (M.NE.1) RETURN
-      DO 110 N=1,NMAX
+  100 IF (M/=1) RETURN
+      DO N=1,NMAX
          DN=DFLOAT(N*(N+1))
          DN=0.5D0*DSQRT(DN)
-         IF (X.LT.0D0) DN=DN*(-1)**(N+1)
+         IF (X<0D0) DN=DN*(-1)**(N+1)
          DV1(N)=DN
-         IF (X.LT.0D0) DN=-DN
+         IF (X<0D0) DN=-DN
          DV2(N)=DN
-  110 CONTINUE
+      end do
       RETURN
       END 
 
 C**********************************************************************
 
       SUBROUTINE CONST (NGAUSS,NMAX,MMAX,P,X,W,AN,ANN,S,SS,NP,EPS)
-      IMPLICIT REAL*8 (A-H,O-Z)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
       INCLUDE 'ampld.par.f'
-      REAL*8 X(NPNG2),W(NPNG2),X1(NPNG1),W1(NPNG1),
+      REAL(kind=8) X(NPNG2),W(NPNG2),X1(NPNG1),W1(NPNG1),
      *        X2(NPNG1),W2(NPNG1),
      *        S(NPNG2),SS(NPNG2),
      *        AN(NPN1),ANN(NPN1,NPN1),DD(NPN1)
  
-      DO 10 N=1,NMAX
+      DO N=1,NMAX
            NN=N*(N+1)
            AN(N)=DFLOAT(NN)
            D=DSQRT(DFLOAT(2*N+1)/DFLOAT(NN))
            DD(N)=D
-           DO 10 N1=1,N
+           DO N1=1,N
                 DDD=D*DD(N1)*0.5D0
                 ANN(N,N1)=DDD
                 ANN(N1,N)=DDD
-   10 CONTINUE
+      end do
+      end do
       NG=2*NGAUSS
-      IF (NP.EQ.-2) GO  TO 11
+      IF (NP==-2) GO  TO 11
       CALL GAUSS(NG,0,0,X,W)
       GO TO 19
    11 NG1=DFLOAT(NGAUSS)/2D0
@@ -947,19 +952,19 @@ C**********************************************************************
       XX=-DCOS(DATAN(EPS))
       CALL GAUSS(NG1,0,0,X1,W1)
       CALL GAUSS(NG2,0,0,X2,W2)
-      DO 12 I=1,NG1
+      DO I=1,NG1
          W(I)=0.5D0*(XX+1D0)*W1(I)
          X(I)=0.5D0*(XX+1D0)*X1(I)+0.5D0*(XX-1D0)
-   12 CONTINUE
-      DO 14 I=1,NG2
+      end do
+      DO I=1,NG2
          W(I+NG1)=-0.5D0*XX*W2(I)
          X(I+NG1)=-0.5D0*XX*X2(I)+0.5D0*XX
-   14 CONTINUE
-      DO 16 I=1,NGAUSS
+      end do
+      DO I=1,NGAUSS
          W(NG-I+1)=W(I)
          X(NG-I+1)=-X(I)
-   16 CONTINUE
-   19 DO 20 I=1,NGAUSS
+      end do
+   19 DO I=1,NGAUSS
            Y=X(I)
            Y=1D0/(1D0-Y*Y)
            SS(I)=Y
@@ -967,7 +972,7 @@ C**********************************************************************
            Y=DSQRT(Y)
            S(I)=Y
            S(NG-I+1)=Y
-   20 CONTINUE
+      end do
       RETURN
       END
  
@@ -976,8 +981,8 @@ C**********************************************************************
       SUBROUTINE VARY (LAM,MRR,MRI,A,EPS,NP,NGAUSS,X,P,PPI,PIR,PII,
      *                 R,DR,DDR,DRR,DRI,NMAX)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8  X(NPNG2),R(NPNG2),DR(NPNG2),MRR,MRI,LAM,
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8)  X(NPNG2),R(NPNG2),DR(NPNG2),MRR,MRI,LAM,
      *        Z(NPNG2),ZR(NPNG2),ZI(NPNG2),
      *        J(NPNG2,NPN1),Y(NPNG2,NPN1),JR(NPNG2,NPN1),
      *        JI(NPNG2,NPN1),DJ(NPNG2,NPN1),
@@ -986,10 +991,10 @@ C**********************************************************************
      *        DY(NPNG2,NPN1)
       COMMON /CBESS/ J,Y,JR,JI,DJ,DY,DJR,DJI
       NG=NGAUSS*2
-      IF (NP.GT.0) CALL RSP2(X,NG,A,EPS,NP,R,DR)
-      IF (NP.EQ.-1) CALL RSP1(X,NG,NGAUSS,A,EPS,NP,R,DR)
-      IF (NP.EQ.-2) CALL RSP3(X,NG,NGAUSS,A,EPS,R,DR)
-      IF (NP.EQ.-3) CALL RSP4(X,NG,A,R,DR)
+      IF (NP>0) CALL RSP2(X,NG,A,EPS,NP,R,DR)
+      IF (NP==-1) CALL RSP1(X,NG,NGAUSS,A,EPS,NP,R,DR)
+      IF (NP==-2) CALL RSP3(X,NG,NGAUSS,A,EPS,R,DR)
+      IF (NP==-3) CALL RSP4(X,NG,A,R,DR)
       PI=P*2D0/LAM
       PPI=PI*PI
       PIR=PPI*MRR
@@ -998,7 +1003,7 @@ C**********************************************************************
       PRR=MRR*V
       PRI=-MRI*V
       TA=0D0
-      DO 10 I=1,NG
+      DO I=1,NG
            VV=DSQRT(R(I))
            V=VV*PI
            TA=MAX(TA,V)
@@ -1011,9 +1016,9 @@ C**********************************************************************
            Z(I)=V
            ZR(I)=V1
            ZI(I)=V2
-   10 CONTINUE
+      end do
 C      IF (NMAX.GT.NPN1) PRINT 9000,NMAX,NPN1
-      IF (NMAX.GT.NPN1) STOP
+      IF (NMAX>NPN1) STOP
 C 9000 FORMAT(' NMAX = ',I2,', i.e., greater than ',I3)
       TB=TA*DSQRT(MRR*MRR+MRI*MRI)
       TB=DMAX1(TB,DFLOAT(NMAX))
@@ -1027,13 +1032,13 @@ C 9000 FORMAT(' NMAX = ',I2,', i.e., greater than ',I3)
 C**********************************************************************
  
       SUBROUTINE RSP1 (X,NG,NGAUSS,REV,EPS,NP,R,DR)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),R(NG),DR(NG)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),R(NG),DR(NG)
       A=REV*EPS**(1D0/3D0)
       AA=A*A
       EE=EPS*EPS
       EE1=EE-1D0
-      DO 50 I=1,NGAUSS
+      DO I=1,NGAUSS
           C=X(I)
           CC=C*C
           SS=1D0-CC
@@ -1043,15 +1048,15 @@ C**********************************************************************
           R(NG-I+1)=R(I)
           DR(I)=RR*C*S*EE1
           DR(NG-I+1)=-DR(I)
-   50 CONTINUE
+      end do
       RETURN
       END
  
 C**********************************************************************
  
       SUBROUTINE RSP2 (X,NG,REV,EPS,N,R,DR)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),R(NG),DR(NG)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),R(NG),DR(NG)
       DNP=DFLOAT(N)
       DN=DNP*DNP
       DN4=DN*4D0
@@ -1059,30 +1064,30 @@ C**********************************************************************
       A=1D0+1.5D0*EP*(DN4-2D0)/(DN4-1D0)
       I=(DNP+0.1D0)*0.5D0
       I=2*I
-      IF (I.EQ.N) A=A-3D0*EPS*(1D0+0.25D0*EP)/
+      IF (I==N) A=A-3D0*EPS*(1D0+0.25D0*EP)/
      *              (DN-1D0)-0.25D0*EP*EPS/(9D0*DN-1D0)
       R0=REV*A**(-1D0/3D0)
-      DO 50 I=1,NG
+      DO I=1,NG
          XI=DACOS(X(I))*DNP
          RI=R0*(1D0+EPS*DCOS(XI))
          R(I)=RI*RI
          DR(I)=-R0*EPS*DNP*DSIN(XI)/RI
 c        WRITE (6,*) I,R(I),DR(I)
-   50 CONTINUE
+      end do
       RETURN
       END
  
 C**********************************************************************
  
       SUBROUTINE RSP3 (X,NG,NGAUSS,REV,EPS,R,DR)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),R(NG),DR(NG)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),R(NG),DR(NG)
       H=REV*( (2D0/(3D0*EPS*EPS))**(1D0/3D0) )
       A=H*EPS
-      DO 50 I=1,NGAUSS
+      DO I=1,NGAUSS
          CO=-X(I)
          SI=DSQRT(1D0-CO*CO)
-         IF (SI/CO.GT.A/H) GO TO 20
+         IF (SI/CO>A/H) GO TO 20
          RAD=H/CO
          RTHET=H*SI/(CO*CO)
          GO TO 30
@@ -1092,7 +1097,7 @@ C**********************************************************************
          R(NG-I+1)=R(I)
          DR(I)=-RTHET/RAD
          DR(NG-I+1)=-DR(I)
-   50 CONTINUE
+      end do
       RETURN
       END
  
@@ -1110,8 +1115,8 @@ C**********************************************************************
 
       SUBROUTINE RSP4 (X,NG,REV,R,DR)
       PARAMETER (NC=10)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),R(NG),DR(NG),C(0:NC)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),R(NG),DR(NG),C(0:NC)
       COMMON /CDROP/ C,R0V
       R0=REV*R0V
       DO I=1,NG
@@ -1136,8 +1141,8 @@ C*********************************************************************
  
       SUBROUTINE BESS (X,XR,XI,NG,NMAX,NNMAX1,NNMAX2)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),XR(NG),XI(NG),
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),XR(NG),XI(NG),
      *        J(NPNG2,NPN1),Y(NPNG2,NPN1),JR(NPNG2,NPN1),
      *        JI(NPNG2,NPN1),DJ(NPNG2,NPN1),DY(NPNG2,NPN1),
      *        DJR(NPNG2,NPN1),DJI(NPNG2,NPN1),
@@ -1146,14 +1151,14 @@ C*********************************************************************
      *        ADJI(NPN1)
       COMMON /CBESS/ J,Y,JR,JI,DJ,DY,DJR,DJI
  
-      DO 10 I=1,NG
+      DO I=1,NG
            XX=X(I)
            CALL RJB(XX,AJ,ADJ,NMAX,NNMAX1)
            CALL RYB(XX,AY,ADY,NMAX)
            YR=XR(I)
            YI=XI(I)
            CALL CJB(YR,YI,AJR,AJI,ADJR,ADJI,NMAX,NNMAX2)
-           DO 10 N=1,NMAX
+           DO N=1,NMAX
                 J(I,N)=AJ(N)
                 Y(I,N)=AY(N)
                 JR(I,N)=AJR(N)
@@ -1162,42 +1167,43 @@ C*********************************************************************
                 DY(I,N)=ADY(N)
                 DJR(I,N)=ADJR(N)
                 DJI(I,N)=ADJI(N)
-   10 CONTINUE
+      end do
+      end do
       RETURN
       END
  
 C**********************************************************************
  
       SUBROUTINE RJB(X,Y,U,NMAX,NNMAX)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 Y(NMAX),U(NMAX),Z(800)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) Y(NMAX),U(NMAX),Z(800)
       L=NMAX+NNMAX
       XX=1D0/X
       Z(L)=1D0/(DFLOAT(2*L+1)*XX)
       L1=L-1
-      DO 5 I=1,L1
+      DO I=1,L1
          I1=L-I
          Z(I1)=1D0/(DFLOAT(2*I1+1)*XX-Z(I1+1))
-    5 CONTINUE
+      end do
       Z0=1D0/(XX-Z(1))
       Y0=Z0*DCOS(X)*XX
       Y1=Y0*Z(1)
       U(1)=Y0-Y1*XX
       Y(1)=Y1
-      DO 10 I=2,NMAX
+      DO I=2,NMAX
          YI1=Y(I-1)
          YI=YI1*Z(I)
          U(I)=YI1-DFLOAT(I)*YI*XX
          Y(I)=YI
-   10 CONTINUE
+      end do
       RETURN
       END
  
 C**********************************************************************
  
       SUBROUTINE RYB(X,Y,V,NMAX)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 Y(NMAX),V(NMAX)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) Y(NMAX),V(NMAX)
       C=DCOS(X)
       S=DSIN(X)
       X1=1D0/X
@@ -1207,11 +1213,13 @@ C**********************************************************************
       Y(1)=Y1
       Y(2)=(-3D0*X3+X1)*C-3D0*X2*S
       NMAX1=NMAX-1
-      DO 5 I=2,NMAX1
-    5     Y(I+1)=DFLOAT(2*I+1)*X1*Y(I)-Y(I-1)
+      DO I=2,NMAX1
+          Y(I+1)=DFLOAT(2*I+1)*X1*Y(I)-Y(I-1)
+      end do
       V(1)=-X1*(C+Y1)
-      DO 10 I=2,NMAX
-  10       V(I)=Y(I-1)-DFLOAT(I)*X1*Y(I)
+      DO I=2,NMAX
+           V(I)=Y(I-1)-DFLOAT(I)*X1*Y(I)
+      end do
       RETURN
       END
  
@@ -1226,9 +1234,9 @@ C**********************************************************************
  
       SUBROUTINE CJB (XR,XI,YR,YI,UR,UI,NMAX,NNMAX)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 YR(NMAX),YI(NMAX),UR(NMAX),UI(NMAX)
-      REAL*8 CYR(NPN1),CYI(NPN1),CZR(1200),CZI(1200),
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) YR(NMAX),YI(NMAX),UR(NMAX),UI(NMAX)
+      REAL(kind=8) CYR(NPN1),CYI(NPN1),CZR(1200),CZI(1200),
      *       CUR(NPN1),CUI(NPN1)
       L=NMAX+NNMAX
       XRXI=1D0/(XR*XR+XI*XI)
@@ -1299,8 +1307,8 @@ C**********************************************************************
       SUBROUTINE TMATR0 (NGAUSS,X,W,AN,ANN,S,SS,PPI,PIR,PII,R,DR,DDR,
      *                  DRR,DRI,NMAX,NCHECK)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8  X(NPNG2),W(NPNG2),AN(NPN1),S(NPNG2),SS(NPNG2),
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8)  X(NPNG2),W(NPNG2),AN(NPN1),S(NPNG2),SS(NPNG2),
      *        R(NPNG2),DR(NPNG2),SIG(NPN2),
      *        J(NPNG2,NPN1),Y(NPNG2,NPN1),
      *        JR(NPNG2,NPN1),JI(NPNG2,NPN1),DJ(NPNG2,NPN1),
@@ -1310,7 +1318,7 @@ C**********************************************************************
      *        DRI(NPNG2),DS(NPNG2),DSS(NPNG2),RR(NPNG2),
      *        DV1(NPN1),DV2(NPN1)
  
-      REAL*8  R11(NPN1,NPN1),R12(NPN1,NPN1),
+      REAL(kind=8)  R11(NPN1,NPN1),R12(NPN1,NPN1),
      *        R21(NPN1,NPN1),R22(NPN1,NPN1),
      *        I11(NPN1,NPN1),I12(NPN1,NPN1),
      *        I21(NPN1,NPN1),I22(NPN1,NPN1),
@@ -1323,7 +1331,7 @@ C**********************************************************************
      *        RGQR(NPN2,NPN2),RGQI(NPN2,NPN2),
      *        TQR(NPN2,NPN2),TQI(NPN2,NPN2),
      *        TRGQR(NPN2,NPN2),TRGQI(NPN2,NPN2)
-      REAL*8 TR1(NPN2,NPN2),TI1(NPN2,NPN2)
+      REAL(kind=8) TR1(NPN2,NPN2),TI1(NPN2,NPN2)
       COMMON /TMAT99/ 
      &            R11,R12,R21,R22,I11,I12,I21,I22,RG11,RG12,RG21,RG22,
      &            IG11,IG12,IG21,IG22
@@ -1335,22 +1343,22 @@ C**********************************************************************
       NG=2*NGAUSS
       NGSS=NG
       FACTOR=1D0
-      IF (NCHECK.EQ.1) THEN
+      IF (NCHECK==1) THEN
             NGSS=NGAUSS
             FACTOR=2D0
          ELSE
             CONTINUE
       ENDIF
       SI=1D0
-      DO 5 N=1,NNMAX
+      DO N=1,NNMAX
            SI=-SI
            SIG(N)=SI
-    5 CONTINUE
-   20 DO 25 I=1,NGAUSS
+      end do
+   20 DO I=1,NGAUSS
          I1=NGAUSS+I
          I2=NGAUSS-I+1
          CALL VIG ( X(I1), NMAX, 0, DV1, DV2)
-         DO 25 N=1,NMAX
+         DO N=1,NMAX
             SI=SIG(N)
             DD1=DV1(N)
             DD2=DV2(N)
@@ -1358,14 +1366,15 @@ C**********************************************************************
             D2(I1,N)=DD2
             D1(I2,N)=DD1*SI
             D2(I2,N)=-DD2*SI
-   25 CONTINUE
-   30 DO 40 I=1,NGSS
+      end do
+      end do
+   30 DO I=1,NGSS
            RR(I)=W(I)*R(I)
-   40 CONTINUE
+      end do
  
-      DO 300  N1=MM1,NMAX
+      DO N1=MM1,NMAX
            AN1=AN(N1)
-           DO 300 N2=MM1,NMAX
+           DO N2=MM1,NMAX
                 AN2=AN(N2)
                 AR12=0D0
                 AR21=0D0
@@ -1375,9 +1384,9 @@ C**********************************************************************
                 GR21=0D0
                 GI12=0D0
                 GI21=0D0
-                IF (NCHECK.EQ.1.AND.SIG(N1+N2).LT.0D0) GO TO 205
+                IF (NCHECK==1.AND.SIG(N1+N2)<0D0) GO TO 205
 
-                DO 200 I=1,NGSS
+                DO I=1,NGSS
                     D1N1=D1(I,N1)
                     D2N1=D2(I,N1)
                     D1N2=D1(I,N2)
@@ -1439,7 +1448,7 @@ C**********************************************************************
                     AI21=AI21+F1*B4I+F2*B5I
                     GR21=GR21+F1*C4R+F2*C5R
                     GI21=GI21+F1*C4I+F2*C5I
-  200           CONTINUE
+      end do
  
   205           AN12=ANN(N1,N2)*FACTOR
                 R12(N1,N2)=AR12*AN12
@@ -1450,17 +1459,18 @@ C**********************************************************************
                 RG21(N1,N2)=GR21*AN12
                 IG12(N1,N2)=GI12*AN12
                 IG21(N1,N2)=GI21*AN12
-  300 CONTINUE
+      end do
+      end do
  
       TPIR=PIR
       TPII=PII
       TPPI=PPI
  
       NM=NMAX
-      DO 310 N1=MM1,NMAX
+      DO N1=MM1,NMAX
            K1=N1-MM1+1
            KK1=K1+NM
-           DO 310 N2=MM1,NMAX
+           DO N2=MM1,NMAX
                 K2=N2-MM1+1
                 KK2=K2+NM
  
@@ -1493,16 +1503,18 @@ C**********************************************************************
                 TQI(KK1,KK2)=TPIR*TAI12+TPII*TAR12+TPPI*TAI21
                 TRGQR(KK1,KK2)=TPIR*TGR12-TPII*TGI12+TPPI*TGR21
                 TRGQI(KK1,KK2)=TPIR*TGI12+TPII*TGR12+TPPI*TGI21
-  310 CONTINUE
+      end do
+      end do
  
       NNMAX=2*NM
-      DO 320 N1=1,NNMAX
-           DO 320 N2=1,NNMAX
+      DO N1=1,NNMAX
+           DO N2=1,NNMAX
                 QR(N1,N2)=TQR(N1,N2)
                 QI(N1,N2)=TQI(N1,N2)
                 RGQR(N1,N2)=TRGQR(N1,N2)
                 RGQI(N1,N2)=TRGQI(N1,N2)
-  320 CONTINUE
+      end do
+      end do
       CALL TT(NMAX,NCHECK)
       RETURN
       END
@@ -1512,8 +1524,8 @@ C**********************************************************************
       SUBROUTINE TMATR (M,NGAUSS,X,W,AN,ANN,S,SS,PPI,PIR,PII,R,DR,DDR,
      *                  DRR,DRI,NMAX,NCHECK)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8  X(NPNG2),W(NPNG2),AN(NPN1),S(NPNG2),SS(NPNG2),
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8)  X(NPNG2),W(NPNG2),AN(NPN1),S(NPNG2),SS(NPNG2),
      *        R(NPNG2),DR(NPNG2),SIG(NPN2),
      *        J(NPNG2,NPN1),Y(NPNG2,NPN1),
      *        JR(NPNG2,NPN1),JI(NPNG2,NPN1),DJ(NPNG2,NPN1),
@@ -1523,7 +1535,7 @@ C**********************************************************************
      *        DRI(NPNG2),DS(NPNG2),DSS(NPNG2),RR(NPNG2),
      *        DV1(NPN1),DV2(NPN1)
  
-      REAL*8  R11(NPN1,NPN1),R12(NPN1,NPN1),
+      REAL(kind=8)  R11(NPN1,NPN1),R12(NPN1,NPN1),
      *        R21(NPN1,NPN1),R22(NPN1,NPN1),
      *        I11(NPN1,NPN1),I12(NPN1,NPN1),
      *        I21(NPN1,NPN1),I22(NPN1,NPN1),
@@ -1536,7 +1548,7 @@ C**********************************************************************
      *        RGQR(NPN2,NPN2),RGQI(NPN2,NPN2),
      *        TQR(NPN2,NPN2),TQI(NPN2,NPN2),
      *        TRGQR(NPN2,NPN2),TRGQI(NPN2,NPN2)
-      REAL*8 TR1(NPN2,NPN2),TI1(NPN2,NPN2)
+      REAL(kind=8) TR1(NPN2,NPN2),TI1(NPN2,NPN2)
       COMMON /TMAT99/ 
      &            R11,R12,R21,R22,I11,I12,I21,I22,RG11,RG12,RG21,RG22,
      &            IG11,IG12,IG21,IG22
@@ -1549,7 +1561,7 @@ C**********************************************************************
       NG=2*NGAUSS
       NGSS=NG
       FACTOR=1D0
-      IF (NCHECK.EQ.1) THEN
+      IF (NCHECK==1) THEN
             NGSS=NGAUSS
             FACTOR=2D0
          ELSE
@@ -1557,15 +1569,15 @@ C**********************************************************************
       ENDIF
       SI=1D0
       NM=NMAX+NMAX
-      DO 5 N=1,NM
+      DO N=1,NM
            SI=-SI
            SIG(N)=SI
-    5 CONTINUE
-   20 DO 25 I=1,NGAUSS
+      end do
+   20 DO I=1,NGAUSS
          I1=NGAUSS+I
          I2=NGAUSS-I+1
          CALL VIG (X(I1),NMAX,M,DV1,DV2)
-         DO 25 N=1,NMAX
+         DO N=1,NMAX
             SI=SIG(N)
             DD1=DV1(N)
             DD2=DV2(N)
@@ -1573,17 +1585,18 @@ C**********************************************************************
             D2(I1,N)=DD2
             D1(I2,N)=DD1*SI
             D2(I2,N)=-DD2*SI
-   25 CONTINUE
-   30 DO 40 I=1,NGSS
+      end do
+      end do
+   30 DO I=1,NGSS
            WR=W(I)*R(I)
            DS(I)=S(I)*QM*WR
            DSS(I)=SS(I)*QMM
            RR(I)=WR
-   40 CONTINUE
+      end do
  
-      DO 300  N1=MM1,NMAX
+      DO N1=MM1,NMAX
            AN1=AN(N1)
-           DO 300 N2=MM1,NMAX
+           DO N2=MM1,NMAX
                 AN2=AN(N2)
                 AR11=0D0
                 AR12=0D0
@@ -1603,7 +1616,7 @@ C**********************************************************************
                 GI22=0D0
                 SI=SIG(N1+N2)
  
-                DO 200 I=1,NGSS
+                DO I=1,NGSS
                     D1N1=D1(I,N1)
                     D2N1=D2(I,N1)
                     D1N2=D1(I,N2)
@@ -1671,14 +1684,14 @@ C**********************************************************************
                     DSSI=DSS(I)
                     RRI=RR(I)
  
-                    IF (NCHECK.EQ.1.AND.SI.GT.0D0) GO TO 150
+                    IF (NCHECK==1.AND.SI>0D0) GO TO 150
  
                     E1=DSI*AA1
                     AR11=AR11+E1*B1R
                     AI11=AI11+E1*B1I
                     GR11=GR11+E1*C1R
                     GI11=GI11+E1*C1I
-                    IF (NCHECK.EQ.1) GO TO 160
+                    IF (NCHECK==1) GO TO 160
  
   150               F1=RRI*AA2
                     F2=RRI*URI*AN1*A12
@@ -1692,7 +1705,7 @@ C**********************************************************************
                     AI21=AI21+F1*B4I+F2*B5I
                     GR21=GR21+F1*C4R+F2*C5R
                     GI21=GI21+F1*C4I+F2*C5I
-                    IF (NCHECK.EQ.1) GO TO 200
+                    IF (NCHECK==1) GO TO 200
  
   160               E2=DSI*URI*A11
                     E3=E2*AN2
@@ -1702,6 +1715,7 @@ C**********************************************************************
                     GR22=GR22+E1*C6R+E2*C7R+E3*C8R
                     GI22=GI22+E1*C6I+E2*C7I+E3*C8I
   200           CONTINUE
+      end do
                 AN12=ANN(N1,N2)*FACTOR
                 R11(N1,N2)=AR11*AN12
                 R12(N1,N2)=AR12*AN12
@@ -1720,15 +1734,16 @@ C**********************************************************************
                 IG21(N1,N2)=GI21*AN12
                 IG22(N1,N2)=GI22*AN12
  
-  300 CONTINUE
+      end do
+      end do
       TPIR=PIR
       TPII=PII
       TPPI=PPI
       NM=NMAX-MM1+1
-      DO 310 N1=MM1,NMAX
+      DO N1=MM1,NMAX
            K1=N1-MM1+1
            KK1=K1+NM
-           DO 310 N2=MM1,NMAX
+           DO N2=MM1,NMAX
                 K2=N2-MM1+1
                 KK2=K2+NM
  
@@ -1771,16 +1786,18 @@ C**********************************************************************
                 TQI(KK1,KK2)=TPIR*TAI12+TPII*TAR12+TPPI*TAI21
                 TRGQR(KK1,KK2)=TPIR*TGR12-TPII*TGI12+TPPI*TGR21
                 TRGQI(KK1,KK2)=TPIR*TGI12+TPII*TGR12+TPPI*TGI21
-  310 CONTINUE
+      end do
+      end do
  
       NNMAX=2*NM
-      DO 320 N1=1,NNMAX
-           DO 320 N2=1,NNMAX
+      DO N1=1,NNMAX
+           DO N2=1,NNMAX
                 QR(N1,N2)=TQR(N1,N2)
                 QI(N1,N2)=TQI(N1,N2)
                 RGQR(N1,N2)=TRGQR(N1,N2)
                 RGQI(N1,N2)=TRGQI(N1,N2)
-  320 CONTINUE
+      end do
+      end do
  
       CALL TT(NM,NCHECK)
  
@@ -1791,8 +1808,8 @@ C*****************************************************************
  
       SUBROUTINE VIG (X, NMAX, M, DV1, DV2)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 DV1(NPN1),DV2(NPN1)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) DV1(NPN1),DV2(NPN1)
  
       A=1D0
       QS=DSQRT(1D0-X*X)
@@ -1801,7 +1818,7 @@ C*****************************************************************
          DV1(N)=0D0
          DV2(N)=0D0
       ENDDO   
-      IF (M.NE.0) GO TO 20
+      IF (M/=0) GO TO 20
       D1=1D0
       D2=X  
       DO N=1,NMAX  
@@ -1850,13 +1867,13 @@ C**********************************************************************
  
       SUBROUTINE TT(NMAX,NCHECK)
       INCLUDE 'ampld.par.f'
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 F(NPN2,NPN2),B(NPN2),WORK(NPN2),
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) F(NPN2,NPN2),B(NPN2),WORK(NPN2),
      *       QR(NPN2,NPN2),QI(NPN2,NPN2),
      *       RGQR(NPN2,NPN2),RGQI(NPN2,NPN2),
      *       A(NPN2,NPN2),C(NPN2,NPN2),D(NPN2,NPN2),E(NPN2,NPN2)
-      REAL*8 TR1(NPN2,NPN2),TI1(NPN2,NPN2)
-      COMPLEX*16 ZQ(NPN2,NPN2),ZW(NPN2)
+      REAL(kind=8) TR1(NPN2,NPN2),TI1(NPN2,NPN2)
+      COMPLEX(kind=8) ZQ(NPN2,NPN2),ZW(NPN2)
       INTEGER IPIV(NPN2),IPVT(NPN2)
       COMMON /CT/ TR1,TI1
       COMMON /CTT/ QR,QI,RGQR,RGQI
@@ -1899,8 +1916,8 @@ C 1100 FORMAT ('WARNING:  info=', i2)
 C*****************************************************************
  
       SUBROUTINE SAREA (D,RAT)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      IF (D.GE.1) GO TO 10
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      IF (D>=1) GO TO 10
       E=DSQRT(1D0-D*D)
       R=0.5D0*(D**(2D0/3D0) + D**(-1D0/3D0)*DASIN(E)/E)
       R=DSQRT(R)
@@ -1917,8 +1934,8 @@ C*****************************************************************
 c****************************************************************
  
       SUBROUTINE SURFCH (N,E,RAT)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(60),W(60)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(60),W(60)
       DN=DFLOAT(N)
       E2=E*E
       EN=E*DN
@@ -1926,7 +1943,7 @@ c****************************************************************
       CALL GAUSS (NG,0,0,X,W)
       S=0D0
       V=0D0
-      DO 10 I=1,NG
+      DO I=1,NG
          XI=X(I)
          DX=DACOS(XI)
          DXN=DN*DX
@@ -1938,7 +1955,7 @@ c****************************************************************
          ENS=EN*DSN
          S=S+W(I)*A*DSQRT(A2+ENS*ENS)
          V=V+W(I)*(DS*A+XI*ENS)*DS*A2
-   10 CONTINUE
+      end do
       RS=DSQRT(S*0.5D0)
       RV=(V*3D0/4D0)**(1D0/3D0)
       RAT=RV/RS
@@ -1948,7 +1965,7 @@ c****************************************************************
 C********************************************************************
  
       SUBROUTINE SAREAC (EPS,RAT)
-      IMPLICIT REAL*8 (A-H,O-Z)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
       RAT=(1.5D0/EPS)**(1D0/3D0)
       RAT=RAT/DSQRT( (EPS+2D0)/(2D0*EPS) )
       RETURN
@@ -1958,8 +1975,8 @@ C**********************************************************************
 
       SUBROUTINE DROP (RAT)
       PARAMETER (NC=10, NG=60)
-      IMPLICIT REAL*8 (A-H,O-Z)
-      REAL*8 X(NG),W(NG),C(0:NC)
+      IMPLICIT REAL(kind=8) (A-H,O-Z)
+      REAL(kind=8) X(NG),W(NG),C(0:NC)
       COMMON /CDROP/ C,R0V
       C(0)=-0.0481 D0
       C(1)= 0.0359 D0
@@ -1993,7 +2010,7 @@ C**********************************************************************
       ENDDO
       RS=DSQRT(S*0.5D0)
       RV=(V*3D0*0.25D0)**(1D0/3D0)
-      IF (DABS(RAT-1D0).GT.1D-8) RAT=RV/RS
+      IF (DABS(RAT-1D0)>1D-8) RAT=RV/RS
       R0V=1D0/RV
 C      WRITE (6,1000) R0V
       DO N=0,NC
@@ -2014,45 +2031,47 @@ C    W - WEIGHTS                                                      *
 C**********************************************************************
  
       SUBROUTINE GAUSS (N,IND1,IND2,Z,W)
-      IMPLICIT REAL*8 (A-H,P-Z)
-      REAL*8 Z(N),W(N)
+      IMPLICIT REAL(kind=8) (A-H,P-Z)
+      REAL(kind=8) Z(N),W(N)
       A=1D0
       B=2D0
       C=3D0
       IND=MOD(N,2)
       K=N/2+IND
       F=DFLOAT(N)
-      DO 100 I=1,K
+      DO I=1,K
           M=N+1-I
-          IF(I.EQ.1) X=A-B/((F+A)*F)
-          IF(I.EQ.2) X=(Z(N)-A)*4D0+Z(N)
-          IF(I.EQ.3) X=(Z(N-1)-Z(N))*1.6D0+Z(N-1)
-          IF(I.GT.3) X=(Z(M+1)-Z(M+2))*C+Z(M+3)
-          IF(I.EQ.K.AND.IND.EQ.1) X=0D0
+          IF(I==1) X=A-B/((F+A)*F)
+          IF(I==2) X=(Z(N)-A)*4D0+Z(N)
+          IF(I==3) X=(Z(N-1)-Z(N))*1.6D0+Z(N-1)
+          IF(I>3) X=(Z(M+1)-Z(M+2))*C+Z(M+3)
+          IF(I==K.AND.IND==1) X=0D0
           NITER=0
           CHECK=1D-16
    10     PB=1D0
           NITER=NITER+1
-          IF (NITER.LE.100) GO TO 15
+          IF (NITER<=100) GO TO 15
           CHECK=CHECK*10D0
    15     PC=X
           DJ=A
-          DO 20 J=2,N
+          DO J=2,N
               DJ=DJ+A
               PA=PB
               PB=PC
-   20         PC=X*PB+(X*PB-PA)*(DJ-A)/DJ
+              PC=X*PB+(X*PB-PA)*(DJ-A)/DJ
+      end do
           PA=A/((PB-X*PC)*F)
           PB=PA*PC*(A-X*X)
           X=X-PB
-          IF(DABS(PB).GT.CHECK*DABS(X)) GO TO 10
+          IF(DABS(PB)>CHECK*DABS(X)) GO TO 10
           Z(M)=X
           W(M)=PA*PA*(A-X*X)
-          IF(IND1.EQ.0) W(M)=B*W(M)
-          IF(I.EQ.K.AND.IND.EQ.1) GO TO 100
+          IF(IND1==0) W(M)=B*W(M)
+          IF(I==K.AND.IND==1) GO TO 100
           Z(I)=-Z(M)
           W(I)=W(M)
   100 CONTINUE
+      end do
 C      IF(IND2.NE.1) GO TO 110
 C      PRINT 1100,N
 C 1100 FORMAT(' ***  POINTS AND WEIGHTS OF GAUSSIAN QUADRATURE FORMULA',
