@@ -1,6 +1,6 @@
 from __future__ import division
 
-from pyrism.core.tma import uniform_wrapper, gaussian_wrapper
+from pyrism.cython_tm import gaussian, uniform
 
 
 class Orientation(object):
@@ -24,7 +24,7 @@ class Orientation(object):
             A function that returns the value of the spherical Jacobian-normalized Gaussian PDF with the given STD at x
             (degrees). It is normalized for the interval [0, 180].
         """
-        return gaussian_wrapper(std, mean)
+        return gaussian(std, mean)
 
     @staticmethod
     def uniform():
@@ -36,4 +36,4 @@ class Orientation(object):
             A function that returns the value of the spherical Jacobian-normalized uniform PDF. It is normalized for
             the interval [0, 180].
         """
-        return uniform_wrapper()
+        return uniform()

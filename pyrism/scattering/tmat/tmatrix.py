@@ -11,11 +11,14 @@ import numpy as np
 from pyrism.core.tma import (NMAX_VEC_WRAPPER, SZ_S_VEC_WRAPPER, SZ_AF_VEC_WRAPPER, DBLQUAD_Z_S_WRAPPER,
                              XSEC_QS_S_WRAPPER, XSEC_ASY_S_WRAPPER, XSEC_ASY_AF_WRAPPER, XSEC_QE_WRAPPER,
                              XSEC_QSI_WRAPPER, equal_volume_from_maximum_wrapper)
-from respy import Angles, EM
-from respy.constants import pi as PI
-from respy.units import Quantity
-from respy.util import align_all
 
+from pyrism.cython_tm import NMAX, SZ_AF, SZ_S, EVFM, QE, KE
+
+from respy import Angles, EM, Quantity
+from respy.constants import pi as PI
+from respy.constants import rad_to_deg
+from respy.util import align_all
+from respy.util import __ANGLE_UNIT_RAD__, __ANGLE_UNIT_DEG__
 from pyrism.scattering.tmat.orientation import Orientation
 from pyrism.scattering.tmat.tm_auxiliary import param_radius_type, param_shape, param_orientation
 
@@ -157,7 +160,7 @@ class TMatrix(Angles, object):
     def __init__(self, iza, vza, iaa, vaa, frequency, radius, eps, alpha=0.0, beta=0.0, N=1,
                  radius_type='REV', shape='SPH', orientation='S', axis_ratio=1.0, orientation_pdf=None, n_alpha=5,
                  n_beta=10, angle_unit='DEG', frequency_unit='GHz', length_unit='m',
-                 verbose=False):
+                 verbose=False, Nx=100, Ny=100):
 
         """T-Matrix scattering from non-spherical particles.
 
@@ -270,7 +273,8 @@ class TMatrix(Angles, object):
 
         self.__factor = (2 * PI * self.__N * 1j) / self.__wavenumber
         self.__chi = self.__wavenumber * self.__radius
-
+        self.Nx = Nx
+        self.Ny = Ny
         # Calculations ---------------------------------------------------------------------------------------------
         self.__nmax = self.__NMAX()
 
@@ -329,6 +333,10 @@ class TMatrix(Angles, object):
         return self.S.shape
 
     # Auxiliary Properties- --------------------------------------------------------------------------------------------
+    @property
+    def nmax(self):
+        return self.__nmax
+
     @property
     # @denormalized_decorator
     def chi(self):
@@ -525,7 +533,7 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ke is None:
-            self.__ke = self.__N * self.xe
+            self.__ke = self.__KE()
 
         self.__ke.set_name('Attenuation Coefficient (VV, HH)')
         self.__ke.set_constant(True)
@@ -675,6 +683,38 @@ class TMatrix(Angles, object):
     # -----------------------------------------------------------------------------------------------------------------
     # User callable methods
     # -----------------------------------------------------------------------------------------------------------------
+    def compute_S(self, iza=None, vza=None, iaa=None, vaa=None, alpha=None, beta=None, angle_unit='DEG'):
+        if angle_unit in __ANGLE_UNIT_DEG__:
+            pass
+        elif angle_unit in __ANGLE_UNIT_RAD__:
+            vals = [iza, vza, iaa, vaa, alpha, beta]
+            converted_vals = list()
+
+            for item in vals:
+                if vals is not None:
+                    converted_vals.append(item * rad_to_deg)
+
+            iza, vza, iaa, vaa, alpha, beta = converted_vals
+
+        return self.compute_SZ(izaDeg=iza, vzaDeg=vza, iaaDeg=iaa, vaaDeg=vaa, alphaDeg=alpha,
+                               betaDeg=beta)[0]
+
+    def compute_Z(self, iza=None, vza=None, iaa=None, vaa=None, alpha=None, beta=None, angle_unit='DEG'):
+        if angle_unit in __ANGLE_UNIT_DEG__:
+            pass
+        elif angle_unit in __ANGLE_UNIT_RAD__:
+            vals = [iza, vza, iaa, vaa, alpha, beta]
+            converted_vals = list()
+
+            for item in vals:
+                if vals is not None:
+                    converted_vals.append(item * rad_to_deg)
+
+            iza, vza, iaa, vaa, alpha, beta = converted_vals
+
+        return self.compute_SZ(izaDeg=iza, vzaDeg=vza, iaaDeg=iaa, vaaDeg=vaa, alphaDeg=alpha,
+                               betaDeg=beta)[1]
+
     def compute_SZ(self, izaDeg=None, vzaDeg=None, iaaDeg=None, vaaDeg=None, alphaDeg=None, betaDeg=None):
         """T-Matrix scattering from single nonspherical particles.
 
@@ -734,11 +774,11 @@ class TMatrix(Angles, object):
             betaDeg = self.betaDeg
 
         if self.__orient is 'S':
-            S, Z = SZ_S_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+            S, Z = SZ_S(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
 
         elif self.__orient is 'AF':
-            S, Z = SZ_AF_VEC_WRAPPER(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
-                                     self.__n_alpha, self.__n_beta, self.__or_pdf)
+            S, Z = SZ_AF(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
+                         self.__n_alpha, self.__n_beta, self.__or_pdf)
         else:
             raise ValueError("Orientation must be S or AF.")
 
@@ -760,8 +800,7 @@ class TMatrix(Angles, object):
             radius_type = 1
             radius = np.zeros_like(self.iza)
 
-            for i, item in enumerate(self.__radius.value):
-                radius[i] = equal_volume_from_maximum_wrapper(item, self.__axis_ratio[i], self.__shape_volume)
+            radius = EVFM(radius, self.__axis_ratio, self.__shape_volume)
 
         else:
             radius_type = self.__radius_type
@@ -770,10 +809,10 @@ class TMatrix(Angles, object):
         # if self.normalized_flag:
         #     self.normalize = True
 
-        nmax = NMAX_VEC_WRAPPER(radius=radius, radius_type=radius_type,
-                                wavelength=self.__wavelength.value,
-                                eps_real=self.__epsr, eps_imag=self.__epsi,
-                                axis_ratio=self.__axis_ratio, shape=self.__shape_volume, verbose=self.verbose)
+        nmax = NMAX(radius=radius, radius_type=radius_type,
+                    wavelength=self.__wavelength.value,
+                    eps_real=self.__epsr, eps_imag=self.__epsi,
+                    axis_ratio=self.__axis_ratio, shape=self.__shape_volume, verbose=self.verbose)
 
         self.__radius = Quantity(radius, unit=self.__length_unit)
 
@@ -855,7 +894,18 @@ class TMatrix(Angles, object):
         if self.normalized_flag:
             S = S[0:-1]
 
-        return XSEC_QE_WRAPPER(S, self.wavelength)
+        return QE(S, self.wavelength)
+
+    def __KE(self):
+        izaDeg = self.izaDeg
+        iaaDeg = self.iaaDeg
+
+        S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=iaaDeg)
+
+        if self.normalized_flag:
+            S = S[0:-1]
+
+        return KE(S, self.wavelength, self.N)
 
     def __I(self):
         """
