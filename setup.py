@@ -24,6 +24,7 @@ else:
     use_cython = True
 
 from setuptools import find_packages
+import os
 
 cmdclass = {}
 ext_modules = []
@@ -31,12 +32,86 @@ ext_modules = []
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
+
+def auto_ext_module(path, extension='.pyx'):
+    if os.path.isdir(path):
+        files = os.listdir(path)
+
+        ext_modules = list()
+
+        for item in files:
+            if item.endswith(extension):
+                path_to_item = os.path.join(path, item)
+                module_call = path_to_item.replace('/', '.')
+                module = Extension(module_call, [path_to_item], include_dirs=['.'])
+
+                ext_modules.append(module)
+
+        return ext_modules
+
+    else:
+        raise ValueError("Path {0} not found".format(path))
+
+
 if use_cython:
     print ('******** Compiling with CYTHON accomplished ******')
 
+    # ext_modules = auto_ext_module("pyrism/cython_tm")
     ext_modules += [
-        Extension("pyrism.core.rscat",
-                  ["pyrism/core/rscat.pyx"], include_dirs=['.']),
+        # T-MATRIX----------------------------------------------------------------------------------------------------
+        Extension("pyrism.cython_tm.core",
+                  ["pyrism/cython_tm/core.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.sz_matrix",
+                  ["pyrism/cython_tm/sz_matrix.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.pdf",
+                  ["pyrism/cython_tm/pdf.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.auxil",
+                  ["pyrism/cython_tm/auxil.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.xsec",
+                  ["pyrism/cython_tm/xsec.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.wrapper",
+                  ["pyrism/cython_tm/wrapper.pyx"], include_dirs=['.']),
+
+        # I2EM -------------------------------------------------------------------------------------------------------
+        Extension("pyrism.cython_iem.auxil",
+                  ["pyrism/cython_iem/auxil.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.bicoef",
+                  ["pyrism/cython_iem/bicoef.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.ems",
+                  ["pyrism/cython_iem/ems.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.fresnel",
+                  ["pyrism/cython_iem/fresnel.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.fxxyxx",
+                  ["pyrism/cython_iem/fxxyxx.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.i2em",
+                  ["pyrism/cython_iem/i2em.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.ipp",
+                  ["pyrism/cython_iem/ipp.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.rspectrum",
+                  ["pyrism/cython_iem/rspectrum.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.sigma",
+                  ["pyrism/cython_iem/sigma.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.transition",
+                  ["pyrism/cython_iem/transition.pyx"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.wrapper",
+                  ["pyrism/cython_iem/wrapper.pyx"], include_dirs=['.']),
+
+        # SOIL SECTION -----------------------------------------------------------------------------------------------
 
         Extension("pyrism.core.rphs",
                   ["pyrism/core/rphs.pyx"], include_dirs=['.']),
@@ -44,11 +119,6 @@ if use_cython:
         Extension("pyrism.core.fauxil",
                   ["pyrism/core/fauxil.pyx"], include_dirs=['.']),
 
-        Extension("pyrism.core.iemauxil",
-                  ["pyrism/core/iemauxil.pyx"], include_dirs=['.']),
-
-        Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.pyx"], include_dirs=['.'])
     ]
 
     cmdclass.update({'build_ext': build_ext})
@@ -57,20 +127,65 @@ else:
     print ('******** CYTHON Not Found. Use distributed .c files *******')
 
     ext_modules += [
-        Extension("pyrism.core.rscat",
-                  ["pyrism/core/rscat.c"], include_dirs=['.']),
+        # T-MATRIX ---------------------------------------------------------------------------------------------------
+        Extension("pyrism.cython_tm.core",
+                  ["pyrism/cython_tm/core.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.sz_matrix",
+                  ["pyrism/cython_tm/sz_matrix.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.pdf",
+                  ["pyrism/cython_tm/pdf.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.auxil",
+                  ["pyrism/cython_tm/auxil.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.xsec",
+                  ["pyrism/cython_tm/xsec.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_tm.wrapper",
+                  ["pyrism/cython_tm/wrapper.c"], include_dirs=['.']),
+
+        # I2EM -------------------------------------------------------------------------------------------------------
+        Extension("pyrism.cython_iem.auxil",
+                  ["pyrism/cython_iem/auxil.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.bicoef",
+                  ["pyrism/cython_iem/bicoef.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.ems",
+                  ["pyrism/cython_iem/ems.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.fresnel",
+                  ["pyrism/cython_iem/fresnel.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.fxxyxx",
+                  ["pyrism/cython_iem/fxxyxx.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.i2em",
+                  ["pyrism/cython_iem/i2em.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.ipp",
+                  ["pyrism/cython_iem/ipp.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.rspectrum",
+                  ["pyrism/cython_iem/rspectrum.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.sigma",
+                  ["pyrism/cython_iem/sigma.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.transition",
+                  ["pyrism/cython_iem/transition.c"], include_dirs=['.']),
+
+        Extension("pyrism.cython_iem.wrapper",
+                  ["pyrism/cython_iem/wrapper.c"], include_dirs=['.']),
+
 
         Extension("pyrism.core.rphs",
                   ["pyrism/core/rphs.c"], include_dirs=['.']),
 
         Extension("pyrism.core.fauxil",
-                  ["pyrism/core/fauxil.c"], include_dirs=['.']),
-
-        Extension("pyrism.core.iemauxil",
-                  ["pyrism/core/iemauxil.c"], include_dirs=['.']),
-
-        Extension("pyrism.core.tma",
-                  ["pyrism/core/tma.c"], include_dirs=['.'])
+                  ["pyrism/core/fauxil.c"], include_dirs=['.'])
     ]
 
 
@@ -142,27 +257,6 @@ setup(name='pyrism',
 from numpy.distutils.core import Extension
 from numpy.distutils.core import setup
 
-# if use_cython:
-#     print ('******** Compiling with FORTRAN accomplished ******')
-#
-#
-#     flib = Extension(name='pyrism.fortran_tm.fotm'
-#                           '',
-#                      sources=['pyrism/fortran_tm/fotm.pyf',
-#                               'pyrism/fortran_tm/ampld.lp.f',
-#                               'pyrism/fortran_tm/lpd.f'],
-#                      )
-#
-# else:
-#     print ('******** FORTRAN Not Found. Use distributed .o files *******')
-#
-#     flib = Extension(name='pyrism.fortran_tm.tmatrix'
-#                           '',
-#                      sources=['pyrism/fortran_tm/tmatrixmodule.c',
-#                               'pyrism/fortran_tm/tmatrix.o'],
-#                      )
-#
-#
 flib = Extension(name='pyrism.fortran_tm.fotm',
                  sources=['pyrism/fortran_tm/fotm.pyf',
                           'pyrism/fortran_tm/ampld.lp.f',
