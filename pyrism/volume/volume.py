@@ -77,12 +77,7 @@ class VolScatt(Angles):
 
     """
 
-    def __init__(self, iza, vza, raa, angle_unit='DEG'):
-
-        super(VolScatt, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0, angle_unit=angle_unit,
-                                       align=True)
-
-    def coef(self, lidf_type='verhoef', n_elements=18, **kwargs):
+    def __init__(self, iza, vza, raa, type='verhoef', n_elements=18, angle_unit='DEG', quantity=False, **kwargs):
         """
         Calculate the extinction and volume scattering coefficients (:cite:`Campbell.1986`,
         :cite:`Campbell.1990`, :cite:`Verhoef.1998`).
@@ -123,59 +118,118 @@ class VolScatt(Angles):
         LIDF.nilson
 
         """
+        super(VolScatt, self).__init__(iza=iza, vza=vza, raa=raa, normalize=False, nbar=0.0, angle_unit=angle_unit,
+                                       align=True)
+
         a = kwargs.pop('a', None)
         b = kwargs.pop('b', None)
 
         if kwargs:
             raise TypeError('Unexpected **kwargs: %r' % kwargs)
 
-        if lidf_type == 'verhoef':
+        if type == 'verhoef':
             if a is None or b is None:
                 raise ValueError("for the verhoef function the parameter a and b must defined.")
             else:
-                lidf = LIDF.verhoef(a, b, n_elements)
+                self.lidf = LIDF.verhoef(a, b, n_elements)
 
-        elif lidf_type == 'campbell':
+        elif type == 'campbell':
             if a is None:
                 raise ValueError("for the campbell function the parameter alpha must defined.")
             else:
-                lidf = LIDF.campbell(a, n_elements)
+                self.lidf = LIDF.campbell(a, n_elements)
 
         else:
             raise AttributeError("lad_method must be verhoef, nilson or campbell")
 
-        self.kei = 0.
-        self.kev = 0.
-        self.bf = 0.
-        self.Fs = 0.
-        self.Ft = 0.
+        self.__output_as_quantity = quantity
 
-        n_angles = len(lidf)
-        angle_step = float(90.0 / n_angles)
-        litab = np.arange(n_angles) * angle_step + (angle_step * 0.5)
+        self.__kei = None
+        self.__kev = None
+        self.__bf = None
+        self.__Fs = None
+        self.__Ft = None
+        self.__Fst = None
 
-        for i, ili in enumerate(litab):
-            ttl = 1. * ili
-            cttl = np.cos(np.radians(ttl))
-            # SAIL volume scattering phase function gives interception and portions to be multiplied by rho
-            # and tau
-            self.chi_s, self.chi_o, self.frho, self.ftau = self.volume(ttl)
+    # --------------------------------------------------------------------------------------------------------
+    # Properties
+    # --------------------------------------------------------------------------------------------------------
+    @property
+    def kei(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
 
-            # Extinction coefficients
-            ksli = self.chi_s / np.cos(self.iza)
-            koli = self.chi_o / np.cos(self.vza)
+        return self.__kei
 
-            # Area scattering coefficient fractions
-            sobli = self.frho * np.pi / (np.cos(self.iza) * np.cos(self.vza))
-            sofli = self.ftau * np.pi / (np.cos(self.iza) * np.cos(self.vza))
-            bfli = cttl ** 2.
-            self.kei += ksli * float(lidf[i])
-            self.kev += koli * float(lidf[i])
-            self.bf += bfli * float(lidf[i])
-            self.Fs += sobli * float(lidf[i])
-            self.Ft += sofli * float(lidf[i])
+    @property
+    def kev(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
 
-            self.Fst = self.Fs + self.Ft
+        return self.__kev
+
+    @property
+    def bf(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
+
+        return self.__bf
+
+    @property
+    def Fs(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
+
+        return self.__Fs
+
+    @property
+    def Ft(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
+
+        return self.__Ft
+
+    @property
+    def Fst(self):
+        if self.__kei is None:
+            self.__kei, self.__kev, self.__bf, self.__Fs, self.__Ft, self.__Fst = self.__coef()
+
+        return self.__Fst
+
+    # --------------------------------------------------------------------------------------------------------
+    # Callable Methods
+    # --------------------------------------------------------------------------------------------------------
+    def compute_extinction(self, ks, kt):
+        if len(ks) != 2101:
+            raise AssertionError(
+                "ks must contain continuous leaf reflectance values from from 400 until 2500 nm with a length of "
+                "2101. The actual length of ks is {0}".format(str(len(ks))))
+
+        elif len(kt) != 2101:
+            raise AssertionError(
+                "kt must contain continuous leaf transmittance values from from 400 until 2500 nm with a length of "
+                "2101. The actual length of kt is {0}".format(str(len(kt))))
+        else:
+            pass
+
+        ddb = 0.5 * (1.0 + self.bf)
+        ddf = 0.5 * (1.0 - self.bf)
+
+        sigb = ddb * ks + ddf * kt
+        sigf = ddf * ks + ddb * kt
+
+        try:
+            sigf[sigf == 0.0] = 1.e-36
+            sigb[sigb == 0.0] = 1.0e-36
+        except TypeError:
+            sigf = max(1e-36, sigf)
+            sigb = max(1e-36, sigb)
+
+        att = 1. - sigf
+
+        ke = np.sqrt(att ** 2. - sigb ** 2.)
+
+        return np.asarray(ke).flatten()
 
     def volume(self, lza):
         """
@@ -196,12 +250,12 @@ class VolScatt(Angles):
             Function to be multiplied by leaf transmittance to obtain the volume scattering.
 
         """
-        cts = np.cos(self.iza)
-        cto = np.cos(self.vza)
-        sts = np.sin(self.iza)
-        sto = np.sin(self.vza)
-        cospsi = np.cos(self.raa)
-        psir = self.raa
+        cts = np.cos(self.iza.value)
+        cto = np.cos(self.vza.value)
+        sts = np.sin(self.iza.value)
+        sto = np.sin(self.vza.value)
+        cospsi = np.cos(self.raa.value)
+        psir = self.raa.value
         clza = np.cos(np.radians(lza))
         slza = np.sin(np.radians(lza))
         cs = clza * cts
@@ -285,6 +339,46 @@ class VolScatt(Angles):
         ftau[ftau < 0.] = 0
 
         return chi_s, chi_o, frho, ftau
+
+    # --------------------------------------------------------------------------------------------------------
+    # Private Methods
+    # --------------------------------------------------------------------------------------------------------
+    def __coef(self):
+
+        kei = 0.
+        kev = 0.
+        bf = 0.
+        Fs = 0.
+        Ft = 0.
+
+        n_angles = len(self.lidf)
+        angle_step = float(90.0 / n_angles)
+        litab = np.arange(n_angles) * angle_step + (angle_step * 0.5)
+
+        for i, ili in enumerate(litab):
+            ttl = 1. * ili
+            cttl = np.cos(np.radians(ttl))
+            # SAIL volume scattering phase function gives interception and portions to be multiplied by rho
+            # and tau
+            chi_s, chi_o, frho, ftau = self.volume(ttl)
+
+            # Extinction coefficients
+            ksli = chi_s / np.cos(self.iza.value)
+            koli = chi_o / np.cos(self.vza.value)
+
+            # Area scattering coefficient fractions
+            sobli = frho * np.pi / (np.cos(self.iza.value) * np.cos(self.vza.value))
+            sofli = ftau * np.pi / (np.cos(self.iza.value) * np.cos(self.vza.value))
+            bfli = cttl ** 2.
+            kei += ksli * float(self.lidf[i])
+            kev += koli * float(self.lidf[i])
+            bf += bfli * float(self.lidf[i])
+            Fs += sobli * float(self.lidf[i])
+            Ft += sofli * float(self.lidf[i])
+
+            Fst = Fs + Ft
+
+        return kei, kev, bf, Fs, Ft, Fst
 
 
 # ---- LAD and LIDF Models ----
@@ -581,36 +675,23 @@ class SAIL(Angles):
         else:
             pass
 
-        self.ks = ks if hasattr(ks, 'quantity') else Quantity(ks, name="Scattering Coefficient (Leaf Reflectance)")
-        self.kt = kt if hasattr(kt, 'quantity') else Quantity(kt, name="Transmission Coefficient (Transmittance)")
-        self.__ks_value = ks.value
-        self.__kt_value = kt.value
+        self.ks = ks.value if hasattr(ks, 'quantity') else ks
+        self.kt = kt.value if hasattr(kt, 'quantity') else kt
 
-        self.lai = lai if hasattr(lai, 'quantity') else Quantity(lai, name='Leaf Area Index')
+        self.lai = lai.value if hasattr(lai, 'quantity') else lai
 
-        self.__lai_value = self.lai.value
+        self.hotspot = hotspot.value if hasattr(hotspot, 'quantity') else hotspot
 
-        self.hotspot = hotspot if hasattr(hotspot, 'quantity') else Quantity(hotspot, name="Hotspot Parameter")
+        self.rho_surface = rho_surface.value if hasattr(rho_surface, 'quantity') else rho_surface
 
-        self.__hotspot_value = self.hotspot.value
+        kwargs = {'a': a, 'b': b}
 
-        self.rho_surface = rho_surface if hasattr(rho_surface, 'quantity') else Quantity(rho_surface,
-                                                                                         name="Surface Reflectance")
-        self.__rho_surface_value = rho_surface.value
-
-        self.VollScat = VolScatt(iza, vza, raa, angle_unit)
-
-        if lidf_type is 'verhoef':
-            self.VollScat.coef(a=a, b=b, lidf_type='verhoef')
-        elif lidf_type is 'campbell':
-            self.VollScat.coef(a=a, lidf_type='campbell')
-        else:
-            raise AssertionError("The lidf_type must be 'verhoef' or 'campbell'")
+        self.VollScat = VolScatt(iza=iza, vza=vza, raa=raa, type=lidf_type, angle_unit=angle_unit, **kwargs)
 
         (tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo, rso, rsos, rsod, rddt, rsdt, rdot, rsodt,
          rsost, rsot, gammasdf, gammasdb, gammaso) = self.__calc()
 
-        self.__kt_value = tsstoo
+        self.kt = tsstoo
         self.kt_iza = tss
         self.kt_vza = too
 
@@ -627,7 +708,7 @@ class SAIL(Angles):
 
         self.__I = conversion.I
         self.__BSC = conversion.BSC
-
+        self.__store()
         # self.BHR = rddt
         # self.DHR = rsdt
         # self.HDR = rdot
@@ -660,8 +741,8 @@ class SAIL(Angles):
         ddb = 0.5 * (1.0 + self.VollScat.bf)
         ddf = 0.5 * (1.0 - self.VollScat.bf)
 
-        sigb = ddb * self.__ks_value + ddf * self.__kt_value
-        sigf = ddf * self.__ks_value + ddb * self.__kt_value
+        sigb = ddb * self.ks + ddf * self.kt
+        sigf = ddf * self.ks + ddb * self.kt
 
         try:
             sigf[sigf == 0.0] = 1.e-36
@@ -675,13 +756,13 @@ class SAIL(Angles):
 
         self.ke = self.VollScat.kei
 
-        sb = sdb * self.__ks_value + sdf * self.__kt_value
-        sf = sdf * self.__ks_value + sdb * self.__kt_value
-        vb = dob * self.__ks_value + dof * self.__kt_value
-        vf = dof * self.__ks_value + dob * self.__kt_value
-        w = self.VollScat.Fs * self.__ks_value + self.VollScat.Ft * self.__kt_value
+        sb = sdb * self.ks + sdf * self.kt
+        sf = sdf * self.ks + sdb * self.kt
+        vb = dob * self.ks + dof * self.kt
+        vf = dof * self.ks + dob * self.kt
+        w = self.VollScat.Fs * self.ks + self.VollScat.Ft * self.kt
 
-        if np.all(self.__lai_value <= 0):
+        if np.all(self.lai <= 0):
             # No canopy...
             tss = 1
             too = 1
@@ -695,12 +776,12 @@ class SAIL(Angles):
             rso = 0
             rsos = 0
             rsod = 0
-            rddt = self.__rho_surface_value
-            rsdt = self.__rho_surface_value
-            rdot = self.__rho_surface_value
+            rddt = self.rho_surface
+            rsdt = self.rho_surface
+            rdot = self.rho_surface
             rsodt = 0
-            rsost = self.__rho_surface_value
-            rsot = self.__rho_surface_value
+            rsost = self.rho_surface
+            rsot = self.rho_surface
             gammasdf = 0
             gammaso = 0
             gammasdb = 0
@@ -709,17 +790,17 @@ class SAIL(Angles):
                     rso, rsos, rsod, rddt, rsdt, rdot, rsodt, rsost, rsot, gammasdf, gammasdb, gammaso]
 
         else:
-            e1 = np.exp(-m * self.__lai_value)
+            e1 = np.exp(-m * self.lai)
             e2 = e1 ** 2.
             rinf = (att - m) / sigb
             rinf2 = rinf ** 2.
             re = rinf * e1
             denom = 1. - rinf2 * e2
 
-            J1ks = self.__Jfunc1(self.VollScat.kei, m, self.__lai_value)
-            J2ks = self.__Jfunc2(self.VollScat.kei, m, self.__lai_value)
-            J1ko = self.__Jfunc1(self.VollScat.kev, m, self.__lai_value)
-            J2ko = self.__Jfunc2(self.VollScat.kev, m, self.__lai_value)
+            J1ks = self.__Jfunc1(self.VollScat.kei, m, self.lai)
+            J2ks = self.__Jfunc2(self.VollScat.kei, m, self.lai)
+            J1ko = self.__Jfunc1(self.VollScat.kev, m, self.lai)
+            J2ko = self.__Jfunc2(self.VollScat.kev, m, self.lai)
 
             Pss = (sf + sb * rinf) * J1ks
             Qss = (sf * rinf + sb) * J2ks
@@ -736,9 +817,9 @@ class SAIL(Angles):
             gammasdf = (1. + rinf) * (J1ks - re * J2ks) / denom
             gammasdb = (1. + rinf) * (-re * J1ks + J2ks) / denom
 
-            tss = np.exp(-self.VollScat.kei * self.__lai_value)
-            too = np.exp(-self.VollScat.kev * self.__lai_value)
-            z = self.__Jfunc2(self.VollScat.kei, self.VollScat.kev, self.__lai_value)
+            tss = np.exp(-self.VollScat.kei * self.lai)
+            too = np.exp(-self.VollScat.kev * self.lai)
+            z = self.__Jfunc2(self.VollScat.kei, self.VollScat.kev, self.lai)
 
             g1 = (z - J1ks * too) / (self.VollScat.kev + m)
             g2 = (z - J1ko * tss) / (self.VollScat.kei + m)
@@ -762,44 +843,45 @@ class SAIL(Angles):
             alf = 1e36
 
             # Apply correction 2/(K+k) suggested by F.-M. Breon
-            cts, cto, ctscto, tants, tanto, cospsi, dso = self.__define_geometric_constants(self.izaDeg, self.vzaDeg,
-                                                                                            self.raaDeg)
+            cts, cto, ctscto, tants, tanto, cospsi, dso = self.__define_geometric_constants(self.izaDeg.value,
+                                                                                            self.vzaDeg.value,
+                                                                                            self.raaDeg.value)
 
-            if self.__hotspot_value > 0.:
-                alf = (dso / self.__hotspot_value) * 2. / (self.VollScat.kei + self.VollScat.kev)
+            if self.hotspot > 0.:
+                alf = (dso / self.hotspot) * 2. / (self.VollScat.kei + self.VollScat.kev)
 
             if alf == 0.:
                 # The pure hotspot
                 tsstoo = tss
-                sumint = (1. - tss) / (self.VollScat.kei * self.__lai_value)
+                sumint = (1. - tss) / (self.VollScat.kei * self.lai)
             else:
                 # Outside the hotspot
-                tsstoo, sumint = self.__hotspot_calculations(alf, self.__lai_value, self.VollScat.kev,
+                tsstoo, sumint = self.__hotspot_calculations(alf, self.lai, self.VollScat.kev,
                                                              self.VollScat.kei)
 
             # Bidirectional reflectance
             # Single scattering contribution
-            rsos = w * self.__lai_value * sumint
-            gammasos = self.VollScat.kev * self.__lai_value * sumint
+            rsos = w * self.lai * sumint
+            gammasos = self.VollScat.kev * self.lai * sumint
 
             # Total canopy contribution
             rso = rsos + rsod
             gammaso = gammasos + gammasod
 
             # Interaction with the soil
-            dn = 1. - self.__rho_surface_value * rdd
+            dn = 1. - self.rho_surface * rdd
 
             try:
                 dn[dn < 1e-36] = 1e-36
             except TypeError:
                 dn = max(1e-36, dn)
 
-            rddt = rdd + tdd * self.__rho_surface_value * tdd / dn
-            rsdt = rsd + (tsd + tss) * self.__rho_surface_value * tdd / dn
-            rdot = rdo + tdd * self.__rho_surface_value * (tdo + too) / dn
+            rddt = rdd + tdd * self.rho_surface * tdd / dn
+            rsdt = rsd + (tsd + tss) * self.rho_surface * tdd / dn
+            rdot = rdo + tdd * self.rho_surface * (tdo + too) / dn
             rsodt = ((tss + tsd) * tdo + (
-                    tsd + tss * self.__rho_surface_value * rdd) * too) * self.__rho_surface_value / dn
-            rsost = rso + tsstoo * self.__rho_surface_value
+                    tsd + tss * self.rho_surface * rdd) * too) * self.rho_surface / dn
+            rsost = rso + tsstoo * self.rho_surface
             rsot = rsost + rsodt
 
             return [tss, too, tsstoo, rdd, tdd, rsd, tsd, rdo, tdo,
