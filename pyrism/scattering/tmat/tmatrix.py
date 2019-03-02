@@ -8,17 +8,13 @@ import sys
 import warnings
 
 import numpy as np
-from pyrism.core.tma import (NMAX_VEC_WRAPPER, SZ_S_VEC_WRAPPER, SZ_AF_VEC_WRAPPER, DBLQUAD_Z_S_WRAPPER,
-                             XSEC_QS_S_WRAPPER, XSEC_ASY_S_WRAPPER, XSEC_ASY_AF_WRAPPER, XSEC_QE_WRAPPER,
-                             XSEC_QSI_WRAPPER, equal_volume_from_maximum_wrapper)
-
-from pyrism.cython_tm import NMAX, SZ_AF, SZ_S, EVFM, QE, KE
 
 from respy import Angles, EM, Quantity
 from respy.constants import pi as PI
 from respy.constants import rad_to_deg
-from respy.util import align_all
-from respy.util import __ANGLE_UNIT_RAD__, __ANGLE_UNIT_DEG__
+from respy.util import __ANGLE_UNIT_RAD__, __ANGLE_UNIT_DEG__, align_all
+
+from pyrism.cython_tm import NMAX, SZ_AF, SZ_S, EVFM, XE, XS_S, XS_AF, XASY_S, XASY_AF, XI
 from pyrism.scattering.tmat.orientation import Orientation
 from pyrism.scattering.tmat.tm_auxiliary import param_radius_type, param_shape, param_orientation
 
@@ -293,6 +289,7 @@ class TMatrix(Angles, object):
         self.__ka = None
         self.__omega = None
         self.__kt = None
+        self.__xasy = None
 
     # ------------------------------------------------------------------------------------------------------------------
     # Magic Methods
@@ -366,11 +363,6 @@ class TMatrix(Angles, object):
         self.__factor = complex(0, factor)
 
         return self.__factor
-
-    @property
-    # @denormalized_decorator
-    def nmax(self):
-        return self.__nmax.base
 
     # Frequency Calls ----------------------------------------------------------------------------------------------
     @property
@@ -504,23 +496,6 @@ class TMatrix(Angles, object):
                 Quantity(self.__Z, unit=self.EMW.wavelength.unit ** 2,
                          name="Phase Matrix", constant=True))
 
-    # Integration of S and Z -------------------------------------------------------------------------------------------
-    @property
-    # @normalized_decorator
-    def dblquad(self):
-        """
-        Half space integration of the phase matrix in incidence direction.
-
-        Returns
-        -------
-        dbl : list or array_like
-        """
-        if self.__dblZi is None:
-            self.__dblZi = self.__dblquad()
-
-        return Quantity(self.__dblZi, name="Half Space Integrated Phase Matrix",
-                        constant=True)
-
     # Extinction and Scattering Matrices -------------------------------------------------------------------------------
     @property
     def ke(self):
@@ -533,10 +508,8 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ke is None:
-            self.__ke = self.__KE()
-
-        self.__ke.set_name('Attenuation Coefficient (VV, HH)')
-        self.__ke.set_constant(True)
+            self.__ke = self.__XE() * self.N
+            self.__ke = Quantity(self.__ke, unit=1 / self.radius.unit, name='Attenuation Matrix', constant=True)
 
         return self.__ke
 
@@ -551,10 +524,9 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__ks is None:
-            self.__ks = self.xs * self.__N
-
-        self.__ks.set_name('Scattering Coefficient (VV, HH)')
-        self.__ks.set_constant(True)
+            self.__ks = self.__XS() * self.N
+            self.__ks = Quantity(self.__ks, unit=1 / self.radius.unit, name='Attenuation Scattering Matrix',
+                                 constant=True)
 
         return self.__ks
 
@@ -587,30 +559,13 @@ class TMatrix(Angles, object):
             MemoryView of type array([[VV, HH]])
         """
         if self.__omega is None:
-            self.__omega = self.ks / self.ke
+            with np.errstate(divide='ignore'):
+                self.__omega = self.xs.value / self.xe.value
+                self.__omega[self.__omega == -np.inf] = 0
+                self.__omega[self.__omega == np.inf] = 0
 
-        self.__omega.set_name('Single Scattering Albedo (VV, HH)')
-        self.__omega.set_constant(True)
-
-        return self.__omega
-
-    @property
-    def kt(self):
-        """
-        Transmission matrix for the current setup, with polarization.
-
-        Returns
-        -------
-        kt : MemoryView, double[:,:}
-            MemoryView of type array([[VV, HH]])
-        """
-        if self.__kt is None:
-            self.__kt = 1 - self.ke
-
-        self.__kt.set_name('Transmission Coefficient (VV, HH)')
-        self.__kt.set_constant(True)
-
-        return self.__kt
+        return Quantity(self.__omega, name='Single Scattering Albedo (VV, HH)',
+                        constant=True)
 
     # Cross Section ----------------------------------------------------------------------------------------------------
     @property
@@ -624,10 +579,29 @@ class TMatrix(Angles, object):
         """
 
         if self.__xs is None:
-            self.__xs = self.__QS()
+            xs = self.__XS()
 
-        return Quantity(self.__xs, unit=self.EMW.wavelength.unit ** 2, name='Scattering Cross Section (VV, HH)',
+            self.__xs = np.zeros((xs.shape[0], 2))
+            self.__xs[:, 0] = xs[:, 0, 0] + xs[:, 0, 1]
+            self.__xs[:, 1] = xs[:, 0, 0] - xs[:, 0, 1]
+
+        return Quantity(self.__xs[0], unit=self.EMW.wavelength.unit ** 2, name='Scattering Cross Section (VV, HH)',
                         constant=True)
+
+    @property
+    def xa(self):
+        """
+        Absorption cross section for the current setup, with polarization.
+
+        Returns
+        -------
+        QS : array_like
+        """
+
+        self.__xa = self.xe - self.xs
+        self.__xa.set_name('Absorption Cross Section (VV, HH)')
+        self.__xa.set_constant(True)
+        return self.__xa
 
     @property
     def asy(self):
@@ -638,13 +612,20 @@ class TMatrix(Angles, object):
         -------
         QAS : array_like
         """
-        if self.__xs is None:
-            self.__xs = self.__QS()
 
-        if self.__xas is None:
-            self.__xas = self.__QAS()
+        if self.__xasy is None:
+            qas = self.__XASY()
 
-        return Quantity(self.__xas.base / self.__xs.base, unit=None, name='Asymmetry Parameter (VV, HH)',
+            self.__xasy = np.zeros((qas.shape[0], 2))
+            self.__xasy[:, 0] = qas[:, 0, 0] + qas[:, 0, 1]
+            self.__xasy[:, 1] = qas[:, 0, 0] - qas[:, 0, 1]
+
+            asy = self.__xasy / self.xs.value
+
+        else:
+            asy = self.__xasy / self.xs.value
+
+        return Quantity(asy[0], unit=None, name='Asymmetry Parameter (VV, HH)',
                         constant=True)
 
     @property
@@ -658,9 +639,13 @@ class TMatrix(Angles, object):
         """
 
         if self.__xe is None:
-            self.__xe = self.__QE()
+            xe = self.__XE()
+            xe = xe.base
+            self.__xe = np.zeros((xe.shape[0], 2))
+            self.__xe[:, 0] = xe[:, 0, 0] + xe[:, 0, 1]
+            self.__xe[:, 1] = xe[:, 0, 0] - xe[:, 0, 1]
 
-        return Quantity(self.__xe, unit=self.EMW.wavelength.unit ** 2, name='Extinction Cross Section (VV, HH)',
+        return Quantity(self.__xe[0], unit=self.EMW.wavelength.unit ** 2, name='Extinction Cross Section (VV, HH)',
                         constant=True)
 
     @property
@@ -702,15 +687,20 @@ class TMatrix(Angles, object):
     def compute_Z(self, iza=None, vza=None, iaa=None, vaa=None, alpha=None, beta=None, angle_unit='DEG'):
         if angle_unit in __ANGLE_UNIT_DEG__:
             pass
+
         elif angle_unit in __ANGLE_UNIT_RAD__:
-            vals = [iza, vza, iaa, vaa, alpha, beta]
-            converted_vals = list()
-
-            for item in vals:
-                if vals is not None:
-                    converted_vals.append(item * rad_to_deg)
-
-            iza, vza, iaa, vaa, alpha, beta = converted_vals
+            if iza is not None:
+                iza *= rad_to_deg
+            if vza is not None:
+                vza *= rad_to_deg
+            if iaa is not None:
+                iaa *= rad_to_deg
+            if vaa is not None:
+                vaa *= rad_to_deg
+            if alpha is not None:
+                alpha *= rad_to_deg
+            if beta is not None:
+                beta *= rad_to_deg
 
         return self.compute_SZ(izaDeg=iza, vzaDeg=vza, iaaDeg=iaa, vaaDeg=vaa, alphaDeg=alpha,
                                betaDeg=beta)[1]
@@ -773,11 +763,17 @@ class TMatrix(Angles, object):
         else:
             betaDeg = self.betaDeg
 
+        (nmax, wavelength, izaDeg, iaaDeg,
+         vzaDeg, vaaDeg, alphaDeg, betaDeg) = align_all((self.__nmax, self.__wavelength, izaDeg,
+                                                         iaaDeg, vzaDeg, vaaDeg, alphaDeg, betaDeg))
+
+        nmax = nmax.astype(np.intc)
+
         if self.__orient is 'S':
-            S, Z = SZ_S(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
+            S, Z = SZ_S(nmax, wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg, alphaDeg, betaDeg)
 
         elif self.__orient is 'AF':
-            S, Z = SZ_AF(self.__nmax, self.__wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
+            S, Z = SZ_AF(nmax, wavelength, izaDeg, vzaDeg, iaaDeg, vaaDeg,
                          self.__n_alpha, self.__n_beta, self.__or_pdf)
         else:
             raise ValueError("Orientation must be S or AF.")
@@ -820,92 +816,73 @@ class TMatrix(Angles, object):
 
         return nmax
 
-    # Integration of Phase and Scattering Matrix -----------------------------------------------------------------------
-    def __dblquad(self, iza_flag=True):
-
-        if iza_flag:
-            xzaDeg = self.vzaDeg
-            xaaDeg = self.vaaDeg
-        else:
-            xzaDeg = self.izaDeg
-            xaaDeg = self.iaaDeg
-
-        if self.__orient is 'S':
-            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength.value, xzaDeg, xaaDeg, self.alphaDeg,
-                                    self.betaDeg, iza_flag)
-        elif self.__orient is 'AF':
-            Z = DBLQUAD_Z_S_WRAPPER(self.__nmax, self.__wavelength.value, xzaDeg, xaaDeg, self.n_alpha, self.n_beta,
-                                    self.__or_pdf,
-                                    iza_flag)
-        else:
-            raise ValueError("Orientation must be S or AF.")
-
-        return Z.base.reshape((self.len, 4, 4))
-
     # Cross Section ----------------------------------------------------------------------------------------------------
-    def __QS(self):
-        """
-        Scattering cross section for the current setup, with polarization.
-        """
-
-        if self.__orient is 'S':
-            QS = XSEC_QS_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg,
-                                   verbose=self.verbose)
-        elif self.__orient is 'AF':
-            QS = XSEC_QS_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.n_alpha, self.n_beta,
-                                   self.__or_pdf, verbose=self.verbose)
-        else:
-            raise ValueError("Orientation must be S or AF.")
-
-        return QS
-
-    def __QAS(self):
+    def __XASY(self):
         """
         Asymetry cross section for the current setup, with polarization.
         """
+        xlin = np.linspace(0, PI / 2, self.Nx)
+        ylin = np.linspace(0, 2 * PI, self.Ny)
+        X, Y = np.meshgrid(xlin, ylin)
 
-        if self.__orient is 'S':
-            QAS = XSEC_ASY_S_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.alphaDeg, self.betaDeg,
-                                     verbose=self.verbose)
-        elif self.__orient is 'AF':
-            QAS = XSEC_ASY_AF_WRAPPER(self.nmax, self.wavelength, self.izaDeg, self.iaaDeg, self.n_alpha, self.n_beta,
-                                      self.__or_pdf, verbose=self.verbose)
-        else:
-            raise ValueError("Orientation must be S or AF.")
+        Xf = X.flatten()
+        Yf = Y.flatten()
 
-        return QAS
+        qas = np.zeros((len(self.nmax), 4, 4))
 
-    def __QE(self):
-        """
-        Extinction cross section for the current setup, with polarization.
-        """
-        # if self.normalized_flag:
-        #     izaDeg = np.append(self.izaDeg, 0)
-        #     iaaDeg = np.append(self.iaaDeg, 0)
-        # else:
-        #     izaDeg = self.izaDeg
-        #     iaaDeg = self.iaaDeg
+        for i in range(qas.shape[0]):
+            (nmax, wavelength, izaDeg, iaaDeg,
+             alphaDeg, betaDeg, Xf, Yf) = align_all((self.nmax[i], self.wavelength[i], self.izaDeg[i],
+                                                     self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
+                                                     Xf, Yf))
 
+            nmax = nmax.astype(np.intc)
+
+            if self.__orient is 'S':
+                qas[i] = XASY_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
+                                betaDeg, self.Nx, self.Ny, self.verbose)
+
+            elif self.__orient is 'AF':
+                qas[i] = XASY_AF(nmax, wavelength, izaDeg, iaaDeg, self.n_alpha, self.n_beta,
+                                 self.Nx, self.Ny, self.verbose)
+
+        return qas
+
+    def __XE(self):
         izaDeg = self.izaDeg
         iaaDeg = self.iaaDeg
 
         S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=iaaDeg)
 
-        if self.normalized_flag:
-            S = S[0:-1]
+        return XE(S, self.wavelength)
 
-        return QE(S, self.wavelength)
+    def __XS(self):
+        xlin = np.linspace(0, PI / 2, self.Nx)
+        ylin = np.linspace(0, 2 * PI, self.Ny)
+        X, Y = np.meshgrid(xlin, ylin)
 
-    def __KE(self):
-        izaDeg = self.izaDeg
-        iaaDeg = self.iaaDeg
+        Xf = X.flatten()
+        Yf = Y.flatten()
 
-        S, Z = self.compute_SZ(vzaDeg=izaDeg, vaaDeg=iaaDeg)
+        ks = np.zeros((len(self.nmax), 4, 4))
 
-        if self.normalized_flag:
-            S = S[0:-1]
+        for i in range(ks.shape[0]):
+            (nmax, wavelength, izaDeg, iaaDeg,
+             alphaDeg, betaDeg, Xf, Yf) = align_all((self.nmax[i], self.wavelength[i], self.izaDeg[i],
+                                                     self.iaaDeg[i], self.alphaDeg[i], self.betaDeg[i],
+                                                     Xf, Yf))
 
-        return KE(S, self.wavelength, self.N)
+            nmax = nmax.astype(np.intc)
+
+            if self.__orient is 'S':
+                ks[i] = XS_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg,
+                             betaDeg, self.Nx, self.Ny, self.verbose)
+
+            elif self.__orient is 'AF':
+                ks[i] = XS_AF(nmax, wavelength, izaDeg, iaaDeg, self.n_alpha, self.n_beta,
+                              self.Nx, self.Ny, self.verbose)
+
+        return ks
 
     def __I(self):
         """
@@ -913,7 +890,7 @@ class TMatrix(Angles, object):
         """
         Z = self.Z
 
-        return XSEC_QSI_WRAPPER(Z)
+        return XI(Z)
 
     # ---- Other Functions ----
     def __get_pdf(self, pdf):
