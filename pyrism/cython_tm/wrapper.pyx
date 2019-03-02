@@ -8,8 +8,10 @@ from pyrism.cython_tm.sz_matrix cimport SZ_S_VEC, SZ_AF_VEC
 from pyrism.cython_tm.pdf cimport gaussian as c_gaussian
 from pyrism.cython_tm.pdf cimport uniform as c_uniform
 from pyrism.cython_tm.auxil cimport equal_volume_from_maximum
-from pyrism.cython_tm.xsec cimport XSEC_QE
-from pyrism.cython_tm.attenuation cimport KE as cKE
+from pyrism.cython_tm.xsec cimport XE as cXE
+from pyrism.cython_tm.xsec cimport XS_S as cXS_S
+from pyrism.cython_tm.xsec cimport XS_AF as cXS_AF
+from pyrism.cython_tm.xsec cimport XSEC_QSI
 # ------------------------------------------------------------------------------------------------------------
 # Core Wrapper
 # ------------------------------------------------------------------------------------------------------------
@@ -169,7 +171,7 @@ def EVFM(double[:] radius, double[:] axis_ratio, int shape):
 # ----------------------------------------------------------------------------------------------------------------------
 # Single Orientation ---------------------------------------------------------------------------------------------------
 # Extinction and Intensity ---------------------------------------------------------------------------------------------
-def QE(double complex[:,:,:] S, double[:] wavelength):
+def XE(double complex[:,:,:] S, double[:] wavelength):
     """Extinction Cross Section.
 
     Parameters
@@ -178,33 +180,141 @@ def QE(double complex[:,:,:] S, double[:] wavelength):
         Three dimensoinal scattering matrix.
     wavelength : double[:]
         Wavelength in same unit as radius (used by function calc_nmax).
-    Returns
-    -------
-    Qe : double[:,:]
-        Two dimensional extinction cross section.
-    """
-    return XSEC_QE(S, wavelength)
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Attenuation Section Wrapper
-# ----------------------------------------------------------------------------------------------------------------------
-# Single Orientation ---------------------------------------------------------------------------------------------------
-# Extinction and Intensity ---------------------------------------------------------------------------------------------
-def KE(double complex[:,:,:] S, double[:] wavelength, double[:] N):
-    """Extinction Cross Section.
-
-    Parameters
-    ----------
-    S : double complex[:,:,:]
-        Three dimensoinal scattering matrix.
-    wavelength : double[:]
-        Wavelength in same unit as radius (used by function calc_nmax).
-    N : int, double[:]
-        Number of scatterer in unit volume.
 
     Returns
     -------
     Ke : double[:,:,:]
         Three dimensional extinction matrix.
     """
-    return KE(S, wavelength, N)
+    return cXE(S, wavelength)
+
+def XS_S(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg,
+       double[:] alphaDeg, double[:] betaDeg, int Nx, int Ny, int verbose):
+    """Scattering Cross Section MATRIX for single orientation.
+
+    Parameters
+    ----------
+    nmax : int[:]
+        Nmax parameter.
+    wavelength : double[:]
+        Wavelength in same unit as radius (used by function calc_nmax).
+    izaDeg, vzaDeg, iaaDeg, vaaDeg : double[:]
+        Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+        azimuth angle (ira, vra) in [DEG].
+    alphaDeg, betaDeg: double[:]
+        The Euler angles of the particle orientation in [DEG].
+    N : int, double[:]
+        Number of scatterer in unit volume.
+    Nx, Ny : int
+        Integration steps.
+    verbose : int
+        If 1 verbose mode is on.
+
+    Returns
+    -------
+    Qs : double[:,:,:]
+        Two dimensional scattering cross section.
+    """
+
+    return cXS_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, Nx, Ny, verbose, 0)
+
+def XI(double[:,:,:] Z):
+    """Intensity.
+
+    Parameters
+    ----------
+    Z : double complex[:,:,:]
+        Three dimensional phase matrix.
+
+    Returns
+    -------
+    Qi : double[:,:]
+        Two dimensional intensity.
+    """
+    return XSEC_QSI(Z)
+
+# Averaged Fixed Orientation -------------------------------------------------------------------------------------------
+def XS_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int Nx, int Ny, int n_alpha,
+          int n_beta, or_pdf, int verbose):
+    """Scattering Cross Section for Averaged Fixed Orientation.
+
+    Parameters
+    ----------
+    nmax : int[:]
+        Nmax parameter.
+    wavelength : double[:]
+        Wavelength in same unit as radius (used by function calc_nmax).
+    izaDeg, vzaDeg, iaaDeg, vaaDeg : double[:]
+        Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+        azimuth angle (ira, vra) in [DEG].
+    n_alpha, n_beta : int
+        Number of integration points in the alpha and beta Euler angle.
+    or_pdf: callable
+        Particle orientation Probability Density Function (PDF) for orientation averaging.
+
+    Returns
+    -------
+    Qs : double[:,:]
+        Two dimensional scattering cross section.
+    """
+
+    return cXS_AF(nmax, wavelength, izaDeg, iaaDeg, Nx, Ny, n_alpha, n_beta, or_pdf, verbose, 0)
+
+def XASY_S(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg,
+       double[:] alphaDeg, double[:] betaDeg, int Nx, int Ny, int verbose):
+    """Asymmetry Cross Section MATRIX for single orientation.
+
+    Parameters
+    ----------
+    nmax : int[:]
+        Nmax parameter.
+    wavelength : double[:]
+        Wavelength in same unit as radius (used by function calc_nmax).
+    izaDeg, vzaDeg, iaaDeg, vaaDeg : double[:]
+        Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+        azimuth angle (ira, vra) in [DEG].
+    alphaDeg, betaDeg: double[:]
+        The Euler angles of the particle orientation in [DEG].
+    N : int, double[:]
+        Number of scatterer in unit volume.
+    Nx, Ny : int
+        Integration steps.
+    verbose : int
+        If 1 verbose mode is on.
+
+    Returns
+    -------
+    Qs : double[:,:,:]
+        Two dimensional scattering cross section.
+    """
+
+    return cXS_S(nmax, wavelength, izaDeg, iaaDeg, alphaDeg, betaDeg, Nx, Ny, verbose, 1)
+
+
+
+# Averaged Fixed Orientation -------------------------------------------------------------------------------------------
+def XASY_AF(int[:] nmax, double[:] wavelength, double[:] izaDeg, double[:] iaaDeg, int Nx, int Ny, int n_alpha, int n_beta,
+          or_pdf, int verbose):
+    """Asymmetry Cross Section for Averaged Fixed Orientation.
+
+    Parameters
+    ----------
+    nmax : int[:]
+        Nmax parameter.
+    wavelength : double[:]
+        Wavelength in same unit as radius (used by function calc_nmax).
+    izaDeg, vzaDeg, iaaDeg, vaaDeg : double[:]
+        Incidence (iza) and scattering (vza) zenith angle and incidence and viewing
+        azimuth angle (ira, vra) in [DEG].
+    n_alpha, n_beta : int
+        Number of integration points in the alpha and beta Euler angle.
+    or_pdf: callable
+        Particle orientation Probability Density Function (PDF) for orientation averaging.
+
+    Returns
+    -------
+    Qs : double[:,:]
+        Two dimensional scattering cross section.
+    """
+
+    return cXS_AF(nmax, wavelength, izaDeg, iaaDeg, Nx, Ny, n_alpha, n_beta, or_pdf, verbose, 1)

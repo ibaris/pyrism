@@ -6,5 +6,4 @@ import core
 import pdf
 import sz_matrix
 import xsec
-import attenuation
-from wrapper import NMAX, SZ_S, SZ_AF, gaussian, uniform, EVFM, QE, KE
+from wrapper import NMAX, SZ_S, SZ_AF, gaussian, uniform, EVFM, XE, XS_S, XS_AF, XASY_S, XASY_AF, XI
