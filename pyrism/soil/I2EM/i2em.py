@@ -6,7 +6,7 @@ from respy import Angles, EM, Quantity, Units, Conversion
 
 import numpy as np
 from pyrism.auxil import SoilResult, EmissivityResult, PyrismResult
-from pyrism.core.iemauxil import i2em_wrapper, calc_iem_ems_wrapper
+from pyrism.cython_iem import i2em, ixx, i2em_ems
 from pyrism.soil.I2EM.core import (exponential, gaussian, xpower, mixed)
 from respy.constants import deg_to_rad
 from respy.util import align_all, asarrays
@@ -277,10 +277,15 @@ class I2EM(Angles):
         kz_iza = self.__wavenumber * np.cos(angles.iza)
         kz_vza = self.__wavenumber * np.cos(angles.vza)
 
-        VV, HH = i2em_wrapper(k=self.__wavenumber.value, kz_iza=kz_iza.value, kz_vza=kz_vza.value,
-                              iza=angles.iza.value, vza=angles.vza.value, raa=angles.raa.value,
-                              phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength.value,
-                              sigma=self.__sigma.value, corrfunc=self.__corrfunc, n=self.__n)
+        VV, HH = i2em(k=self.__wavenumber.value, kz_iza=kz_iza.value, kz_vza=kz_vza.value,
+                      iza=angles.iza.value, vza=angles.vza.value, raa=angles.raa.value,
+                      phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength.value,
+                      sigma=self.__sigma.value, corrfunc=self.__corrfunc, n=self.__n)
+
+        self.Ivv, self.Ihh = ixx(k=self.__wavenumber.value, kz_iza=kz_iza.value, kz_vza=kz_vza.value,
+                                 iza=angles.iza.value, vza=angles.vza.value, raa=angles.raa.value,
+                                 phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength.value,
+                                 sigma=self.__sigma.value, corrfunc=self.__corrfunc, n=self.__n)
 
         result = np.array([VV, HH])
 
@@ -332,16 +337,30 @@ class I2EM(Angles):
         # self.__I.array.set_name('Intensity [[VV], [HH]]')
         self.__I.VV.set_name('Intensity (VV)')
         self.__I.HH.set_name('Intensity (HH)')
+        self.__I.array.set_name('Intensity (VV, HH)')
 
         # self.__BRF.array.set_name('Bidirectional Reflectance Factor [[VV], [HH]]')
         self.__BRF.VV.set_name('Bidirectional Reflectance Factor (VV)')
+        self.__BRF.VV.set_constant(True)
         self.__BRF.HH.set_name('Bidirectional Reflectance Factor (HH)')
+        self.__BRF.HH.set_constant(True)
+        self.__BRF.array.set_name('Bidirectional Reflectance Factor (VV, HH)')
+        self.__BRF.array.set_constant(True)
 
         # self.__BSC.array.set_name('Backscattering Coefficient [[VV], [HH]]')
         self.__BSC.VV.set_name('Backscattering Coefficient (VV)')
+        self.__BSC.VV.set_constant(True)
         self.__BSC.HH.set_name('Backscattering Coefficient (HH)')
+        self.__BSC.HH.set_constant(True)
+        self.__BSC.array.set_name('Backscattering Coefficient (VV, HH)')
+        self.__BSC.array.set_constant(True)
+
         self.__BSC.VVdB.set_name('Backscattering Coefficient (VV)')
+        self.__BSC.VVdB.set_constant(True)
         self.__BSC.HHdB.set_name('Backscattering Coefficient (HH)')
+        self.__BSC.HHdB.set_constant(True)
+        self.__BSC.arraydB.set_name('Backscattering Coefficient (VV, HH)')
+        self.__BSC.arraydB.set_constant(True)
 
     class Emissivity(Angles):
 
@@ -401,14 +420,7 @@ class I2EM(Angles):
             corrfunc = self.__set_corrfunc(corrfunc)
 
             # calculate I2EM BSC
-            V_list, H_list = list(), list()
-            for i in range(len(self.iza)):
-                V, H = calc_iem_ems_wrapper(self.iza[i], k[i], sigma[i], corrlength[i], eps[i], corrfunc)
-
-                V_list.append(V)
-                H_list.append(H)
-
-            V, H = asarrays((V_list, H_list))
+            V, H = i2em_ems(self.iza, k, sigma, corrlength, eps, corrfunc)
 
             self.EMS = self.__convert_BSC(V, H)
 
