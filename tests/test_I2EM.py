@@ -3,15 +3,13 @@ from numpy import allclose
 
 from pyrism import I2EM
 
-
-#
-# iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH = 10, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.3495, -6.0050
-#
 # import numpy as np
 #
 # iza = np.arange(10, 20, 1)
 
 # The benchmark is the code from Ulaby.
+iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH = 0, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.8974, -7.6297
+
 @pytest.mark.webtest
 @pytest.mark.parametrize("iza, vza, raa, frequency, diel_constant, corrlength, sigma, outVV, outHH", [
     (0, 30, 50, 1.26, 6.9076590988636735 + 0.55947861142615318j, 30, 3, -7.8974, -7.6297),

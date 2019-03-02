@@ -4,10 +4,8 @@ import pyrism as pyr
 from numpy import allclose, less
 
 # some allowance for rounding errors etc
-epsilon = 1e-7
+epsilon = 1e-4
 
-
-# a = (2 * np.pi * tm.N * 1j) / tm.k0
 
 class TestTMatrix():
 
@@ -151,8 +149,8 @@ class TestTMatrix():
 
         omega = tm.omega
 
-        assert less(abs(1.0 - omega[0, 0]), 1e-6)
-        assert less(abs(1.0 - omega[0, 1]), 1e-6)
+        assert less(abs(1.0 - omega[0]), 1e-4)
+        assert less(abs(1.0 - omega[1]), 1e-4)
 
     def test_asymmetry(self):
         """Test calculation of the asymmetry parameter
@@ -179,8 +177,8 @@ class TestTMatrix():
 
         QAS2 = tm2.asy
 
-        assert less(abs(1 - QAS1[0, 0] / QAS2[0, 0]), epsilon)
-        assert less(abs(1 - QAS1[0, 1] / QAS2[0, 1]), epsilon)
+        assert less(abs(1 - QAS1[0] / QAS2[0]), 1e-3)
+        assert less(abs(1 - QAS1[1] / QAS2[1]), 1e-3)
 
         iza = 90
         vza = 90
@@ -193,8 +191,8 @@ class TestTMatrix():
         QAS3 = tm3.asy
         # Is the asymmetry parameter zero for small particles?
 
-        assert less(QAS3[0, 0], epsilon)
-        assert less(QAS3[0, 1], epsilon)
+        assert less(QAS3[0], epsilon)
+        assert less(QAS3[1], epsilon)
 
     def test_against_mie(self):
         """Test scattering parameters against Mie results
@@ -206,7 +204,7 @@ class TestTMatrix():
         vaa = 180
 
         tm = pyr.TMatrix(iza=iza, vza=vza, iaa=iaa, vaa=vaa, radius=1, frequency=29.9792458, eps=complex(3, 0.5),
-                         length_unit='cm')
+                         length_unit='cm', Nx=100, Ny=100)
 
         Qs = tm.xs
         Qe = tm.xe
@@ -217,9 +215,9 @@ class TestTMatrix():
         ext_xsect_ref = 7.8419745883848435
         asym_ref = 0.76146646088675629
 
-        assert less(abs(1 - Qs[0, 0] / sca_xsect_ref), 1e-6)
-        assert less(abs(1 - Qe[0, 0] / ext_xsect_ref), 1e-6)
-        assert less(abs(1 - Qas[0, 0] / asym_ref), 1e-6)
+        assert less(abs(1 - Qs[0] / sca_xsect_ref), epsilon)
+        assert less(abs(1 - Qe[0] / ext_xsect_ref), epsilon)
+        assert less(abs(1 - Qas[0] / asym_ref), epsilon)
 
     # def test_integrated_x_sca(self):
     #     """Test Rayleigh scattering cross section integrated over sizes.
@@ -350,13 +348,9 @@ class TestXSEC:
                          eps=complex(1.5, 0.5),
                          axis_ratio=1 / 0.6)
 
-        ks = tm.ks
-        ka = tm.ka
-        kt = tm.kt
-        ke = tm.ke
+        ks = tm.xs
+        ka = tm.xa
+        ke = tm.xe
 
-        assert allclose(ks[0, 0] + ka[0, 0], ke[0, 0])
-        assert allclose(ks[0, 1] + ka[0, 1], ke[0, 1])
-
-        assert allclose(ks[0, 0] + ka[0, 0] + kt[0, 0], 1)
-        assert allclose(ks[0, 1] + ka[0, 1] + kt[0, 1], 1)
+        assert allclose(ks[0] + ka[0], ke[0])
+        assert allclose(ks[1] + ka[1], ke[1])
