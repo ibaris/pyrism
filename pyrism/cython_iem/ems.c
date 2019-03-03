@@ -6009,7 +6009,6 @@ static PyObject *__pyx_f_6pyrism_10cython_iem_3ems_calc_iem_ems_vec(__Pyx_memvie
  *         HH_view[x] = HH_temp
  * 
  *     return VV, HH             # <<<<<<<<<<<<<<
- * 
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)

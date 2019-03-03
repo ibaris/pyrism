@@ -3509,6 +3509,7 @@ static PyObject *__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_Wn_rss(PyObject
  * 
  *     return Wn, rss             # <<<<<<<<<<<<<<
  * 
+ * cdef int[:] compute_TS_X(double[:] iza, double[:] sigma, double[:] k):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
@@ -3555,6 +3556,259 @@ static PyObject *__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_Wn_rss(PyObject
   __Pyx_XDECREF(__pyx_v_Wn);
   __Pyx_XDECREF(__pyx_v_rss);
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pyrism/cython_iem/rspectrum.pyx":93
+ *     return Wn, rss
+ * 
+ * cdef int[:] compute_TS_X(double[:] iza, double[:] sigma, double[:] k):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         Py_ssize_t xmax = iza.shape[0]
+ */
+
+static __Pyx_memviewslice __pyx_f_6pyrism_10cython_iem_9rspectrum_compute_TS_X(__Pyx_memviewslice __pyx_v_iza, __Pyx_memviewslice __pyx_v_sigma, __Pyx_memviewslice __pyx_v_k) {
+  Py_ssize_t __pyx_v_xmax;
+  Py_ssize_t __pyx_v_i;
+  __Pyx_memviewslice __pyx_v_TS_view = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_v_TS_temp;
+  double __pyx_v_mui;
+  double __pyx_v_error;
+  PyObject *__pyx_v_TS = NULL;
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  int __pyx_t_11;
+  int __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  __Pyx_RefNannySetupContext("compute_TS_X", 0);
+
+  /* "pyrism/cython_iem/rspectrum.pyx":95
+ * cdef int[:] compute_TS_X(double[:] iza, double[:] sigma, double[:] k):
+ *     cdef:
+ *         Py_ssize_t xmax = iza.shape[0]             # <<<<<<<<<<<<<<
+ *         Py_ssize_t i
+ *         int[:] TS_view
+ */
+  __pyx_v_xmax = (__pyx_v_iza.shape[0]);
+
+  /* "pyrism/cython_iem/rspectrum.pyx":101
+ *         double mui, merror, error
+ * 
+ *     TS = np.zeros_like(iza, dtype=np.intc)             # <<<<<<<<<<<<<<
+ *     TS_view = TS
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros_like); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_iza, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intc); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_TS = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "pyrism/cython_iem/rspectrum.pyx":102
+ * 
+ *     TS = np.zeros_like(iza, dtype=np.intc)
+ *     TS_view = TS             # <<<<<<<<<<<<<<
+ * 
+ *     for i in range(xmax):
+ */
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_TS, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_v_TS_view = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "pyrism/cython_iem/rspectrum.pyx":104
+ *     TS_view = TS
+ * 
+ *     for i in range(xmax):             # <<<<<<<<<<<<<<
+ *         mui = cos(iza[i])
+ *         TS_temp = 1
+ */
+  __pyx_t_7 = __pyx_v_xmax;
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
+    __pyx_v_i = __pyx_t_9;
+
+    /* "pyrism/cython_iem/rspectrum.pyx":105
+ * 
+ *     for i in range(xmax):
+ *         mui = cos(iza[i])             # <<<<<<<<<<<<<<
+ *         TS_temp = 1
+ *         error = 1.0
+ */
+    __pyx_t_10 = __pyx_v_i;
+    __pyx_t_11 = -1;
+    if (__pyx_t_10 < 0) {
+      __pyx_t_10 += __pyx_v_iza.shape[0];
+      if (unlikely(__pyx_t_10 < 0)) __pyx_t_11 = 0;
+    } else if (unlikely(__pyx_t_10 >= __pyx_v_iza.shape[0])) __pyx_t_11 = 0;
+    if (unlikely(__pyx_t_11 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_11);
+      __PYX_ERR(0, 105, __pyx_L1_error)
+    }
+    __pyx_v_mui = cos((*((double *) ( /* dim=0 */ (__pyx_v_iza.data + __pyx_t_10 * __pyx_v_iza.strides[0]) ))));
+
+    /* "pyrism/cython_iem/rspectrum.pyx":106
+ *     for i in range(xmax):
+ *         mui = cos(iza[i])
+ *         TS_temp = 1             # <<<<<<<<<<<<<<
+ *         error = 1.0
+ * 
+ */
+    __pyx_v_TS_temp = 1;
+
+    /* "pyrism/cython_iem/rspectrum.pyx":107
+ *         mui = cos(iza[i])
+ *         TS_temp = 1
+ *         error = 1.0             # <<<<<<<<<<<<<<
+ * 
+ *         while error > 1.0e-8: # and TS_temp <= 150:
+ */
+    __pyx_v_error = 1.0;
+
+    /* "pyrism/cython_iem/rspectrum.pyx":109
+ *         error = 1.0
+ * 
+ *         while error > 1.0e-8: # and TS_temp <= 150:             # <<<<<<<<<<<<<<
+ *             TS_temp += 1
+ *             error = pow(pow(k[i] * sigma[i], 2) * pow((2*mui), 2), TS_temp) / factorial(TS_temp)
+ */
+    while (1) {
+      __pyx_t_12 = ((__pyx_v_error > 1.0e-8) != 0);
+      if (!__pyx_t_12) break;
+
+      /* "pyrism/cython_iem/rspectrum.pyx":110
+ * 
+ *         while error > 1.0e-8: # and TS_temp <= 150:
+ *             TS_temp += 1             # <<<<<<<<<<<<<<
+ *             error = pow(pow(k[i] * sigma[i], 2) * pow((2*mui), 2), TS_temp) / factorial(TS_temp)
+ * 
+ */
+      __pyx_v_TS_temp = (__pyx_v_TS_temp + 1);
+
+      /* "pyrism/cython_iem/rspectrum.pyx":111
+ *         while error > 1.0e-8: # and TS_temp <= 150:
+ *             TS_temp += 1
+ *             error = pow(pow(k[i] * sigma[i], 2) * pow((2*mui), 2), TS_temp) / factorial(TS_temp)             # <<<<<<<<<<<<<<
+ * 
+ *         TS_view[i] = TS_temp
+ */
+      __pyx_t_13 = __pyx_v_i;
+      __pyx_t_11 = -1;
+      if (__pyx_t_13 < 0) {
+        __pyx_t_13 += __pyx_v_k.shape[0];
+        if (unlikely(__pyx_t_13 < 0)) __pyx_t_11 = 0;
+      } else if (unlikely(__pyx_t_13 >= __pyx_v_k.shape[0])) __pyx_t_11 = 0;
+      if (unlikely(__pyx_t_11 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_11);
+        __PYX_ERR(0, 111, __pyx_L1_error)
+      }
+      __pyx_t_14 = __pyx_v_i;
+      __pyx_t_11 = -1;
+      if (__pyx_t_14 < 0) {
+        __pyx_t_14 += __pyx_v_sigma.shape[0];
+        if (unlikely(__pyx_t_14 < 0)) __pyx_t_11 = 0;
+      } else if (unlikely(__pyx_t_14 >= __pyx_v_sigma.shape[0])) __pyx_t_11 = 0;
+      if (unlikely(__pyx_t_11 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_11);
+        __PYX_ERR(0, 111, __pyx_L1_error)
+      }
+      __pyx_v_error = (pow((pow(((*((double *) ( /* dim=0 */ (__pyx_v_k.data + __pyx_t_13 * __pyx_v_k.strides[0]) ))) * (*((double *) ( /* dim=0 */ (__pyx_v_sigma.data + __pyx_t_14 * __pyx_v_sigma.strides[0]) )))), 2.0) * pow((2.0 * __pyx_v_mui), 2.0)), __pyx_v_TS_temp) / ((double)__pyx_f_6pyrism_10cython_iem_5auxil_factorial(__pyx_v_TS_temp)));
+    }
+
+    /* "pyrism/cython_iem/rspectrum.pyx":113
+ *             error = pow(pow(k[i] * sigma[i], 2) * pow((2*mui), 2), TS_temp) / factorial(TS_temp)
+ * 
+ *         TS_view[i] = TS_temp             # <<<<<<<<<<<<<<
+ * 
+ *     return TS
+ */
+    __pyx_t_15 = __pyx_v_i;
+    __pyx_t_11 = -1;
+    if (__pyx_t_15 < 0) {
+      __pyx_t_15 += __pyx_v_TS_view.shape[0];
+      if (unlikely(__pyx_t_15 < 0)) __pyx_t_11 = 0;
+    } else if (unlikely(__pyx_t_15 >= __pyx_v_TS_view.shape[0])) __pyx_t_11 = 0;
+    if (unlikely(__pyx_t_11 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_11);
+      __PYX_ERR(0, 113, __pyx_L1_error)
+    }
+    *((int *) ( /* dim=0 */ (__pyx_v_TS_view.data + __pyx_t_15 * __pyx_v_TS_view.strides[0]) )) = __pyx_v_TS_temp;
+  }
+
+  /* "pyrism/cython_iem/rspectrum.pyx":115
+ *         TS_view[i] = TS_temp
+ * 
+ *     return TS             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_TS, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_r = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+  goto __pyx_L0;
+
+  /* "pyrism/cython_iem/rspectrum.pyx":93
+ *     return Wn, rss
+ * 
+ * cdef int[:] compute_TS_X(double[:] iza, double[:] sigma, double[:] k):             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         Py_ssize_t xmax = iza.shape[0]
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  __Pyx_AddTraceback("pyrism.cython_iem.rspectrum.compute_TS_X", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  goto __pyx_L2;
+  __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_TS_view, 1);
+  __Pyx_XDECREF(__pyx_v_TS);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -19982,6 +20236,7 @@ static int __Pyx_modinit_function_export_code(void) {
   if (__Pyx_ExportFunction("compute_wvnb", (void (*)(void))__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_wvnb, "__Pyx_memviewslice (__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("compute_TS", (void (*)(void))__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_TS, "__Pyx_memviewslice (__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("compute_Wn_rss", (void (*)(void))__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_Wn_rss, "PyObject *(PyObject *, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("compute_TS_X", (void (*)(void))__pyx_f_6pyrism_10cython_iem_9rspectrum_compute_TS_X, "__Pyx_memviewslice (__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
