@@ -277,6 +277,8 @@ class I2EM(Angles):
         kz_iza = self.__wavenumber * np.cos(angles.iza)
         kz_vza = self.__wavenumber * np.cos(angles.vza)
 
+        np.warnings.filterwarnings('ignore')
+
         VV, HH = i2em(k=self.__wavenumber.value, kz_iza=kz_iza.value, kz_vza=kz_vza.value,
                       iza=angles.iza.value, vza=angles.vza.value, raa=angles.raa.value,
                       phi=self.__phi, eps=self.__eps, corrlength=self.__corrlength.value,

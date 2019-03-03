@@ -89,3 +89,27 @@ cdef tuple compute_Wn_rss(corrfunc, double[:] iza, double[:] vza, double[:] raa,
         rss_view[i] = rss_temp
 
     return Wn, rss
+
+cdef int[:] compute_TS_X(double[:] iza, double[:] sigma, double[:] k):
+    cdef:
+        Py_ssize_t xmax = iza.shape[0]
+        Py_ssize_t i
+        int[:] TS_view
+        int TS_temp
+        double mui, merror, error
+
+    TS = np.zeros_like(iza, dtype=np.intc)
+    TS_view = TS
+
+    for i in range(xmax):
+        mui = cos(iza[i])
+        TS_temp = 1
+        error = 1.0
+
+        while error > 1.0e-8: # and TS_temp <= 150:
+            TS_temp += 1
+            error = pow(pow(k[i] * sigma[i], 2) * pow((2*mui), 2), TS_temp) / factorial(TS_temp)
+
+        TS_view[i] = TS_temp
+
+    return TS

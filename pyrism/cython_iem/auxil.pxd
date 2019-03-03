@@ -13,3 +13,4 @@ cdef imag_RaV_integration_ifunc(double Zy, double Zx, double iza, double sigx, d
 cdef real_RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps)
 cdef imag_RaH_integration_ifunc(double Zy, double Zx, double iza, double sigx, double sigy, double complex eps)
 cdef double[:] compute_ShdwS(double[:] iza, double[:] vza, double[:] raa, double[:] rss)
+cdef double[:] compute_ShdwS_X(double[:] iza, double[:] rss)

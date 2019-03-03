@@ -117,3 +117,25 @@ cdef double[:] compute_ShdwS(double[:] iza, double[:] vza, double[:] raa, double
             ShdwS_view[i] = 1.0
 
     return ShdwS
+
+cdef double[:] compute_ShdwS_X(double[:] iza, double[:] rss):
+    cdef:
+        Py_ssize_t xmax = iza.shape[0]
+        Py_ssize_t i
+
+        double ct, cts, rslp, ctorslp, ctsorslp, shadf, shadfs
+
+        double[:] ShdwS_view
+
+    ShdwS = np.zeros((xmax), dtype=np.double)
+    ShdwS_view = ShdwS
+
+    for i in range(xmax):
+        ct = cos(iza[i]) / sin(iza[i])
+        rslp = rss[i]
+        ctorslp = ct / sqrt(2) / rslp
+        shadf = 0.5 * (exp(-ctorslp ** 2) / sqrt(PI) / ctorslp - erf(ctorslp))
+
+        ShdwS_view[i] = 1 / (1 + shadf)
+
+    return ShdwS

@@ -1,3 +1,9 @@
 recursive-include pyrism/volume/data *.txt
 recursive-include pyrism/core *.c
 recursive-include pyrism/fortran_tm *.c
+recursive-include pyrism/cython_iem *.c
+recursive-include pyrism/cython_tm *.c
+recursive-include pyrism/core *.pyx
+recursive-include pyrism/fortran_tm *.pyx
+recursive-include pyrism/cython_iem *.pyx
+recursive-include pyrism/cython_tm *.pyx
